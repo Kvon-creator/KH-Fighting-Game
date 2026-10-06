@@ -25,3 +25,5 @@
 - [Sora Stance Reference](Sora_Stance_Reference.md): Supplied combat-stance GIF and observed pose details.
 - [Sora View Angle](Sora_View_Angle.md): Approved three-quarter view and adding Kingdom Key to reference pose.
 - [Sora Idle Pilot Delivery](Sora_Idle_Pilot_Delivery.md): Completed model sheet, 8-frame idle pilot, sprite sheet, previews, and manifest delivered in design/sprites/ for review.
+- [Sora Art Style](Sora_Art_Style.md): Approved smooth (clean line art / 2D cel-shaded) artstyle rather than pixelated.
+- [Sora Attack Pose Reference](Sora_Attack_Pose_Reference.md): Supplied attack wind-up reference photo with Keyblade held behind, pointing away from the opponent.
