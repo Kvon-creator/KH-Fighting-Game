@@ -1,0 +1,55 @@
+{
+  "character": "Sora",
+  "animation": "standing_breathing_idle",
+  "total_frames": 10,
+  "total_duration_ms": 1120,
+  "loop": true,
+  "canvas_size": [
+    512,
+    512
+  ],
+  "ground_baseline_y": 470,
+  "sprite_sheet": "sora_stand_idle_sheet.png",
+  "frames": [
+    {
+      "filename": "sora_stand_idle_00.png",
+      "duration_ms": 120
+    },
+    {
+      "filename": "sora_stand_idle_01.png",
+      "duration_ms": 100
+    },
+    {
+      "filename": "sora_stand_idle_02.png",
+      "duration_ms": 100
+    },
+    {
+      "filename": "sora_stand_idle_03.png",
+      "duration_ms": 140
+    },
+    {
+      "filename": "sora_stand_idle_04.png",
+      "duration_ms": 120
+    },
+    {
+      "filename": "sora_stand_idle_05.png",
+      "duration_ms": 100
+    },
+    {
+      "filename": "sora_stand_idle_06.png",
+      "duration_ms": 100
+    },
+    {
+      "filename": "sora_stand_idle_07.png",
+      "duration_ms": 120
+    },
+    {
+      "filename": "sora_stand_idle_08.png",
+      "duration_ms": 100
+    },
+    {
+      "filename": "sora_stand_idle_09.png",
+      "duration_ms": 120
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "character": "Sora",
+  "animation": "crouching_transitions_and_idle",
+  "canvas_size": [
+    512,
+    512
+  ],
+  "ground_baseline_y": 470,
+  "sprite_sheet": "sora_crouch_sheet.png",
+  "animations": {
+    "duck_down": {
+      "total_frames": 8,
+      "loop": false,
+      "total_duration_ms": 450,
+      "frames": [
+        {
+          "filename": "sora_crouch_down_00.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_down_01.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_down_02.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_down_03.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_down_04.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_down_05.png",
+          "duration_ms": 60
+        },
+        {
+          "filename": "sora_crouch_down_06.png",
+          "duration_ms": 60
+        },
+        {
+          "filename": "sora_crouch_down_07.png",
+          "duration_ms": 80
+        }
+      ]
+    },
+    "crouching_idle": {
+      "total_frames": 4,
+      "loop": true,
+      "total_duration_ms": 620,
+      "frames": [
+        {
+          "filename": "sora_crouch_idle_00.png",
+          "duration_ms": 160
+        },
+        {
+          "filename": "sora_crouch_idle_01.png",
+          "duration_ms": 140
+        },
+        {
+          "filename": "sora_crouch_idle_02.png",
+          "duration_ms": 180
+        },
+        {
+          "filename": "sora_crouch_idle_03.png",
+          "duration_ms": 140
+        }
+      ]
+    },
+    "stand_up": {
+      "total_frames": 8,
+      "loop": false,
+      "total_duration_ms": 450,
+      "frames": [
+        {
+          "filename": "sora_crouch_up_00.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_up_01.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_up_02.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_up_03.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_up_04.png",
+          "duration_ms": 50
+        },
+        {
+          "filename": "sora_crouch_up_05.png",
+          "duration_ms": 60
+        },
+        {
+          "filename": "sora_crouch_up_06.png",
+          "duration_ms": 60
+        },
+        {
+          "filename": "sora_crouch_up_07.png",
+          "duration_ms": 80
+        }
+      ]
+    }
+  }
+}

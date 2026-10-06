@@ -30,3 +30,4 @@
 - [Sora Sprite Directory](Sora_Sprite_Directory.md): All current and future smooth sprites and animation frames for Sora are stored in design/sprites/smooth/sora/.
 - [Sora Transition Frame Count](Sora_Transition_Frame_Count.md): Transition animation cycles between poses use around 7-12 frames for smoother animation.
 - [Sora Animation Pose Integrity](Sora_Animation_Pose_Integrity.md): Replace smooth sprites with genuine pose progression rather than scaled static images.
+- [Sora Selected Replacement Sheets](Sora_Selected_Replacement_Sheets.md): Selected idle and duck sheets with full-cycle previews.
