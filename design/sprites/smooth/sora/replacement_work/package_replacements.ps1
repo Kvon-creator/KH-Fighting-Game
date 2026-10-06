@@ -91,10 +91,13 @@ for($index=0;$index -lt 8;$index++) {
 $duck[0].Save((Join-Path $outputPath 'sora_smooth_stand_guard.png'),[System.Drawing.Imaging.ImageFormat]::Png)
 $duck[7].Save((Join-Path $outputPath 'sora_smooth_crouch_guard.png'),[System.Drawing.Imaging.ImageFormat]::Png)
 
-$windupCell=[System.Drawing.Bitmap]::FromFile((Join-Path $PSScriptRoot 'windup_source.png'))
-$windupScale=400.0/[AnimationPackaging]::Bounds($windupCell).Height
-$windup=@(Save-Frames @($windupCell) 'windup_packaged' $windupScale)
-$windup[0].Save((Join-Path $outputPath 'sora_smooth_attack_windup.png'),[System.Drawing.Imaging.ImageFormat]::Png)
+$windup=@();$windupCell=@()
+if(Test-Path -LiteralPath (Join-Path $PSScriptRoot 'windup_source.png')) {
+    $windupCell=[System.Drawing.Bitmap]::FromFile((Join-Path $PSScriptRoot 'windup_source.png'))
+    $windupScale=400.0/[AnimationPackaging]::Bounds($windupCell).Height
+    $windup=@(Save-Frames @($windupCell) 'windup_packaged' $windupScale)
+    $windup[0].Save((Join-Path $outputPath 'sora_smooth_attack_windup.png'),[System.Drawing.Imaging.ImageFormat]::Png)
+}
 # The temporary packaged pose stays in the work area and is not an active sprite.
 
 $standDelays=@(150,130,130,150,180,150,130,130,150,180)

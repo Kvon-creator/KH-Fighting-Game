@@ -1,14 +1,14 @@
 ﻿# Sora animation design charts
 
-Status: review before sprite production or implementation. Counts and attack motions below are proposals.
+Status: approved motion design, updated for smooth-art production. Animation timing and gameplay values remain separate specifications.
 
 ## Approved design
 
 | Property | Decision |
 | --- | --- |
 | Identity | Versatile all-rounder with strong aerial combos. Future Keyblade transformations remain undecided. |
-| Appearance | Standard KH2 outfit, Kingdom Key, pixel art. |
-| Dimensions | 128 x 128 base frames; approximately 96-pixel standing height. |
+| Appearance | Standard KH2 outfit, Kingdom Key, smooth 2D cel-shaded artwork. |
+| Dimensions | 512 x 512 smooth source frames; approximately 384-pixel standing height (equivalent to 96 pixels at 128 x 128). |
 | Facing | One drawn direction, mirrored for opposite facing. |
 | Idle | KH2 combat stance with subtle breathing. |
 | Jump | KH1 normal first jump, then KH2 Aerial Dodge-inspired second jump. Defensive properties are undecided. |
@@ -20,11 +20,11 @@ Drawing counts do not define gameplay timing.
 
 | Animation | Drawings | Sequence |
 | --- | ---: | --- |
-| Idle | 8 | Guard, inhale, exhale; planted feet and subtle clothing motion; seamless loop. |
-| Duck / stand up | 3 each | Lower into balanced guard / rise back into combat stance. |
+| Idle | 10 | Guard, inhale, exhale; planted feet and subtle clothing motion; seamless loop. |
+| Duck / stand up | 8 each | Lower into balanced guard / rise back into combat stance. |
 | Crouching idle | 4 | Restrained low-guard breathing loop. |
-| Forward shimmy | 8 | Lead foot advances, trailing foot follows; preserve guard. |
-| Backward shimmy | 8 | Rear foot retreats, lead foot follows; preserve opponent-facing guard. |
+| Forward shimmy | 10 | Lead foot advances, trailing foot follows; preserve guard. |
+| Backward shimmy | 10 | Rear foot retreats, lead foot follows; preserve opponent-facing guard. |
 | Run start / loop / stop | 4 / 8 / 4 | Accelerate; longer strides with Keyblade over shoulder farthest from opponent; settle into guard. |
 | First-jump takeoff / ascent | 3 / 4 | KH1 normal-jump reference poses. |
 | Apex / fall / land | 2 / 3 / 4 | Air transition; prepare descent; compress on actual floor contact. |
@@ -69,12 +69,3 @@ The current placeholder uses a 36 x 96 collider, speed 360, jump speed 680 and g
 Exact KH1 jump, KH2 Aerial Dodge and combat-stance poses need visual reference verification before production. New pixel animations are adaptations, not extracted game animations. Gameplay timings, dash limits, invulnerability and air-chase rules remain separate decisions. Version verification, required documentation and real gameplay testing precede engine implementation.
 
 Adapted from the supplied boss methodology: constraints first, clear identity, complete action sequences, calibrated anchors, separate effects, event lifetimes, honest asset inventory and actual engine validation. Boss AI, traps and progression are not requested Sora features.
-
-
-
-
-
-
-
-
-
