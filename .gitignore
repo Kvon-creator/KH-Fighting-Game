@@ -1,0 +1,5 @@
+# Godot-generated editor cache (including nested projects).
+.godot/
+
+# Godot 3 import cache, if present.
+.import/
