@@ -5,7 +5,7 @@
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
 - [Sora Frame Size](Sora_Frame_Size.md): Approved 128 x 128 for base movement, with larger canvas for extended attacks.
-- [Sora Idle Pose](Sora_Idle_Pose.md): Approved KH2 combat stance for the breathing idle.
+- [Sora Idle Pose](Sora_Idle_Pose.md): Approved combat idle pose with Keyblade aligned behind body pointing away from opponent.
 - [Sora Double Jump](Sora_Double_Jump.md): Approved KH1 normal first jump linked into the requested KH2 second-jump animation.
 - [Sora Basic Attacks](Sora_Basic_Attacks.md): Approved nine basic attacks and Down + Heavy launcher.
 - [Sora Sprite Facing](Sora_Sprite_Facing.md): Approved one-direction artwork mirrored for the opposite facing.
@@ -27,3 +27,4 @@
 - [Sora Idle Pilot Delivery](Sora_Idle_Pilot_Delivery.md): Completed model sheet, 8-frame idle pilot, sprite sheet, previews, and manifest delivered in design/sprites/ for review.
 - [Sora Art Style](Sora_Art_Style.md): Approved smooth (clean line art / 2D cel-shaded) artstyle rather than pixelated.
 - [Sora Attack Pose Reference](Sora_Attack_Pose_Reference.md): Supplied attack wind-up reference photo with Keyblade held behind, pointing away from the opponent.
+- [Sora Sprite Directory](Sora_Sprite_Directory.md): All current and future smooth sprites and animation frames for Sora are stored in design/sprites/smooth/sora/.

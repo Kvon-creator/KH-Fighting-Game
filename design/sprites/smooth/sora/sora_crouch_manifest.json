@@ -1,0 +1,90 @@
+{
+  "character": "Sora",
+  "art_style": "smooth_cel_shaded_anime",
+  "directory": "design/sprites/smooth/sora",
+  "canvas_size": [
+    512,
+    512
+  ],
+  "ground_baseline_y": 470,
+  "animations": {
+    "duck_down": {
+      "total_frames": 3,
+      "loop": false,
+      "frames": [
+        {
+          "filename": "sora_crouch_down_00.png",
+          "duration_ms": 70,
+          "description": "Downward anticipation knee flex"
+        },
+        {
+          "filename": "sora_crouch_down_01.png",
+          "duration_ms": 70,
+          "description": "Mid-drop transition"
+        },
+        {
+          "filename": "sora_crouch_down_02.png",
+          "duration_ms": 90,
+          "description": "Settling into grounded low guard"
+        }
+      ]
+    },
+    "crouching_idle": {
+      "total_frames": 4,
+      "loop": true,
+      "total_duration_ms": 620,
+      "frames": [
+        {
+          "filename": "sora_crouch_idle_00.png",
+          "duration_ms": 160,
+          "description": "Neutral low-guard pose"
+        },
+        {
+          "filename": "sora_crouch_idle_01.png",
+          "duration_ms": 140,
+          "description": "Subtle low-guard inhale"
+        },
+        {
+          "filename": "sora_crouch_idle_02.png",
+          "duration_ms": 180,
+          "description": "Inhale hold"
+        },
+        {
+          "filename": "sora_crouch_idle_03.png",
+          "duration_ms": 140,
+          "description": "Exhale settle"
+        }
+      ]
+    },
+    "stand_up": {
+      "total_frames": 3,
+      "loop": false,
+      "frames": [
+        {
+          "filename": "sora_crouch_up_00.png",
+          "duration_ms": 70,
+          "description": "Push-off from crouch"
+        },
+        {
+          "filename": "sora_crouch_up_01.png",
+          "duration_ms": 70,
+          "description": "Mid-rise upward extension"
+        },
+        {
+          "filename": "sora_crouch_up_02.png",
+          "duration_ms": 90,
+          "description": "Deceleration settling into standing guard"
+        }
+      ]
+    }
+  },
+  "sprite_sheet": {
+    "filename": "sora_crouch_sheet.png",
+    "dimensions": [
+      2560,
+      1024
+    ],
+    "columns": 5,
+    "rows": 2
+  }
+}
