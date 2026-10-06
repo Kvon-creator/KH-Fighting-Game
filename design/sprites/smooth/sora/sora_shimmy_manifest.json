@@ -1,0 +1,334 @@
+﻿{
+    "ground_baseline_y":  470,
+    "canvas_size":  [
+                        512,
+                        512
+                    ],
+    "body_anchor":  [
+                        256,
+                        470
+                    ],
+    "art_style":  "smooth cel-shaded",
+    "animations":  {
+                       "backward":  {
+                                        "total_frames":  10,
+                                        "sprite_sheet":  "sora_shimmy_backward_sheet.png",
+                                        "source":  "forward footwork poses in reverse order",
+                                        "total_duration_ms":  1000,
+                                        "loop":  true,
+                                        "source_pose_order":  [
+                                                                  0,
+                                                                  9,
+                                                                  8,
+                                                                  7,
+                                                                  6,
+                                                                  5,
+                                                                  4,
+                                                                  3,
+                                                                  2,
+                                                                  1
+                                                              ],
+                                        "frames":  [
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  66,
+                                                                                  87,
+                                                                                  380,
+                                                                                  384
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_00.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  72,
+                                                                                  88,
+                                                                                  366,
+                                                                                  383
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_01.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  78,
+                                                                                  85,
+                                                                                  350,
+                                                                                  386
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_02.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  25,
+                                                                                  86,
+                                                                                  401,
+                                                                                  385
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_03.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  67,
+                                                                                  91,
+                                                                                  380,
+                                                                                  380
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_04.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  64,
+                                                                                  86,
+                                                                                  339,
+                                                                                  385
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_05.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  44,
+                                                                                  89,
+                                                                                  380,
+                                                                                  382
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_06.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  25,
+                                                                                  89,
+                                                                                  402,
+                                                                                  382
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_07.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  71,
+                                                                                  92,
+                                                                                  375,
+                                                                                  379
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_08.png",
+                                                           "duration_ms":  100
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  25,
+                                                                                  92,
+                                                                                  362,
+                                                                                  380
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "sora_shimmy_backward_09.png",
+                                                           "duration_ms":  100
+                                                       }
+                                                   ]
+                                    },
+                       "forward":  {
+                                       "total_duration_ms":  900,
+                                       "total_frames":  10,
+                                       "loop":  true,
+                                       "frames":  [
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 66,
+                                                                                 87,
+                                                                                 380,
+                                                                                 384
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_00.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 25,
+                                                                                 92,
+                                                                                 362,
+                                                                                 380
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_01.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 71,
+                                                                                 92,
+                                                                                 375,
+                                                                                 379
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_02.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 25,
+                                                                                 89,
+                                                                                 402,
+                                                                                 382
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_03.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 44,
+                                                                                 89,
+                                                                                 380,
+                                                                                 382
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_04.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 64,
+                                                                                 86,
+                                                                                 339,
+                                                                                 385
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_05.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 67,
+                                                                                 91,
+                                                                                 380,
+                                                                                 380
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_06.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 25,
+                                                                                 86,
+                                                                                 401,
+                                                                                 385
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_07.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 78,
+                                                                                 85,
+                                                                                 350,
+                                                                                 386
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_08.png",
+                                                          "duration_ms":  90
+                                                      },
+                                                      {
+                                                          "visible_bounds":  [
+                                                                                 72,
+                                                                                 88,
+                                                                                 366,
+                                                                                 383
+                                                                             ],
+                                                          "body_anchor":  [
+                                                                              256,
+                                                                              470
+                                                                          ],
+                                                          "filename":  "sora_shimmy_forward_09.png",
+                                                          "duration_ms":  90
+                                                      }
+                                                  ],
+                                       "sprite_sheet":  "sora_shimmy_forward_sheet.png"
+                                   }
+                   },
+    "packaging":  "one constant uniform scale for entire batch, with translation to floor contact",
+    "limitations":  [
+                        "Guard and gait need user visual review.",
+                        "A separately generated backward draft is not used; its front-foot follow-through was inadequate and its correction was blocked.",
+                        "Backward uses shared drawings; it is not ten independently generated backward-only poses.",
+                        "Weapon sockets are not measured yet.",
+                        "Not tested in Godot."
+                    ],
+    "status":  "art preview; no movement-controller integration",
+    "animation_source":  "ten generated articulated footwork drawings; not scaled copies of a static pose",
+    "character":  "Sora"
+}
