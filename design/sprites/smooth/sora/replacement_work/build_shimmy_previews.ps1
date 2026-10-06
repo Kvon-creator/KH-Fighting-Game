@@ -37,7 +37,7 @@ $manifest|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $outputPa
 $activePath=Split-Path -Parent $workPath
 Get-ChildItem -LiteralPath $outputPath -File|Where-Object {$_.Name -like 'sora_shimmy_*'}|ForEach-Object {Copy-Item -LiteralPath $_.FullName -Destination $activePath -Force}
 # Reuse the reviewed viewer controls with the two new frame sequences.
-$html=Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $outputPath 'Animation_Previews.html')
+$html=Get-Content -Raw -Encoding UTF8 -LiteralPath (Join-Path $workPath 'templates/Animation_Previews.html')
 $html=$html.Replace('Sora animation review','Sora shimmy review')
 $html=[regex]::Replace($html,'<h1>[^<]*</h1>','<h1>Sora guarded shimmies</h1>')
 $html=$html.Replace('Pause and step to inspect each newly drawn pose. Crouch rises by reversing the eight lowering poses.','Pause and step to inspect the footwork. Backward retreat uses the newly drawn forward poses in reverse order.')
@@ -52,3 +52,4 @@ $html=$html.Replace('Active game sprites have not been replaced in this preview 
 Set-Content -LiteralPath (Join-Path $activePath 'Shimmy_Previews.html') -Value $html -Encoding UTF8
 foreach($bitmap in @($forward)+@($cells)){$bitmap.Dispose()}
 Get-ChildItem -LiteralPath $activePath -File|Where-Object {$_.Name -like '*shimmy*'}|Select-Object Name,Length
+& (Join-Path $PSScriptRoot 'organize_animation_flows.ps1')

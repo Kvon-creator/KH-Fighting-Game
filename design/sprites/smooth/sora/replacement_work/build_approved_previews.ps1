@@ -31,3 +31,4 @@ $manifest=@{
 $manifest|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $outputPath 'approved_preview_manifest.json') -Encoding UTF8
 foreach($bitmap in @($duck)+@($stand)+@($duckCells)+@($standCells)){$bitmap.Dispose()}
 Get-ChildItem -LiteralPath $outputPath -File | Select-Object Name,Length
+& (Join-Path $PSScriptRoot 'organize_animation_flows.ps1')

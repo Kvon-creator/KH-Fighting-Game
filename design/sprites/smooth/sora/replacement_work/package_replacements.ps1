@@ -6,7 +6,13 @@ New-Item -ItemType Directory -Path $outputPath -Force | Out-Null
 $script:metrics = @{}
 
 function Read-Cells([string]$Name,[int]$Columns,[int]$Count) {
-    $image = [System.Drawing.Bitmap]::FromFile((Join-Path $PSScriptRoot $Name))
+    $sourcePath=Join-Path $PSScriptRoot $Name
+    if(!(Test-Path -LiteralPath $sourcePath)) {
+        $candidates=@(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'ready') -File -Recurse -Filter $Name)
+        if($candidates.Count -ne 1){throw "Expected one animation source: $Name"}
+        $sourcePath=$candidates[0].FullName
+    }
+    $image = [System.Drawing.Bitmap]::FromFile($sourcePath)
     try {
         $boundary = [AnimationPackaging]::RowBoundary($image)
         for ($index=0;$index -lt $Count;$index++) {
@@ -129,3 +135,4 @@ $crouchManifest|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $ou
 $script:metrics|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $PSScriptRoot 'packaging_metrics.json') -Encoding UTF8
 foreach($bitmap in @($duck)+@($stand)+@($crouch)+@($windup)+@($duckCells)+@($standCells)+@($crouchCells)+@($windupCell)) {$bitmap.Dispose()}
 Get-ChildItem -LiteralPath $outputPath -File|Group-Object Extension|Select-Object Name,Count
+& (Join-Path $PSScriptRoot 'organize_animation_flows.ps1')
