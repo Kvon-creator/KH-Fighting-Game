@@ -28,3 +28,4 @@
 - [Sora Art Style](Sora_Art_Style.md): Approved smooth (clean line art / 2D cel-shaded) artstyle rather than pixelated.
 - [Sora Attack Pose Reference](Sora_Attack_Pose_Reference.md): Supplied attack wind-up reference photo with Keyblade held behind, pointing away from the opponent.
 - [Sora Sprite Directory](Sora_Sprite_Directory.md): All current and future smooth sprites and animation frames for Sora are stored in design/sprites/smooth/sora/.
+- [Sora Transition Frame Count](Sora_Transition_Frame_Count.md): Transition animation cycles between poses use around 7-12 frames for smoother animation.
