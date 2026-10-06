@@ -1,4 +1,26 @@
-# Project Memory
+﻿# Project Memory
 
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
+- [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
+- [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
+- [Sora Frame Size](Sora_Frame_Size.md): Approved 128 x 128 pixel base frame canvas.
+- [Sora Idle Pose](Sora_Idle_Pose.md): Approved KH2 combat stance for the breathing idle.
+- [Sora Double Jump](Sora_Double_Jump.md): Approved KH1 normal first jump linked into the requested KH2 second-jump animation.
+- [Sora Basic Attacks](Sora_Basic_Attacks.md): Approved nine basic attacks and Down + Heavy launcher.
+- [Sora Sprite Facing](Sora_Sprite_Facing.md): Approved one-direction artwork mirrored for the opposite facing.
+- [Sora Standing Height](Sora_Standing_Height.md): Approved approximately 96-pixel standing height.
+- [Sora Standing Light](Sora_Standing_Light.md): Approved short Kingdom Key thrust.
+- [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
+- [Sora Standing Heavy](Sora_Standing_Heavy.md): Approved wide spinning Kingdom Key slash.
+- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash.
+- [Sora Crouching Medium](Sora_Crouching_Medium.md): Approved wide low Kingdom Key sweep.
+- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.
+
+- [Sora Jumping Light](Sora_Jumping_Light.md): Approved quick midair Kingdom Key slash.
+- [Sora Jumping Medium](Sora_Jumping_Medium.md): Approved broad diagonal midair Kingdom Key slash.
+- [Sora Jumping Heavy](Sora_Jumping_Heavy.md): Approved wide midair spinning Kingdom Key slash.
+- [Sora Pilot Approval](Sora_Pilot_Approval.md): Model-sheet and idle-pilot authorization; first image-generation attempt rejected.
+- [Sora Manual Drawing Guide](Sora_Manual_Drawing_Guide.md): Authorized manual model-sheet and idle guide after generation rejection.
+- [Sora Stance Reference](Sora_Stance_Reference.md): Supplied combat-stance GIF and observed pose details.
+- [Sora View Angle](Sora_View_Angle.md): Approved three-quarter view and adding Kingdom Key to reference pose.
