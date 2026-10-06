@@ -12,7 +12,7 @@
     "animations":  {
                        "backward":  {
                                         "total_frames":  10,
-                                        "sprite_sheet":  "sora_shimmy_backward_sheet.png",
+                                        "sprite_sheet":  "shimmy_backward/sora_shimmy_backward_sheet.png",
                                         "source":  "forward footwork poses in reverse order",
                                         "total_duration_ms":  1000,
                                         "loop":  true,
@@ -40,7 +40,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_00.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_00.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -54,7 +54,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_01.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_01.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -68,7 +68,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_02.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_02.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -82,7 +82,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_03.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_03.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -96,7 +96,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_04.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_04.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -110,7 +110,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_05.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_05.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -124,7 +124,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_06.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_06.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -138,7 +138,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_07.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_07.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -152,7 +152,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_08.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_08.png",
                                                            "duration_ms":  100
                                                        },
                                                        {
@@ -166,7 +166,7 @@
                                                                                256,
                                                                                470
                                                                            ],
-                                                           "filename":  "sora_shimmy_backward_09.png",
+                                                           "filename":  "shimmy_backward/sora_shimmy_backward_09.png",
                                                            "duration_ms":  100
                                                        }
                                                    ]
@@ -187,7 +187,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_00.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_00.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -201,7 +201,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_01.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_01.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -215,7 +215,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_02.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_02.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -229,7 +229,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_03.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_03.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -243,7 +243,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_04.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_04.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -257,7 +257,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_05.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_05.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -271,7 +271,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_06.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_06.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -285,7 +285,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_07.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_07.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -299,7 +299,7 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_08.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_08.png",
                                                           "duration_ms":  90
                                                       },
                                                       {
@@ -313,11 +313,11 @@
                                                                               256,
                                                                               470
                                                                           ],
-                                                          "filename":  "sora_shimmy_forward_09.png",
+                                                          "filename":  "shimmy_forward/sora_shimmy_forward_09.png",
                                                           "duration_ms":  90
                                                       }
                                                   ],
-                                       "sprite_sheet":  "sora_shimmy_forward_sheet.png"
+                                       "sprite_sheet":  "shimmy_forward/sora_shimmy_forward_sheet.png"
                                    }
                    },
     "packaging":  "one constant uniform scale for entire batch, with translation to floor contact",

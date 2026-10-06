@@ -1,0 +1,73 @@
+﻿{
+    "character":  "Sora",
+    "canvas_size":  [
+                        512,
+                        512
+                    ],
+    "ground_baseline_y":  470,
+    "animation_name":  "crouch_cycle/crouching_idle",
+    "animation":  {
+                      "total_duration_ms":  680,
+                      "total_frames":  4,
+                      "loop":  true,
+                      "frames":  [
+                                     {
+                                         "visible_bounds":  [
+                                                                91,
+                                                                174,
+                                                                330,
+                                                                296
+                                                            ],
+                                         "body_anchor":  [
+                                                             256,
+                                                             470
+                                                         ],
+                                         "filename":  "sora_crouch_idle_00.png",
+                                         "duration_ms":  180
+                                     },
+                                     {
+                                         "visible_bounds":  [
+                                                                90,
+                                                                173,
+                                                                326,
+                                                                298
+                                                            ],
+                                         "body_anchor":  [
+                                                             256,
+                                                             470
+                                                         ],
+                                         "filename":  "sora_crouch_idle_01.png",
+                                         "duration_ms":  160
+                                     },
+                                     {
+                                         "visible_bounds":  [
+                                                                91,
+                                                                177,
+                                                                330,
+                                                                294
+                                                            ],
+                                         "body_anchor":  [
+                                                             256,
+                                                             470
+                                                         ],
+                                         "filename":  "sora_crouch_idle_02.png",
+                                         "duration_ms":  180
+                                     },
+                                     {
+                                         "visible_bounds":  [
+                                                                89,
+                                                                176,
+                                                                326,
+                                                                294
+                                                            ],
+                                         "body_anchor":  [
+                                                             256,
+                                                             470
+                                                         ],
+                                         "filename":  "sora_crouch_idle_03.png",
+                                         "duration_ms":  160
+                                     }
+                                 ]
+                  },
+    "status":  "art only; not integrated in Godot"
+}

@@ -45,7 +45,12 @@ foreach($file in $files) {
     if(Test-Path -LiteralPath $target) {
         $sourceHash=(Get-FileHash -LiteralPath $file.FullName).Hash
         $targetHash=(Get-FileHash -LiteralPath $target).Hash
-        if($sourceHash -ne $targetHash){throw "Conflicting copies; preserved both for review: $($file.Name)"}
+        if($sourceHash -ne $targetHash) {
+            if($file.Extension -in @('.png','.gif')){throw "Conflicting artwork; preserved both for review: $($file.Name)"}
+            $history=Join-Path $targetFolder ('metadata_history/'+[Guid]::NewGuid().ToString('N'))
+            New-Item -ItemType Directory -Path $history -Force|Out-Null
+            Copy-Item -LiteralPath $target -Destination (Join-Path $history $file.Name)
+        }
     }
     Move-Item -LiteralPath $file.FullName -Destination $target -Force
     $moved++

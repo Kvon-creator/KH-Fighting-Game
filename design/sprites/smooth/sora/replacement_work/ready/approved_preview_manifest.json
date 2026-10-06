@@ -27,7 +27,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_00.png",
+                                             "filename":  "standing_idle/sora_stand_idle_00.png",
                                              "duration_ms":  150
                                          },
                                          {
@@ -41,7 +41,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_01.png",
+                                             "filename":  "standing_idle/sora_stand_idle_01.png",
                                              "duration_ms":  130
                                          },
                                          {
@@ -55,7 +55,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_02.png",
+                                             "filename":  "standing_idle/sora_stand_idle_02.png",
                                              "duration_ms":  130
                                          },
                                          {
@@ -69,7 +69,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_03.png",
+                                             "filename":  "standing_idle/sora_stand_idle_03.png",
                                              "duration_ms":  150
                                          },
                                          {
@@ -83,7 +83,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_04.png",
+                                             "filename":  "standing_idle/sora_stand_idle_04.png",
                                              "duration_ms":  180
                                          },
                                          {
@@ -97,7 +97,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_05.png",
+                                             "filename":  "standing_idle/sora_stand_idle_05.png",
                                              "duration_ms":  150
                                          },
                                          {
@@ -111,7 +111,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_06.png",
+                                             "filename":  "standing_idle/sora_stand_idle_06.png",
                                              "duration_ms":  130
                                          },
                                          {
@@ -125,7 +125,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_07.png",
+                                             "filename":  "standing_idle/sora_stand_idle_07.png",
                                              "duration_ms":  130
                                          },
                                          {
@@ -139,7 +139,7 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_08.png",
+                                             "filename":  "standing_idle/sora_stand_idle_08.png",
                                              "duration_ms":  150
                                          },
                                          {
@@ -153,15 +153,15 @@
                                                                  256,
                                                                  470
                                                              ],
-                                             "filename":  "sora_stand_idle_09.png",
+                                             "filename":  "standing_idle/sora_stand_idle_09.png",
                                              "duration_ms":  180
                                          }
                                      ],
                           "frame_count":  10
                       },
     "source_art":  [
-                       "duck_sheet_source.png",
-                       "stand_idle_source.png"
+                       "crouch_cycle/duck_sheet_source.png",
+                       "standing_idle/stand_idle_source.png"
                    ],
     "status":  "review preview, no Godot integration",
     "canvas_size":  [
@@ -217,7 +217,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_00.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_00.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -231,7 +231,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_01.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_01.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -245,7 +245,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_02.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_02.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -259,7 +259,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_03.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_03.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -273,7 +273,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_04.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_04.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -287,7 +287,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_05.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_05.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -301,7 +301,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_06.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_06.png",
                                           "duration_ms":  90
                                       },
                                       {
@@ -315,7 +315,7 @@
                                                               256,
                                                               470
                                                           ],
-                                          "filename":  "sora_crouch_down_07.png",
+                                          "filename":  "crouch_cycle/duck_down/sora_crouch_down_07.png",
                                           "duration_ms":  90
                                       }
                                   ]

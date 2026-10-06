@@ -1,0 +1,333 @@
+﻿{
+    "ground_baseline_y":  470,
+    "production":  "individually generated pose drawings, uniformly packaged per batch",
+    "canvas_size":  [
+                        512,
+                        512
+                    ],
+    "attachment_points_status":  "weapon and anatomical sockets not yet measured",
+    "character":  "Sora",
+    "sheet_layout":  {
+                         "rows":  4,
+                         "columns":  5,
+                         "order":  "duck_down 00-07, crouching_idle 00-03, stand_up 00-07"
+                     },
+    "sprite_sheet":  "sora_crouch_sheet.png",
+    "animations":  {
+                       "stand_up":  {
+                                        "total_duration_ms":  450,
+                                        "total_frames":  8,
+                                        "loop":  false,
+                                        "frames":  [
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  62,
+                                                                                  175,
+                                                                                  361,
+                                                                                  296
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_00.png",
+                                                           "duration_ms":  60
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  45,
+                                                                                  173,
+                                                                                  396,
+                                                                                  299
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_01.png",
+                                                           "duration_ms":  50
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  57,
+                                                                                  143,
+                                                                                  367,
+                                                                                  328
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_02.png",
+                                                           "duration_ms":  50
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  73,
+                                                                                  119,
+                                                                                  348,
+                                                                                  352
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_03.png",
+                                                           "duration_ms":  50
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  78,
+                                                                                  55,
+                                                                                  331,
+                                                                                  416
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_04.png",
+                                                           "duration_ms":  50
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  93,
+                                                                                  63,
+                                                                                  349,
+                                                                                  408
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_05.png",
+                                                           "duration_ms":  50
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  64,
+                                                                                  90,
+                                                                                  369,
+                                                                                  381
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_06.png",
+                                                           "duration_ms":  60
+                                                       },
+                                                       {
+                                                           "visible_bounds":  [
+                                                                                  80,
+                                                                                  86,
+                                                                                  353,
+                                                                                  385
+                                                                              ],
+                                                           "body_anchor":  [
+                                                                               256,
+                                                                               470
+                                                                           ],
+                                                           "filename":  "stand_up/sora_crouch_up_07.png",
+                                                           "duration_ms":  80
+                                                       }
+                                                   ],
+                                        "source":  "duck_down artwork in reverse order"
+                                    },
+                       "crouching_idle":  {
+                                              "total_duration_ms":  680,
+                                              "total_frames":  4,
+                                              "loop":  true,
+                                              "frames":  [
+                                                             {
+                                                                 "visible_bounds":  [
+                                                                                        91,
+                                                                                        174,
+                                                                                        330,
+                                                                                        296
+                                                                                    ],
+                                                                 "body_anchor":  [
+                                                                                     256,
+                                                                                     470
+                                                                                 ],
+                                                                 "filename":  "crouching_idle/sora_crouch_idle_00.png",
+                                                                 "duration_ms":  180
+                                                             },
+                                                             {
+                                                                 "visible_bounds":  [
+                                                                                        90,
+                                                                                        173,
+                                                                                        326,
+                                                                                        298
+                                                                                    ],
+                                                                 "body_anchor":  [
+                                                                                     256,
+                                                                                     470
+                                                                                 ],
+                                                                 "filename":  "crouching_idle/sora_crouch_idle_01.png",
+                                                                 "duration_ms":  160
+                                                             },
+                                                             {
+                                                                 "visible_bounds":  [
+                                                                                        91,
+                                                                                        177,
+                                                                                        330,
+                                                                                        294
+                                                                                    ],
+                                                                 "body_anchor":  [
+                                                                                     256,
+                                                                                     470
+                                                                                 ],
+                                                                 "filename":  "crouching_idle/sora_crouch_idle_02.png",
+                                                                 "duration_ms":  180
+                                                             },
+                                                             {
+                                                                 "visible_bounds":  [
+                                                                                        89,
+                                                                                        176,
+                                                                                        326,
+                                                                                        294
+                                                                                    ],
+                                                                 "body_anchor":  [
+                                                                                     256,
+                                                                                     470
+                                                                                 ],
+                                                                 "filename":  "crouching_idle/sora_crouch_idle_03.png",
+                                                                 "duration_ms":  160
+                                                             }
+                                                         ]
+                                          },
+                       "duck_down":  {
+                                         "total_duration_ms":  450,
+                                         "total_frames":  8,
+                                         "loop":  false,
+                                         "frames":  [
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   80,
+                                                                                   86,
+                                                                                   353,
+                                                                                   385
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_00.png",
+                                                            "duration_ms":  60
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   64,
+                                                                                   90,
+                                                                                   369,
+                                                                                   381
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_01.png",
+                                                            "duration_ms":  50
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   93,
+                                                                                   63,
+                                                                                   349,
+                                                                                   408
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_02.png",
+                                                            "duration_ms":  50
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   78,
+                                                                                   55,
+                                                                                   331,
+                                                                                   416
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_03.png",
+                                                            "duration_ms":  50
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   73,
+                                                                                   119,
+                                                                                   348,
+                                                                                   352
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_04.png",
+                                                            "duration_ms":  50
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   57,
+                                                                                   143,
+                                                                                   367,
+                                                                                   328
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_05.png",
+                                                            "duration_ms":  50
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   45,
+                                                                                   173,
+                                                                                   396,
+                                                                                   299
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_06.png",
+                                                            "duration_ms":  60
+                                                        },
+                                                        {
+                                                            "visible_bounds":  [
+                                                                                   62,
+                                                                                   175,
+                                                                                   361,
+                                                                                   296
+                                                                               ],
+                                                            "body_anchor":  [
+                                                                                256,
+                                                                                470
+                                                                            ],
+                                                            "filename":  "duck_down/sora_crouch_down_07.png",
+                                                            "duration_ms":  80
+                                                        }
+                                                    ]
+                                     }
+                   },
+    "animation":  "crouching_transitions_and_idle",
+    "preview_background":  "opaque dark blue-gray; PNG sprites retain alpha",
+    "art_style":  "smooth cel-shaded",
+    "limitations":  [
+                        "Generated linework and grip details may require artist cleanup.",
+                        "Standing-up sequence reverses the newly drawn duck poses.",
+                        "No gameplay integration is supplied."
+                    ],
+    "body_anchor":  [
+                        256,
+                        470
+                    ],
+    "validation_status":  "structural checks and visual sheet review; not tested in Godot"
+}
