@@ -19,7 +19,7 @@
 
 Open Shimmy_Previews.html in a browser to pause, step, change playback speed, and mirror facing. PNGs retain transparency; GIF previews use a dark solid background.
 
-The old asset package is copied to design/sprite_backups/sora_before_pose_replacement. Original sprite-package filenames are preserved. Replacement_work contains source sheets and packaging files.
+The old asset package is copied to design/sprite_backups/sora_before_pose_replacement. Original sprite-package filenames are preserved. Animation-specific files are grouped in ready/ flow folders; replacement_work retains shared packaging tools.
 
 Generation used built-in image_gen with the approved stand-idle sprite as reference. Prompts and production methods are recorded alongside the sources. Every pose comes from new drawings; no animation was fabricated by stretching a static character. One uniform scale per generated batch fits the established 512 x 512 export canvas. Individual frame placement aligns floor contact at y=470.
 

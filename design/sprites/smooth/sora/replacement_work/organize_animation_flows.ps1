@@ -55,7 +55,7 @@ foreach($file in $files) {
     Move-Item -LiteralPath $file.FullName -Destination $target -Force
     $moved++
 }
-foreach($file in Get-ChildItem -LiteralPath $readyRoot -File -Recurse) {
+foreach($file in Get-ChildItem -LiteralPath $readyRoot -File -Recurse|Where-Object {$_.FullName -notmatch '[\\/]metadata_history[\\/]'}) {
     if($file.Name -ne 'Preview.html'){$targets[$file.Name]=$file.FullName}
 }
 
@@ -83,7 +83,7 @@ function Update-References($Value,[string]$Owner) {
     }
     return $Value
 }
-foreach($file in Get-ChildItem -LiteralPath $readyRoot -File -Recurse -Filter '*.json') {
+foreach($file in Get-ChildItem -LiteralPath $readyRoot -File -Recurse -Filter '*.json'|Where-Object {$_.FullName -notmatch '[\\/]metadata_history[\\/]'}) {
     $data=Get-Content -Raw -Encoding UTF8 -LiteralPath $file.FullName|ConvertFrom-Json
     $data=Update-References $data $file.DirectoryName
     $data|ConvertTo-Json -Depth 20|Set-Content -LiteralPath $file.FullName -Encoding UTF8

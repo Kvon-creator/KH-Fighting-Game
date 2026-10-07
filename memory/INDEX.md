@@ -1,4 +1,4 @@
-# Project Memory
+﻿# Project Memory
 
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
@@ -27,7 +27,7 @@
 - [Sora Idle Pilot Delivery](Sora_Idle_Pilot_Delivery.md): Completed model sheet, 8-frame idle pilot, sprite sheet, previews, and manifest delivered in design/sprites/ for review.
 - [Sora Art Style](Sora_Art_Style.md): Approved smooth (clean line art / 2D cel-shaded) artstyle rather than pixelated.
 - [Sora Attack Pose Reference](Sora_Attack_Pose_Reference.md): Supplied attack wind-up reference photo with Keyblade held behind, pointing away from the opponent.
-- [Sora Sprite Directory](Sora_Sprite_Directory.md): All current and future smooth sprites and animation frames for Sora are stored in design/sprites/smooth/sora/.
+- [Sora Sprite Directory](Sora_Sprite_Directory.md): Separate animation-flow folders under design/sprites/smooth/sora/replacement_work/ready/.
 - [Sora Transition Frame Count](Sora_Transition_Frame_Count.md): Transition animation cycles between poses use around 7-12 frames for smoother animation.
 - [Sora Animation Pose Integrity](Sora_Animation_Pose_Integrity.md): Replace smooth sprites with genuine pose progression rather than scaled static images.
 - [Sora Selected Replacement Sheets](Sora_Selected_Replacement_Sheets.md): Selected idle and duck sheets with full-cycle previews.
