@@ -32,3 +32,5 @@
 - [Sora Animation Pose Integrity](Sora_Animation_Pose_Integrity.md): Replace smooth sprites with genuine pose progression rather than scaled static images.
 - [Sora Selected Replacement Sheets](Sora_Selected_Replacement_Sheets.md): Selected idle and duck sheets with full-cycle previews.
 - [Sora Replacement Preview Approval](Sora_Replacement_Preview_Approval.md): Approved idle/crouch replacements and the next shimmy review batch.
+- [Project Location](Project_Location.md): Current D:\KH Fighting Game workspace after relocation.
+- [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.
