@@ -11,10 +11,14 @@ ROOT = Path(__file__).resolve().parent
 parser=argparse.ArgumentParser()
 parser.add_argument('--foreground',action='store_true')
 parser.add_argument('--refine',action='store_true')
+parser.add_argument('--frame',type=int,choices=(0,1),default=0)
 args=parser.parse_args()
+if args.frame:
+    args.refine=True
 if args.refine:
     args.foreground=True
-OUT = ROOT / ('ready/run_loop/layers/pilot_v3' if args.refine else
+OUT = ROOT / ('ready/run_loop/layers/frame_01_v1' if args.frame else
+              'ready/run_loop/layers/pilot_v3' if args.refine else
               'ready/run_loop/layers/pilot_v2' if args.foreground else 'ready/run_loop/layers/pilot_v1')
 OUT.mkdir(parents=True, exist_ok=True)
 SOURCE = ROOT / 'ready/run_loop/run_loop_source.png'
@@ -42,6 +46,10 @@ def ellipse(im, box, fill, outline='#171a20', width=2):
 def small(im):
     return im.resize((im.width//AA,im.height//AA),Image.Resampling.LANCZOS)
 
+def shift(im,dx,dy):
+    return im.transform(im.size,Image.Transform.AFFINE,
+                        (1,0,-dx*AA,0,1,-dy*AA),Image.Resampling.BICUBIC)
+
 def curve(im, start, segments, fill, outline='#171a20', width=2, closed=True):
     """Sample cubic curves at working resolution for smooth local redrawing."""
     points=[start]
@@ -58,7 +66,8 @@ def curve(im, start, segments, fill, outline='#171a20', width=2, closed=True):
         line(im,points,outline,width)
 
 original=Image.new('RGBA',SIZE)
-original.paste(Image.open(SOURCE).convert('RGBA').crop((0,0,445,450)),(0,0))
+CROP=(445,0,889,450) if args.frame else (0,0,445,450)
+original.paste(Image.open(SOURCE).convert('RGBA').crop(CROP),(0,0))
 original.save(OUT/'frame_00_original.png')
 body=original.copy()
 mask=layer()
@@ -71,6 +80,12 @@ poly(mask,[(72,53),(162,53),(239,143),(248,173),(199,161),(72,111)],'white',None
 if args.refine:
     # Remove the old near forearm as well, avoiding two poses sharing a shoulder.
     poly(mask,[(283,190),(328,174),(361,192),(366,231),(337,242),(284,224)],'white',None)
+if args.frame:
+    mask=shift(mask,-25,20)
+    # Frame-specific removal covers the old blade and two-handed carry.
+    poly(mask,[(45,45),(146,45),(207,151),(266,150),(284,229),
+               (258,257),(212,263),(177,242),(108,246),(102,207),
+               (163,174),(46,107)],'white',None)
 mask=small(mask).getchannel('A')
 body.putalpha(Image.composite(Image.new('L',SIZE,0),body.getchannel('A'),mask))
 repair=layer()
@@ -164,6 +179,8 @@ if args.refine:
         ((345,193),(340,189),(343,184))],'#414d57',None)
     curve(repair,(338,206),[
         ((347,217),(359,218),(369,207))],None,'#c2c9ce',3,False)
+if args.frame:
+    repair=shift(repair,-25,20)
 body=Image.alpha_composite(body,small(repair))
 body.save(OUT/'body_clean_plate.png')
 small(repair).save(OUT/'body_reconstruction.png')
@@ -198,10 +215,10 @@ master=small(master)
 master.save(OUT/'kingdom_key_master.png')
 
 G=(77,70)
-HAND=(405,225)
+HAND=(384,244) if args.frame else (405,225)
 ANGLE=math.radians(218)
 c,s=math.cos(ANGLE),math.sin(ANGLE)
-YAW=math.radians(25 if args.foreground else 0)
+YAW=math.radians(28 if args.frame else 25 if args.foreground else 0)
 FOCAL=1400.0
 cy=math.cos(YAW)
 k=math.sin(YAW)/FOCAL
@@ -255,6 +272,33 @@ if args.refine:
         ((393,228),(394,221),(397,217))],'#19232d')
     curve(arm,(399,231),[
         ((405,237),(411,235),(417,230))],None,'#87939c',2,False)
+if args.frame:
+    # This pose has a tighter elbow bend. Draw it separately rather than
+    # translating the previous arm with the moving weapon.
+    arm=layer()
+    curve(arm,(322,236),[
+        ((328,239),(335,239),(339,235)),
+        ((342,244),(344,253),(351,262)),
+        ((359,261),(370,251),(377,240)),
+        ((382,236),(390,240),(391,247)),
+        ((384,257),(367,275),(352,278)),
+        ((342,279),(335,271),(331,259)),
+        ((326,248),(324,241),(322,236))],'#eeb084')
+    curve(arm,(335,242),[
+        ((338,256),(343,272),(353,272)),
+        ((366,267),(381,254),(387,245)),
+        ((385,256),(369,275),(352,278)),
+        ((342,279),(334,260),(335,242))],'#bd7f60',None)
+    curve(arm,(329,238),[
+        ((337,249),(341,262),(349,267)),
+        ((360,262),(370,253),(375,245))],None,'#ffd1a3',2,False)
+    curve(arm,(376,237),[
+        ((379,229),(387,227),(393,231)),
+        ((400,237),(401,247),(395,253)),
+        ((391,259),(379,259),(376,252)),
+        ((371,247),(373,240),(376,237))],'#19232d')
+    curve(arm,(378,250),[
+        ((384,256),(390,254),(396,249))],None,'#87939c',2,False)
 arm=small(arm)
 arm.save(OUT/'holding_arm.png')
 fingers=layer()
@@ -298,6 +342,10 @@ poly(head_mask,[(302,111),(324,91),(346,83),(369,58),(384,69),
                 (411,66),(437,87),(442,132),(425,155),(413,166),
                 (386,188),(366,185),(343,170),(321,157)],'white',None)
 head_mask=small(head_mask).getchannel('A')
+if args.frame:
+    # Keep this pose's actual head and hair, not a moved copy of frame 00.
+    head_mask=head_mask.transform(SIZE,Image.Transform.AFFINE,
+                                  (1,0,16,0,1,-28),Image.Resampling.BICUBIC)
 head=original.copy()
 head.putalpha(Image.composite(original.getchannel('A'),Image.new('L',SIZE,0),head_mask))
 head.save(OUT/'head_occlusion.png')
@@ -331,14 +379,30 @@ if args.refine:
         refine_compare.paste(im,(i*512,32),im)
         ImageDraw.Draw(refine_compare).text((i*512+12,10),title,fill='white')
     refine_compare.save(OUT/'Refinement_Comparison.png')
+if args.frame:
+    previous=Image.open(ROOT/'ready/run_loop/layers/pilot_v3/frame_00_construction_preview.png').convert('RGBA')
+    transition=Image.new('RGB',(1024,550),'#202633')
+    for i,(im,title) in enumerate([(previous,'Frame 00: raised stride'),(preview,'Frame 01: compressed stride')]):
+        transition.paste(im,(i*512,32),im)
+        ImageDraw.Draw(transition).text((i*512+12,10),title,fill='white')
+    transition.save(OUT/'Two_Frame_Comparison.png')
+    # Short comparison only; not a completed eight-pose run cycle.
+    gif_frames=[]
+    for im in (previous,preview):
+        flat=Image.new('RGB',SIZE,'#202633'); flat.paste(im,(0,0),im)
+        gif_frames.append(flat)
+    gif_frames[0].save(OUT/'Two_Frame_Review.gif',save_all=True,
+                       append_images=gif_frames[1:],duration=[450,450],loop=0)
 manifest={'status':'construction pilot, not final art or approved replacement',
- 'source_sha256':EXPECTED,'crop':[0,0,445,450],
+ 'source_sha256':EXPECTED,'crop':list(CROP),'frame_index':args.frame,
  'master_grip':G,'hand_anchor':HAND,'rotation_degrees':218,'scale':1,
  'tip_toward_camera_yaw_degrees':math.degrees(YAW),
  'camera_focal_length_px':FOCAL,
  'master_to_screen_homography':(screen @ camera @ translate).tolist(),
  'tip_depth_relative_to_grip_px':-(319-G[0])*math.sin(YAW),
  'projected_shoulder_contact':world((137,70)),
+ 'body_reconstruction_offset':[-25,20] if args.frame else [0,0],
+ 'arm_reconstruction_method':'frame-specific tighter elbow redraw' if args.frame else 'pilot arm redraw',
  'master_anchors':anchors,'world_anchors':{k:world(v) for k,v in anchors.items()},
  'pommel_to_tip_length_px':285,
  'holding_arm':'near visible arm, provisional anatomical mapping requires review',
