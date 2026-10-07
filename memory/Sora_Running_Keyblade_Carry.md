@@ -9,3 +9,7 @@
 **Movement direction:** The Keyblade tip should point slightly toward the foreground, with Sora's body, shoulder and wrist moving coherently with that carry. Use a controlled perspective projection of fixed weapon geometry rather than changing the weapon's physical shape or length.
 
 **Why:** K'von requested this adjustment for more realistic movement.
+
+**Grip correction:** The art_pass_04 hand appears upside-down. Correct thumb, knuckle and wrist orientation against the supplied shoulder-carry reference before continuing other art refinement; keep weapon registration fixed.
+
+**Why:** K'von identified the inverted gripping hand and authorized correcting it.
