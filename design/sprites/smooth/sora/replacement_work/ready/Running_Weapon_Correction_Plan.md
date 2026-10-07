@@ -38,6 +38,8 @@ For each frame transform all master anchors together: world(A)=hand_anchor + sca
 
 The chain may be a separate flexible layer with modest motion, but its attachment remains at transformed P and its length is fixed. It cannot substitute for or alter blade geometry.
 
+Later user direction: point the tip slightly toward the foreground and coordinate body/shoulder/wrist movement with it. Local pilots now use one camera projection of the unchanged master (25-degree tip-toward-viewer yaw). Apparent screen dimensions may change through that projection; physical master dimensions remain fixed. Refine shoulder and finger overlap per pose rather than treating the body as a static carrier. Current pilot is ready/run_loop/layers/pilot_v3; it is one review frame, not a completed gait.
+
 ## Layers and occlusion
 
 Maintain: original source; body-clean plate; weapon master instance; chain; foreground fingers/hand mask; shoulder/head/hair occlusion mask; flattened review output. The master remains one object even where masks hide parts of it. Use local masks to place visible portions behind hair/shoulder and the grip beneath fingers; do not cut the master into independently positioned pieces.

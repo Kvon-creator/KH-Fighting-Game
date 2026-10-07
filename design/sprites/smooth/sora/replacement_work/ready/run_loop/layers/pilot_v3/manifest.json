@@ -1,0 +1,96 @@
+{
+  "status": "construction pilot, not final art or approved replacement",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "crop": [
+    0,
+    0,
+    445,
+    450
+  ],
+  "master_grip": [
+    77,
+    70
+  ],
+  "hand_anchor": [
+    405,
+    225
+  ],
+  "rotation_degrees": 218,
+  "scale": 1,
+  "tip_toward_camera_yaw_degrees": 25.0,
+  "camera_focal_length_px": 1400.0,
+  "master_to_screen_homography": [
+    [
+      -0.8364377079802362,
+      0.6156614753256582,
+      426.3094002416821
+    ],
+    [
+      -0.6258995813315859,
+      -0.788010753606722,
+      328.35502051500265
+    ],
+    [
+      -0.00030187018695764244,
+      0.0,
+      1.0232440043957385
+    ]
+  ],
+  "tip_depth_relative_to_grip_px": -102.27361934124926,
+  "projected_shoulder_contact": [
+    361.3587434070497,
+    190.90371350123644
+  ],
+  "master_anchors": {
+    "grip": [
+      77,
+      70
+    ],
+    "pommel": [
+      34,
+      70
+    ],
+    "collar": [
+      137,
+      70
+    ],
+    "tip": [
+      319,
+      70
+    ],
+    "shoulder_contact": [
+      137,
+      70
+    ]
+  },
+  "world_anchors": {
+    "grip": [
+      405.0,
+      225.0
+    ],
+    "pommel": [
+      435.3162347370224,
+      248.68563844983925
+    ],
+    "collar": [
+      361.3587434070497,
+      190.90371350123644
+    ],
+    "tip": [
+      218.54753726461786,
+      79.32737083806663
+    ],
+    "shoulder_contact": [
+      361.3587434070497,
+      190.90371350123644
+    ]
+  },
+  "pommel_to_tip_length_px": 285,
+  "holding_arm": "near visible arm, provisional anatomical mapping requires review",
+  "limitations": [
+    "Local chest and forearm are manual construction drawings needing stylistic review.",
+    "Master length is a pilot value, not yet approved for the full batch.",
+    "Shoulder contact and finger occlusion require visual review before propagation.",
+    "No full animation or Godot integration."
+  ]
+}
