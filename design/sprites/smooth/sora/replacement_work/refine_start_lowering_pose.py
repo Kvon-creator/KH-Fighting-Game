@@ -80,7 +80,7 @@ body=Image.alpha_composite(body,repair)
 # Keep the original shorts/legs below the local guard repair, eliminating the
 # earlier inferred cloth tail in the gap occupied by the original key chain.
 lower=original.crop((0,317,512,512))
-ld=ImageDraw.Draw(lower);ld.rectangle((245,12,269,63),fill=(0,0,0,0))
+ld=ImageDraw.Draw(lower);ld.rectangle((231,0,282,68),fill=(0,0,0,0))
 body.paste(lower,(0,317));body.save(OUT/'frame_01_body_plate.png')
 hand=(235,270);theta=math.radians(220);c,s=math.cos(theta),math.sin(theta);yaw=math.radians(8)
 H=np.array([[c,-s,hand[0]],[s,c,hand[1]],[0,0,1]])@np.array([[math.cos(yaw),0,0],[0,1,0],[-math.sin(yaw)/1400,0,1]])@np.array([[1,0,-77],[0,1,-70],[0,0,1]])
