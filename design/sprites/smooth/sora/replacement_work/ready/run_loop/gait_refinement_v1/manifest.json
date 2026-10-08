@@ -1,0 +1,1101 @@
+{
+  "status": "new alternating gait art draft; not idle-quality or gameplay approval",
+  "canvas": [
+    512,
+    512
+  ],
+  "gameplay_review_size": [
+    128,
+    128
+  ],
+  "floor_y": 432,
+  "projected_thigh_length_px": 87.0,
+  "projected_calf_length_px": 68.0,
+  "method": "New per-pose thigh/calf/shoe contours; fixed joint lengths; independently changing near/far limbs.",
+  "upper_reference": "layers/frame_00_review_v3; retained jacket/head/holding arm, translated only",
+  "shoe_geometry": "one fixed local contour geometry drawn at recorded rigid rotations; no bitmap resizing",
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "prior_artwork_sha256": {
+    "ready\\run_loop\\run_loop_source.png": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+    "ready\\run_start\\run_start_source.png": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_00.png": "69f0927b7dce58fe20ea659eb438f934d733c11e90a83cd300ae9c49eeba3d6b",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_01.png": "8acaafdfae45f0dead86eaeeb17ad9315c9f81978e978ec41085300f88fe80e6",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_02.png": "15fac62bf7aeffd4eeb0930b6fde10eef723e1942f619dad888b4431012eb87e",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_03.png": "130413c8d6ea2f038f23875e3bf4bbf492f46255f9ccb224a335511851fb9217",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_04.png": "79dadecc9ed16694f5b23b143d24ea52fdad382dc08f980ae29058e3d2d4a6f4",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_05.png": "74f3d023d05fbc8797859463064e447dfbfffda9ad61edce609b97bf43d40bdc",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_06.png": "b1f0ed9810de06a1e445c91312ca47e674fdf380d16cfc4f0ce6940abfb82e88",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_07.png": "b9015d91c20f38821f70efb505ca9c412ad2eee580ae4b41d6f3a620635d284a",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_sheet.png": "9065cf9627a1d8a762bdc559925063b064f3b72a7495e27797e11bb07aa0fcbc",
+    "ready\\run_loop\\review_cycle_v5\\Contact_Sheet.png": "0381c56ec2920c0981a9bfad42353ed0bcc789bd990a9f9b87fd6eddc607f7b9",
+    "ready\\run_loop\\review_cycle_v5\\Game_Size_Mirrored_Review.png": "29059d3f7ec350bb6b8e1c4030a166e8b51360af549dbb0b964f73aff2f0b69e",
+    "ready\\run_loop\\review_cycle_v5\\sora_run_loop_preview.gif": "3815e03006b37430417d1ca490655b0754e042425d752e4c8fa890712593f86f",
+    "ready\\run_loop\\review_cycle_v5\\Start_Loop_Seam_Review.png": "4e994cb9e5436eb5c136471a0b4940a854f2d14672a40540fb3a1b259994687b",
+    "ready\\run_loop\\review_cycle_v5\\start_loop_seam_review.gif": "084a5970c1b00651f245e53348ff488ec6603ee5c60b1803b55da75308dbd6c9",
+    "ready\\run_loop\\review_cycle_v5\\manifest.json": "ab5ce30586ff57545ce5f417f82613adfc98cac49c43f1b84502c2c1619f1b1b",
+    "ready\\run_loop\\review_cycle_v5\\README.md": "a7602836eb91aeb628c79e40bc11fd4fe731b070e32ae99484f4c910e880632d",
+    "ready\\run_loop\\review_cycle_v5\\QA_NOTES.md": "a12f898e494c4d92e819f3a81d7aafaa3d0c8040b1b987f69fc01d9766415689",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\Original_Torso_Coordinates.png": "93b328e998300fdbe82f8e423734f2acec6ee440aa07affab6477b9bd9f320f8",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\body_rebuilt.png": "21302dbc662b3a865f52d0ba657a690bf655e8ccd4e1ccd1e9bddaa8c768d172",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\individual_clothing_repair.png": "509f23ea264ced5bab590a4abe8c646a4c3ba72f290122659450c99d3a40919f",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\released_arm.png": "2284734fedf960961e2543755181e900a06b88e6e65f5000efa69ddaeacc7bd7",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\holding_arm.png": "86d56c01e3213fac2fd43b2a9386e12fc5111b4f8d53453e8b2ef8b86ea56eb1",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\source_jacket_detail.png": "479a107871efa4246ed793337b2a62ce6443842f4e1ef6261c7b275b1a46c0ce",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\head_preserved.png": "09debb9c82e7c597a64588ef647576ad1cb5830f8dcacb3ae99a45650850cdd9",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\sora_run_loop_00_review.png": "e54bb9bb5c0fbb60c51cba96dcf0218b45671221c13ae331487f29faa13f48cb",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\old_weapon_arm_removal_mask.png": "6c741b2389b166173cc344b12ee38ea604c612bfe6eb7c097b8b38237c5648ce",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\source_jacket_detail_mask.png": "cffe9e3051e680d9b908bc7cbe40f52b0bcd0acf0fe64c8bf6b83bb6befdd3fd",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\head_contour_mask.png": "de91734a55d4a235dfa54a3b4977f851b7d6bb63c0cc4162484ccf95d444ee33",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\weapon_back.png": "57474141f2956a6b4fe247e471ff59a15ffbf3ebea63b2b2aed440b17773738c",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\weapon_foreground.png": "cfd718cd66ba1aea572379b4bea1049707379812ee7b90bb3027b1868958bfe5",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\approved_grip.png": "1c5d7105d40fe12e3113bac9b9c478e7bbad723d046c5a89bf64bbb84c13121a",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\chain.png": "1aff0998b204d0a12df11fcc2fae2c7d588eccce7b65372ec5f05e8d5e838d0d",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\approved_hand_cuff_region.png": "57209d7be716b74bef22f11c6d55874d9837e163dda5fb0a6eba65ffe4f0f045",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\manifest.json": "43c7818eedc20bf9f54ae9899894d9315a79e54da51220c31a33c6ad6473494c",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\README.md": "1f3717fc5b7d86bf46af5921f8888c6e86c4fb1d7cafe68b472699e0e0faac37",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\Garment_Comparison.png": "5d7a19f80f361def78ac6527c0a472be0bba5e2e7cb07608af6162ad364ffdb3",
+    "ready\\run_loop\\layers\\frame_00_review_v3\\Dark_Light_Game_Review.png": "be59cef137d8ebf354ac0b446118ee083d8db32e84df10446be8ca2aa99e92ee",
+    "ready\\run_loop\\layers\\art_pass_05\\kingdom_key_master_finished.png": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+    "ready\\run_loop\\layers\\art_pass_05\\grip_master_space.png": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f"
+  },
+  "frames": [
+    {
+      "index": 0,
+      "path": "sora_run_loop_gait_00.png",
+      "phase": "contact",
+      "support_leg": "near",
+      "duration_ms": 70,
+      "body_bob_px": 0,
+      "root_xy": [
+        280,
+        268
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          268.0
+        ],
+        "knee": [
+          376.3572079453923,
+          296.0408683788398
+        ],
+        "ankle": [
+          374,
+          364
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "far": {
+        "hip": [
+          257.0,
+          270.0
+        ],
+        "knee": [
+          218.15266282258537,
+          347.8452592919071
+        ],
+        "ankle": [
+          161,
+          311
+        ],
+        "shoe_angle_deg": 60,
+        "sole_bottom_y": 406,
+        "floor_clearance_px": 26
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          165.0
+        ],
+        "elbow": [
+          350.8530400190556,
+          188.0082698370945
+        ],
+        "wrist": [
+          350.0,
+          232.0
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6268051918924588,
+          -0.788010753606722,
+          331.42475252818986
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        206
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        3
+      ]
+    },
+    {
+      "index": 1,
+      "path": "sora_run_loop_gait_01.png",
+      "phase": "compression",
+      "support_leg": "near",
+      "duration_ms": 70,
+      "body_bob_px": 6,
+      "root_xy": [
+        280,
+        274
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          274.0
+        ],
+        "knee": [
+          374.61973486310376,
+          306.70257406692707
+        ],
+        "ankle": [
+          338,
+          364
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "far": {
+        "hip": [
+          257.0,
+          276.0
+        ],
+        "knee": [
+          233.46405625298084,
+          359.7559511434092
+        ],
+        "ankle": [
+          205,
+          298
+        ],
+        "shoe_angle_deg": 75,
+        "sole_bottom_y": 394,
+        "floor_clearance_px": 38
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          171.0
+        ],
+        "elbow": [
+          352.6514929202341,
+          189.71967587730828
+        ],
+        "wrist": [
+          342.363448015713,
+          232.5
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6286164130142047,
+          -0.788010753606722,
+          337.56421655456427
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        212
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        9
+      ]
+    },
+    {
+      "index": 2,
+      "path": "sora_run_loop_gait_02.png",
+      "phase": "passing",
+      "support_leg": "near",
+      "duration_ms": 70,
+      "body_bob_px": 2,
+      "root_xy": [
+        280,
+        270
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          270.0
+        ],
+        "knee": [
+          356.9312801659456,
+          330.07207318442784
+        ],
+        "ankle": [
+          298,
+          364
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "far": {
+        "hip": [
+          257.0,
+          272.0
+        ],
+        "knee": [
+          311.53531470711636,
+          339.7856876471411
+        ],
+        "ankle": [
+          255,
+          302
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 370,
+        "floor_clearance_px": 62
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          167.0
+        ],
+        "elbow": [
+          350.2786765948371,
+          191.19027462124242
+        ],
+        "wrist": [
+          321.5,
+          224.47372055837118
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6274089322663741,
+          -0.788010753606722,
+          333.4712405369813
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        208
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        5
+      ]
+    },
+    {
+      "index": 3,
+      "path": "sora_run_loop_gait_03.png",
+      "phase": "toe-off",
+      "support_leg": "near",
+      "duration_ms": 70,
+      "body_bob_px": -4,
+      "root_xy": [
+        280,
+        264
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          264.0
+        ],
+        "knee": [
+          253.7731805438992,
+          341.14144797996903
+        ],
+        "ankle": [
+          187,
+          354
+        ],
+        "shoe_angle_deg": 25,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "far": {
+        "hip": [
+          257.0,
+          266.0
+        ],
+        "knee": [
+          343.9945903804435,
+          265.0298224189153
+        ],
+        "ankle": [
+          316,
+          327
+        ],
+        "shoe_angle_deg": -15,
+        "sole_bottom_y": 395,
+        "floor_clearance_px": 37
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          161.0
+        ],
+        "elbow": [
+          334.96420411408343,
+          203.77103280404913
+        ],
+        "wrist": [
+          293.0,
+          217.0
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6255977111446283,
+          -0.788010753606722,
+          327.3317765106069
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        202
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        -1
+      ]
+    },
+    {
+      "index": 4,
+      "path": "sora_run_loop_gait_04.png",
+      "phase": "flight",
+      "support_leg": null,
+      "duration_ms": 70,
+      "body_bob_px": -8,
+      "root_xy": [
+        280,
+        260
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          260.0
+        ],
+        "knee": [
+          243.57544333548853,
+          330.89685525598065
+        ],
+        "ankle": [
+          183,
+          300
+        ],
+        "shoe_angle_deg": 60,
+        "sole_bottom_y": 395,
+        "floor_clearance_px": 37
+      },
+      "far": {
+        "hip": [
+          257.0,
+          262.0
+        ],
+        "knee": [
+          341.4295717069481,
+          282.99160359242023
+        ],
+        "ankle": [
+          353,
+          350
+        ],
+        "shoe_angle_deg": -10,
+        "sole_bottom_y": 418,
+        "floor_clearance_px": 14
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          157.0
+        ],
+        "elbow": [
+          308.3315726594309,
+          210.62752266941246
+        ],
+        "wrist": [
+          264.5,
+          214.47372055837118
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6243902303967976,
+          -0.788010753606722,
+          323.238800493024
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        198
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        -5
+      ]
+    },
+    {
+      "index": 5,
+      "path": "sora_run_loop_gait_05.png",
+      "phase": "pre-contact",
+      "support_leg": null,
+      "duration_ms": 70,
+      "body_bob_px": -4,
+      "root_xy": [
+        280,
+        264
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          264.0
+        ],
+        "knee": [
+          273.27081880841274,
+          348.49438470766177
+        ],
+        "ankle": [
+          221,
+          305
+        ],
+        "shoe_angle_deg": 75,
+        "sole_bottom_y": 401,
+        "floor_clearance_px": 31
+      },
+      "far": {
+        "hip": [
+          257.0,
+          266.0
+        ],
+        "knee": [
+          341.16981127121113,
+          288.01006293877197
+        ],
+        "ankle": [
+          340,
+          356
+        ],
+        "shoe_angle_deg": -5,
+        "sole_bottom_y": 424,
+        "floor_clearance_px": 8
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          161.0
+        ],
+        "elbow": [
+          286.5403645372608,
+          212.73973010520268
+        ],
+        "wrist": [
+          243.636551984287,
+          222.5
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6255977111446283,
+          -0.788010753606722,
+          327.3317765106069
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        202
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        -1
+      ]
+    },
+    {
+      "index": 6,
+      "path": "sora_run_loop_gait_06.png",
+      "phase": "contact",
+      "support_leg": "far",
+      "duration_ms": 70,
+      "body_bob_px": 0,
+      "root_xy": [
+        280,
+        268
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          268.0
+        ],
+        "knee": [
+          256.1101972795361,
+          346.3157892752434
+        ],
+        "ankle": [
+          198,
+          311
+        ],
+        "shoe_angle_deg": 60,
+        "sole_bottom_y": 406,
+        "floor_clearance_px": 26
+      },
+      "far": {
+        "hip": [
+          257.0,
+          270.0
+        ],
+        "knee": [
+          339.7233553091646,
+          296.9415383078567
+        ],
+        "ankle": [
+          351,
+          364
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          165.0
+        ],
+        "elbow": [
+          275.1014038123476,
+          211.82377091962596
+        ],
+        "wrist": [
+          236.0,
+          232.0
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6268051918924588,
+          -0.788010753606722,
+          331.42475252818986
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        206
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        3
+      ]
+    },
+    {
+      "index": 7,
+      "path": "sora_run_loop_gait_07.png",
+      "phase": "compression",
+      "support_leg": "far",
+      "duration_ms": 70,
+      "body_bob_px": 6,
+      "root_xy": [
+        280,
+        274
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          274.0
+        ],
+        "knee": [
+          273.12507496242006,
+          358.4584957519101
+        ],
+        "ankle": [
+          242,
+          298
+        ],
+        "shoe_angle_deg": 75,
+        "sole_bottom_y": 394,
+        "floor_clearance_px": 38
+      },
+      "far": {
+        "hip": [
+          257.0,
+          276.0
+        ],
+        "knee": [
+          340.3589744932469,
+          300.905448629451
+        ],
+        "ankle": [
+          315,
+          364
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          171.0
+        ],
+        "elbow": [
+          281.3982392690751,
+          220.91560331986102
+        ],
+        "wrist": [
+          243.636551984287,
+          243.5
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6286164130142047,
+          -0.788010753606722,
+          337.56421655456427
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        212
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        9
+      ]
+    },
+    {
+      "index": 8,
+      "path": "sora_run_loop_gait_08.png",
+      "phase": "passing",
+      "support_leg": "far",
+      "duration_ms": 70,
+      "body_bob_px": 2,
+      "root_xy": [
+        280,
+        270
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          270.0
+        ],
+        "knee": [
+          351.0924656036957,
+          335.64640410023094
+        ],
+        "ankle": [
+          292,
+          302
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 370,
+        "floor_clearance_px": 62
+      },
+      "far": {
+        "hip": [
+          257.0,
+          272.0
+        ],
+        "knee": [
+          328.3296077470156,
+          321.8105115277578
+        ],
+        "ankle": [
+          275,
+          364
+        ],
+        "shoe_angle_deg": 0,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          167.0
+        ],
+        "elbow": [
+          302.2959020063898,
+          220.99918927171606
+        ],
+        "wrist": [
+          264.5,
+          243.52627944162882
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6274089322663741,
+          -0.788010753606722,
+          333.4712405369813
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        208
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        5
+      ]
+    },
+    {
+      "index": 9,
+      "path": "sora_run_loop_gait_09.png",
+      "phase": "toe-off",
+      "support_leg": "far",
+      "duration_ms": 70,
+      "body_bob_px": -4,
+      "root_xy": [
+        280,
+        264
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          264.0
+        ],
+        "knee": [
+          380.9939084086256,
+          265.02951434747763
+        ],
+        "ankle": [
+          353,
+          327
+        ],
+        "shoe_angle_deg": -15,
+        "sole_bottom_y": 395,
+        "floor_clearance_px": 37
+      },
+      "far": {
+        "hip": [
+          257.0,
+          266.0
+        ],
+        "knee": [
+          231.8360818462928,
+          349.2813137693776
+        ],
+        "ankle": [
+          164,
+          354
+        ],
+        "shoe_angle_deg": 25,
+        "sole_bottom_y": 432,
+        "floor_clearance_px": 0
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          161.0
+        ],
+        "elbow": [
+          325.6757009584611,
+          209.53309370033526
+        ],
+        "wrist": [
+          293.0,
+          239.0
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6255977111446283,
+          -0.788010753606722,
+          327.3317765106069
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        202
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        -1
+      ]
+    },
+    {
+      "index": 10,
+      "path": "sora_run_loop_gait_10.png",
+      "phase": "flight",
+      "support_leg": null,
+      "duration_ms": 70,
+      "body_bob_px": -8,
+      "root_xy": [
+        280,
+        260
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          260.0
+        ],
+        "knee": [
+          377.8803252896371,
+          283.0887641354982
+        ],
+        "ankle": [
+          390,
+          350
+        ],
+        "shoe_angle_deg": -10,
+        "sole_bottom_y": 418,
+        "floor_clearance_px": 14
+      },
+      "far": {
+        "hip": [
+          257.0,
+          262.0
+        ],
+        "knee": [
+          215.9199895702801,
+          338.6904996925571
+        ],
+        "ankle": [
+          160,
+          300
+        ],
+        "shoe_angle_deg": 60,
+        "sole_bottom_y": 395,
+        "floor_clearance_px": 37
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          157.0
+        ],
+        "elbow": [
+          341.1723106668821,
+          194.16893968110034
+        ],
+        "wrist": [
+          321.5,
+          233.52627944162882
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6243902303967976,
+          -0.788010753606722,
+          323.238800493024
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        198
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        -5
+      ]
+    },
+    {
+      "index": 11,
+      "path": "sora_run_loop_gait_11.png",
+      "phase": "pre-contact",
+      "support_leg": null,
+      "duration_ms": 70,
+      "body_bob_px": -4,
+      "root_xy": [
+        280,
+        264
+      ],
+      "near": {
+        "hip": [
+          294.0,
+          264.0
+        ],
+        "knee": [
+          377.6233391647158,
+          288.00285705791947
+        ],
+        "ankle": [
+          377,
+          356
+        ],
+        "shoe_angle_deg": -5,
+        "sole_bottom_y": 424,
+        "floor_clearance_px": 8
+      },
+      "far": {
+        "hip": [
+          257.0,
+          266.0
+        ],
+        "knee": [
+          246.7613878294207,
+          352.39543287014925
+        ],
+        "ankle": [
+          198,
+          305
+        ],
+        "shoe_angle_deg": 75,
+        "sole_bottom_y": 401,
+        "floor_clearance_px": 31
+      },
+      "free_arm": {
+        "shoulder": [
+          302.0,
+          161.0
+        ],
+        "elbow": [
+          347.6658455518451,
+          189.82066185976694
+        ],
+        "wrist": [
+          342.363448015713,
+          233.5
+        ]
+      },
+      "master_to_export_homography": [
+        [
+          -0.8370414483541515,
+          0.6156614753256582,
+          428.3558882504736
+        ],
+        [
+          -0.6255977111446283,
+          -0.788010753606722,
+          327.3317765106069
+        ],
+        [
+          -0.00030187018695764244,
+          0.0,
+          1.0232440043957385
+        ]
+      ],
+      "approved_hand_region_xy": [
+        386,
+        202
+      ],
+      "upper_reference_translation_xy": [
+        2,
+        -1
+      ]
+    }
+  ],
+  "checks": [
+    "12 distinct full frames; PNG/GIF decoding",
+    "fixed projected joint lengths",
+    "support feet on floor; airborne feet above floor",
+    "approved hand/cuff exact after translation",
+    "rigid carry layers translate with upper body without scaling",
+    "all captured prior/source hashes unchanged"
+  ],
+  "limitations": [
+    "New lower-body materials and silhouettes need comparison with the approved idle.",
+    "Fixed upper reference needs per-phase torso/shoulder/cloth follow-through refinement.",
+    "Planar joint constraints are drawing aids, not exact three-dimensional anatomy.",
+    "Foot speed and 70ms timing are provisional; no engine speed matching.",
+    "Start/stop/idle transitions are not changed; no Godot test or aerial artwork."
+  ]
+}

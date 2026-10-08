@@ -1,0 +1,5 @@
+# Sixteen-pose alternating gait refinement
+
+New late-passing and heel-off drawings bridge each stride before toe-off. The sole-contact samples retreat by at most45px per drawing; the stance ankle moves at most55px, replacing the first draft's111px ankle jump. Near-foot contact is00, far-foot contact08. The foot-recovery arcs connect through both half-cycle seams. Shorts are shorter/rounder with softer charcoal planes, and the fixed shoe geometry has curved yellow toe planes and local light. Both limbs are drawn at fixed87/68px projected joints; no scaled pose copies.
+
+The current00 upper artwork remains the reference, with translation-only bob and a newly drawn free-arm swing. The rigid Kingdom Key, corrected grip and final hand/cuff region move together. This is an art/gait candidate; upper-body follow-through, limb perspective/materials, foot trajectory and provisional60ms timing still need refinement against approved idle. Prior12-pose gait draft, all eight-pose garment reviews and originals remain. Start/stop seams are unchanged. No Godot test or aerial artwork.
