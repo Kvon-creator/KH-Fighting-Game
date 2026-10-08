@@ -2,6 +2,8 @@
 
 ## Current files
 
+October 8 steering: local refinement is paused while K'von tests Gemini complete-frame generation for all movement clips. The compact prompt, essential references, full movement list and optional cycle guides are in design/gemini_movement_handoff/. Existing artwork is preserved. Unapproved individual loop03/04 garment candidates are retained with known visual defects documented in run_loop/GARMENT_V3_CHECKPOINT.md; they have not replaced the current v2 full-cycle package.
+
 | Batch | Status |
 | --- | --- |
 | Standing guard / breathing idle | New 10-frame artwork and package installed; full-cycle preview approved by K'von. |

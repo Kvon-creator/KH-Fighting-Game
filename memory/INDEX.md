@@ -36,3 +36,4 @@
 - [Autonomous Animation Work](Sora_Autonomous_Animation_Work.md): Autonomous Sora artwork progress and periodic main pushes authorized; protected-file rules remain.
 - [Movement Quality Order](Sora_Movement_Quality_Order.md): Refine running to approved-idle art quality before aerial movement.
 - [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.
+- [Gemini Movement Trial](Sora_Gemini_Movement_Trial.md): Full-frame Gemini handoff; local refinement paused pending K'von's evaluation, with preserved resume checkpoint.

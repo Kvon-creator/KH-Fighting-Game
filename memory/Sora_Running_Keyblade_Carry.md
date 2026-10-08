@@ -25,3 +25,5 @@
 **Single generation retry:** K'von authorized exactly one further image-generation attempt, returning to local layers if it failed. The October 7 attempt failed with output-stage moderation_blocked, category other, request ID 4288281e-c97f-4a51-a91d-fa9e3e10fd33. Resume local layered work; no additional generation retries are authorized by that request. Exact arguments and error are saved in ready/run_loop/imagegen_single_retry_2026-10-07.json.
 
 **Handoff cancelled:** K'von requested deleting design/handoffs/ and resuming the original local layered process. The exact folder was deleted on October 7, 2026; project artwork was retained.
+
+**New Gemini trial:** On October 8 K'von requested a new full-frame movement handoff without individual layers. It is in design/gemini_movement_handoff/; the old design/handoffs/ folder remains deleted. Pause local refinement pending his evaluation. Carry geometry, same-arm shoulder placement, foreground tip and correct hand orientation still apply to complete-frame generation. See Sora_Gemini_Movement_Trial.md.

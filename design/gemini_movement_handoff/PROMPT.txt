@@ -1,0 +1,9 @@
+Generate Sora's complete movement animation set for a 2D Kingdom Hearts fighting game. Draw complete frames containing Sora AND his Kingdom Key together. Do not use separate body, hand, clothing, or weapon layers, cutout puppets, or scaled copies of one pose.
+
+References: 01_Approved_Idle.png defines the KH2 outfit, proportions, smooth clean line art, cel shading, and quality target. 02_Run_Carry_Grip_Reference.png defines running carry and correct hand orientation only; its body art is unfinished. 03_Carry_Photo.webp defines weapon construction and shoulder carry only; do NOT copy its KH4 outfit.
+
+Face right in a fixed three-quarter view; left facing will be mirrored. Keep character design and weapon form consistent. For running, hold the Keyblade in one hand, slung over THAT ARM'S shoulder, with the blade tip slightly toward the viewer. Keep handle, guard, shaft, and teeth connected as one rigid object; perspective may change, physical length must not. The wrist/thumb must grip naturally, never upside-down.
+
+Produce idle, crouch down/up/idle, forward/backward shimmies, run start/loop/stop, first-jump takeoff/ascent/apex/fall/landing, KH2 Aerial Dodge-inspired second jump, backdash, and forward/backward air dashes. MOVEMENTS.md lists counts and motion details. Work one animation at a time, starting with the three running clips. Use genuinely different poses, coherent weight shifts, planted contacts, and smooth seams. Match approved idle quality throughout.
+
+Deliver transparent 512x512 full-frame PNGs, one folder per animation, a row-major sheet, animated preview, and frame-order/timing manifest. Standing body height is about 384px; grounded contact baseline is y470. Preserve airborne offsets and consistent scale. No cropping, painted checkerboard, labels, scenery, or combat animations. Preserve references; return new trial assets. Verify KH1 jump/KH2 Aerial Dodge motion references before drawing those clips; flag unavailable references.

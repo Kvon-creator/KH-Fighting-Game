@@ -1,0 +1,182 @@
+[
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png",
+    "copy": "references/01_Approved_Idle.png",
+    "status": "approved design/quality",
+    "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7",
+    "size_bytes": 205548,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v2/sora_run_loop_00_review.png",
+    "copy": "references/02_Run_Carry_Grip_Reference.png",
+    "status": "carry/grip only; unfinished body",
+    "sha256": "fed7fb5ab43591e161c862feee64c8c933d098f2217c05ec8ddabbb411fc163c",
+    "size_bytes": 168057,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/references/Sora_KHIV_Render.webp",
+    "copy": "references/03_Carry_Photo.webp",
+    "status": "carry/weapon only; do not copy KH4 clothing",
+    "sha256": "5dc59758a962e411e1b90f5f440f2d4cef0e42b07b1a91550d42455147f19a30",
+    "size_bytes": 50128,
+    "dimensions": [
+      360,
+      679
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_sheet.png",
+    "copy": "optional_motion_guides/Approved_Idle_Cycle.png",
+    "status": "approved reference cycle",
+    "sha256": "cff5252d8d393ab62a8b5cc6ba8f0afc723e210a52bac6f56ba9f19b9af4b2df",
+    "size_bytes": 2077501,
+    "dimensions": [
+      2560,
+      1024
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_preview.gif",
+    "copy": "optional_motion_guides/Approved_Idle_Preview.gif",
+    "status": "approved reference cycle",
+    "sha256": "6ffd981940a98b73adbcbc9fe248b97fb1838e89501054b5748d70f98c93a33e",
+    "size_bytes": 723206,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 10
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/crouch_cycle/sora_crouch_sheet.png",
+    "copy": "optional_motion_guides/Approved_Crouch_Transitions.png",
+    "status": "approved transition poses; crouch-idle review still pending",
+    "sha256": "4d46e1781f0b029ddc3c037bbd233fc56afe21255f64a3834e4d3df934b5a9af",
+    "size_bytes": 3322143,
+    "dimensions": [
+      2560,
+      2048
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/crouch_cycle/sora_crouch_full_cycle_preview.gif",
+    "copy": "optional_motion_guides/Approved_Crouch_Transitions_Preview.gif",
+    "status": "approved transition cycle",
+    "sha256": "18b936edd3b7692df926559a1f0a3e81dc53b9d0f54cec25edd936e1d616b23c",
+    "size_bytes": 1361384,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 20
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/shimmy_forward/sora_shimmy_forward_sheet.png",
+    "copy": "optional_motion_guides/Draft_Forward_Shimmy.png",
+    "status": "review pending",
+    "sha256": "53ab60fb3652b752d52e135a6e4b7de85aabd29a591ccfe3488c3ef103d998ef",
+    "size_bytes": 2001176,
+    "dimensions": [
+      2560,
+      1024
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/shimmy_backward/sora_shimmy_backward_sheet.png",
+    "copy": "optional_motion_guides/Draft_Backward_Shimmy_Reversed_Source.png",
+    "status": "uses reversed forward poses; needs genuine backward transfer",
+    "sha256": "74a6b298f8018d3e8509998fcfb8187e7d9f24dfaf06ab89b6dc8af7d9080db2",
+    "size_bytes": 2000335,
+    "dimensions": [
+      2560,
+      1024
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/refinement_v4/review_cycle_v2/sora_run_start_sheet.png",
+    "copy": "optional_motion_guides/Draft_Run_Start.png",
+    "status": "unfinished art/root/timing/seams",
+    "sha256": "08d4f77ae5b2a4b3a1455922369fb7f000d34cf0d12185ca12fb212148eb0494",
+    "size_bytes": 1251046,
+    "dimensions": [
+      2048,
+      1024
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/refinement_v4/review_cycle_v2/sora_run_start_preview.gif",
+    "copy": "optional_motion_guides/Draft_Run_Start_Preview.gif",
+    "status": "unfinished art/root/timing/seams",
+    "sha256": "8db2b5dccedc9dc7a3c1acf7d6b4a81de9e8b57c1fd525298e6af4756b7fbf28",
+    "size_bytes": 428437,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 8
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_loop/review_cycle_v2/sora_run_loop_sheet.png",
+    "copy": "optional_motion_guides/Draft_Run_Loop.png",
+    "status": "unfinished clothing/arms/gait/root/timing",
+    "sha256": "8c3fe3fa3e5a71ffd9a25a9f4acdd8c567abd337e58ab0faf7231b8d92e6c1bd",
+    "size_bytes": 1194895,
+    "dimensions": [
+      2048,
+      1024
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_loop/review_cycle_v2/sora_run_loop_preview.gif",
+    "copy": "optional_motion_guides/Draft_Run_Loop_Preview.gif",
+    "status": "unfinished clothing/arms/gait/root/timing",
+    "sha256": "248f70509e7440a110376f7e88c8d3b721b339b2027d03511b8a5803e2f11966",
+    "size_bytes": 425029,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 8
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_stop/refinement_v2/sora_run_stop_sheet.png",
+    "copy": "optional_motion_guides/Draft_Run_Stop.png",
+    "status": "construction polish; unfinished anatomy/torso seams/guard transition",
+    "sha256": "f91a8084d8136656eddaf92de101fbaeead5320c1708138cda905427b8e46f8a",
+    "size_bytes": 1138510,
+    "dimensions": [
+      2048,
+      1024
+    ],
+    "frames": 1
+  },
+  {
+    "source": "design/sprites/smooth/sora/replacement_work/ready/run_stop/refinement_v2/sora_run_stop_preview.gif",
+    "copy": "optional_motion_guides/Draft_Run_Stop_Preview.gif",
+    "status": "construction polish; not idle-quality art",
+    "sha256": "4b8eb62999374a3d79e79a571875bf2e23fb34775db935541b7aefa751c779b6",
+    "size_bytes": 393918,
+    "dimensions": [
+      512,
+      512
+    ],
+    "frames": 8
+  }
+]
