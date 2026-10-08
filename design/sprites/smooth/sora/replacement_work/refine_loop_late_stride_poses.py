@@ -15,9 +15,6 @@ assert ROOT.parents[4].name == 'KH Fighting Game'
 LAYERS = ROOT/'ready/run_loop/layers'
 SOURCE = ROOT/'ready/run_loop/run_loop_source.png'
 SOURCE_HASH = '6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0'
-parser = argparse.ArgumentParser()
-parser.add_argument('--frame', type=int, choices=(5, 7))
-args = parser.parse_args()
 
 
 def contour(points):
@@ -253,7 +250,7 @@ POSES = {
 }
 
 
-for index in [args.frame] if args.frame is not None else [5, 7]:
+def render(index):
     assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == SOURCE_HASH
     data = POSES[index]
     prior = LAYERS/f'frame_{index:02d}_review_v2'
@@ -367,3 +364,11 @@ for index in [args.frame] if args.frame is not None else [5, 7]:
     assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == SOURCE_HASH
     assert hashlib.sha256(before_path.read_bytes()).hexdigest() == before_hash
     print(f'Loop{index:02d}: new garment/joint drawing verified; cuff {cuff.tolist()}; sources/carry/feet retained.')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--frame', type=int, choices=(5, 7))
+    args = parser.parse_args()
+    for index in [args.frame] if args.frame is not None else [5, 7]:
+        render(index)

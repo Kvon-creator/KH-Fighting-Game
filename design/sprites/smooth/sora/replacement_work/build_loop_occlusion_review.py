@@ -19,9 +19,21 @@ parser = argparse.ArgumentParser()
 mode = parser.add_mutually_exclusive_group()
 mode.add_argument('--garment-review', action='store_true', help='Package03/04 v4 bodies with the other v2 poses')
 mode.add_argument('--late-garment-review', action='store_true', help='Package03/04 v4 and05/06/07 v3 bodies, preserving prior cycles')
+mode.add_argument('--complete-garment-review', action='store_true', help='Package all eight individual garment repairs into a new v5 cycle')
 args = parser.parse_args()
-versions = {3: 4, 4: 4, 5: 3, 6: 3, 7: 3} if args.late_garment_review else ({3: 4, 4: 4} if args.garment_review else {})
-OUT = LOOP/('review_cycle_v4' if args.late_garment_review else ('review_cycle_v3' if args.garment_review else 'review_cycle_v2'))
+if args.complete_garment_review:
+    versions = {0: 3, 1: 3, 2: 3, 3: 4, 4: 4, 5: 3, 6: 3, 7: 3}
+    output_name = 'review_cycle_v5'
+elif args.late_garment_review:
+    versions = {3: 4, 4: 4, 5: 3, 6: 3, 7: 3}
+    output_name = 'review_cycle_v4'
+elif args.garment_review:
+    versions = {3: 4, 4: 4}
+    output_name = 'review_cycle_v3'
+else:
+    versions = {}
+    output_name = 'review_cycle_v2'
+OUT = LOOP/output_name
 OUT.mkdir(parents=True, exist_ok=True)
 images, records = [], []
 master_hashes, grip_hashes = set(), set()
@@ -102,9 +114,9 @@ seam_flat[0].save(OUT/'start_loop_seam_review.gif', save_all=True,
                   append_images=seam_flat[1:], duration=350, loop=0, disposal=2)
 
 (OUT/'manifest.json').write_text(json.dumps({
-    'status': ('eight-pose review with individual03-07 garment art; gait/seams unfinished'
+    'status': ('eight-pose individual garment review; idle-quality/gait/seams unfinished' if args.complete_garment_review else ('eight-pose review with individual03-07 garment art; gait/seams unfinished'
                if args.late_garment_review else ('eight-pose review with new03/04 garment art; gait/seams unfinished'
-               if args.garment_review else 'eight-pose carry-overlap review; art/gait/seams unfinished')),
+               if args.garment_review else 'eight-pose carry-overlap review; art/gait/seams unfinished'))),
     'canvas': [512, 512], 'floor_y': 432, 'review_root_x': 280, 'frames': records,
     'registration': 'repair-plate pelvis estimate and foot baseline; translation only',
     'shared_weapon_master_sha256': next(iter(master_hashes)),
@@ -202,6 +214,45 @@ if args.late_garment_review:
         '- Bridge start07 to loop00, match the idle weapon endpoint and polish '
         'the run-stop middle poses before aerial movement.\n\n'
         'No generation retry, protected engine edit or Godot integration/test.\n', encoding='utf-8')
+if args.complete_garment_review:
+    (OUT/'README.md').write_text(
+        '# Eight-pose loop review: individual jackets and arms\n\n'
+        'All eight existing poses now have source-pose jacket/arm repairs. '
+        'Frames00/01/02/05/06/07 use review_v3; frames03/04 use review_v4. '
+        'Source hair/face/neck, lower-body pose and selected hood/pad details '
+        'remain. The reconstruction no longer uses a shifted whole-torso plate.\n\n'
+        'All four weapon/grip/chain files remain byte-identical to v2. Loop00 '
+        'also retains its exact approved hand/cuff rectangle. Projected cuffs '
+        'overlap the new forearms; the recorded lower-body regions remain exact. '
+        'Small01/02 source crops are padded onto512px canvases without resizing. '
+        'Source sheets and all earlier review versions remain.\n\n'
+        'This completes the individual garment-repair pass, not idle-quality '
+        'approval of the animation. Full-cycle cloth/arm proportions, both '
+        'alternating strides, root/flight offsets, timing and start/stop/idle '
+        'seams remain unfinished. Preliminary registration/floor y432 uses '
+        'translation only. PNG/GIF checks are offline; no Godot test or aerial art.\n', encoding='utf-8')
+    (OUT/'QA_NOTES.md').write_text(
+        '# Next full-cycle refinement\n\n'
+        'Each of the eight poses now has individual jacket/arm artwork, with '
+        'retained source head/lower pose and the unchanged rigid carry. Frame00 '
+        'preserves its approved hand/cuff rectangle. Material and anatomical '
+        'quality still need comparison with approved idle.\n\n'
+        '- Harmonize sleeve/collar thickness, torso volume, free-arm length, '
+        'line weight and cloth shading across all poses. Source shoulder '
+        'patches and new fabric still have visibly different detail levels.\n'
+        '- Map anatomical near/far leg roles through both alternating strides. '
+        'The current sequence repeats similar forward-leg arrangements. '
+        'Draw missing opposite-leg contacts/passing/flight phases rather '
+        'than stretching a sprite or mirroring the entire character.\n'
+        '- Replace repair-plate pelvis estimates and common-floor normalization '
+        'with measured root/foot-contact registration and meaningful flight '
+        'height offsets. Review timing only after the gait drawings connect.\n'
+        '- Bridge start07 to loop00 using actual body/rear-leg articulation; '
+        'carry anchors already agree closely, but torso/leg phases differ.\n'
+        '- Complete idle-to-master weapon continuity and run-stop middle '
+        'anatomy/materials before aerial movement.\n\n'
+        'Earlier reviews, original sheets, master weapon and grip remain. '
+        'No generation retry, protected engine change or Godot test.\n', encoding='utf-8')
 for rec in records:
     Image.open(OUT/rec['path']).verify()
     a = np.array(Image.open(OUT/rec['path']))

@@ -1,0 +1,276 @@
+{
+  "status": "individual early-loop garment/arm refinement; full animation QA pending",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "crop": [
+    889,
+    0,
+    1333,
+    450
+  ],
+  "frame_index": 2,
+  "master_grip": [
+    77,
+    70
+  ],
+  "hand_anchor": [
+    331,
+    218
+  ],
+  "rotation_degrees": 218,
+  "scale": 1,
+  "tip_toward_camera_yaw_degrees": 27.0,
+  "camera_focal_length_px": 1400.0,
+  "master_to_screen_homography": [
+    [
+      -0.809459047889746,
+      0.6156614753256582,
+      350.2320434147144
+    ],
+    [
+      -0.6192511975946124,
+      -0.788010753606722,
+      320.8430949672557
+    ],
+    [
+      -0.00032427892838539054,
+      0.0,
+      1.024969477485675
+    ]
+  ],
+  "tip_depth_relative_to_grip_px": -109.86570093697031,
+  "projected_shoulder_contact": [
+    288.0367112910011,
+    184.43340006420084
+  ],
+  "body_reconstruction_offset": [
+    -73,
+    -5
+  ],
+  "master_anchors": {
+    "grip": [
+      77,
+      70
+    ],
+    "pommel": [
+      34,
+      70
+    ],
+    "collar": [
+      137,
+      70
+    ],
+    "tip": [
+      319,
+      70
+    ],
+    "shoulder_contact": [
+      137,
+      70
+    ]
+  },
+  "world_anchors": {
+    "grip": [
+      331.0,
+      218.0
+    ],
+    "pommel": [
+      360.7760795986478,
+      241.26362300414343
+    ],
+    "collar": [
+      288.0367112910011,
+      184.43340006420084
+    ],
+    "tip": [
+      146.616731849025,
+      73.94400282530944
+    ],
+    "shoulder_contact": [
+      288.0367112910011,
+      184.43340006420084
+    ]
+  },
+  "pommel_to_tip_length_px": 285,
+  "holding_arm": "near visible arm, provisional anatomical mapping requires review",
+  "limitations": [
+    "Cross-frame garment/arm proportions still need comparison with idle.",
+    "Both alternating strides, root/flight offsets, timing and start/stop seams remain unfinished.",
+    "Offline checks only; no Godot test or aerial production."
+  ],
+  "weapon_master": "art_pass_05/kingdom_key_master_finished.png",
+  "grip_master": "art_pass_05/grip_master_space.png",
+  "chain_attachment_translation": [
+    -74.54015513837459,
+    -7.42201544569582
+  ],
+  "source_review": "frame_02_review_v2",
+  "head_layer": "head_preserved.png",
+  "occlusion": "shaft behind head/body; connected guard and original corrected grip in front",
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "lower_body_preserved_from_y": 300,
+  "removed_detached_body_fragments": [
+    {
+      "area_px": 4,
+      "bbox": [
+        49,
+        340,
+        50,
+        344
+      ]
+    },
+    {
+      "area_px": 3,
+      "bbox": [
+        152,
+        284,
+        155,
+        285
+      ]
+    },
+    {
+      "area_px": 2,
+      "bbox": [
+        157,
+        166,
+        159,
+        167
+      ]
+    },
+    {
+      "area_px": 2,
+      "bbox": [
+        122,
+        280,
+        124,
+        281
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        314,
+        64,
+        315,
+        65
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        356,
+        138,
+        357,
+        139
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        154,
+        165,
+        155,
+        166
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        156,
+        279,
+        157,
+        280
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        157,
+        327,
+        158,
+        328
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        292,
+        344,
+        293,
+        345
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        342,
+        346,
+        343,
+        347
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        343,
+        350,
+        344,
+        351
+      ]
+    }
+  ],
+  "checks": [
+    "original sheet/prior review hashes unchanged",
+    "four carry/grip/chain files byte-identical to v2",
+    "opaque gripping hand exact; projected cuff inside forearm",
+    "lower composite exact from y300"
+  ],
+  "prior_review_sha256": "a064fe917c5b4875f52fba9d9d532c8ecfaaf6acf773ecce7f9d763fbdf42ddb",
+  "projected_wrist_cuff": [
+    318.68677049348685,
+    233.76021507213443
+  ],
+  "garment_method": "individual source-pose jacket curves and shoulder/elbow/cuff arm controls",
+  "source_jacket_method": "small source hood/pad contour retained; old gold excluded",
+  "source_crop_file": "frame_02_v1/original_crop.png",
+  "body_layers": [
+    "individual_clothing_repair.png",
+    "released_arm.png",
+    "holding_arm.png",
+    "source_jacket_detail.png",
+    "head_preserved.png"
+  ],
+  "registration_note": "old reconstruction offset retained only as the provisional package pelvis estimate",
+  "joint_controls": {
+    "far_shoulder": [
+      219,
+      166
+    ],
+    "far_cuff": [
+      201,
+      201
+    ],
+    "far_elbow": [
+      185,
+      224
+    ],
+    "far_wrist": [
+      175,
+      240
+    ],
+    "near_shoulder": [
+      296,
+      187
+    ],
+    "near_cuff": [
+      286,
+      214
+    ],
+    "near_elbow": [
+      295,
+      246
+    ]
+  }
+}
