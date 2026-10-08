@@ -11,13 +11,13 @@ ROOT = Path(__file__).resolve().parent
 parser=argparse.ArgumentParser()
 parser.add_argument('--foreground',action='store_true')
 parser.add_argument('--refine',action='store_true')
-parser.add_argument('--frame',type=int,choices=(0,1),default=0)
+parser.add_argument('--frame',type=int,choices=(0,1,2),default=0)
 args=parser.parse_args()
 if args.frame:
     args.refine=True
 if args.refine:
     args.foreground=True
-OUT = ROOT / ('ready/run_loop/layers/frame_01_v1' if args.frame else
+OUT = ROOT / (f'ready/run_loop/layers/frame_{args.frame:02d}_v1' if args.frame else
               'ready/run_loop/layers/pilot_v3' if args.refine else
               'ready/run_loop/layers/pilot_v2' if args.foreground else 'ready/run_loop/layers/pilot_v1')
 OUT.mkdir(parents=True, exist_ok=True)
@@ -66,7 +66,8 @@ def curve(im, start, segments, fill, outline='#171a20', width=2, closed=True):
         line(im,points,outline,width)
 
 original=Image.new('RGBA',SIZE)
-CROP=(445,0,889,450) if args.frame else (0,0,445,450)
+CROP=(889,0,1333,450) if args.frame==2 else (445,0,889,450) if args.frame else (0,0,445,450)
+BODY_OFFSET=(-73,-5) if args.frame==2 else (-25,20) if args.frame else (0,0)
 original.paste(Image.open(SOURCE).convert('RGBA').crop(CROP),(0,0))
 original.save(OUT/'frame_00_original.png')
 body=original.copy()
@@ -81,11 +82,17 @@ if args.refine:
     # Remove the old near forearm as well, avoiding two poses sharing a shoulder.
     poly(mask,[(283,190),(328,174),(361,192),(366,231),(337,242),(284,224)],'white',None)
 if args.frame:
-    mask=shift(mask,-25,20)
+    mask=shift(mask,*BODY_OFFSET)
     # Frame-specific removal covers the old blade and two-handed carry.
-    poly(mask,[(45,45),(146,45),(207,151),(266,150),(284,229),
-               (258,257),(212,263),(177,242),(108,246),(102,207),
-               (163,174),(46,107)],'white',None)
+    if args.frame==1:
+        poly(mask,[(45,45),(146,45),(207,151),(266,150),(284,229),
+                   (258,257),(212,263),(177,242),(108,246),(102,207),
+                   (163,174),(46,107)],'white',None)
+    else:
+        poly(mask,[(17,79),(121,79),(184,152),(216,162),(239,227),
+                   (211,244),(171,240),(139,218),(76,243),(73,213),
+                   (133,178),(18,146)],'white',None)
+        poly(mask,[(70,198),(126,198),(126,247),(70,247)],'white',None)
 mask=small(mask).getchannel('A')
 body.putalpha(Image.composite(Image.new('L',SIZE,0),body.getchannel('A'),mask))
 repair=layer()
@@ -180,7 +187,7 @@ if args.refine:
     curve(repair,(338,206),[
         ((347,217),(359,218),(369,207))],None,'#c2c9ce',3,False)
 if args.frame:
-    repair=shift(repair,-25,20)
+    repair=shift(repair,*BODY_OFFSET)
 body=Image.alpha_composite(body,small(repair))
 body.save(OUT/'body_clean_plate.png')
 small(repair).save(OUT/'body_reconstruction.png')
@@ -215,10 +222,10 @@ master=small(master)
 master.save(OUT/'kingdom_key_master.png')
 
 G=(77,70)
-HAND=(384,244) if args.frame else (405,225)
+HAND=(331,218) if args.frame==2 else (384,244) if args.frame else (405,225)
 ANGLE=math.radians(218)
 c,s=math.cos(ANGLE),math.sin(ANGLE)
-YAW=math.radians(28 if args.frame else 25 if args.foreground else 0)
+YAW=math.radians(27 if args.frame==2 else 28 if args.frame else 25 if args.foreground else 0)
 FOCAL=1400.0
 cy=math.cos(YAW)
 k=math.sin(YAW)/FOCAL
@@ -299,6 +306,31 @@ if args.frame:
         ((371,247),(373,240),(376,237))],'#19232d')
     curve(arm,(378,250),[
         ((384,256),(390,254),(396,249))],None,'#87939c',2,False)
+if args.frame==2:
+    arm=layer()
+    curve(arm,(273,209),[
+        ((280,211),(285,211),(288,207)),
+        ((293,216),(293,225),(301,232)),
+        ((309,231),(319,223),(325,214)),
+        ((329,210),(338,214),(339,220)),
+        ((334,232),(316,246),(302,250)),
+        ((292,252),(285,242),(282,230)),
+        ((277,220),(275,213),(273,209))],'#eeb084')
+    curve(arm,(286,216),[
+        ((289,229),(293,244),(302,244)),
+        ((315,239),(330,229),(335,219)),
+        ((333,231),(316,247),(302,250)),
+        ((291,251),(285,234),(286,216))],'#bd7f60',None)
+    curve(arm,(279,210),[
+        ((287,221),(290,234),(298,237)),
+        ((308,233),(317,225),(322,219))],None,'#ffd1a3',2,False)
+    curve(arm,(323,211),[
+        ((326,204),(334,202),(340,206)),
+        ((347,212),(348,221),(342,228)),
+        ((337,234),(326,234),(322,227)),
+        ((318,222),(320,215),(323,211))],'#19232d')
+    curve(arm,(325,225),[
+        ((331,231),(337,229),(343,224))],None,'#87939c',2,False)
 arm=small(arm)
 arm.save(OUT/'holding_arm.png')
 fingers=layer()
@@ -344,8 +376,9 @@ poly(head_mask,[(302,111),(324,91),(346,83),(369,58),(384,69),
 head_mask=small(head_mask).getchannel('A')
 if args.frame:
     # Keep this pose's actual head and hair, not a moved copy of frame 00.
+    dx,dy=(-73,0) if args.frame==2 else (-16,28)
     head_mask=head_mask.transform(SIZE,Image.Transform.AFFINE,
-                                  (1,0,16,0,1,-28),Image.Resampling.BICUBIC)
+                                  (1,0,-dx,0,1,-dy),Image.Resampling.BICUBIC)
 head=original.copy()
 head.putalpha(Image.composite(original.getchannel('A'),Image.new('L',SIZE,0),head_mask))
 head.save(OUT/'head_occlusion.png')
@@ -401,7 +434,7 @@ manifest={'status':'construction pilot, not final art or approved replacement',
  'master_to_screen_homography':(screen @ camera @ translate).tolist(),
  'tip_depth_relative_to_grip_px':-(319-G[0])*math.sin(YAW),
  'projected_shoulder_contact':world((137,70)),
- 'body_reconstruction_offset':[-25,20] if args.frame else [0,0],
+ 'body_reconstruction_offset':list(BODY_OFFSET),
  'arm_reconstruction_method':'frame-specific tighter elbow redraw' if args.frame else 'pilot arm redraw',
  'master_anchors':anchors,'world_anchors':{k:world(v) for k,v in anchors.items()},
  'pommel_to_tip_length_px':285,

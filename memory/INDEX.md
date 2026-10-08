@@ -33,4 +33,5 @@
 - [Sora Selected Replacement Sheets](Sora_Selected_Replacement_Sheets.md): Selected idle and duck sheets with full-cycle previews.
 - [Sora Replacement Preview Approval](Sora_Replacement_Preview_Approval.md): Approved idle/crouch replacements and the next shimmy review batch.
 - [Project Location](Project_Location.md): Current D:\KH Fighting Game workspace after relocation.
+- [Autonomous Animation Work](Sora_Autonomous_Animation_Work.md): Autonomous Sora artwork progress and periodic main pushes authorized; protected-file rules remain.
 - [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.

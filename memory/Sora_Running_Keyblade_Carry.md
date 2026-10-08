@@ -21,3 +21,5 @@
 **Frame review:** K'von said frame_00_review_v1 looks good so far and authorized continuing on October 7, 2026. Use this treatment as the current visual reference for the next running pose; this is provisional review feedback, not approval of a full run cycle.
 
 **Single generation retry:** K'von authorized exactly one further image-generation attempt, returning to local layers if it failed. The October 7 attempt failed with output-stage moderation_blocked, category other, request ID 4288281e-c97f-4a51-a91d-fa9e3e10fd33. Resume local layered work; no additional generation retries are authorized by that request. Exact arguments and error are saved in ready/run_loop/imagegen_single_retry_2026-10-07.json.
+
+**Handoff cancelled:** K'von requested deleting design/handoffs/ and resuming the original local layered process. The exact folder was deleted on October 7, 2026; project artwork was retained.

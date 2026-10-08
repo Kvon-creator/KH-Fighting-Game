@@ -1,0 +1,109 @@
+{
+  "status": "frame 02 refinement review; provisional, not final run cycle",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "crop": [
+    889,
+    0,
+    1333,
+    450
+  ],
+  "frame_index": 2,
+  "master_grip": [
+    77,
+    70
+  ],
+  "hand_anchor": [
+    331,
+    218
+  ],
+  "rotation_degrees": 218,
+  "scale": 1,
+  "tip_toward_camera_yaw_degrees": 27.0,
+  "camera_focal_length_px": 1400.0,
+  "master_to_screen_homography": [
+    [
+      -0.809459047889746,
+      0.6156614753256582,
+      350.2320434147144
+    ],
+    [
+      -0.6192511975946124,
+      -0.788010753606722,
+      320.8430949672557
+    ],
+    [
+      -0.00032427892838539054,
+      0.0,
+      1.024969477485675
+    ]
+  ],
+  "tip_depth_relative_to_grip_px": -109.86570093697031,
+  "projected_shoulder_contact": [
+    288.0367112910011,
+    184.43340006420084
+  ],
+  "body_reconstruction_offset": [
+    -73,
+    -5
+  ],
+  "arm_reconstruction_method": "frame-specific tighter elbow redraw",
+  "master_anchors": {
+    "grip": [
+      77,
+      70
+    ],
+    "pommel": [
+      34,
+      70
+    ],
+    "collar": [
+      137,
+      70
+    ],
+    "tip": [
+      319,
+      70
+    ],
+    "shoulder_contact": [
+      137,
+      70
+    ]
+  },
+  "world_anchors": {
+    "grip": [
+      331.0,
+      218.0
+    ],
+    "pommel": [
+      360.7760795986478,
+      241.26362300414343
+    ],
+    "collar": [
+      288.0367112910011,
+      184.43340006420084
+    ],
+    "tip": [
+      146.616731849025,
+      73.94400282530944
+    ],
+    "shoulder_contact": [
+      288.0367112910011,
+      184.43340006420084
+    ]
+  },
+  "pommel_to_tip_length_px": 285,
+  "holding_arm": "near visible arm, provisional anatomical mapping requires review",
+  "limitations": [
+    "Local chest and forearm are manual construction drawings needing stylistic review.",
+    "Master length is a pilot value, not yet approved for the full batch.",
+    "Shoulder contact and finger occlusion require visual review before propagation.",
+    "No full animation or Godot integration."
+  ],
+  "weapon_master": "art_pass_05/kingdom_key_master_finished.png",
+  "grip_master": "art_pass_05/grip_master_space.png",
+  "chain_attachment_translation": [
+    -74.54015513837459,
+    -7.42201544569582
+  ],
+  "garment_detail_reuse": "local patches translated -73,-5; needs per-pose art review"
+}
