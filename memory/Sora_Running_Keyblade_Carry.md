@@ -1,5 +1,7 @@
 # Sora running Keyblade carry
 
+**Current local refinement:** The eight loop poses now have separate frame_XX_review_v2 layers and a run_loop/review_cycle_v2 package. Shaft overlap is behind the head/body, with the connected guard and approved grip in front, matching the newer start poses. Existing weapon projections, grip drawings, prior reviews and original sheets remain unchanged. Frame00 retains the exact approved hand/cuff region. Local masks clear attached old guard/handle fragments in03/04. Layer checks do not imply finished anatomy, clothing, gait or transition timing; the review package's QA_NOTES.md records the next art work.
+
 **Fact or rule:** Running artwork must carry the Kingdom Key slung over the shoulder of the arm holding its handle. Use design/references/Sora_KHIV_Render.webp as the carry and weapon-construction reference, retaining the approved KH2 outfit and smooth style. Keep the weapon form consistent: handle, guard, shaft and blade must connect and move as one rigid object.
 
 **Why:** K'von accepted the body poses but corrected the majority of Keyblade drawings for incorrect placement and inconsistent geometry.

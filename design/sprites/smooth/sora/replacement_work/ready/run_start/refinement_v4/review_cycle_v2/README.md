@@ -6,4 +6,4 @@ Frames 05-07 preserve actual source stride changes and use individually drawn ar
 
 Review exports apply translation only to estimated pelvis x280 and foot baseline y432. Raw working layers keep their original coordinates. Foot contact/flight offsets and root motion still need animation review. The GIF resets after frame 07.
 
-The separate seam board/GIF compares 07 with current loop00. Body pitch, rear-leg extension and weapon overlap differ; this seam is pending. Clothing details, earlier start repairs and the idle weapon endpoint also need refinement. Running must reach idle quality before aerial artwork starts. No image-generation retries or protected engine edits.
+The separate seam board/GIF compares 07 with revised loop00. Carry overlap agrees; body pitch and rear-leg extension still differ, so this seam is pending. Clothing details, earlier start repairs and the idle weapon endpoint also need refinement. Running must reach idle quality before aerial artwork starts. No image-generation retries or protected engine edits.

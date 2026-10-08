@@ -247,7 +247,7 @@
   "floor_y": 432,
   "root_x": 280,
   "registration": "estimated pelvis x and foot baseline; translation only",
-  "loop_seam_reference": "run_loop\\layers\\frame_00_review_v1\\sora_run_loop_00_review.png",
+  "loop_seam_reference": "run_loop\\layers\\frame_00_review_v2\\sora_run_loop_00_review.png",
   "loop_reference_translation_xy": [
     2,
     3

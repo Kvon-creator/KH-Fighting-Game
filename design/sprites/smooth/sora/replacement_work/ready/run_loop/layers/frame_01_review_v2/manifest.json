@@ -1,0 +1,160 @@
+{
+  "status": "rigid carry overlap revision; anatomy/art/gait review pending",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "crop": [
+    445,
+    0,
+    889,
+    450
+  ],
+  "frame_index": 1,
+  "master_grip": [
+    77,
+    70
+  ],
+  "hand_anchor": [
+    384,
+    244
+  ],
+  "rotation_degrees": 218,
+  "scale": 1,
+  "tip_toward_camera_yaw_degrees": 28.0,
+  "camera_focal_length_px": 1400.0,
+  "master_to_screen_homography": [
+    [
+      -0.8245415409795629,
+      0.6156614753256582,
+      404.3933953826303
+    ],
+    [
+      -0.625419004311735,
+      -0.788010753606722,
+      347.31801608447415
+    ],
+    [
+      -0.0003353368305613506,
+      0.0,
+      1.025820935953224
+    ]
+  ],
+  "tip_depth_relative_to_grip_px": -113.61211819418557,
+  "projected_shoulder_contact": [
+    341.39647628046856,
+    210.7144792793921
+  ],
+  "body_reconstruction_offset": [
+    -25,
+    20
+  ],
+  "arm_reconstruction_method": "frame-specific tighter elbow redraw",
+  "master_anchors": {
+    "grip": [
+      77,
+      70
+    ],
+    "pommel": [
+      34,
+      70
+    ],
+    "collar": [
+      137,
+      70
+    ],
+    "tip": [
+      319,
+      70
+    ],
+    "shoulder_contact": [
+      137,
+      70
+    ]
+  },
+  "world_anchors": {
+    "grip": [
+      384.0,
+      244.0
+    ],
+    "pommel": [
+      413.49293166802295,
+      267.0424035957711
+    ],
+    "collar": [
+      341.39647628046856,
+      210.7144792793921
+    ],
+    "tip": [
+      200.75229996228094,
+      100.8312058701157
+    ],
+    "shoulder_contact": [
+      341.39647628046856,
+      210.7144792793921
+    ]
+  },
+  "pommel_to_tip_length_px": 285,
+  "holding_arm": "near visible arm, provisional anatomical mapping requires review",
+  "limitations": [
+    "Existing shared clothing repairs still need individual art refinement.",
+    "Pose registration, gait and transition seams remain unfinished.",
+    "No Godot integration or aerial production."
+  ],
+  "weapon_master": "art_pass_05/kingdom_key_master_finished.png",
+  "grip_master": "art_pass_05/grip_master_space.png",
+  "chain_attachment_translation": [
+    -21.82330306899945,
+    18.35676514593183
+  ],
+  "garment_detail_reuse": "local patches translated -25,+20; needs per-pose art review",
+  "source_review": "frame_01_review_v1",
+  "head_layer": "frame_01_v1\\head_occlusion.png",
+  "occlusion": "shaft behind head/body; connected guard and original corrected grip in front",
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "lower_body_preserved_from_y": 312,
+  "removed_detached_body_fragments": [
+    {
+      "area_px": 4,
+      "bbox": [
+        403,
+        179,
+        404,
+        183
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        333,
+        90,
+        334,
+        91
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        395,
+        113,
+        396,
+        114
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        395,
+        184,
+        396,
+        185
+      ]
+    }
+  ],
+  "checks": [
+    "opaque grip interior exact",
+    "lower body exact",
+    "weapon projection exact",
+    "original sheet and prior review hashes unchanged"
+  ]
+}

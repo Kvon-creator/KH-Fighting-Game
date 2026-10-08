@@ -1,0 +1,190 @@
+{
+  "frame_index": 4,
+  "crop": [
+    0,
+    450,
+    445,
+    887
+  ],
+  "hand_anchor": [
+    377,
+    197
+  ],
+  "body_reconstruction_offset": [
+    -28,
+    -28
+  ],
+  "rotation_degrees": 217,
+  "tip_toward_camera_yaw_degrees": 23,
+  "master_to_screen_homography": [
+    [
+      -0.8403661741668956,
+      0.6018150231520484,
+      399.5811437902076
+    ],
+    [
+      -0.6089551013437583,
+      -0.7986355100472928,
+      299.7940285067799
+    ],
+    [
+      -0.0002790936632066241,
+      0.0,
+      1.02149021206691
+    ]
+  ],
+  "status": "rigid carry overlap revision; anatomy/art/gait review pending",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "source_review": "frame_04_review_v1",
+  "head_layer": "frame_04_review_v1\\head_occlusion.png",
+  "occlusion": "shaft behind head/body; connected guard and original corrected grip in front",
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "lower_body_preserved_from_y": 300,
+  "removed_detached_body_fragments": [
+    {
+      "area_px": 8,
+      "bbox": [
+        359,
+        156,
+        360,
+        164
+      ]
+    },
+    {
+      "area_px": 6,
+      "bbox": [
+        409,
+        110,
+        415,
+        111
+      ]
+    },
+    {
+      "area_px": 5,
+      "bbox": [
+        356,
+        148,
+        361,
+        149
+      ]
+    },
+    {
+      "area_px": 4,
+      "bbox": [
+        248,
+        98,
+        252,
+        99
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        311,
+        35,
+        312,
+        36
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        312,
+        37,
+        313,
+        38
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        398,
+        57,
+        399,
+        58
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        407,
+        73,
+        408,
+        74
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        357,
+        168,
+        358,
+        169
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        157,
+        241,
+        158,
+        242
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        217,
+        287,
+        218,
+        288
+      ]
+    }
+  ],
+  "attached_old_weapon_removal_polygons": [
+    [
+      [
+        217,
+        97
+      ],
+      [
+        236,
+        93
+      ],
+      [
+        245,
+        107
+      ],
+      [
+        259,
+        107
+      ],
+      [
+        259,
+        119
+      ],
+      [
+        243,
+        123
+      ],
+      [
+        215,
+        116
+      ]
+    ]
+  ],
+  "checks": [
+    "opaque grip interior exact",
+    "lower body exact",
+    "weapon projection exact",
+    "original sheet and prior review hashes unchanged"
+  ],
+  "limitations": [
+    "Existing shared clothing repairs still need individual art refinement.",
+    "Pose registration, gait and transition seams remain unfinished.",
+    "No Godot integration or aerial production."
+  ]
+}

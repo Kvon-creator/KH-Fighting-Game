@@ -74,7 +74,7 @@ gif_frames[0].save(OUT/'sora_run_start_preview.gif', save_all=True,
 
 # Inspect the transition into the current run-loop key pose. Do not silently
 # append it to the start package or call a discontinuity finished.
-loop_path = READY/'run_loop/layers/frame_00_review_v1/sora_run_loop_00_review.png'
+loop_path = READY/'run_loop/layers/frame_00_review_v2/sora_run_loop_00_review.png'
 loop = Image.open(loop_path).convert('RGBA')
 visible = np.argwhere(np.array(loop.getchannel('A')) > 32)
 loop_dy = 432-int(visible[:, 0].max())-1
@@ -89,7 +89,7 @@ for i, (im, title) in enumerate([(images[7], 'Start 07'), (loop_aligned, 'Curren
     sd.line((i*512, 462, (i+1)*512-1, 462), fill='#566270')
     small = im.resize((128, 128), Image.Resampling.LANCZOS)
     seam.paste(small, (i*512+192, 554), small)
-sd.text((12, 522), 'Art review: body pitch, rear leg and weapon overlap still need a transition pass.', fill='white')
+sd.text((12, 522), 'Carry overlap agrees. Body pitch and rear leg still need a transition pass.', fill='white')
 seam.save(OUT/'Start_Loop_Seam_Review.png')
 seam_frames = []
 for im in [images[7], loop_aligned]:
@@ -144,8 +144,8 @@ manifest = {'status': 'complete eight-pose start art review; quality/timing/seam
     'Review exports apply translation only to estimated pelvis x280 and foot baseline '
     'y432. Raw working layers keep their original coordinates. Foot contact/flight offsets '
     'and root motion still need animation review. The GIF resets after frame 07.\n\n'
-    'The separate seam board/GIF compares 07 with current loop00. Body pitch, rear-leg '
-    'extension and weapon overlap differ; this seam is pending. Clothing details, '
+    'The separate seam board/GIF compares 07 with revised loop00. Carry overlap agrees; '
+    'body pitch and rear-leg extension still differ, so this seam is pending. Clothing details, '
     'earlier start repairs and the idle weapon endpoint also need refinement. Running '
     'must reach idle quality before aerial artwork starts. No image-generation retries '
     'or protected engine edits.\n', encoding='utf-8')

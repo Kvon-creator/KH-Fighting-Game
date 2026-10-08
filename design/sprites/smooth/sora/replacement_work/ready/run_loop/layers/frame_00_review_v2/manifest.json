@@ -1,0 +1,183 @@
+{
+  "status": "loop00 rear-shaft overlap correction; art/seam review",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "crop": [
+    0,
+    0,
+    445,
+    450
+  ],
+  "master_grip": [
+    77,
+    70
+  ],
+  "hand_anchor": [
+    405,
+    225
+  ],
+  "rotation_degrees": 218,
+  "scale": 1,
+  "tip_toward_camera_yaw_degrees": 25.0,
+  "camera_focal_length_px": 1400.0,
+  "master_to_screen_homography": [
+    [
+      -0.8364377079802362,
+      0.6156614753256582,
+      426.3094002416821
+    ],
+    [
+      -0.6258995813315859,
+      -0.788010753606722,
+      328.35502051500265
+    ],
+    [
+      -0.00030187018695764244,
+      0.0,
+      1.0232440043957385
+    ]
+  ],
+  "tip_depth_relative_to_grip_px": -102.27361934124926,
+  "projected_shoulder_contact": [
+    361.3587434070497,
+    190.90371350123644
+  ],
+  "master_anchors": {
+    "grip": [
+      77,
+      70
+    ],
+    "pommel": [
+      34,
+      70
+    ],
+    "collar": [
+      137,
+      70
+    ],
+    "tip": [
+      319,
+      70
+    ],
+    "shoulder_contact": [
+      137,
+      70
+    ]
+  },
+  "world_anchors": {
+    "grip": [
+      405.0,
+      225.0
+    ],
+    "pommel": [
+      435.3162347370224,
+      248.68563844983925
+    ],
+    "collar": [
+      361.3587434070497,
+      190.90371350123644
+    ],
+    "tip": [
+      218.54753726461786,
+      79.32737083806663
+    ],
+    "shoulder_contact": [
+      361.3587434070497,
+      190.90371350123644
+    ]
+  },
+  "pommel_to_tip_length_px": 285,
+  "holding_arm": "near visible arm, provisional anatomical mapping requires review",
+  "limitations": [
+    "Clothing/arm construction still needs idle-quality refinement.",
+    "Start07 to loop00 rear-leg/body-pitch differences remain.",
+    "Other loop poses need the same overlap review.",
+    "No Godot integration or engine test."
+  ],
+  "geometry_preserved": true,
+  "source_pilot": "pilot_v3",
+  "source_art_pass": "art_pass_06",
+  "fully_transparent_rgb_cleared": true,
+  "grip_orientation": "palm/wrist below handle; fingers wrap over, thumb toward collar",
+  "chain_length_px": 35,
+  "approved_grip_region_preserved": [
+    384,
+    203,
+    424,
+    248
+  ],
+  "palette_pass": "charcoal harmony on reconstructed fabric only",
+  "review_canvas": [
+    512,
+    512
+  ],
+  "game_scale_preview_canvas": [
+    128,
+    128
+  ],
+  "checks": [
+    "approved hand/cuff area exact",
+    "lower body exact",
+    "weapon projection exact",
+    "original sheet and prior review hashes unchanged"
+  ],
+  "source_review": "frame_00_review_v1",
+  "occlusion": "shaft behind head/body; connected guard and approved hand in front",
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "body_layers": [
+    "pilot_v3\\holding_arm.png",
+    "art_pass_01\\art_detail_overlay.png",
+    "art_pass_02\\jacket_volume_overlay.png",
+    "art_pass_02\\sleeve_glove_fold_overlay.png",
+    "art_pass_03\\chest_redraw_overlay.png",
+    "art_pass_06\\contact_and_arm_overlay.png",
+    "pilot_v3\\head_occlusion.png"
+  ],
+  "removed_detached_body_fragments": [
+    {
+      "area_px": 14,
+      "bbox": [
+        253,
+        139,
+        260,
+        141
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        365,
+        62,
+        366,
+        63
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        367,
+        63,
+        368,
+        64
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        410,
+        91,
+        411,
+        92
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        188,
+        245,
+        189,
+        246
+      ]
+    }
+  ]
+}
