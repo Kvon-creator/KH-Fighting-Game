@@ -1,0 +1,59 @@
+{
+  "status": "individual shoulder-settle art refinement; not final",
+  "source_crop": [
+    1333,
+    0,
+    1774,
+    450
+  ],
+  "source_sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256",
+  "hand_anchor": [
+    395,
+    242
+  ],
+  "screen_angle_degrees": 218,
+  "foreground_yaw_degrees": 20,
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "master_to_screen_homography": [
+    [
+      -0.836986430702493,
+      0.6156614753256582,
+      416.3516518912959
+    ],
+    [
+      -0.6376531700405522,
+      -0.788010753606722,
+      346.2600468455931
+    ],
+    [
+      -0.00024430010237547764,
+      0.0,
+      1.0188111078829118
+    ]
+  ],
+  "projected_anchors": {
+    "grip": [
+      395.0,
+      242.0
+    ],
+    "pommel": [
+      426.50997005818397,
+      266.61828669811615
+    ],
+    "collar": [
+      349.9097940686394,
+      206.7716702096001
+    ],
+    "tip": [
+      204.5419304934251,
+      93.19784784229574
+    ]
+  },
+  "occlusion": "shaft behind head/body; connected guard and approved grip in front",
+  "limitations": [
+    "New jacket/arm materials still need comparison with idle.",
+    "Adjacent frame registration and gait remain under review.",
+    "Offline image checks only; no Godot integration or testing."
+  ]
+}

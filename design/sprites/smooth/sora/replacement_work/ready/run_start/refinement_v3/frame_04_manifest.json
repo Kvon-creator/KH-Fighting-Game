@@ -1,0 +1,59 @@
+{
+  "status": "individual push-off refinement; art review",
+  "source_crop": [
+    0,
+    450,
+    445,
+    887
+  ],
+  "source_sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256",
+  "hand_anchor": [
+    390,
+    215
+  ],
+  "screen_angle_degrees": 218,
+  "foreground_yaw_degrees": 22,
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "master_to_screen_homography": [
+    [
+      -0.8349855418493065,
+      0.6156614753256582,
+      411.19758344960053
+    ],
+    [
+      -0.6283602495038768,
+      -0.788010753606722,
+      318.54449196426907
+    ],
+    [
+      -0.00026757613815422287,
+      0.0,
+      1.0206033626378752
+    ]
+  ],
+  "projected_anchors": {
+    "grip": [
+      390.0,
+      215.0
+    ],
+    "pommel": [
+      421.0597598867664,
+      239.2665439622805
+    ],
+    "collar": [
+      345.44686781874634,
+      180.1912782109327
+    ],
+    "tip": [
+      200.94540197545427,
+      67.29435993841723
+    ]
+  },
+  "occlusion": "shaft behind head/body; guard and corrected hand in front",
+  "limitations": [
+    "New chest/arm details require further idle-quality comparison.",
+    "Floor alignment and neighboring-frame timing are package review work.",
+    "No Godot integration or engine testing."
+  ]
+}

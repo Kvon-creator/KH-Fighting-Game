@@ -1,0 +1,146 @@
+{
+  "status": "partial five-frame art review, not a complete run-start animation",
+  "frames": [
+    {
+      "index": 0,
+      "path": "sora_run_start_00.png",
+      "source": "refinement_v2\\sora_run_start_00.png",
+      "source_sha256": "7ba628934177b87085ac98ce9f1ca68927ef17c36a4162551c6b30cd170ac668",
+      "translation_xy": [
+        0,
+        -2
+      ],
+      "scale": 1,
+      "contact_floor_y": 432
+    },
+    {
+      "index": 1,
+      "path": "sora_run_start_01.png",
+      "source": "refinement_v3\\sora_run_start_01.png",
+      "source_sha256": "b41f890473868695fa77b676edf6b3c2eea033c2a652bd067d0ac8454f421829",
+      "translation_xy": [
+        0,
+        -12
+      ],
+      "scale": 1,
+      "contact_floor_y": 432,
+      "master_to_export_homography": [
+        [
+          -0.7819505503473674,
+          0.6427876096865393,
+          250.21505969868954
+        ],
+        [
+          -0.662179659175083,
+          -0.766044443118978,
+          362.61094477480987
+        ],
+        [
+          -9.940935782861817e-05,
+          0.0,
+          1.0076545205528036
+        ]
+      ]
+    },
+    {
+      "index": 2,
+      "path": "sora_run_start_02.png",
+      "source": "refinement_v4\\sora_run_start_02.png",
+      "source_sha256": "ef19fdf3d2f82e3feb4505890c487ab4cec4a7a02b386fc164f553dd785a62b0",
+      "translation_xy": [
+        0,
+        -13
+      ],
+      "scale": 1,
+      "contact_floor_y": 432,
+      "master_to_export_homography": [
+        [
+          -0.8563646677916312,
+          0.5591929034707467,
+          332.7965761770033
+        ],
+        [
+          -0.5796450340057865,
+          -0.8290375725550417,
+          322.66529769729846
+        ],
+        [
+          -0.00014850835058411382,
+          0.0,
+          1.0114351429949768
+        ]
+      ]
+    },
+    {
+      "index": 3,
+      "path": "sora_run_start_03.png",
+      "source": "refinement_v3\\sora_run_start_03.png",
+      "source_sha256": "4b689cc5aca2aec7b3f3b16730944181c748a8ab076c5ecfd38f7f9236f1f84a",
+      "translation_xy": [
+        0,
+        -12
+      ],
+      "scale": 1,
+      "contact_floor_y": 432,
+      "master_to_export_homography": [
+        [
+          -0.836986430702493,
+          0.6156614753256582,
+          416.3516518912959
+        ],
+        [
+          -0.6347215688120464,
+          -0.788010753606722,
+          334.03431355099815
+        ],
+        [
+          -0.00024430010237547764,
+          0.0,
+          1.0188111078829118
+        ]
+      ]
+    },
+    {
+      "index": 4,
+      "path": "sora_run_start_04.png",
+      "source": "refinement_v3\\sora_run_start_04.png",
+      "source_sha256": "a3cdc4260cc9612471410fb298936baa18de440e0ac15906baa519368748a43f",
+      "translation_xy": [
+        0,
+        41
+      ],
+      "scale": 1,
+      "contact_floor_y": 432,
+      "master_to_export_homography": [
+        [
+          -0.8349855418493065,
+          0.6156614753256582,
+          411.19758344960053
+        ],
+        [
+          -0.6393308711682,
+          -0.788010753606722,
+          360.38922983242196
+        ],
+        [
+          -0.00026757613815422287,
+          0.0,
+          1.0206033626378752
+        ]
+      ]
+    }
+  ],
+  "canvas": [
+    512,
+    512
+  ],
+  "floor_y": 432,
+  "method": "translation only; genuine source articulation retained",
+  "limitations": [
+    "Frames 05-07 still await individual redraw.",
+    "Earlier arm/garment repairs still need idle-quality comparison.",
+    "Idle endpoint retains its original weapon; rigid-master seam is pending.",
+    "Timing, root motion, and transition into run loop are unfinished.",
+    "Floor alignment is an offline review aid, not gameplay integration."
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": "individual lift detail refinement; art review",
+  "source_crop": [
+    889,
+    0,
+    1333,
+    450
+  ],
+  "source_sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256",
+  "hand_anchor": [
+    306,
+    233
+  ],
+  "screen_angle_degrees": 214,
+  "foreground_yaw_degrees": 12,
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "master_to_screen_homography": [
+    [
+      -0.8563646677916312,
+      0.5591929034707467,
+      332.7965761770033
+    ],
+    [
+      -0.58157564256338,
+      -0.8290375725550417,
+      335.81395455623317
+    ],
+    [
+      -0.00014850835058411382,
+      0.0,
+      1.0114351429949768
+    ]
+  ],
+  "projected_anchors": {
+    "grip": [
+      306.0,
+      233.0
+    ],
+    "pommel": [
+      340.64834836818954,
+      256.37060606886723
+    ],
+    "collar": [
+      256.9072926293873,
+      199.88655076366877
+    ],
+    "tip": [
+      102.44139378052087,
+      95.69798642838761
+    ]
+  },
+  "occlusion": "lifting weapon in front; settles behind head in subsequent frames",
+  "limitations": [
+    "Arms and inferred garment seams remain art-review work.",
+    "No root-motion/timing approval or Godot test."
+  ]
+}
