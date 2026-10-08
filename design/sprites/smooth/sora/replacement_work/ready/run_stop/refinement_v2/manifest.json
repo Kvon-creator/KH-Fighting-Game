@@ -1,0 +1,382 @@
+{
+  "status": "new articulated construction draft, not finished cel-shaded art",
+  "canvas": [
+    512,
+    512
+  ],
+  "loop": false,
+  "frames": [
+    {
+      "path": "sora_run_stop_00.png",
+      "duration_ms": 120,
+      "phase": "running entry",
+      "source": "reviewed run-loop frame 00"
+    },
+    {
+      "path": "sora_run_stop_01.png",
+      "duration_ms": 100,
+      "phase": "braking reach",
+      "hips": [
+        [
+          244,
+          275
+        ],
+        [
+          302,
+          270
+        ]
+      ],
+      "knees": [
+        [
+          184,
+          317
+        ],
+        [
+          363,
+          324
+        ]
+      ],
+      "ankles": [
+        [
+          147,
+          364
+        ],
+        [
+          395,
+          426
+        ]
+      ],
+      "pitch": 2,
+      "hand": [
+        401,
+        225
+      ],
+      "angle": 219,
+      "master_to_screen_homography": [
+        [
+          -0.8272831883079611,
+          0.6293203910498376,
+          420.6483781262244
+        ],
+        [
+          -0.6420885485594537,
+          -0.7771459614569708,
+          328.8410355410659
+        ],
+        [
+          -0.0002790936632066241,
+          0.0,
+          1.02149021206691
+        ]
+      ]
+    },
+    {
+      "path": "sora_run_stop_02.png",
+      "duration_ms": 100,
+      "phase": "heel contact",
+      "hips": [
+        [
+          245,
+          272
+        ],
+        [
+          301,
+          268
+        ]
+      ],
+      "knees": [
+        [
+          212,
+          331
+        ],
+        [
+          357,
+          333
+        ]
+      ],
+      "ankles": [
+        [
+          205,
+          421
+        ],
+        [
+          385,
+          430
+        ]
+      ],
+      "pitch": 7,
+      "hand": [
+        382,
+        224
+      ],
+      "angle": 221,
+      "master_to_screen_homography": [
+        [
+          -0.802365346590403,
+          0.656059028990507,
+          397.85799965812555
+        ],
+        [
+          -0.6698227400195457,
+          -0.7547095802227721,
+          328.4060215970991
+        ],
+        [
+          -0.00025597710681807165,
+          0.0,
+          1.0197102372249915
+        ]
+      ]
+    },
+    {
+      "path": "sora_run_stop_03.png",
+      "duration_ms": 100,
+      "phase": "knee compression",
+      "hips": [
+        [
+          245,
+          269
+        ],
+        [
+          300,
+          268
+        ]
+      ],
+      "knees": [
+        [
+          224,
+          327
+        ],
+        [
+          341,
+          325
+        ]
+      ],
+      "ankles": [
+        [
+          215,
+          430
+        ],
+        [
+          372,
+          430
+        ]
+      ],
+      "pitch": 11,
+      "hand": [
+        360,
+        228
+      ],
+      "angle": 224,
+      "master_to_screen_homography": [
+        [
+          -0.7638666688199387,
+          0.6946583704589973,
+          370.1916475670055
+        ],
+        [
+          -0.7098334924046992,
+          -0.7193398003386511,
+          333.0109649388674
+        ],
+        [
+          -0.00023254868175511193,
+          0.0,
+          1.0179062484951436
+        ]
+      ]
+    },
+    {
+      "path": "sora_run_stop_04.png",
+      "duration_ms": 100,
+      "phase": "rear-foot catch-up",
+      "hips": [
+        [
+          245,
+          268
+        ],
+        [
+          300,
+          267
+        ]
+      ],
+      "knees": [
+        [
+          219,
+          325
+        ],
+        [
+          331,
+          326
+        ]
+      ],
+      "ankles": [
+        [
+          210,
+          430
+        ],
+        [
+          365,
+          430
+        ]
+      ],
+      "pitch": 14,
+      "hand": [
+        337,
+        235
+      ],
+      "angle": 227,
+      "master_to_screen_homography": [
+        [
+          -0.7225763213521598,
+          0.7313537016191705,
+          341.4436176307744
+        ],
+        [
+          -0.7484737021566142,
+          -0.6819983600624986,
+          340.3723602704342
+        ],
+        [
+          -0.000208836931944812,
+          0.0,
+          1.0160804437597506
+        ]
+      ]
+    },
+    {
+      "path": "sora_run_stop_05.png",
+      "duration_ms": 100,
+      "phase": "carry lowering",
+      "hips": [
+        [
+          245,
+          267
+        ],
+        [
+          300,
+          267
+        ]
+      ],
+      "knees": [
+        [
+          211,
+          328
+        ],
+        [
+          333,
+          327
+        ]
+      ],
+      "ankles": [
+        [
+          190,
+          430
+        ],
+        [
+          367,
+          430
+        ]
+      ],
+      "pitch": 16,
+      "hand": [
+        310,
+        243
+      ],
+      "angle": 230,
+      "master_to_screen_homography": [
+        [
+          -0.678195084430404,
+          0.7660444431189779,
+          308.59791048281267
+        ],
+        [
+          -0.7848657030937854,
+          -0.6427876096865395,
+          348.42979181627925
+        ],
+        [
+          -0.00018487074650180052,
+          0.0,
+          1.0142350474806385
+        ]
+      ]
+    },
+    {
+      "path": "sora_run_stop_06.png",
+      "duration_ms": 120,
+      "phase": "guard settling",
+      "hips": [
+        [
+          245,
+          267
+        ],
+        [
+          300,
+          267
+        ]
+      ],
+      "knees": [
+        [
+          198,
+          328
+        ],
+        [
+          337,
+          328
+        ]
+      ],
+      "ankles": [
+        [
+          166,
+          430
+        ],
+        [
+          380,
+          430
+        ]
+      ],
+      "pitch": 18,
+      "hand": [
+        282,
+        249
+      ],
+      "angle": 233,
+      "master_to_screen_homography": [
+        [
+          -0.6317021126152248,
+          0.7986355100472928,
+          274.7365769680618
+        ],
+        [
+          -0.8181756854728718,
+          -0.6018150231520483,
+          354.1265794020545
+        ],
+        [
+          -0.00016067932453133214,
+          0.0,
+          1.0123723079889126
+        ]
+      ]
+    },
+    {
+      "path": "sora_run_stop_07.png",
+      "duration_ms": 350,
+      "phase": "approved standing guard",
+      "source": "standing_idle/sora_stand_idle_00.png",
+      "translation": [
+        0,
+        -38
+      ],
+      "limitation": "Original approved guard weapon retained; master-to-idle geometry seam needs review."
+    }
+  ],
+  "method": "New per-pose thigh/shin drawings and joint coordinates; reusable boots/upper torso cutouts; no whole-body scaling or reversed run start.",
+  "limitations": [
+    "Manual anatomy, shoe crop edges and outfit details require substantial art refinement.",
+    "Torso cutout pitching may need redrawn volume/perspective.",
+    "Final guard master seam unresolved.",
+    "Not integrated or tested in Godot."
+  ]
+}

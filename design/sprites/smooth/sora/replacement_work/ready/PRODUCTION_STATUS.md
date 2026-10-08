@@ -12,7 +12,7 @@
 | Attack wind-up | Original file retained. Two new generation attempts were rejected by the image tool's output safety system; no replacement is claimed. |
 | Run start | Original eight-pose source retained. Local eight-pose transition draft produced but FAILED visual QA; block-shaped repairs and old grip remnants need individual redraw. See run_start/review_cycle_v1/QA_STATUS.md. |
 | Run loop | Eight-pose local rigid-carry review exported in run_loop/review_cycle_v1. Anatomy, gait/seam and garment consistency remain draft-quality review work; no engine integration. |
-| Run stop | New eight-pose articulated construction in run_stop/construction_v1. Simple leg drawings/cutouts are placeholders, not finished smooth art; substantial refinement and guard seam work remain. |
+| Run stop | Eight-pose refinement_v2 replaces flat construction legs with shaded shorts contours, trim and arm lighting. Still below approved-idle quality; anatomy, torso seams and guard transition remain. Original construction_v1 retained. |
 | KH1 first jump / KH2 Aerial Dodge second jump | Pending. |
 | Backdash / forward and backward air dashes | Pending. |
 | Nine basic attacks | Pending. Motions already approved in the design chart. |
