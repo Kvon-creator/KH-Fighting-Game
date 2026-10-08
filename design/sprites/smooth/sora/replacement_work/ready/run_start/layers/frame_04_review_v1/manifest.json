@@ -1,0 +1,38 @@
+{
+  "frame_index": 4,
+  "crop": [
+    0,
+    450,
+    445,
+    887
+  ],
+  "hand_anchor": [
+    378,
+    225
+  ],
+  "body_reconstruction_offset": [
+    5,
+    35
+  ],
+  "rotation_degrees": 216,
+  "tip_toward_camera_yaw_degrees": 23,
+  "master_to_screen_homography": [
+    [
+      -0.8502014745397487,
+      0.587785252292473,
+      402.32054587908755
+    ],
+    [
+      -0.6038552517444791,
+      -0.8090169943749475,
+      328.1280439905712
+    ],
+    [
+      -0.0002790936632066241,
+      0.0,
+      1.02149021206691
+    ]
+  ],
+  "status": "provisional refined source pose; anatomy/style review pending",
+  "source_sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256"
+}

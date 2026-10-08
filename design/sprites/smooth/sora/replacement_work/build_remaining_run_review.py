@@ -1,13 +1,16 @@
 """Remaining genuine source poses with rigid carry; review, not engine assets."""
 from pathlib import Path
-import json,hashlib,math
+import json,hashlib,math,argparse
 import numpy as np
 from PIL import Image,ImageDraw,ImageFilter
 
 ROOT=Path(__file__).resolve().parent;READY=ROOT/'ready';L=READY/'run_loop/layers'
-source=READY/'run_loop/run_loop_source.png'
+parser=argparse.ArgumentParser();parser.add_argument('--animation',choices=('run_loop','run_start'),default='run_loop');args=parser.parse_args()
+ANIM=args.animation;TARGET=READY/ANIM/'layers'
+source=READY/ANIM/f'{ANIM}_source.png'
 sheet=Image.open(source).convert('RGBA')
-assert hashlib.sha256(source.read_bytes()).hexdigest()=='6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0'
+expected='1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256' if ANIM=='run_start' else '6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0'
+assert hashlib.sha256(source.read_bytes()).hexdigest()==expected
 def load(p):return Image.open(p).convert('RGBA')
 def shift(im,dx,dy):return im.transform((512,512),Image.Transform.AFFINE,(1,0,-dx,0,1,-dy),Image.Resampling.BICUBIC)
 def path(im,start,segs,fill,outline='#19222b'):
@@ -25,6 +28,10 @@ configs={
  5:((445,450,889,887),(-20,-20),(385,205),26,218),
  6:((889,450,1333,887),(-55,5),(350,230),28,219),
  7:((1333,450,1774,887),(-44,-15),(361,210),26,218)}
+if ANIM=='run_start':
+    boxes=[(0,0,445,450),(445,0,889,450),(889,0,1333,450),(1333,0,1774,450),(0,450,445,887),(445,450,889,887),(889,450,1333,887),(1333,450,1774,887)]
+    specs=[((-25,25),(224,250),5,234),((-25,60),(260,270),8,226),((-5,30),(310,241),12,218),((0,25),(371,215),18,215),((5,35),(378,225),23,216),((28,10),(401,221),25,218),((15,0),(385,213),26,218),((38,-5),(408,213),25,218)]
+    configs={i:(boxes[i],*specs[i]) for i in range(8)}
 repair=load(L/'pilot_v3/body_reconstruction.png')
 master=load(L/'art_pass_05/kingdom_key_master_finished.png')
 gripmaster=load(L/'art_pass_05/grip_master_space.png')
@@ -35,7 +42,7 @@ hm=Image.new('L',(512,512));ImageDraw.Draw(hm).polygon([(302,111),(324,91),(346,
 oldchain=load(L/'art_pass_05/chain_and_charm.png')
 oldmeta=json.loads((L/'art_pass_05/manifest.json').read_text())
 for index,(crop,(dx,dy),hand,yaw,angle) in configs.items():
-    out=L/f'frame_{index:02d}_review_v1';out.mkdir(parents=True,exist_ok=True)
+    out=TARGET/f'frame_{index:02d}_review_v1';out.mkdir(parents=True,exist_ok=True)
     original=Image.new('RGBA',(512,512));original.paste(sheet.crop(crop),(0,0));original.save(out/'original_crop.png')
     body=original.copy()
     mask=Image.open(L/'pilot_v3/old_weapon_removal_mask.png').convert('L').transform((512,512),Image.Transform.AFFINE,(1,0,-dx,0,1,-dy))
@@ -44,15 +51,32 @@ for index,(crop,(dx,dy),hand,yaw,angle) in configs.items():
     md.rectangle((35,160+dy,190+dx,247+dy),fill=255)
     oldguards={3:(145,145,242,224),4:(180,103,274,185),5:(198,124,289,204),6:(160,138,254,225),7:(169,113,277,199)}
     oldarms={3:(214,196,334,253),4:(233,166,349,229),5:(257,181,373,234),6:(230,193,337,244),7:(222,166,353,238)}
+    if ANIM=='run_start':
+        oldguards={0:(165,207,269,299),1:(168,229,282,319),2:(150,201,279,310),3:(165,86,310,194),4:(180,105,308,211),5:(200,150,324,259),6:(169,165,310,262),7:(150,169,295,259)}
+        oldarms={0:(219,225,327,268),1:(233,241,345,285),2:(234,211,353,270),3:(232,120,361,224),4:(246,159,364,251),5:(267,176,378,231),6:(248,184,370,235),7:(256,169,394,228)}
     md.rectangle(oldguards[index],fill=255);md.rectangle(oldarms[index],fill=255)
     body.putalpha(Image.composite(Image.new('L',(512,512),0),body.getchannel('A'),mask))
     body=Image.alpha_composite(body,shift(repair,dx,dy))
     # Preserve original pelvis/leg pixels below the jacket repair boundary.
-    lower_y=240+dy
+    lower_y=225+dy
     body.paste(original.crop((0,lower_y,512,512)),(0,lower_y))
+    if ANIM=='run_start':
+        # The initial guard hid pants/chest pixels. Rebuild those local areas
+        # before putting the new rigid weapon over them; never leave two guards.
+        bd=ImageDraw.Draw(body)
+        if index<3:
+            gx0,gy0,gx1,gy1=oldguards[index]
+            bd.rectangle((gx0,max(gy0,lower_y),gx1,gy1),fill='#202b33')
+            chains={0:(231,282,265,362),1:(235,300,278,380),2:(220,278,267,356)}
+            bd.rectangle(chains[index],fill='#202b33')
+        else:
+            chains={3:(169,180,208,245),4:(127,153,180,218),5:(170,168,224,221),6:(89,184,145,289),7:(93,172,157,254)}
+            bd.rectangle(chains[index],fill=(0,0,0,0))
     # Each elbow is drawn with its own shoulder, elbow and wrist controls.
     sx,sy=350+dx,216+dy;wx,wy=hand
     ex,ey=sx+25+(index%2)*3,sy+33-(index%3)*3
+    if ANIM=='run_start' and index<3:
+        ex,ey=sx-16,sy+31
     arm=Image.new('RGBA',(2048,2048))
     path(arm,(sx-5,sy),[
       ((sx,sy+2),(sx+7,sy+1),(sx+11,sy-1)),
@@ -86,14 +110,17 @@ for index,(crop,(dx,dy),hand,yaw,angle) in configs.items():
     delta=pommel-np.array(oldmeta['world_anchors']['pommel']);chain=shift(oldchain,*delta);chain.save(out/'chain_and_charm.png')
     head=original.copy();maskhead=Image.new('L',(512,512))
     headboxes={3:(250,45,410,202),4:(245,15,425,178),5:(270,25,440,182),6:(235,40,395,201),7:(245,30,425,186)}
+    if ANIM=='run_start':
+        headboxes={0:(240,40,410,190),1:(240,105,410,250),2:(260,75,430,225),3:(280,75,440,214),4:(255,35,430,220),5:(280,25,440,198),6:(270,15,435,193),7:(285,20,444,190)}
     # Semantic hair/skin connected component avoids restoring the original
     # chest grip as a rectangular patch around the new shoulder carry.
     arr=np.array(original);col=arr[:,:,:3].astype(float)
     bx0,by0,bx1,by1=headboxes[index]
     seed=(col[:,:,0]>col[:,:,1]*1.1)&(col[:,:,0]>col[:,:,2]*1.35)&(arr[:,:,3]>32)
     bound=np.zeros((512,512),bool);bound[by0:by1,bx0:bx1]=True
-    for oldbox in (oldguards[index],oldarms[index]):
-        x0,y0,x1,y1=oldbox;bound[y0:y1,x0:x1]=False
+    if ANIM!='run_start':
+        for oldbox in (oldguards[index],oldarms[index]):
+            x0,y0,x1,y1=oldbox;bound[y0:y1,x0:x1]=False
     binary=Image.fromarray((seed&bound).astype('uint8')*255).filter(ImageFilter.MaxFilter(5))
     occupied=np.array(binary)>0;visited=np.zeros((512,512),bool);best=[]
     for py,px in zip(*np.where(occupied)):
@@ -115,17 +142,18 @@ for index,(crop,(dx,dy),hand,yaw,angle) in configs.items():
     result=body
     for im in (weapon,chain,head,grip):result=Image.alpha_composite(result,im)
     data=np.array(result);data[data[:,:,3]==0,:3]=0;result=Image.fromarray(data,'RGBA')
-    result.save(out/f'sora_run_loop_{index:02d}_review.png')
+    result.save(out/f'sora_{ANIM}_{index:02d}_review.png')
     (out/'manifest.json').write_text(json.dumps({'frame_index':index,'crop':crop,'hand_anchor':hand,'body_reconstruction_offset':[dx,dy],'rotation_degrees':angle,'tip_toward_camera_yaw_degrees':yaw,'master_to_screen_homography':H.tolist(),'status':'provisional refined source pose; anatomy/style review pending','source_sha256':hashlib.sha256(source.read_bytes()).hexdigest()},indent=2),encoding='utf-8')
 
-batch=READY/'run_loop/review_cycle_v1';batch.mkdir(exist_ok=True)
-frames=[load(L/f'frame_{i:02d}_review_v1'/f'sora_run_loop_{i:02d}_review.png') for i in range(8)]
+batch=READY/ANIM/'review_cycle_v1';batch.mkdir(exist_ok=True)
+frames=[load(TARGET/f'frame_{i:02d}_review_v1'/f'sora_{ANIM}_{i:02d}_review.png') for i in range(8)]
 atlas=Image.new('RGBA',(2048,1024));board=Image.new('RGB',(2048,1088),'#202633');flat=[]
 for i,im in enumerate(frames):
-    im.save(batch/f'sora_run_loop_{i:02d}.png');atlas.paste(im,(i%4*512,i//4*512))
+    im.save(batch/f'sora_{ANIM}_{i:02d}.png');atlas.paste(im,(i%4*512,i//4*512))
     board.paste(im,(i%4*512,i//4*544+24),im);ImageDraw.Draw(board).text((i%4*512+10,i//4*544+5),f'Frame {i:02d}',fill='white')
     bg=Image.new('RGB',(512,512),'#202633');bg.paste(im,(0,0),im);flat.append(bg)
-atlas.save(batch/'sora_run_loop_sheet.png');board.save(batch/'Contact_Sheet.png')
-flat[0].save(batch/'sora_run_loop_preview.gif',save_all=True,append_images=flat[1:],duration=100,loop=0)
-(batch/'manifest.json').write_text(json.dumps({'status':'complete eight-pose art review, not final or integrated','canvas':[512,512],'frames':[{'path':f'sora_run_loop_{i:02d}.png','duration_ms':100} for i in range(8)],'loop':True,'limitations':['Full gait alternation, pose registration and seam need visual QA.','Upper-body repairs use shared motifs; anatomy may require further redraw.','No Godot testing.']},indent=2),encoding='utf-8')
-print('Built eight-pose run-loop review:',batch)
+atlas.save(batch/f'sora_{ANIM}_sheet.png');board.save(batch/'Contact_Sheet.png')
+delays=[160,120,100,100,100,90,90,100] if ANIM=='run_start' else [100]*8
+flat[0].save(batch/f'sora_{ANIM}_preview.gif',save_all=True,append_images=flat[1:],duration=delays,loop=0)
+(batch/'manifest.json').write_text(json.dumps({'status':'eight-pose art review, not final or integrated','canvas':[512,512],'frames':[{'path':f'sora_{ANIM}_{i:02d}.png','duration_ms':delays[i]} for i in range(8)],'loop':ANIM=='run_loop','limitations':['Pose registration and transitions need visual QA.','Upper-body repairs use shared motifs; anatomy may require further redraw.','No Godot testing.']},indent=2),encoding='utf-8')
+print('Built eight-pose review:',batch)

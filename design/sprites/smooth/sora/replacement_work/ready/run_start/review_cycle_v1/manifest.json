@@ -1,0 +1,47 @@
+{
+  "status": "eight-pose art review, not final or integrated",
+  "canvas": [
+    512,
+    512
+  ],
+  "frames": [
+    {
+      "path": "sora_run_start_00.png",
+      "duration_ms": 160
+    },
+    {
+      "path": "sora_run_start_01.png",
+      "duration_ms": 120
+    },
+    {
+      "path": "sora_run_start_02.png",
+      "duration_ms": 100
+    },
+    {
+      "path": "sora_run_start_03.png",
+      "duration_ms": 100
+    },
+    {
+      "path": "sora_run_start_04.png",
+      "duration_ms": 100
+    },
+    {
+      "path": "sora_run_start_05.png",
+      "duration_ms": 90
+    },
+    {
+      "path": "sora_run_start_06.png",
+      "duration_ms": 90
+    },
+    {
+      "path": "sora_run_start_07.png",
+      "duration_ms": 100
+    }
+  ],
+  "loop": false,
+  "limitations": [
+    "Pose registration and transitions need visual QA.",
+    "Upper-body repairs use shared motifs; anatomy may require further redraw.",
+    "No Godot testing."
+  ]
+}
