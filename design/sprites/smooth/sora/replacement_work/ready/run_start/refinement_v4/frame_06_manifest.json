@@ -1,0 +1,138 @@
+{
+  "status": "individual stride refinement; art review",
+  "source_crop": [
+    889,
+    450,
+    1333,
+    887
+  ],
+  "source_sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256",
+  "hand_anchor": [
+    350,
+    183
+  ],
+  "holding_shoulder_anchor": [
+    309,
+    147
+  ],
+  "screen_angle_degrees": 217,
+  "foreground_yaw_degrees": 26,
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "master_to_screen_homography": [
+    [
+      -0.8274016282908747,
+      0.6018150231520484,
+      371.582873757754
+    ],
+    [
+      -0.598209131112743,
+      -0.7986355100472928,
+      284.9665887989917
+    ],
+    [
+      -0.00031312224770648384,
+      0.0,
+      1.0241104130733993
+    ]
+  ],
+  "projected_anchors": {
+    "grip": [
+      350.0,
+      183.0
+    ],
+    "pommel": [
+      380.45571660367153,
+      205.95002859547958
+    ],
+    "collar": [
+      306.10683389459086,
+      149.92412690943425
+    ],
+    "tip": [
+      162.04809497771444,
+      41.36808074592099
+    ]
+  },
+  "material_pass": "local charcoal lighting and trim; source body and weapon untouched",
+  "removed_detached_fragments": [
+    {
+      "area_px": 204,
+      "bbox": [
+        69,
+        133,
+        90,
+        154
+      ]
+    },
+    {
+      "area_px": 64,
+      "bbox": [
+        85,
+        248,
+        105,
+        256
+      ]
+    },
+    {
+      "area_px": 32,
+      "bbox": [
+        123,
+        210,
+        135,
+        225
+      ]
+    },
+    {
+      "area_px": 27,
+      "bbox": [
+        35,
+        124,
+        47,
+        128
+      ]
+    },
+    {
+      "area_px": 3,
+      "bbox": [
+        128,
+        185,
+        130,
+        187
+      ]
+    },
+    {
+      "area_px": 2,
+      "bbox": [
+        107,
+        247,
+        109,
+        248
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        249,
+        67,
+        250,
+        68
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        166,
+        149,
+        167,
+        150
+      ]
+    }
+  ],
+  "occlusion": "shaft behind head/body; connected guard and approved grip in front",
+  "limitations": [
+    "Inferred garment/arm materials still need idle-quality comparison.",
+    "Root registration, timing and transition seam remain under review.",
+    "No aerial production or Godot changes/testing."
+  ]
+}

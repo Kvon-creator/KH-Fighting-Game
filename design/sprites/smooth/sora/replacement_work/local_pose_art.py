@@ -2,7 +2,7 @@
 import math
 
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 
 class Art:
@@ -91,3 +91,42 @@ def save_clean(im, path):
     pixels = np.array(im)
     pixels[pixels[:, :, 3] == 0, :3] = 0
     Image.fromarray(pixels, 'RGBA').save(path)
+
+
+def retain_main_body(im):
+    """Remove detached old-weapon fragments before adding the new weapon.
+
+    A one-pixel margin retains antialiasing beside the connected body. Report
+    every detached component so an accidentally disconnected limb is visible.
+    """
+    alpha = np.array(im.getchannel('A'))
+    occupied = alpha > 8
+    visited = np.zeros(occupied.shape, dtype=bool)
+    regions = []
+    height, width = occupied.shape
+    for y, x in np.argwhere(occupied):
+        if visited[y, x]:
+            continue
+        stack, region = [(int(x), int(y))], []
+        visited[y, x] = True
+        while stack:
+            px, py = stack.pop()
+            region.append((px, py))
+            for nx, ny in [(px-1, py), (px+1, py), (px, py-1), (px, py+1),
+                           (px-1, py-1), (px+1, py-1), (px-1, py+1), (px+1, py+1)]:
+                if 0 <= nx < width and 0 <= ny < height and occupied[ny, nx] and not visited[ny, nx]:
+                    visited[ny, nx] = True
+                    stack.append((nx, ny))
+        regions.append(region)
+    regions.sort(key=len, reverse=True)
+    keep = np.zeros(alpha.shape, dtype=np.uint8)
+    for x, y in regions[0]:
+        keep[y, x] = 255
+    margin = Image.fromarray(keep, 'L').filter(ImageFilter.MaxFilter(3))
+    result = im.copy()
+    result.putalpha(Image.composite(im.getchannel('A'), Image.new('L', im.size), margin))
+    removed = []
+    for region in regions[1:]:
+        xs, ys = zip(*region)
+        removed.append({'area_px': len(region), 'bbox': [min(xs), min(ys), max(xs)+1, max(ys)+1]})
+    return result, removed

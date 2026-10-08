@@ -1,0 +1,84 @@
+{
+  "status": "individual stride refinement; art review",
+  "source_crop": [
+    445,
+    450,
+    889,
+    887
+  ],
+  "source_sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256",
+  "hand_anchor": [
+    408,
+    201
+  ],
+  "holding_shoulder_anchor": [
+    365,
+    165
+  ],
+  "screen_angle_degrees": 219,
+  "foreground_yaw_degrees": 24,
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "master_to_screen_homography": [
+    [
+      -0.8284928418535407,
+      0.6293203910498376,
+      427.741521449234
+    ],
+    [
+      -0.6333085455441844,
+      -0.7771459614569708,
+      304.1649753088901
+    ],
+    [
+      -0.0002905261736255716,
+      0.0,
+      1.0223705153691691
+    ]
+  ],
+  "projected_anchors": {
+    "grip": [
+      408.00000000000006,
+      200.99999999999997
+    ],
+    "pommel": [
+      438.151529247502,
+      225.41622696103937
+    ],
+    "collar": [
+      364.64679578707825,
+      165.89326744053338
+    ],
+    "tip": [
+      223.19712724863444,
+      51.34958435737539
+    ]
+  },
+  "material_pass": "local charcoal lighting and trim; source body and weapon untouched",
+  "removed_detached_fragments": [
+    {
+      "area_px": 155,
+      "bbox": [
+        134,
+        198,
+        160,
+        222
+      ]
+    },
+    {
+      "area_px": 14,
+      "bbox": [
+        161,
+        189,
+        166,
+        195
+      ]
+    }
+  ],
+  "occlusion": "shaft behind head/body; connected guard and approved grip in front",
+  "limitations": [
+    "Inferred garment/arm materials still need idle-quality comparison.",
+    "Root registration, timing and transition seam remain under review.",
+    "No aerial production or Godot changes/testing."
+  ]
+}

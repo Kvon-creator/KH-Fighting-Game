@@ -1,0 +1,263 @@
+{
+  "status": "complete eight-pose start art review; quality/timing/seams unfinished",
+  "frames": [
+    {
+      "index": 0,
+      "path": "sora_run_start_00.png",
+      "source": "refinement_v2\\sora_run_start_00.png",
+      "source_sha256": "7ba628934177b87085ac98ce9f1ca68927ef17c36a4162551c6b30cd170ac668",
+      "estimated_pelvis_x": 256,
+      "translation_xy": [
+        24,
+        -2
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 160
+    },
+    {
+      "index": 1,
+      "path": "sora_run_start_01.png",
+      "source": "refinement_v3\\sora_run_start_01.png",
+      "source_sha256": "b41f890473868695fa77b676edf6b3c2eea033c2a652bd067d0ac8454f421829",
+      "estimated_pelvis_x": 255,
+      "translation_xy": [
+        25,
+        -12
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 100,
+      "master_to_export_homography": [
+        [
+          -0.7844357842930828,
+          0.6427876096865393,
+          275.40642271250965
+        ],
+        [
+          -0.662179659175083,
+          -0.766044443118978,
+          362.61094477480987
+        ],
+        [
+          -9.940935782861817e-05,
+          0.0,
+          1.0076545205528036
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    },
+    {
+      "index": 2,
+      "path": "sora_run_start_02.png",
+      "source": "refinement_v4\\sora_run_start_02.png",
+      "source_sha256": "ef19fdf3d2f82e3feb4505890c487ab4cec4a7a02b386fc164f553dd785a62b0",
+      "estimated_pelvis_x": 251,
+      "translation_xy": [
+        29,
+        -13
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 100,
+      "master_to_export_homography": [
+        [
+          -0.8606714099585705,
+          0.5591929034707467,
+          362.12819532385765
+        ],
+        [
+          -0.5796450340057865,
+          -0.8290375725550417,
+          322.66529769729846
+        ],
+        [
+          -0.00014850835058411382,
+          0.0,
+          1.0114351429949768
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    },
+    {
+      "index": 3,
+      "path": "sora_run_start_03.png",
+      "source": "refinement_v3\\sora_run_start_03.png",
+      "source_sha256": "4b689cc5aca2aec7b3f3b16730944181c748a8ab076c5ecfd38f7f9236f1f84a",
+      "estimated_pelvis_x": 254,
+      "translation_xy": [
+        26,
+        -12
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 100,
+      "master_to_export_homography": [
+        [
+          -0.8433382333642554,
+          0.6156614753256582,
+          442.8407406962516
+        ],
+        [
+          -0.6347215688120464,
+          -0.788010753606722,
+          334.03431355099815
+        ],
+        [
+          -0.00024430010237547764,
+          0.0,
+          1.0188111078829118
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    },
+    {
+      "index": 4,
+      "path": "sora_run_start_04.png",
+      "source": "refinement_v3\\sora_run_start_04.png",
+      "source_sha256": "a3cdc4260cc9612471410fb298936baa18de440e0ac15906baa519368748a43f",
+      "estimated_pelvis_x": 280,
+      "translation_xy": [
+        0,
+        41
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 100,
+      "master_to_export_homography": [
+        [
+          -0.8349855418493065,
+          0.6156614753256582,
+          411.19758344960053
+        ],
+        [
+          -0.6393308711682,
+          -0.788010753606722,
+          360.38922983242196
+        ],
+        [
+          -0.00026757613815422287,
+          0.0,
+          1.0206033626378752
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    },
+    {
+      "index": 5,
+      "path": "sora_run_start_05.png",
+      "source": "refinement_v4\\sora_run_start_05.png",
+      "source_sha256": "bf0005fc9714e9460d4cd31070c08f0f17fdfab812fdc89e5859b7cd38eef206",
+      "estimated_pelvis_x": 272,
+      "translation_xy": [
+        8,
+        41
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 100,
+      "master_to_export_homography": [
+        [
+          -0.8308170512425452,
+          0.6293203910498376,
+          435.9204855721874
+        ],
+        [
+          -0.6452201186628328,
+          -0.7771459614569708,
+          346.0821664390261
+        ],
+        [
+          -0.0002905261736255716,
+          0.0,
+          1.0223705153691691
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    },
+    {
+      "index": 6,
+      "path": "sora_run_start_06.png",
+      "source": "refinement_v4\\sora_run_start_06.png",
+      "source_sha256": "16b0271138d4c04e8c631bd98fa606fff5b77ef7d1e093a867108dc730ce5c31",
+      "estimated_pelvis_x": 225,
+      "translation_xy": [
+        55,
+        36
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 100,
+      "master_to_export_homography": [
+        [
+          -0.8446233519147314,
+          0.6018150231520484,
+          427.90894647679096
+        ],
+        [
+          -0.6094815320301764,
+          -0.7986355100472928,
+          321.8345636696341
+        ],
+        [
+          -0.00031312224770648384,
+          0.0,
+          1.0241104130733993
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    },
+    {
+      "index": 7,
+      "path": "sora_run_start_07.png",
+      "source": "refinement_v4\\sora_run_start_07.png",
+      "source_sha256": "57ca3dd1f5821dd865d181865ac3cee7971246f281e5db8b4490937ed82d0fea",
+      "estimated_pelvis_x": 278,
+      "translation_xy": [
+        2,
+        41
+      ],
+      "scale": 1,
+      "review_floor_y": 432,
+      "timing_ms": 160,
+      "master_to_export_homography": [
+        [
+          -0.8347607618348611,
+          0.6156614753256582,
+          425.18027538848827
+        ],
+        [
+          -0.6244316187878349,
+          -0.788010753606722,
+          330.24198739913385
+        ],
+        [
+          -0.00031312224770648384,
+          0.0,
+          1.0241104130733993
+        ]
+      ],
+      "weapon_physical_master_length_px": 285
+    }
+  ],
+  "canvas": [
+    512,
+    512
+  ],
+  "floor_y": 432,
+  "root_x": 280,
+  "registration": "estimated pelvis x and foot baseline; translation only",
+  "loop_seam_reference": "run_loop\\layers\\frame_00_review_v1\\sora_run_loop_00_review.png",
+  "loop_reference_translation_xy": [
+    2,
+    3
+  ],
+  "limitations": [
+    "New drawing set covers all start poses, but is not final animation approval.",
+    "Earlier repairs and clothing materials remain below idle detail.",
+    "Idle endpoint retains its original weapon; rigid-master blend is pending.",
+    "Start07/loop00 have different body pitch and rear-leg positions.",
+    "Root/flight trajectory, timing and gait need refinement before integration.",
+    "No Godot integration/test or aerial production."
+  ]
+}
