@@ -1,7 +1,0 @@
-Read HANDOFF.md first.
-The short task at the top can be pasted into Layer.ai.
-Workspace-relative references and editable PNG layers are bundled.
-Latest flattened frames: ready/run_loop/layers/frame_00_review_v1 and frame_01_review_v1
-(under design/sprites/smooth/sora/replacement_work/).
-Older versions are history/dependencies; art_pass_04 has the rejected grip.
-This package has no PSD or Godot build. Preserve source sheets.
