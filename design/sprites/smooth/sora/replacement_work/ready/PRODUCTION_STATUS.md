@@ -11,7 +11,7 @@
 | Backward shimmy | Ten shared poses from forward footwork, in reverse order. Separate backward generation had inadequate front-foot follow-through; its correction was blocked. Shared artwork is documented in the manifest. |
 | Attack wind-up | Original file retained. Two new generation attempts were rejected by the image tool's output safety system; no replacement is claimed. |
 | Run start | Body poses accepted; weapon geometry rejected. Two same-arm shoulder-carry correction attempts blocked; existing source remains draft. |
-| Run loop | Body poses accepted; weapon geometry needs same-arm shoulder-carry correction. Existing source remains draft. |
+| Run loop | Eight-pose local rigid-carry review exported in run_loop/review_cycle_v1. Anatomy, gait/seam and garment consistency remain draft-quality review work; no engine integration. |
 | Run stop | Output-stage generation rejected; no artwork produced. |
 | KH1 first jump / KH2 Aerial Dodge second jump | Pending. |
 | Backdash / forward and backward air dashes | Pending. |

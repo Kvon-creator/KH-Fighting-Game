@@ -47,6 +47,9 @@ for index,(crop,(dx,dy),hand,yaw,angle) in configs.items():
     md.rectangle(oldguards[index],fill=255);md.rectangle(oldarms[index],fill=255)
     body.putalpha(Image.composite(Image.new('L',(512,512),0),body.getchannel('A'),mask))
     body=Image.alpha_composite(body,shift(repair,dx,dy))
+    # Preserve original pelvis/leg pixels below the jacket repair boundary.
+    lower_y=240+dy
+    body.paste(original.crop((0,lower_y,512,512)),(0,lower_y))
     # Each elbow is drawn with its own shoulder, elbow and wrist controls.
     sx,sy=350+dx,216+dy;wx,wy=hand
     ex,ey=sx+25+(index%2)*3,sy+33-(index%3)*3
@@ -105,6 +108,9 @@ for index,(crop,(dx,dy),hand,yaw,angle) in configs.items():
     chosen=np.zeros((512,512),np.uint8)
     for py,px in best:chosen[py,px]=255
     maskhead=Image.fromarray(chosen).filter(ImageFilter.MaxFilter(3))
+    head_a=np.array(maskhead)
+    gold=(col[:,:,0]>120)&(col[:,:,1]>80)&(col[:,:,2]<75)&(col[:,:,1]>.65*col[:,:,0])
+    head_a[gold]=0;maskhead=Image.fromarray(head_a)
     head.putalpha(Image.composite(original.getchannel('A'),Image.new('L',(512,512),0),maskhead));head.save(out/'head_occlusion.png')
     result=body
     for im in (weapon,chain,head,grip):result=Image.alpha_composite(result,im)
