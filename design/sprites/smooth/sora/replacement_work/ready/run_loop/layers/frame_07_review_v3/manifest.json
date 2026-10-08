@@ -1,0 +1,177 @@
+{
+  "frame_index": 7,
+  "crop": [
+    1333,
+    450,
+    1774,
+    887
+  ],
+  "hand_anchor": [
+    361,
+    210
+  ],
+  "body_reconstruction_offset": [
+    -44,
+    -15
+  ],
+  "rotation_degrees": 218,
+  "tip_toward_camera_yaw_degrees": 26,
+  "master_to_screen_homography": [
+    [
+      -0.8212965051834823,
+      0.6156614753256582,
+      381.14352762633206
+    ],
+    [
+      -0.6191085405768247,
+      -0.788010753606722,
+      312.832110376886
+    ],
+    [
+      -0.00031312224770648384,
+      0.0,
+      1.0241104130733993
+    ]
+  ],
+  "status": "individual late-stride garment/arm review; full gait QA pending",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "source_review": "frame_07_review_v2",
+  "head_layer": "head_preserved.png",
+  "occlusion": "shaft behind head/body; connected guard and original corrected grip in front",
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "lower_body_preserved_from_y": 300,
+  "removed_detached_body_fragments": [
+    {
+      "area_px": 6,
+      "bbox": [
+        144,
+        176,
+        146,
+        182
+      ]
+    },
+    {
+      "area_px": 4,
+      "bbox": [
+        139,
+        235,
+        143,
+        236
+      ]
+    },
+    {
+      "area_px": 2,
+      "bbox": [
+        147,
+        177,
+        148,
+        179
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        410,
+        71,
+        411,
+        72
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        382,
+        136,
+        383,
+        137
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        351,
+        153,
+        352,
+        154
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        355,
+        154,
+        356,
+        155
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        312,
+        210,
+        313,
+        211
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        136,
+        235,
+        137,
+        236
+      ]
+    }
+  ],
+  "checks": [
+    "original sheet/prior review hashes unchanged",
+    "four carry/grip/chain files byte-identical to v2",
+    "opaque gripping hand exact; cuff inside forearm",
+    "lower composite exact from y300"
+  ],
+  "limitations": [
+    "Cross-frame garment/arm proportions still need comparison with idle.",
+    "Alternating gait/contact order, root/timing and start/stop seams remain unfinished.",
+    "Offline checks only; no Godot test or aerial artwork."
+  ],
+  "prior_review_sha256": "7df4fdbaab1c3f146dba0880a078adde1770bbc04ade604b38a8c21e4e11a2a8",
+  "projected_wrist_cuff": [
+    348.68677049348685,
+    225.76021507213443
+  ],
+  "garment_method": "pose-specific chest curves; sleeves/arms follow individual shoulder/elbow/cuff joints",
+  "source_jacket_method": "small source hood/pad contour retained; old gold excluded",
+  "joint_controls": {
+    "far_shoulder": [
+      261,
+      129
+    ],
+    "far_cuff": [
+      241,
+      166
+    ],
+    "far_elbow": [
+      229,
+      188
+    ],
+    "far_wrist": [
+      212,
+      208
+    ],
+    "near_shoulder": [
+      337,
+      151
+    ],
+    "near_cuff": [
+      334,
+      182
+    ],
+    "near_elbow": [
+      336,
+      219
+    ]
+  }
+}

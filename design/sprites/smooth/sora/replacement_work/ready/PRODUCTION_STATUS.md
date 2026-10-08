@@ -2,7 +2,7 @@
 
 ## Current files
 
-October 8 steering: K'von ended the Gemini trial and requested returning to local refinement. design/gemini_movement_handoff/ is deleted; original artwork is retained. New loop03/04 v4 garments repair the source waist cutoff and collar/strap detail. They are included in run_loop/review_cycle_v3; previous candidates/packages remain preserved. These changes do not finalize the running animations.
+October 8 steering: K'von ended the Gemini trial and requested returning to local refinement. design/gemini_movement_handoff/ is deleted; original artwork is retained. Latest run_loop/review_cycle_v4 includes individual03-07 jacket/arm repairs, with source hood/pad detail on05-07 and06's old chest arm/guard strip removed. Previous candidates/packages remain preserved. These changes do not finalize the running animations.
 
 | Batch | Status |
 | --- | --- |
@@ -13,7 +13,7 @@ October 8 steering: K'von ended the Gemini trial and requested returning to loca
 | Backward shimmy | Ten shared poses from forward footwork, in reverse order. Separate backward generation had inadequate front-foot follow-through; its correction was blocked. Shared artwork is documented in the manifest. |
 | Attack wind-up | Original file retained. Two new generation attempts were rejected by the image tool's output safety system; no replacement is claimed. |
 | Run start | All eight working poses are packaged in run_start/refinement_v4/review_cycle_v2. Latest stride05-07 have individual arm/cloth repairs and the last shoe is recovered from an expanded source crop. The earlier failed full-cycle draft and partial review are retained. Artwork detail, idle weapon endpoint, root/timing and body/rear-leg transition into loop00 remain unfinished. |
-| Run loop | run_loop/review_cycle_v3 includes individual03/04 v4 jacket/arm contours, restored red waist fabric, narrower collars and visible straps. Other poses retain v2 art. Rigid carry/grip/chain geometry is unchanged; frame00 retains its approved hand/cuff region. Original sources and all prior reviews remain. Remaining clothing/arm anatomy, alternating gait, root/timing and transition seams require work; see QA_NOTES.md. No engine integration. |
+| Run loop | run_loop/review_cycle_v4 combines03/04 v4 garments and05/06/07 v3 source-pose jackets/arms. The old straight-arm/guard strip on06's chest is removed. Frames00-02 retain v2 clothing. Carry/grip/chain files are unchanged; frame00 retains its approved hand/cuff. Original sources and all earlier reviews remain. Remaining jackets, cross-frame arm/material proportions, both alternating strides, root/timing and seams require work; see QA_NOTES.md. No engine integration. |
 | Run stop | Eight-pose refinement_v2 replaces flat construction legs with shaded shorts contours, trim and arm lighting. Still below approved-idle quality; anatomy, torso seams and guard transition remain. Original construction_v1 retained. |
 | KH1 first jump / KH2 Aerial Dodge second jump | Pending. |
 | Backdash / forward and backward air dashes | Pending. |

@@ -16,14 +16,17 @@ READY = ROOT/'ready'
 LOOP = READY/'run_loop'
 L = LOOP/'layers'
 parser = argparse.ArgumentParser()
-parser.add_argument('--garment-review', action='store_true', help='Package new03/04 v4 bodies with the other v2 poses')
+mode = parser.add_mutually_exclusive_group()
+mode.add_argument('--garment-review', action='store_true', help='Package03/04 v4 bodies with the other v2 poses')
+mode.add_argument('--late-garment-review', action='store_true', help='Package03/04 v4 and05/06/07 v3 bodies, preserving prior cycles')
 args = parser.parse_args()
-OUT = LOOP/('review_cycle_v3' if args.garment_review else 'review_cycle_v2')
+versions = {3: 4, 4: 4, 5: 3, 6: 3, 7: 3} if args.late_garment_review else ({3: 4, 4: 4} if args.garment_review else {})
+OUT = LOOP/('review_cycle_v4' if args.late_garment_review else ('review_cycle_v3' if args.garment_review else 'review_cycle_v2'))
 OUT.mkdir(parents=True, exist_ok=True)
 images, records = [], []
 master_hashes, grip_hashes = set(), set()
 for i in range(8):
-    version = 4 if args.garment_review and i in (3, 4) else 2
+    version = versions.get(i, 2)
     source_dir = L/f'frame_{i:02d}_review_v{version}'
     path = source_dir/f'sora_run_loop_{i:02d}_review.png'
     m = json.loads((source_dir/'manifest.json').read_text(encoding='utf-8'))
@@ -62,7 +65,7 @@ for i, im in enumerate(images):
     x, y = (i % 4)*256, (i // 4)*300
     small = im.resize((256, 256), Image.Resampling.LANCZOS)
     board.paste(small, (x, y+30), small)
-    caption = 'new garment' if args.garment_review and i in (3, 4) else 'carry review'
+    caption = 'new garment' if i in versions else 'carry review'
     bd.text((x+10, y+10), f'Loop {i:02d} / {caption}', fill='white')
     bd.line((x, y+246, x+255, y+246), fill='#566270')
     for row, current in enumerate([im, im.transpose(Image.Transpose.FLIP_LEFT_RIGHT)]):
@@ -99,15 +102,16 @@ seam_flat[0].save(OUT/'start_loop_seam_review.gif', save_all=True,
                   append_images=seam_flat[1:], duration=350, loop=0, disposal=2)
 
 (OUT/'manifest.json').write_text(json.dumps({
-    'status': ('eight-pose review with new03/04 garment art; gait/seams unfinished'
-               if args.garment_review else 'eight-pose carry-overlap review; art/gait/seams unfinished'),
+    'status': ('eight-pose review with individual03-07 garment art; gait/seams unfinished'
+               if args.late_garment_review else ('eight-pose review with new03/04 garment art; gait/seams unfinished'
+               if args.garment_review else 'eight-pose carry-overlap review; art/gait/seams unfinished')),
     'canvas': [512, 512], 'floor_y': 432, 'review_root_x': 280, 'frames': records,
     'registration': 'repair-plate pelvis estimate and foot baseline; translation only',
     'shared_weapon_master_sha256': next(iter(master_hashes)),
     'shared_grip_master_sha256': next(iter(grip_hashes)),
-    'new_individual_garment_frames': [3, 4] if args.garment_review else [],
+    'new_individual_garment_frames': sorted(versions),
     'limitations': ['Same rigid carry overlap across eight existing poses, not new gait approval.',
-                    'Shared garment motifs and arm anatomy still need individual refinement.',
+                    'Remaining garments, arm anatomy and cross-frame cloth proportions need refinement.',
                     'Pelvis registration, flight offsets, timing and alternating gait need review.',
                     'Start07 to loop00 body pitch/rear-leg transition remains unfinished.',
                     'No protected engine changes, Godot test or aerial artwork.']}, indent=2), encoding='utf-8')
@@ -160,6 +164,44 @@ if args.garment_review:
         'idle-to-master weapon continuity and polish run-stop middle poses.\n\n'
         'Original sources and earlier reviews are intact. Offline image '
         'checks only; no Godot integration or aerial production.\n', encoding='utf-8')
+if args.late_garment_review:
+    (OUT/'README.md').write_text(
+        '# Eight-pose loop review: individual03-07 garments\n\n'
+        'Frames03/04 retain their v4 garments. Frames05/06/07 use new v3 '
+        'source-pose jackets and articulated arm controls, retaining actual '
+        'heads, lower-body poses and small original hood/shoulder details. '
+        'Frame06 no longer contains the old straight-arm/guard fragment across '
+        'the chest. Frames00-02 retain their existing v2 artwork.\n\n'
+        'All four weapon/grip/chain files on the new poses are byte-identical '
+        'to v2. Opaque grip interiors and the recorded lower-body regions are '
+        'exact; projected cuffs are inside the new forearms. No whole-body '
+        'scaling/warping creates poses. Source sheets and earlier reviews remain.\n\n'
+        'Exports use preliminary pelvis registration and floor y432, translation '
+        'only. Garment and arm proportions across frames, both alternating strides, '
+        'contact/flight offsets, timing and start/stop/idle seams remain unfinished. '
+        'PNG/GIF validation is offline only; no Godot test or aerial art.\n', encoding='utf-8')
+    (OUT/'QA_NOTES.md').write_text(
+        '# Next run-loop refinement\n\n'
+        'The five later poses now have individual body repairs. Frame06 no '
+        'longer shows an old arm strip/gold guard across the chest. Source '
+        'hood/shoulder detail on05-07 helps retain the approved material style. '
+        'Carry/grip geometry remains unchanged; original sheets and earlier '
+        'reviews are preserved.\n\n'
+        '- Refine00-02 clothing around their own source anatomy while preserving '
+        'frame00\'s exact approved hand/cuff area. Match chest width, sleeve '
+        'volume and cloth lighting with03-07 and approved idle.\n'
+        '- Check the carrying shoulder, elbow and wrist proportions through '
+        'the whole cycle. New wrists overlap the fixed grip; pixel overlap '
+        'alone does not certify anatomical quality.\n'
+        '- Validate both alternating strides: contact, compression, passing, '
+        'push-off, flight and pre-contact. Several source poses repeat the same '
+        'apparent forward-leg arrangement. Map anatomical leg roles and draw '
+        'missing phases rather than reordering or mirroring the whole character.\n'
+        '- Refine root/pelvis registration, vertical offsets and timing. The '
+        'current common foot baseline is provisional and does not model flight.\n'
+        '- Bridge start07 to loop00, match the idle weapon endpoint and polish '
+        'the run-stop middle poses before aerial movement.\n\n'
+        'No generation retry, protected engine edit or Godot integration/test.\n', encoding='utf-8')
 for rec in records:
     Image.open(OUT/rec['path']).verify()
     a = np.array(Image.open(OUT/rec['path']))
