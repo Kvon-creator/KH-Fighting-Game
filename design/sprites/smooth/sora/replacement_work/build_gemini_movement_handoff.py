@@ -1,4 +1,7 @@
-"""Copy complete-image references and build a compact, verified Gemini handoff."""
+"""Historical handoff helper, retired after the Gemini trial was cancelled."""
+
+raise SystemExit('Gemini handoff cancelled by K\'von; no files written. Continue the local workflow.')
+
 from pathlib import Path
 import hashlib
 import json

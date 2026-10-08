@@ -1,0 +1,129 @@
+{
+  "frame_index": 4,
+  "crop": [
+    0,
+    450,
+    445,
+    887
+  ],
+  "hand_anchor": [
+    377,
+    197
+  ],
+  "body_reconstruction_offset": [
+    -28,
+    -28
+  ],
+  "rotation_degrees": 217,
+  "tip_toward_camera_yaw_degrees": 23,
+  "master_to_screen_homography": [
+    [
+      -0.8403661741668956,
+      0.6018150231520484,
+      399.5811437902076
+    ],
+    [
+      -0.6089551013437583,
+      -0.7986355100472928,
+      299.7940285067799
+    ],
+    [
+      -0.0002790936632066241,
+      0.0,
+      1.02149021206691
+    ]
+  ],
+  "status": "individual garment/arm refinement; full animation QA pending",
+  "source_sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0",
+  "source_review": "frame_04_review_v2",
+  "head_layer": "frame_04_review_v1\\head_occlusion.png",
+  "occlusion": "shaft behind head/body; connected guard and original corrected grip in front",
+  "weapon_master_sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800",
+  "grip_master_sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f",
+  "physical_master_length_px": 285,
+  "master_scale": 1,
+  "lower_body_preserved_from_y": 300,
+  "removed_detached_body_fragments": [
+    {
+      "area_px": 1,
+      "bbox": [
+        315,
+        47,
+        316,
+        48
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        157,
+        241,
+        158,
+        242
+      ]
+    },
+    {
+      "area_px": 1,
+      "bbox": [
+        217,
+        287,
+        218,
+        288
+      ]
+    }
+  ],
+  "attached_old_weapon_removal_polygons": [
+    [
+      [
+        217,
+        97
+      ],
+      [
+        236,
+        93
+      ],
+      [
+        245,
+        107
+      ],
+      [
+        259,
+        107
+      ],
+      [
+        259,
+        119
+      ],
+      [
+        243,
+        123
+      ],
+      [
+        215,
+        116
+      ]
+    ]
+  ],
+  "checks": [
+    "original sheet/prior review hashes unchanged",
+    "all four weapon/grip/chain layer files byte-identical to v2",
+    "opaque grip interior exact; projected cuff inside arm",
+    "lower-body composite exact from y300"
+  ],
+  "limitations": [
+    "Other loop poses still use older garment repairs.",
+    "Cross-frame clothing/arm proportions need further visual review.",
+    "Gait/root/timing and start/stop seams remain unfinished.",
+    "Offline art checks only; no Godot integration or aerial production."
+  ],
+  "previous_garment_candidate_sha256": "854f8f3cedaebaf00a967579b33e94ca71b45f910fb997c8dc7b8951d2038c9c",
+  "cloth_detail_method": "source waist fan contour; narrower collar; visible straps/crown/folds",
+  "prior_review_sha256": "8eaa9254b64514ec721cbadf2521ad093c061143eba5beda6cb5d01e631a748d",
+  "garment_method": "new per-pose cubic contours; no translated torso template",
+  "head_method": "source hair/face/neck with contour excluding prior shoulder fragments",
+  "source_lower_plate_starts_y": 212,
+  "projected_wrist_cuff": [
+    364.96369953695904,
+    212.97271020094587
+  ]
+}

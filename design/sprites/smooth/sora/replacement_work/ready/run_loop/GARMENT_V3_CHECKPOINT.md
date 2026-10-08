@@ -1,6 +1,8 @@
-# Paused loop03/04 garment refinement
+# Loop03/04 garment checkpoint history
 
 K'von requested a Gemini trial on October 8, 2026 before further local refinement. Preserve these candidates and resume only after his update if he requests returning to the local method.
+
+Update: K'von subsequently ended the trial and requested returning to local work. Refinement resumed in frame_03_review_v4 and frame_04_review_v4, preserving these v3 candidates. New source waist contours repair the cut edge; narrower collar piping, visible straps and shirt/fold details are in review_cycle_v3. The notes below describe the old v3 candidates, not the new repair status. Full art/gait/seam review remains unfinished.
 
 `layers/frame_03_review_v3/` and `frame_04_review_v3/` replace the shifted torso template with individually drawn jacket/sleeve/free-arm/holding-arm contours around the source heads and lower-body poses. The four weapon, grip and chain files are byte-identical to v2. Opaque gripping-hand pixels, projected cuff overlap, source/prior-review hashes and the recorded lower-body composite regions passed offline checks.
 

@@ -1,6 +1,6 @@
 # Sora running Keyblade carry
 
-**Current local refinement:** The eight loop poses now have separate frame_XX_review_v2 layers and a run_loop/review_cycle_v2 package. Shaft overlap is behind the head/body, with the connected guard and approved grip in front, matching the newer start poses. Existing weapon projections, grip drawings, prior reviews and original sheets remain unchanged. Frame00 retains the exact approved hand/cuff region. Local masks clear attached old guard/handle fragments in03/04. Layer checks do not imply finished anatomy, clothing, gait or transition timing; the review package's QA_NOTES.md records the next art work.
+**Current local refinement:** run_loop/review_cycle_v3 uses new frame_03_review_v4 and frame_04_review_v4 garment/arm drawings with the other six v2 poses. Source waist contours restore the red fabric, collars are narrower and straps/shirt detail are visible. All four weapon/grip/chain PNG layers on03/04 remain byte-identical to v2. Shaft overlap stays behind the head/body, with connected guard and approved grip in front. Frame00's approved hand/cuff region and original sources/prior reviews remain intact. These checks do not imply finished anatomy, clothing, gait or timing; see the new package's QA_NOTES.md.
 
 **Fact or rule:** Running artwork must carry the Kingdom Key slung over the shoulder of the arm holding its handle. Use design/references/Sora_KHIV_Render.webp as the carry and weapon-construction reference, retaining the approved KH2 outfit and smooth style. Keep the weapon form consistent: handle, guard, shaft and blade must connect and move as one rigid object.
 
@@ -26,4 +26,4 @@
 
 **Handoff cancelled:** K'von requested deleting design/handoffs/ and resuming the original local layered process. The exact folder was deleted on October 7, 2026; project artwork was retained.
 
-**New Gemini trial:** On October 8 K'von requested a new full-frame movement handoff without individual layers. It is in design/gemini_movement_handoff/; the old design/handoffs/ folder remains deleted. Pause local refinement pending his evaluation. Carry geometry, same-arm shoulder placement, foreground tip and correct hand orientation still apply to complete-frame generation. See Sora_Gemini_Movement_Trial.md.
+**Gemini trial ended:** On October 8 K'von requested returning to the original local workflow and deleting design/gemini_movement_handoff/. The exact folder is removed, original art is retained and local refinement has resumed. The older design/handoffs/ folder remains deleted. Carry geometry, same-arm shoulder placement, foreground tip and approved grip remain requirements. See Sora_Gemini_Movement_Trial.md.

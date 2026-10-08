@@ -4,4 +4,4 @@
 
 **Why:** K'von explicitly requested autonomous progress on October 7, 2026.
 
-**Current steering:** October 8: pause local refinement while K'von tests Gemini full-frame movement generation. Prepare the requested handoff and preserve the unfinished local checkpoint. Resume artwork after his update if he asks to return to this method; see Sora_Gemini_Movement_Trial.md.
+**Current steering:** October 8: K'von ended the Gemini trial, requested deleting its handoff folder and returning to local refinement. The folder is removed and work has resumed. Continue running art/gait refinement before aerial movement, with the previously authorized periodic main pushes; see Sora_Gemini_Movement_Trial.md.

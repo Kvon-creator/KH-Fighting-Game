@@ -22,6 +22,7 @@ SOURCE_HASH = '6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0'
 assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == SOURCE_HASH
 parser = argparse.ArgumentParser()
 parser.add_argument('--frame', type=int, choices=(3, 4))
+parser.add_argument('--detail', action='store_true', help='New v4 cloth join/collar pass; preserves v3 files')
 args = parser.parse_args()
 
 
@@ -117,8 +118,9 @@ def loop03():
                     ((245, 157), (239, 151), (243, 145))], '#39414a', '#7d8892', .8)
     t((244, 145), [((250, 142), (256, 146), (258, 149))], '#b5c0c8', .6)
     buttons(a, [(246, 146), (257, 156)])
-    t((255, 167), [((256, 172), (253, 179), (250, 183))], '#d29e21', 2.7)
-    t((254, 168), [((254, 173), (252, 177), (250, 179))], '#f5d052', .9)
+    if not args.detail:
+        t((255, 167), [((256, 172), (253, 179), (250, 183))], '#d29e21', 2.7)
+        t((254, 168), [((254, 173), (252, 177), (250, 179))], '#f5d052', .9)
 
     # V shirt and perspective lapels track neck-to-waist lean.
     s((286, 165), [((297, 166), (310, 171), (322, 180)),
@@ -130,17 +132,31 @@ def loop03():
                     ((267, 216), (264, 213), (262, 208)),
                     ((270, 195), (279, 185), (286, 178))], '#333b45', None)
     t((288, 181), [((295, 187), (306, 183), (313, 179))], '#bec9d2', 1.6)
-    t((278, 202), [((281, 204), (284, 208), (287, 204)),
-                    ((290, 201), (294, 203), (296, 198))], '#aab8c4', 1.2)
-    t((281, 191), [((281, 196), (279, 200), (278, 202))], '#b7c4cf', .6)
-    s((270, 142), [((275, 141), (281, 146), (283, 151)),
-                    ((275, 172), (260, 194), (248, 208)),
-                    ((242, 207), (237, 203), (236, 200)),
-                    ((246, 182), (261, 159), (270, 142))], '#303741')
-    t((275, 143), [((278, 145), (282, 149), (283, 151)),
-                    ((275, 172), (260, 194), (248, 208)),
-                    ((244, 207), (239, 203), (236, 200))], '#dde4e8', 1.8)
-    t((279, 153), [((271, 173), (257, 193), (247, 204))], '#8e9ca8', .7)
+    if args.detail:
+        pendant(a, 3)
+        s((277, 144), [((281, 146), (284, 151), (284, 156)),
+                        ((277, 180), (265, 203), (252, 216)),
+                        ((248, 217), (245, 214), (244, 211)),
+                        ((253, 196), (269, 165), (277, 144))], '#303741')
+        t((281, 147), [((282, 149), (284, 153), (284, 156)),
+                        ((277, 180), (265, 203), (252, 216)),
+                        ((250, 216), (248, 215), (247, 214))], '#dce3e7', 1.5)
+        t((276, 160), [((268, 179), (256, 201), (248, 211))], '#73818d', .7)
+        t((249, 165), [((249, 172), (246, 181), (243, 185))], '#d8a624', 2.5)
+        t((248, 166), [((248, 172), (245, 178), (244, 180))], '#f4d256', .8)
+        cloth_folds(a, 3)
+    else:
+        t((278, 202), [((281, 204), (284, 208), (287, 204)),
+                        ((290, 201), (294, 203), (296, 198))], '#aab8c4', 1.2)
+        t((281, 191), [((281, 196), (279, 200), (278, 202))], '#b7c4cf', .6)
+        s((270, 142), [((275, 141), (281, 146), (283, 151)),
+                        ((275, 172), (260, 194), (248, 208)),
+                        ((242, 207), (237, 203), (236, 200)),
+                        ((246, 182), (261, 159), (270, 142))], '#303741')
+        t((275, 143), [((278, 145), (282, 149), (283, 151)),
+                        ((275, 172), (260, 194), (248, 208)),
+                        ((244, 207), (239, 203), (236, 200))], '#dde4e8', 1.8)
+        t((279, 153), [((271, 173), (257, 193), (247, 204))], '#8e9ca8', .7)
     t((322, 181), [((312, 204), (290, 224), (265, 235)),
                     ((256, 238), (244, 234), (238, 229))], '#dce3e7', 1.8)
     t((318, 186), [((306, 207), (286, 224), (264, 231))], '#697b8c', .7)
@@ -258,8 +274,9 @@ def loop04():
                     ((257, 129), (254, 120), (260, 115))], '#38424c', '#7e8d99', .8)
     t((260, 116), [((265, 114), (270, 120), (272, 123))], '#b1c0ca', .6)
     buttons(a, [(261, 117), (271, 130)])
-    t((274, 139), [((275, 145), (273, 151), (269, 155))], '#d5a424', 2.7)
-    t((273, 140), [((273, 145), (271, 149), (269, 151))], '#f7d754', .9)
+    if not args.detail:
+        t((274, 139), [((275, 145), (273, 151), (269, 155))], '#d5a424', 2.7)
+        t((273, 140), [((273, 145), (271, 149), (269, 151))], '#f7d754', .9)
 
     s((306, 142), [((315, 142), (328, 146), (340, 154)),
                     ((328, 178), (306, 197), (285, 208)),
@@ -270,17 +287,31 @@ def loop04():
                     ((284, 189), (280, 184), (280, 180)),
                     ((291, 165), (298, 158), (305, 154))], '#333e4a', None)
     t((306, 155), [((314, 164), (326, 158), (331, 155))], '#c0ccd6', 1.6)
-    t((295, 175), [((299, 179), (302, 183), (304, 178)),
-                    ((307, 176), (311, 178), (312, 173))], '#aab9c7', 1.2)
-    t((299, 164), [((299, 169), (296, 173), (295, 175))], '#b8c7d2', .6)
-    s((286, 113), [((292, 114), (299, 121), (301, 128)),
-                    ((291, 150), (277, 172), (265, 186)),
-                    ((259, 185), (255, 181), (253, 177)),
-                    ((264, 157), (278, 132), (286, 113))], '#313a45')
-    t((290, 115), [((295, 118), (299, 125), (301, 128)),
-                    ((291, 150), (277, 172), (265, 186)),
-                    ((260, 185), (256, 180), (253, 177))], '#dce5eb', 1.8)
-    t((297, 131), [((287, 152), (275, 171), (264, 182))], '#8a9cae', .7)
+    if args.detail:
+        pendant(a, 4)
+        s((294, 116), [((298, 117), (302, 123), (302, 129)),
+                        ((294, 151), (281, 176), (272, 190)),
+                        ((268, 191), (264, 188), (263, 185)),
+                        ((273, 166), (287, 137), (294, 116))], '#313a45')
+        t((298, 119), [((300, 122), (302, 126), (302, 129)),
+                        ((294, 151), (281, 176), (272, 190)),
+                        ((270, 190), (267, 189), (266, 187))], '#dce4e9', 1.5)
+        t((293, 135), [((284, 155), (273, 177), (267, 185))], '#758695', .7)
+        t((272, 138), [((272, 146), (269, 153), (265, 158))], '#d9aa26', 2.5)
+        t((271, 139), [((271, 145), (268, 151), (267, 153))], '#f7d859', .8)
+        cloth_folds(a, 4)
+    else:
+        t((295, 175), [((299, 179), (302, 183), (304, 178)),
+                        ((307, 176), (311, 178), (312, 173))], '#aab9c7', 1.2)
+        t((299, 164), [((299, 169), (296, 173), (295, 175))], '#b8c7d2', .6)
+        s((286, 113), [((292, 114), (299, 121), (301, 128)),
+                        ((291, 150), (277, 172), (265, 186)),
+                        ((259, 185), (255, 181), (253, 177)),
+                        ((264, 157), (278, 132), (286, 113))], '#313a45')
+        t((290, 115), [((295, 118), (299, 125), (301, 128)),
+                        ((291, 150), (277, 172), (265, 186)),
+                        ((260, 185), (256, 180), (253, 177))], '#dce5eb', 1.8)
+        t((297, 131), [((287, 152), (275, 171), (264, 182))], '#8a9cae', .7)
     t((340, 155), [((327, 180), (306, 198), (284, 209)),
                     ((276, 212), (265, 208), (260, 204))], '#dce5eb', 1.8)
     t((335, 161), [((322, 181), (305, 197), (284, 205))], '#6b7f92', .7)
@@ -342,10 +373,65 @@ def soften_cloth(im, index):
     return Image.fromarray(p, 'RGBA')
 
 
+def pendant(a, index):
+    x, y = (281, 199) if index == 3 else (300, 172)
+    a.stroke((x+3, y-15), [((x+1, y-10), (x-2, y-6), (x, y-2))], '#b5c4d0', .65)
+    a.shape((x-3, y), [((x-3, y-2), (x-3, y-4), (x-3, y-5)),
+                        ((x-2, y-4), (x-1, y-3), (x, y-3)),
+                        ((x+1, y-5), (x+2, y-7), (x+2, y-7)),
+                        ((x+3, y-5), (x+4, y-4), (x+4, y-3)),
+                        ((x+6, y-4), (x+7, y-5), (x+7, y-5)),
+                        ((x+7, y-3), (x+6, y-1), (x+6, y)),
+                        ((x+2, y+2), (x-1, y+2), (x-3, y))], '#c8d2db', '#566572', .5)
+
+
+def cloth_folds(a, index):
+    folds = [
+        ((235, 185), [((231, 193), (230, 201), (232, 207))], '#66717c'),
+        ((232, 209), [((235, 212), (239, 213), (241, 213))], '#1c242d'),
+        ((239, 222), [((244, 227), (249, 229), (256, 229))], '#515d68'),
+        ((292, 215), [((289, 220), (281, 225), (277, 226))], '#47535f'),
+        ((254, 156), [((257, 160), (258, 165), (257, 170))], '#626d78'),
+    ] if index == 3 else [
+        ((255, 154), [((250, 163), (249, 170), (251, 177))], '#667580'),
+        ((250, 179), [((252, 182), (257, 185), (260, 185))], '#1d2732'),
+        ((258, 194), [((263, 199), (269, 201), (276, 201))], '#536371'),
+        ((313, 187), [((308, 193), (301, 198), (296, 199))], '#485d6c'),
+        ((275, 128), [((278, 133), (278, 137), (277, 142))], '#637480'),
+    ]
+    for start, curve, color in folds:
+        a.stroke(start, curve, color, .7)
+
+
+def waist_contour(original, index):
+    """Keep the source red fan/black seams above the old rectangular cutoff."""
+    points = [(186, 219), (202, 218), (209, 229), (227, 235), (244, 242),
+              (211, 259), (168, 265), (149, 260), (150, 248), (155, 237),
+              (169, 225)] if index == 3 else [
+              (195, 180), (205, 176), (213, 178), (216, 187), (235, 192),
+              (255, 202), (267, 211), (240, 221), (198, 226), (171, 220),
+              (172, 211), (177, 195), (188, 183)]
+    mask = Image.new('L', (2048, 2048))
+    ImageDraw.Draw(mask).polygon([(x*4, y*4) for x, y in points], fill=255)
+    mask = mask.resize(original.size, Image.Resampling.LANCZOS)
+    p = np.array(original)
+    rgb = p[:, :, :3].astype(float)
+    # Do not restore source gold guard pixels near the upper waist contour.
+    old_gold = (rgb[:, :, 0] > 110) & (rgb[:, :, 1] > 70) & (rgb[:, :, 2] < 65) & (rgb[:, :, 1] > rgb[:, :, 0]*.65)
+    ma = np.array(mask)
+    yy, xx = np.indices(ma.shape)
+    guard_region = (yy < 234) & (xx < 220) if index == 3 else (yy < 196) & (xx < 243)
+    ma[old_gold & guard_region] = 0
+    patch = original.copy()
+    patch.putalpha(Image.fromarray((p[:, :, 3].astype(float)*ma/255).round().astype('uint8')))
+    return patch, Image.fromarray(ma)
+
+
 for index in [args.frame] if args.frame is not None else [3, 4]:
     before_dir = LAYERS/f'frame_{index:02d}_review_v2'
     source_dir = LAYERS/f'frame_{index:02d}_review_v1'
-    out = LAYERS/f'frame_{index:02d}_review_v3'
+    version = 4 if args.detail else 3
+    out = LAYERS/f'frame_{index:02d}_review_v{version}'
     out.mkdir(parents=True, exist_ok=True)
     m = json.loads((before_dir/'manifest.json').read_text(encoding='utf-8'))
     before_path = before_dir/f'sora_run_loop_{index:02d}_review.png'
@@ -358,6 +444,11 @@ for index in [args.frame] if args.frame is not None else [3, 4]:
     # two-hand arm are not present beneath this individually drawn jacket.
     body = Image.new('RGBA', (512, 512))
     body.paste(original.crop((0, lower_y, 512, 512)), (0, lower_y))
+    if args.detail:
+        waist, waist_mask = waist_contour(original, index)
+        body = Image.alpha_composite(body, waist)
+        save_clean(waist, out/'source_waist_contour.png')
+        waist_mask.save(out/'source_waist_contour_mask.png')
     body = Image.alpha_composite(body, repair)
     head = Image.open(source_dir/'head_occlusion.png').convert('RGBA')
     mask = Image.new('L', head.size)
@@ -398,10 +489,21 @@ for index in [args.frame] if args.frame is not None else [3, 4]:
     d = ImageDraw.Draw(comparison)
     for column, (im, label) in enumerate([(original, 'Source pose / previous two-hand weapon'),
                                          (before, 'v2 / shared garment repairs'),
-                                         (result, 'v3 / individual jacket and arms')]):
+                                         (result, f'v{version} / individual jacket and arms')]):
         comparison.paste(im, (column*512, 30), im)
         d.text((column*512+12, 9), label, fill='white')
     comparison.save(out/'Garment_Comparison.png')
+    if args.detail:
+        old_candidate = Image.open(LAYERS/f'frame_{index:02d}_review_v3'/f'sora_run_loop_{index:02d}_review.png').convert('RGBA')
+        old_hash = hashlib.sha256((LAYERS/f'frame_{index:02d}_review_v3'/f'sora_run_loop_{index:02d}_review.png').read_bytes()).hexdigest()
+        detail_review = Image.new('RGB', (1024, 550), '#202633')
+        for column, (im, label) in enumerate([(old_candidate, 'v3 before / waist cutoff and broad collar'),
+                                             (result, 'v4 after / waist contour and narrow piping')]):
+            detail_review.paste(im, (column*512, 30), im)
+            ImageDraw.Draw(detail_review).text((column*512+12, 9), label, fill='white')
+        detail_review.save(out/'Detail_Comparison.png')
+        m['previous_garment_candidate_sha256'] = old_hash
+        m['cloth_detail_method'] = 'source waist fan contour; narrower collar; visible straps/crown/folds'
     review = Image.new('RGB', (1024, 720), '#202633')
     review.paste(result, (0, 30), result)
     light = Image.new('RGB', (512, 512), '#dedfe2')
@@ -445,4 +547,6 @@ for index in [args.frame] if args.frame is not None else [3, 4]:
     Image.open(out/f'sora_run_loop_{index:02d}_review.png').verify()
     assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == SOURCE_HASH
     assert hashlib.sha256(before_path.read_bytes()).hexdigest() == before_hash
+    if args.detail:
+        assert hashlib.sha256((LAYERS/f'frame_{index:02d}_review_v3'/f'sora_run_loop_{index:02d}_review.png').read_bytes()).hexdigest() == old_hash
     print(f'Loop{index:02d}: individual torso/arms saved; cuff {cuff.tolist()}; lower body/rigid carry checks passed.')
