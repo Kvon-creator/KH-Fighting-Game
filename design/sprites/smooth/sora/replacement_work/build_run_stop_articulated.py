@@ -10,7 +10,8 @@ def load(p):return Image.open(p).convert('RGBA')
 SIZE=(512,512)
 upper=load(L/'pilot_v3/body_clean_plate.png')
 for folder,name in [('art_pass_01','art_detail_overlay.png'),('art_pass_02','jacket_volume_overlay.png'),('art_pass_02','sleeve_glove_fold_overlay.png'),('art_pass_03','chest_redraw_overlay.png')]:
-    upper=Image.alpha_composite(upper,load(L/folder/name))
+    patch=np.array(load(L/folder/name));patch[210:,340:]=0
+    upper=Image.alpha_composite(upper,Image.fromarray(patch,'RGBA'))
 upper=Image.alpha_composite(upper,load(L/'pilot_v3/head_occlusion.png'))
 mask=Image.new('L',SIZE);ImageDraw.Draw(mask).polygon([(200,45),(445,45),(445,225),(337,265),(226,267),(200,220)],fill=255)
 upper.putalpha(Image.composite(upper.getchannel('A'),Image.new('L',SIZE,0),mask))
