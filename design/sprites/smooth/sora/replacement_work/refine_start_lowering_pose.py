@@ -1,10 +1,12 @@
 """Pose-specific cleanup of the first lowering drawing, preserving source art."""
 from pathlib import Path
-import json,math,hashlib
+import json,math,hashlib,argparse
 import numpy as np
 from PIL import Image,ImageDraw
 
-ROOT=Path(__file__).resolve().parent;READY=ROOT/'ready';L=READY/'run_loop/layers';OUT=READY/'run_start/refinement_v2'
+ROOT=Path(__file__).resolve().parent;READY=ROOT/'ready';L=READY/'run_loop/layers'
+parser=argparse.ArgumentParser();parser.add_argument('--version',choices=('v2','v3'),default='v2');args=parser.parse_args()
+OUT=READY/f'run_start/refinement_{args.version}'
 OUT.mkdir(parents=True,exist_ok=True)
 source=READY/'run_start/run_start_source.png'
 original=Image.new('RGBA',(512,512));original.paste(Image.open(source).convert('RGBA').crop((445,0,889,450)),(0,0))
@@ -80,8 +82,26 @@ body=Image.alpha_composite(body,repair)
 # Keep the original shorts/legs below the local guard repair, eliminating the
 # earlier inferred cloth tail in the gap occupied by the original key chain.
 lower=original.crop((0,317,512,512))
-ld=ImageDraw.Draw(lower);ld.rectangle((231,0,282,68),fill=(0,0,0,0))
-body.paste(lower,(0,317));body.save(OUT/'frame_01_body_plate.png')
+ld=ImageDraw.Draw(lower)
+if args.version=='v3':
+    ld.polygon([(247,0),(264,0),(268,25),(286,30),(288,52),(281,66),(247,66),(236,60),(236,33),(247,25)],fill=(0,0,0,0))
+else:
+    ld.rectangle((231,0,282,68),fill=(0,0,0,0))
+body.paste(lower,(0,317))
+if args.version=='v3':
+    paint=Image.new('RGBA',(2048,2048))
+    curve((229,314),[
+      ((238,311),(248,314),(251,320)),
+      ((254,330),(239,344),(228,350)),
+      ((222,349),(224,337),(229,314))],'#23272e')
+    curve((232,317),[
+      ((239,316),(246,318),(247,323)),
+      ((244,330),(237,334),(230,337)),
+      ((232,330),(230,325),(232,317))],'#30353c',None)
+    stitch=ImageDraw.Draw(paint)
+    stitch.line([(224*4,348*4),(232*4,344*4),(240*4,338*4)],fill='#bcc3c9',width=5,joint='curve')
+    body=Image.alpha_composite(body,paint.resize((512,512),Image.Resampling.LANCZOS))
+body.save(OUT/'frame_01_body_plate.png')
 hand=(235,270);theta=math.radians(220);c,s=math.cos(theta),math.sin(theta);yaw=math.radians(8)
 H=np.array([[c,-s,hand[0]],[s,c,hand[1]],[0,0,1]])@np.array([[math.cos(yaw),0,0],[0,1,0],[-math.sin(yaw)/1400,0,1]])@np.array([[1,0,-77],[0,1,-70],[0,0,1]])
 inv=np.linalg.inv(H);inv/=inv[2,2]

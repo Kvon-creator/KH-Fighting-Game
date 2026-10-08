@@ -1,0 +1,35 @@
+{
+  "status": "pose-specific refinement review, not finished idle-quality art",
+  "source_crop": [
+    445,
+    0,
+    889,
+    450
+  ],
+  "hand_anchor": [
+    235,
+    270
+  ],
+  "master_to_screen_homography": [
+    [
+      -0.7819505503473674,
+      0.6427876096865393,
+      250.21505969868954
+    ],
+    [
+      -0.6633725714690265,
+      -0.766044443118978,
+      374.7027990214435
+    ],
+    [
+      -9.940935782861817e-05,
+      0.0,
+      1.0076545205528036
+    ]
+  ],
+  "limitations": [
+    "Pants/chest areas concealed by original weapon are manually inferred.",
+    "Forearm proportions, outline joins and freed-hand silhouette still need art review.",
+    "Original head and most clothing/legs preserved."
+  ]
+}
