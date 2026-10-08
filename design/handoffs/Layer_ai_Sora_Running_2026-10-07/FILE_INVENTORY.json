@@ -1,0 +1,957 @@
+[
+  {
+    "path": "design/references/Sora_KHIV_Render.webp",
+    "bytes": 50128,
+    "sha256": "5dc59758a962e411e1b90f5f440f2d4cef0e42b07b1a91550d42455147f19a30"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/build_weapon_pilot.py",
+    "bytes": 19657,
+    "sha256": "32e57f273c01564a2ba9ce67b752ea2aa0efe17004441ce83c4179f4cbcf49a0"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/finish_weapon_pilot_review.py",
+    "bytes": 3879,
+    "sha256": "ea313a3fb86dcf16399da8a68dfcbcdaaffc0e5b2b0f273f5e388eccf86e3f03"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/PRODUCTION_STATUS.md",
+    "bytes": 2648,
+    "sha256": "fdc7e501fcbd6fde852909827cadfe3f1f70a6e4858f1294042557c1bd54c00a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/GENERATION_STATUS.md",
+    "bytes": 768,
+    "sha256": "a02672674c986c64e222ebabe9aab66a6704b519a95ccefcc0891e1f4f8f9d36"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/imagegen_single_retry_2026-10-07.json",
+    "bytes": 2258,
+    "sha256": "87663edbd01e57ea4587bcdc22500538ed58fa4719ba7eca1f6cf035f46c4c65"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/Art_Comparison.png",
+    "bytes": 169844,
+    "sha256": "ea8bcf0789d8f5d0f9555127ba9794a94b993110ba0eac88172fe75e80d35366"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/art_detail_overlay.png",
+    "bytes": 16938,
+    "sha256": "5177e78c08bf1ce7ff5a9f4129233aed3e4e008f27f41958968cf69ba444a0fe"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/frame_00_art_preview.png",
+    "bytes": 200481,
+    "sha256": "6303e41a209553c7db79cfaa0b89af8908ee1121fd9b29a374872c8510bbadb9"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/kingdom_key_master_shaded.png",
+    "bytes": 11421,
+    "sha256": "06f9f761229d5511d7e80b88441fc2bf310d4f26657f7cff812898a51e3e4674"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/Light_Background_Check.png",
+    "bytes": 148340,
+    "sha256": "aa5291cb4e0210216e85f499b0c17b73855642faef0bc11f082876520e2c76af"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/manifest.json",
+    "bytes": 2053,
+    "sha256": "8442f7cd6b130aefe722eb2eebe41624e0f373762c186ba2a5c3ba714867be0f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/README.md",
+    "bytes": 1035,
+    "sha256": "c4870d4d0e031b7cb02bfdda7334f591bec48552da5ba61884c7c1d650e75c84"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_01/weapon_shaded_instance.png",
+    "bytes": 37981,
+    "sha256": "02255488835d0ce211b1e55326b14b86ce9f9ecd6d736db7f7098afb49fa186b"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/Art_Comparison.png",
+    "bytes": 172332,
+    "sha256": "357e1e3b7f721f3c0242a45bc6fe88b78a86b1524a831445a17e5eaff17288b8"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/Dark_Background_Check.png",
+    "bytes": 139801,
+    "sha256": "656f4c29df2ce667af67b1319d0171803001f8b52ce7937993901451fcd26444"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/frame_00_art_preview.png",
+    "bytes": 172783,
+    "sha256": "feac8aac4bd76ab2adcc06dbd9d631fb19c76df6daff95afd9112330d22ea08c"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/jacket_volume_overlay.png",
+    "bytes": 4891,
+    "sha256": "3741abb27e62ca7c9af965549355f8feee16b7c3136cf09f79eb5326afdef7ae"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/Light_Background_Check.png",
+    "bytes": 149511,
+    "sha256": "6925288459812cca8430a58ecd66f19553f5ec6b914ea164af78642bf699e4c4"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/manifest.json",
+    "bytes": 2144,
+    "sha256": "1abfc74ccd0e87f792c3a5aacb540a41b414865ecf6219805882192f45142f85"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/README.md",
+    "bytes": 943,
+    "sha256": "869053fb48280f689c8c19042f79bf446189adccd99a8e685f6bcd4b2d220054"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/sleeve_glove_fold_overlay.png",
+    "bytes": 8347,
+    "sha256": "4af48fb40788d06f6aace8dfdceb898abdd5ad6bf5d6df6bdd50a23cde5adf8d"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_02/Upper_Body_Comparison.png",
+    "bytes": 227719,
+    "sha256": "33124deed6d15bb45a85ba1a178c6ac4f32e6090af854da1ffbdcaa45336aa76"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/Art_Comparison.png",
+    "bytes": 165846,
+    "sha256": "745723d0745177b98c6d4952f0a9ede828122f1bd14002533a3d93a5c4886e03"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/chest_redraw_overlay.png",
+    "bytes": 10317,
+    "sha256": "9251112eda3b00e227f777349bb5ebe13a49f2fdcf45f5688c28e1b571998b99"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/Dark_Background_Check.png",
+    "bytes": 138994,
+    "sha256": "cc80ef49792d3481c61cc6a13470e436143a8f252f6f6da13a42248692a8d710"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/frame_00_art_preview.png",
+    "bytes": 171095,
+    "sha256": "ad8e052d4d8597e0061353d95e78af625c96f65ed3edb173c6aeb11153a7bde6"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/Light_Background_Check.png",
+    "bytes": 148279,
+    "sha256": "6d4eea64dca13ddb86aab1b930a3524a0b7eb36b39face6a24994831e49d217a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/manifest.json",
+    "bytes": 2130,
+    "sha256": "8d5cf07b0c30efa841abf6bfe36a7a79e2c01f31d5e6e7c0ebbb67aa7501ff24"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/README.md",
+    "bytes": 846,
+    "sha256": "f0aa860dbebd32e57e08ae288ad89d0296d804122b9bcb7a59eaa59caac24667"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_03/Upper_Body_Comparison.png",
+    "bytes": 224718,
+    "sha256": "71d955bb2125ec02fa42dd4f36fcc69570405ca871250e43db0bb6ee2dc7592e"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/Art_Comparison.png",
+    "bytes": 174743,
+    "sha256": "c9ca34f85db4a2f1974aa9847c064da5b8a3a40c1a495b005f2857994d7339cb"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/chain_and_charm.png",
+    "bytes": 3280,
+    "sha256": "da0bb8ad95f16fe86c9f7dd3c5bfae83d8b38f2e2e4ddb391c8cf7908bf1e0c2"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/foreground_grip.png",
+    "bytes": 4125,
+    "sha256": "2e4ada13f6f5f8904ea5d208d266779132af9ed30b6e30da2cd071f7fdc4dc0a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/frame_00_art_preview.png",
+    "bytes": 170712,
+    "sha256": "916f09a3a8e3a0d7cea176f6e87bc0ceefd5b911b111fe47fcea1a8027f46f4f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/Grip_Comparison.png",
+    "bytes": 254251,
+    "sha256": "d050a84712f18dee511b3af1d2de47a1d2fc59945b1410f12201558a86ce6b1c"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/grip_master_space.png",
+    "bytes": 2672,
+    "sha256": "a2a3fd46e69138458a5ed481693cea8b3a668735224d0a5a3a91a71eff25eaf2"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/kingdom_key_master_finished.png",
+    "bytes": 10377,
+    "sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/manifest.json",
+    "bytes": 2173,
+    "sha256": "6c819fc76a2745258698fcf2f64e66562478dfe4295b2b2867141ed5b115dead"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/README.md",
+    "bytes": 1040,
+    "sha256": "8d5f7b2d5f53216c58327103c94eb1e241be03c5fb3be315b920c40ce3d04035"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_04/weapon_instance.png",
+    "bytes": 35383,
+    "sha256": "146ab64255dca67f5edfd5250233ca685358c6ffc52ff2b099b96341ef5280b3"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/Art_Comparison.png",
+    "bytes": 147735,
+    "sha256": "3d1b21aa90ebbe4a45aca872da297dafe9765f804c8c5fb58d18548bd8222983"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/chain_and_charm.png",
+    "bytes": 3280,
+    "sha256": "da0bb8ad95f16fe86c9f7dd3c5bfae83d8b38f2e2e4ddb391c8cf7908bf1e0c2"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/foreground_grip.png",
+    "bytes": 4397,
+    "sha256": "1c5d7105d40fe12e3113bac9b9c478e7bbad723d046c5a89bf64bbb84c13121a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/frame_00_art_preview.png",
+    "bytes": 170575,
+    "sha256": "6ece0a32cbf9e7fd3feed64e6aa1236e1e533cd6b52a07b3693dd4f782324d22"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/Grip_Comparison.png",
+    "bytes": 183909,
+    "sha256": "9a3f32d7d72660c19ebafd42fc9fccb6991d672f44ade4c91afda7c03a92fbb3"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/grip_master_space.png",
+    "bytes": 3044,
+    "sha256": "75c8d5cffdc90775dccaffb409759101abdeb9e774b0a763e486b6ac8aa8d58f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/kingdom_key_master_finished.png",
+    "bytes": 10377,
+    "sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/manifest.json",
+    "bytes": 2245,
+    "sha256": "3f6ffac9aee318de126f8d5d51e9788300cd2fe69db54631e9279a873a41c8cd"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/README.md",
+    "bytes": 619,
+    "sha256": "30971dc16511032b626c2c5659c080a60891ec896c9eda537f20f826433d4088"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/weapon_instance.png",
+    "bytes": 35383,
+    "sha256": "146ab64255dca67f5edfd5250233ca685358c6ffc52ff2b099b96341ef5280b3"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_06/Arm_Comparison.png",
+    "bytes": 170892,
+    "sha256": "0525628380ae3990fece1ee69bc496de10ce06ca6fb6095954d1663316f54893"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_06/Art_Comparison.png",
+    "bytes": 162155,
+    "sha256": "277e901d46a720aede48207f574e10dd167221f70752da9d197a673ae130fe92"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_06/contact_and_arm_overlay.png",
+    "bytes": 6792,
+    "sha256": "b0daf262a014e8ae7fd069fe1bf3bbbfb5856b460eb49d57c2a2dc4c06812a64"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_06/frame_00_art_preview.png",
+    "bytes": 170343,
+    "sha256": "3f4acc92893bff05d7752e6828af7734a51416071fae669b4a144f117908b615"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_06/manifest.json",
+    "bytes": 2343,
+    "sha256": "09695b77a7a8b199250918ac57bf8a11378105f28260d2baa62f382cc0b755ec"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_06/README.md",
+    "bytes": 762,
+    "sha256": "9d266b2b3541212fd4ef9213a8749234d1e2d10f4863034b6c8f4663c89f2a44"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/Colour_Comparison.png",
+    "bytes": 158595,
+    "sha256": "992b3d2fe2e7c1c10125bdca3a188f35120286c57a1baa8b1ab2aa97190f8b72"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/Frame_Review_Board.png",
+    "bytes": 319517,
+    "sha256": "337a02e01152938492b24edf75c76b8b1995f0f623eac0c501e5b1b35225c206"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/manifest.json",
+    "bytes": 2664,
+    "sha256": "b2b9d4ad11c712d56f35b19632641636bc8f78b8dd546b1252eefb54cf747231"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/README.md",
+    "bytes": 985,
+    "sha256": "e0877c01c7fb6f8d3862a6d52af15fdfda55310d62f088ee8481bb66eacdab61"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/sora_run_loop_00_128_review.png",
+    "bytes": 16720,
+    "sha256": "d587898133cc6814fb716265bc4411ca0f0529bf13b266544d86aceefe5ca9fe"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/sora_run_loop_00_review.png",
+    "bytes": 169511,
+    "sha256": "b171c554aef835fefe805b88c00431836d67f7b9f91e1f43f8f930257edea48e"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/sora_run_loop_00_review_mirrored.png",
+    "bytes": 169116,
+    "sha256": "3d98314ab3ee724befc6f9e6623e0a09fe79d87411bb0bf208203b206c50f50a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/Art_Comparison.png",
+    "bytes": 156329,
+    "sha256": "2e3fb7e17e40630665814cc6b986d34722da2e53b26c6f56a38a62c8657f5dcc"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/chain_and_charm.png",
+    "bytes": 3217,
+    "sha256": "d7baa4a310fd438bddadd66617115143e91c50a84919061f304c1b29524b5fbb"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/foreground_grip.png",
+    "bytes": 4326,
+    "sha256": "2fe9f361c6b0b2f3113f93241df41b6b25c3811714194d91478a441529383575"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/manifest.json",
+    "bytes": 2456,
+    "sha256": "547f1e407f6288dab7921dafd9fd1b5e21f2b22cbd59a3a03a0237e82cc48126"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/README.md",
+    "bytes": 903,
+    "sha256": "b2833719cf7af3f73e5e5515ad043d3484a480a982d653fa33581e10280fa2aa"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/refined_body_plate.png",
+    "bytes": 147169,
+    "sha256": "710048385762c92d08e062019764fd5f199edf1e68c20a8a6b372a34e0c1728f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/sora_run_loop_01_review.png",
+    "bytes": 140057,
+    "sha256": "651d113e4aa0d25e520f1ea233953bc15f82618ad99ca3f738d81a79a8d75bc6"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/Two_Frame_Comparison.png",
+    "bytes": 248885,
+    "sha256": "6ad0e38b7ed5e3685dcfb183011b7cc91ba66c8ee1554ee40c59fe8348b99e76"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/Two_Frame_Review.gif",
+    "bytes": 105273,
+    "sha256": "ba7f51eb6f90cc93789ae0989af52c4a4830f63c4b4be6bfcdbc91d5a906c89c"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_review_v1/weapon_instance.png",
+    "bytes": 34928,
+    "sha256": "8d4ebc0973342e38059c0a3dcefb7d873a5f34a22788b39003bdaeb0b5c9c8b8"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/body_clean_plate.png",
+    "bytes": 137385,
+    "sha256": "41964dc80656806fd6f771fdb12979fdf31077a746c07467c56f325f5a6cec0e"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/body_reconstruction.png",
+    "bytes": 20429,
+    "sha256": "2edfc3be7bc2bd153a18f363a1bfa280ea69fde19d157a3606281f7b6fdced0a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/chain.png",
+    "bytes": 3040,
+    "sha256": "bf1d39245104ff723a2e36b04cdd0384883dee495a644fba6e5cd7e53c3009b9"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/Comparison.png",
+    "bytes": 187889,
+    "sha256": "d902d6b167178f6d1f47770ab09e3cdfccfcd8bcbddb326e21e2f0ba0f3a5d21"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/Foreground_Comparison.png",
+    "bytes": 243968,
+    "sha256": "704ab4aede44106b86810aea79972ae8eaaf1af1e4e2ce364c06b464f52c597b"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/foreground_fingers.png",
+    "bytes": 2704,
+    "sha256": "8a9c8ed82e9603639ffae1a897c741a8af78884a45945e3eb1ae3568488171ef"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/frame_00_anchor_overlay.png",
+    "bytes": 166447,
+    "sha256": "69288eb613cec9acf31af2c07444d9d5eb71f80888041c312a62a423a70ac909"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/frame_00_construction_preview.png",
+    "bytes": 166596,
+    "sha256": "0020cc3baf04ba0fa95ececb6212e1bb0c62208423facffbe4ab185dc9947ef2"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/frame_00_original.png",
+    "bytes": 154204,
+    "sha256": "0179db043d4326c56cb633d3cb3250d5b2e1a80bd82cfedcef7a6c0d80591e2e"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/head_occlusion.png",
+    "bytes": 144477,
+    "sha256": "91094ed3793715818163d341fe716201445a46af9442dc44c2cbdc6a526c57bb"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/holding_arm.png",
+    "bytes": 8049,
+    "sha256": "fcbe852459d06b1a79343ea28692cb42e58a8f7500c1c9d32a9e201a6a3731f4"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/kingdom_key_master.png",
+    "bytes": 9060,
+    "sha256": "bdf4d1711d7a0ae5b38ff87f3cecdccaf441820866012e3b9bace3149b81f4af"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/manifest.json",
+    "bytes": 2150,
+    "sha256": "a238761db42add184060c010ba1668d532b3461d2646c51129aefc2bb7f99f79"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/old_weapon_removal_mask.png",
+    "bytes": 4366,
+    "sha256": "a45ac0c60915df1a340fe1f6a168284447bbb650c0f8b80294ea98a6754b3769"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/original_crop.png",
+    "bytes": 152916,
+    "sha256": "b0c00fc189da7a066fc9a7209c9190b72c3abdbc317667a2ab6297562cb82e3d"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/README.md",
+    "bytes": 1401,
+    "sha256": "b0efa19b8e2ba7d56e8751d59147be143a12168276cc86bc2c941e74bfd5bd91"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/Refinement_Comparison.png",
+    "bytes": 242644,
+    "sha256": "d3b85e50483eab52614bd77a94c2f57dd02590c853a60fbc64e413655a347162"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/Two_Frame_Comparison.png",
+    "bytes": 241357,
+    "sha256": "8e077d4532b34ba5918547e4d9dd1a0e6b21ffd6bc0b98bf0a24654ec251438c"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/Two_Frame_Review.gif",
+    "bytes": 100603,
+    "sha256": "a5c29b00ac501d7360c27e37ed17db21393a30892606653a6e446444e3bc506d"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_01_v1/weapon_instance.png",
+    "bytes": 35371,
+    "sha256": "8e16710f096876fb5cae6eae5f1e4fe3de6ada25c1646e28598f423351c07912"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/body_clean_plate.png",
+    "bytes": 164560,
+    "sha256": "8589a3fa89b4bc18f633194904f9a1bd83e3c12cccaf828e42c9db8061e44d86"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/body_reconstruction.png",
+    "bytes": 15540,
+    "sha256": "0defa1ec66ff23a5ba0d2c115e9ebf633faf6f02de5a6bb74002f79892f72984"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/chain.png",
+    "bytes": 3090,
+    "sha256": "dc647626e17f9d85ecb501d0fcfc9b09dcab9611c419f36a14bf1f944508815f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/Comparison.png",
+    "bytes": 210075,
+    "sha256": "8844d4130e5acf61a07e513100affbbebdadde6e98d55db061cfd45a175778ee"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/foreground_fingers.png",
+    "bytes": 2781,
+    "sha256": "eceabe010792b5dc67995cd2969d2987dfac9cbf76740ae5ec276a4c0abaa280"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/frame_00_anchor_overlay.png",
+    "bytes": 194921,
+    "sha256": "00f54b6ee0bfbca971cf5c8ddfb5eb015943c4395bb61f3d5b6f76829e5bda1d"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/frame_00_construction_preview.png",
+    "bytes": 194964,
+    "sha256": "8b55df4a194a7059a1f47b5680afca0b63f7e2e9b68ccef0ce57e19645182b14"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/frame_00_original.png",
+    "bytes": 180449,
+    "sha256": "ce43881efdc76f4b1857265aa30d4933014d21c1f4b2ce733ea322426f3105d7"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/head_occlusion.png",
+    "bytes": 168652,
+    "sha256": "217c3c98722c271e7ca0554142e7fc7a545722e55e7e2cfe481a93b8ce0eca69"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/holding_arm.png",
+    "bytes": 7487,
+    "sha256": "ac97cc8ff07e9f1caaa011807f16922722cec5f34a56fc0ba0c0323946725ff1"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/kingdom_key_master.png",
+    "bytes": 9060,
+    "sha256": "bdf4d1711d7a0ae5b38ff87f3cecdccaf441820866012e3b9bace3149b81f4af"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/manifest.json",
+    "bytes": 1458,
+    "sha256": "7029530666a7ec3d17dfd3c9d67d56d420cecc99aa1ab47afbc55b1f3e52efb9"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/old_weapon_removal_mask.png",
+    "bytes": 3445,
+    "sha256": "b36708dd8d57a0a558347a6906a9d4a8eaa917d47fae53fb4b8e8026cb56a037"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/README.md",
+    "bytes": 1221,
+    "sha256": "ce1c42850665c3d07c1b01b9e9c388a6b8e4140e2e4f1954352d410db538a688"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v1/weapon_instance.png",
+    "bytes": 37255,
+    "sha256": "6b136a042c6eba13a38064fc9057eb2d40b94ca736845443a0b364b2728b28be"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/body_clean_plate.png",
+    "bytes": 164560,
+    "sha256": "8589a3fa89b4bc18f633194904f9a1bd83e3c12cccaf828e42c9db8061e44d86"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/body_reconstruction.png",
+    "bytes": 15540,
+    "sha256": "0defa1ec66ff23a5ba0d2c115e9ebf633faf6f02de5a6bb74002f79892f72984"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/chain.png",
+    "bytes": 3156,
+    "sha256": "f3c080a35fd09f6ec1623b6e7db85ce4781c858e046bcab8e61a24568f3fa45f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/Comparison.png",
+    "bytes": 209100,
+    "sha256": "2a9e6a322292565d44203c65f0a6290c16d6b7892372c27702e6410b962f2079"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/Foreground_Comparison.png",
+    "bytes": 169027,
+    "sha256": "9d98fd2f1653d2d4fd4b60afbc412bb9118ba14266a679a399d17d89bc58d752"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/foreground_fingers.png",
+    "bytes": 2781,
+    "sha256": "eceabe010792b5dc67995cd2969d2987dfac9cbf76740ae5ec276a4c0abaa280"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/frame_00_anchor_overlay.png",
+    "bytes": 193664,
+    "sha256": "e96e577d4ad90a9a9e13b1b5c8a863926a6e489d0227ff46c8dc284f7e5ce79b"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/frame_00_construction_preview.png",
+    "bytes": 193610,
+    "sha256": "4077bb43f897844bcc676eabbc426059411fe3d03dd0f589c775a309bc9bc9ab"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/frame_00_original.png",
+    "bytes": 180449,
+    "sha256": "ce43881efdc76f4b1857265aa30d4933014d21c1f4b2ce733ea322426f3105d7"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/head_occlusion.png",
+    "bytes": 168652,
+    "sha256": "217c3c98722c271e7ca0554142e7fc7a545722e55e7e2cfe481a93b8ce0eca69"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/holding_arm.png",
+    "bytes": 7487,
+    "sha256": "ac97cc8ff07e9f1caaa011807f16922722cec5f34a56fc0ba0c0323946725ff1"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/kingdom_key_master.png",
+    "bytes": 9060,
+    "sha256": "bdf4d1711d7a0ae5b38ff87f3cecdccaf441820866012e3b9bace3149b81f4af"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/manifest.json",
+    "bytes": 2000,
+    "sha256": "ecbe4650aa741165f75341ef9ba1438989d33ba4e9ea0478b66724b18c604168"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/old_weapon_removal_mask.png",
+    "bytes": 3445,
+    "sha256": "b36708dd8d57a0a558347a6906a9d4a8eaa917d47fae53fb4b8e8026cb56a037"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/README.md",
+    "bytes": 1093,
+    "sha256": "17e05ee2ec852e222c4b25042d8adc58217e1a65ac965f0caa446eb414a40fb3"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v2/weapon_instance.png",
+    "bytes": 35362,
+    "sha256": "9d4f8b66e42839de6c846adf67d76adac0f73099b6e92f1a52cc1ccfd131dee7"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/body_clean_plate.png",
+    "bytes": 164011,
+    "sha256": "0682b31a8181a0ede351919fedee7bbbf9da843d8a1f255d9e51f3371278653b"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/body_reconstruction.png",
+    "bytes": 20438,
+    "sha256": "9b1d8656858fae49be16f799da07974ee7b5cf578c48522f8f27a3b1040b23e9"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/chain.png",
+    "bytes": 3156,
+    "sha256": "f3c080a35fd09f6ec1623b6e7db85ce4781c858e046bcab8e61a24568f3fa45f"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/Comparison.png",
+    "bytes": 210080,
+    "sha256": "63993f7e29e221809767d6b23c83c0d42a36541130ce721649adf14f9cb80336"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/Foreground_Comparison.png",
+    "bytes": 182679,
+    "sha256": "e023d733c4bd95825817c2142a1c0909b9c1dcb4884082c8a84db179581c2dfa"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/foreground_fingers.png",
+    "bytes": 2783,
+    "sha256": "e2af8edc21149c7e08d477b890a7ee83bdaadebe965df90c2d5d28e5ef4b8449"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/frame_00_anchor_overlay.png",
+    "bytes": 193668,
+    "sha256": "fedd13c3841e3d8a836a98432bf3882cf02cb15467c34752e0290e97e8caec3a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/frame_00_construction_preview.png",
+    "bytes": 193670,
+    "sha256": "1cbfe84a3c19dd59c8bc12a00c7624d11ae902b6e8089a67b18cfea3c8554e39"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/frame_00_original.png",
+    "bytes": 180449,
+    "sha256": "ce43881efdc76f4b1857265aa30d4933014d21c1f4b2ce733ea322426f3105d7"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/head_occlusion.png",
+    "bytes": 168652,
+    "sha256": "217c3c98722c271e7ca0554142e7fc7a545722e55e7e2cfe481a93b8ce0eca69"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/holding_arm.png",
+    "bytes": 7694,
+    "sha256": "3f47e8580facab13305240af90bd1d395959b80a29bf7880559c52c78f2dd796"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/kingdom_key_master.png",
+    "bytes": 9060,
+    "sha256": "bdf4d1711d7a0ae5b38ff87f3cecdccaf441820866012e3b9bace3149b81f4af"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/manifest.json",
+    "bytes": 2000,
+    "sha256": "ecbe4650aa741165f75341ef9ba1438989d33ba4e9ea0478b66724b18c604168"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/old_weapon_removal_mask.png",
+    "bytes": 3946,
+    "sha256": "ad9d79d432828183f40f6595dcb309db77c560858fb371de9dcf73906623f874"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/README.md",
+    "bytes": 1062,
+    "sha256": "5605aff52380808b8c206b959ec5f7a828d93a238fbea6ea864c5a2ec3a468af"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/Refinement_Comparison.png",
+    "bytes": 159064,
+    "sha256": "25d6d55cf41cb31aa1ed440a7219c48b349c0ae5a9327a5e20afd0deea07ed61"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/pilot_v3/weapon_instance.png",
+    "bytes": 35362,
+    "sha256": "9d4f8b66e42839de6c846adf67d76adac0f73099b6e92f1a52cc1ccfd131dee7"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_loop/run_loop_source.png",
+    "bytes": 1401404,
+    "sha256": "6934bfa1b330834e64f765def9a9f24bcf37cb47fba61b59815f3a7365bf90f0"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_start/GENERATION_STATUS.md",
+    "bytes": 3120,
+    "sha256": "f849b1e62fe4337e1d9ee88da3831f21e6848bee9fcc227c012b098e4515788a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_start/run_start_source.png",
+    "bytes": 1394354,
+    "sha256": "1abc5a81595d4e6c8896c020fe77ec003191c616a23c6e8c93643e7cb043f256"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/run_stop/GENERATION_STATUS.md",
+    "bytes": 793,
+    "sha256": "77e0ccabc01d04431b7ff6e1d49d3c70694bf248c4636a0194b682ef91fd7831"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/Running_Weapon_Correction_Plan.md",
+    "bytes": 9834,
+    "sha256": "7bf76d6fd6290df563ee19d76ec071ca4e3e695ce3410ca8017c71946b4a46ab"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png",
+    "bytes": 205548,
+    "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_manifest.json",
+    "bytes": 7847,
+    "sha256": "1643170c243139b1a4d5cc33de3ab5ef862019b19a475694c2241f7fc769491a"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_preview.gif",
+    "bytes": 723206,
+    "sha256": "6ffd981940a98b73adbcbc9fe248b97fb1838e89501054b5748d70f98c93a33e"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_sheet.png",
+    "bytes": 2077501,
+    "sha256": "cff5252d8d393ab62a8b5cc6ba8f0afc723e210a52bac6f56ba9f19b9af4b2df"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/refine_run_loop_frame_01.py",
+    "bytes": 4772,
+    "sha256": "fe6e009cfba521a7872048b852ef46bc79f1bc65bbdf1dec6a276ac6420da287"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/refine_weapon_pilot_art.py",
+    "bytes": 7622,
+    "sha256": "0cfcfabeaa3875ab220d13368f05e3761122a2919ca9b1c7cdeddf7a1401a5cb"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/refine_weapon_pilot_chest.py",
+    "bytes": 5515,
+    "sha256": "639d2420c77823a43f4680292124e29a13a2b4cce08572f4da04252182ea2d13"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/refine_weapon_pilot_contact.py",
+    "bytes": 4676,
+    "sha256": "44c48c69abd247ad1b49f1cd766b3a8b1425cd4233ae4571c98ced8fa13b6ded"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/refine_weapon_pilot_grip.py",
+    "bytes": 7663,
+    "sha256": "9f0a887619a3f6cf06c4845b2490f6c0242732a05031620d0e95547f2e742983"
+  },
+  {
+    "path": "design/sprites/smooth/sora/replacement_work/refine_weapon_pilot_volume.py",
+    "bytes": 6639,
+    "sha256": "16464d96f3171e53042e3436a52671ca12a8c3691bab1bc024818a49f4b6044a"
+  },
+  {
+    "path": "memory/Agent_Setup.md",
+    "bytes": 3908,
+    "sha256": "61504dbfe97af6697d3ae200d9267e90d8a259167fc9ce46906c8f6ab5d314e8"
+  },
+  {
+    "path": "memory/GitHub_Repository.md",
+    "bytes": 349,
+    "sha256": "c1fd612993a267a5ed596cd2dc248c06b7cf4cefcee727f3cd705e415cd79f73"
+  },
+  {
+    "path": "memory/INDEX.md",
+    "bytes": 4069,
+    "sha256": "5b1a2e39400818e4ced441ddf1fb2ee753d34e2f2c54ba92e6ec1b94d8a413b2"
+  },
+  {
+    "path": "memory/Project_Location.md",
+    "bytes": 300,
+    "sha256": "3dc9c5e04444a50ff241a6cc0379b60705e92c220bd3e496a270ae6a044ab61c"
+  },
+  {
+    "path": "memory/Sora_Animation_Pose_Integrity.md",
+    "bytes": 593,
+    "sha256": "993bc6539c85a8404f86177ac177f1c0aa06ad497899833a78fb4bf48167a8c3"
+  },
+  {
+    "path": "memory/Sora_Animation_Workflow.md",
+    "bytes": 1002,
+    "sha256": "983b5877e25d61bedd95ca586becaf5d1e0441fb7bc6117dccff021807952872"
+  },
+  {
+    "path": "memory/Sora_Art_Style.md",
+    "bytes": 294,
+    "sha256": "811e3f8306da66fad2c2ff1d56fb7a9c0606c044e52a999cceaca5d230cd6b29"
+  },
+  {
+    "path": "memory/Sora_Attack_Pose_Reference.md",
+    "bytes": 518,
+    "sha256": "421cdcef3e580fac2d6e31f50c548b7b7257cd855b94c8a42f96dd78ea8d49a3"
+  },
+  {
+    "path": "memory/Sora_Base_Design.md",
+    "bytes": 276,
+    "sha256": "6c038816dace94f901a7160922eb602c24d6b0b8ff7997d4db4e80ec224530ea"
+  },
+  {
+    "path": "memory/Sora_Basic_Attacks.md",
+    "bytes": 419,
+    "sha256": "e87cbcdf4ba46051f73365e0f208eb97619e912fdf3e86b1dc9fcf915bb17091"
+  },
+  {
+    "path": "memory/Sora_Crouching_Heavy.md",
+    "bytes": 381,
+    "sha256": "0e427a13a85ad6369e1c43321d8c7f102a84a02a323c51916b32cae4c4a523ac"
+  },
+  {
+    "path": "memory/Sora_Crouching_Light.md",
+    "bytes": 214,
+    "sha256": "bae19352538bebd64f52f44ebfba8baf169a08dc2e9aa3de0ef7a85db30172b6"
+  },
+  {
+    "path": "memory/Sora_Crouching_Medium.md",
+    "bytes": 215,
+    "sha256": "848371ec04413d009843a43de6d7b949093876483f356a79dc1f33bfcfbe49d0"
+  },
+  {
+    "path": "memory/Sora_Double_Jump.md",
+    "bytes": 589,
+    "sha256": "1edd178cbe6059c6bb4c95fe629ea8f01af33b8f5e60fa438fc9018261f978ca"
+  },
+  {
+    "path": "memory/Sora_Frame_Size.md",
+    "bytes": 417,
+    "sha256": "300a4a72935a3eb034b537ea3c7a5405b5a4c96ec13fe0ff256de8568323e57e"
+  },
+  {
+    "path": "memory/Sora_Idle_Pilot_Delivery.md",
+    "bytes": 648,
+    "sha256": "a7ec82855466d0167d1e52cf5886e401cd2441831eb86ddf0a34f0b2b4c01096"
+  },
+  {
+    "path": "memory/Sora_Idle_Pose.md",
+    "bytes": 589,
+    "sha256": "11d270394233ea8572428e7dc58a270fc3814af43addacd9efa35d3fcd837c13"
+  },
+  {
+    "path": "memory/Sora_Jumping_Heavy.md",
+    "bytes": 332,
+    "sha256": "d15be972e2eea3fb5712fd306d41e798d314657637ba9071dd79541164ce15f3"
+  },
+  {
+    "path": "memory/Sora_Jumping_Light.md",
+    "bytes": 213,
+    "sha256": "a6dab1f1d575050df7fac07a37c7ec1190ab28b8a616cc1d7fccfcccfcaf1abd"
+  },
+  {
+    "path": "memory/Sora_Jumping_Medium.md",
+    "bytes": 217,
+    "sha256": "04eea751a63c47ba7b1dda81c2f63f9c909463a0311a1067c8ad93524c892dff"
+  },
+  {
+    "path": "memory/Sora_Manual_Drawing_Guide.md",
+    "bytes": 367,
+    "sha256": "eed33afa74fbd06d194a3e2f588eacfb8dbe9042bae709bf9d4c320213c1c613"
+  },
+  {
+    "path": "memory/Sora_Pilot_Approval.md",
+    "bytes": 490,
+    "sha256": "8208ad108e9a32d39c71e76a80fc13e018e9c75a3fb5fb176c1df0f7552a18b2"
+  },
+  {
+    "path": "memory/Sora_Replacement_Preview_Approval.md",
+    "bytes": 589,
+    "sha256": "0cbc2e4195caeb05ee6560ddf5ca72bdbc8c3b2019eb4ab72b2eda625dc7bcd0"
+  },
+  {
+    "path": "memory/Sora_Running_Keyblade_Carry.md",
+    "bytes": 2524,
+    "sha256": "746e2c73e3400455770b927ce54c6562d6bfbc0ed54455b00b9e75aaf1673383"
+  },
+  {
+    "path": "memory/Sora_Selected_Replacement_Sheets.md",
+    "bytes": 623,
+    "sha256": "177d1033d6207903fc1b8886a9f4e3951f7b776c7dd9e02700f2c1d5baf10c00"
+  },
+  {
+    "path": "memory/Sora_Sprite_Directory.md",
+    "bytes": 600,
+    "sha256": "debe9c4ab72d302e94a6e3964a8e65cc94347b51483abcb7648e5af5ffd40f5e"
+  },
+  {
+    "path": "memory/Sora_Sprite_Facing.md",
+    "bytes": 418,
+    "sha256": "3dbf4884fa6ed5dc75436c9687a078308a683000e455dfd5555588a3730b6357"
+  },
+  {
+    "path": "memory/Sora_Stance_Reference.md",
+    "bytes": 568,
+    "sha256": "59ffb9cb47e1df7fb3ad9db915df71ad2f5035ce348bf9118b1e219d4ee6238f"
+  },
+  {
+    "path": "memory/Sora_Standing_Heavy.md",
+    "bytes": 216,
+    "sha256": "903d2ed3609f66bfc48a3bdde7249aafb2bd2d797864c885e8e6e7a214acb2f9"
+  },
+  {
+    "path": "memory/Sora_Standing_Height.md",
+    "bytes": 227,
+    "sha256": "63b4ac7a9b862786d68cfc24b7707e03e4b0b4c19e4d926a13a9a5909959fb15"
+  },
+  {
+    "path": "memory/Sora_Standing_Light.md",
+    "bytes": 212,
+    "sha256": "3a016b75eaa6a34e1e105f43de898f3f076b0a9c97e142801c74d08e9e41ea76"
+  },
+  {
+    "path": "memory/Sora_Standing_Medium.md",
+    "bytes": 231,
+    "sha256": "9f2d1a42a74ef06779a85e247395b2887677952518378b3c3ce13f85f088e1fa"
+  },
+  {
+    "path": "memory/Sora_Transition_Frame_Count.md",
+    "bytes": 319,
+    "sha256": "7ffb3a82b38749c77ddde8d1c68679fa923a4dbbf5efae09c012171f239ac654"
+  },
+  {
+    "path": "memory/Sora_View_Angle.md",
+    "bytes": 437,
+    "sha256": "7b61ec648dd5668b76baade57d51c2cb10520d6bacc775b455888adda07b795e"
+  }
+]

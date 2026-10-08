@@ -1,0 +1,36 @@
+﻿# Project Memory
+
+- [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
+- [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
+- [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
+- [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
+- [Sora Frame Size](Sora_Frame_Size.md): Approved 128 x 128 for base movement, with larger canvas for extended attacks.
+- [Sora Idle Pose](Sora_Idle_Pose.md): Approved combat idle pose with Keyblade aligned behind body pointing away from opponent.
+- [Sora Double Jump](Sora_Double_Jump.md): Approved KH1 normal first jump linked into the requested KH2 second-jump animation.
+- [Sora Basic Attacks](Sora_Basic_Attacks.md): Approved nine basic attacks and Down + Heavy launcher.
+- [Sora Sprite Facing](Sora_Sprite_Facing.md): Approved one-direction artwork mirrored for the opposite facing.
+- [Sora Standing Height](Sora_Standing_Height.md): Approved approximately 96-pixel standing height.
+- [Sora Standing Light](Sora_Standing_Light.md): Approved short Kingdom Key thrust.
+- [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
+- [Sora Standing Heavy](Sora_Standing_Heavy.md): Approved wide spinning Kingdom Key slash.
+- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash.
+- [Sora Crouching Medium](Sora_Crouching_Medium.md): Approved wide low Kingdom Key sweep.
+- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.
+
+- [Sora Jumping Light](Sora_Jumping_Light.md): Approved quick midair Kingdom Key slash.
+- [Sora Jumping Medium](Sora_Jumping_Medium.md): Approved broad diagonal midair Kingdom Key slash.
+- [Sora Jumping Heavy](Sora_Jumping_Heavy.md): Approved wide midair spinning Kingdom Key slash.
+- [Sora Pilot Approval](Sora_Pilot_Approval.md): Model-sheet and idle-pilot authorization; first image-generation attempt rejected.
+- [Sora Manual Drawing Guide](Sora_Manual_Drawing_Guide.md): Authorized manual model-sheet and idle guide after generation rejection.
+- [Sora Stance Reference](Sora_Stance_Reference.md): Supplied combat-stance GIF and observed pose details.
+- [Sora View Angle](Sora_View_Angle.md): Approved three-quarter view and adding Kingdom Key to reference pose.
+- [Sora Idle Pilot Delivery](Sora_Idle_Pilot_Delivery.md): Completed model sheet, 8-frame idle pilot, sprite sheet, previews, and manifest delivered in design/sprites/ for review.
+- [Sora Art Style](Sora_Art_Style.md): Approved smooth (clean line art / 2D cel-shaded) artstyle rather than pixelated.
+- [Sora Attack Pose Reference](Sora_Attack_Pose_Reference.md): Supplied attack wind-up reference photo with Keyblade held behind, pointing away from the opponent.
+- [Sora Sprite Directory](Sora_Sprite_Directory.md): Separate animation-flow folders under design/sprites/smooth/sora/replacement_work/ready/.
+- [Sora Transition Frame Count](Sora_Transition_Frame_Count.md): Transition animation cycles between poses use around 7-12 frames for smoother animation.
+- [Sora Animation Pose Integrity](Sora_Animation_Pose_Integrity.md): Replace smooth sprites with genuine pose progression rather than scaled static images.
+- [Sora Selected Replacement Sheets](Sora_Selected_Replacement_Sheets.md): Selected idle and duck sheets with full-cycle previews.
+- [Sora Replacement Preview Approval](Sora_Replacement_Preview_Approval.md): Approved idle/crouch replacements and the next shimmy review batch.
+- [Project Location](Project_Location.md): Current D:\KH Fighting Game workspace after relocation.
+- [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.
