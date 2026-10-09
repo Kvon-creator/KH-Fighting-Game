@@ -1,6 +1,7 @@
 ﻿# Project Memory
 
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
+- [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.

@@ -1,0 +1,14 @@
+# Project-specific Codex permissions for KH Fighting Game.
+# Global user settings and the original Agent Setup are unchanged.
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+sandbox_mode = "workspace-write"
+
+[auto_review]
+extra_policy = """
+Additional restrictions for D:\\KH Fighting Game; preserve the built-in reviewer policy.
+Routine actions within the user-requested task and permitted by memory/Agent_Setup.md are authorized without repeated user confirmation. Respect explicit permissions already granted in the conversation.
+Keep work inside the project unless the user explicitly authorizes a specific outside path. Do not approve changes to project.godot, .godot, asset *.import files, export_presets.cfg, or established Core Singleton / Autoload scripts without explicit authorization.
+Agent Setup requires prior authorization for deleting or renaming files, installing packages/plugins/addons, and Git commits or pushes. Do not infer that permission from this configuration; existing explicit standing permissions remain valid, including the authorized Sora animation main pushes.
+Do not authorize unrequested features or messages to others without explicit user instructions. Do not circumvent platform restrictions or review denials. Preserve the Godot-version/documentation/testing requirements for engine changes. The original Agent Setup remains authoritative subject to the user's latest explicit instructions.
+"""
