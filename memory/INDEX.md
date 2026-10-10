@@ -42,3 +42,4 @@
 - [Gemini Movement Trial](Sora_Gemini_Movement_Trial.md): Historical cancellation/local checkpoints and later authorized browser trial.
 - [Gemini Browser Workflow](Sora_Gemini_Browser_Workflow.md): New authorized Brave/Gemini complete-frame trial, local connection scripts, review criteria and final user approval.
 - [Direct Generation Trial](Sora_Direct_Generation_Trial.md): Latest twelve-pose sheet accepted for art quality; refine complete drawings without layers, preserving exact generation results.
+- [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.

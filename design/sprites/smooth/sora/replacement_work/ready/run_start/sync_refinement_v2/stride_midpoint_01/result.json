@@ -1,0 +1,11 @@
+{
+  "tool": "image_gen.imagegen",
+  "callable": "image_gen__imagegen",
+  "status": "blocked_no_image_returned",
+  "arguments": "request.json: arguments",
+  "exactToolError": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID 1273518c-e3cb-49d1-8134-97d4a4bde106.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")",
+  "errorClassification": "content refusal: output-stage moderation_blocked; not tool validation, permissions rejection or service failure",
+  "requestId": "1273518c-e3cb-49d1-8134-97d4a4bde106",
+  "image": null,
+  "action": "No subsequent generation retry this pass. Preserve selected drawings and review complete-frame alignment."
+}

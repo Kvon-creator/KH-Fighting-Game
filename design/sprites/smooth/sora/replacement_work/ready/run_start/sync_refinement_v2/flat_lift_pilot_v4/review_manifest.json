@@ -1,0 +1,21 @@
+﻿{
+    "status":  "three-pose local pilot review; original endpoints still need weapon/chain consistency",
+    "frameCount":  3,
+    "containsNewPaintedPose":  true,
+    "onePass":  true,
+    "durationMs":  540,
+    "unchangedFaceHairPixelsVerified":  true,
+    "sourcesPreserved":  true,
+    "noIndividualProductionLayers":  true,
+    "integration":  "Not inserted into the final run-start sequence",
+    "inputs":  [
+                   "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_01.png",
+                   "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v2\\flat_lift_pilot_v4\\sora_lift_01_02_midpoint.png",
+                   "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_02.png"
+               ],
+    "hashes":  [
+                   "67CEC567B7F91CB2A9A76BB63396904B0C9B04DD015CE4942ED06415059E9B28",
+                   "3006A85D60409C0BAAC4E8CFE187189850C1BC518C0E9B07AEDFD3028B7C10AE",
+                   "8A4464887EB74CC188FF236F2972D7EBE579DB30655C6BB53CB05E43AE9EF062"
+               ]
+}

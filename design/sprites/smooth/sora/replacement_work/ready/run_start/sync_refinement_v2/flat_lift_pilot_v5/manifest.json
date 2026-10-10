@@ -1,0 +1,19 @@
+﻿{
+    "status":  "flat-canvas local painting pilot; visual inspection pending; not inserted",
+    "method":  "System.Drawing direct painting on one complete512px RGBA bitmap; no separate production layers",
+    "source":  "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_01.png",
+    "sourceSha256":  "67cec567b7f91cb2a9a76bb63396904b0c9b04dd015ce4942ed06415059e9b28",
+    "target":  "sora_lift_01_02_midpoint.png",
+    "targetSha256":  "e9e3a9478797f27e9017a04a26e3d5766164e7b0b627e599a1d17365aaa5996a",
+    "intent":  "Early-lift midpoint between source01 and02; grounded body retained, far shoulder/elbow/wrist/hand/weapon genuinely painted",
+    "gripCenter":  [
+                       218,
+                       257
+                   ],
+    "shaftAngleDegrees":  -115,
+    "rigidGripToTipUnits":  209,
+    "connectedParts":  "guard, handle, collar, shaft, crown and pommel painted in one rigid local coordinate system directly into the whole sprite",
+    "preserves":  "Face/hair beyondx279, empty near arm and lower body belowy355 verified pixel-identical; source file hash unchanged",
+    "permission":  "User explicitly selected single flat canvas locally after two image-service output refusals",
+    "integration":  "No engine integration or final animation approval"
+}

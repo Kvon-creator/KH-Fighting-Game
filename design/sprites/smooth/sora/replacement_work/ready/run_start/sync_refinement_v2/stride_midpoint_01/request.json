@@ -1,0 +1,13 @@
+{
+  "tool": "image_gen.imagegen",
+  "callable": "image_gen__imagegen",
+  "purpose": "Complete first-step midpoint between source09 and10; distinct next refinement task after the previous blocked lift edit.",
+  "arguments": {
+    "prompt": "Create one complete intermediate animation drawing between the two supplied Sora run-start sprites. Image 1 is the earlier tucked-knee pose; image 2 is the later reaching-foot pose. Match their established KH2 costume, face, spiky hair, clean linework and detailed cel shading exactly. Keep the same right-facing three-quarter camera and body scale. Move the forward lower leg halfway out from the tucked position toward the reach: knee remains moderately bent, boot halfway forward between the reference boot positions. Rear leg is just leaving its push-off, with small rising clearance. Head, torso, hips and both arms move halfway between the reference positions. The near/front arm counter-swings empty. The far arm continues holding the single Kingdom Key across that same shoulder behind the head, with its tip slightly toward the viewer. Preserve the weapon geometry, shaft length, connected handle/guard/collar and attached pommel chain; keep grip and blade at the midpoint of the two reference placements. Natural wrist and thumb orientation. Draw the full body and full weapon on a transparent square canvas with the same relative placement and safe margins. One genuine new pose, no extra figures, labels, trails, crossfade or separated layers.",
+    "referenced_image_paths": [
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_09.png",
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_10.png"
+    ],
+    "transparent_background": true
+  }
+}

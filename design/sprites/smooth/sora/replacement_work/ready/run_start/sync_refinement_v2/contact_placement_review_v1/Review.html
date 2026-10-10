@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sora first-contact placement review</title>
+<style>
+body{margin:0;background:#151923;color:#edf0f7;font:16px system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:24px}h1{font-size:25px;margin:0 0 8px}
+p{color:#b9c1d4;line-height:1.5}.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:18px 0}
+button,select{background:#2b354c;color:inherit;border:1px solid #53607b;border-radius:7px;padding:10px 15px}
+button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #ffd666}
+.views{display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap}
+.stage{background-color:#d4d7dc;background-image:conic-gradient(#eee 25%,transparent 0 50%,#eee 0 75%,transparent 0);background-size:32px 32px;border-radius:8px}
+.large{width:min(512px,100%);height:auto}.small{width:128px;height:128px}
+.thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:20px}.thumbs button{padding:2px;min-width:0}
+.thumbs img{display:block;width:100%;height:auto}.thumbs button[aria-pressed=true]{border:3px solid #ffd666}
+input[type=range]{width:min(400px,90vw)}output{min-width:220px}.caption{font-size:13px;margin:5px 0}
+@media(max-width:600px){main{padding:12px}.thumbs{grid-template-columns:repeat(4,1fr)}}
+.stage{position:relative;overflow:hidden}.stage-large{width:min(512px,100%);aspect-ratio:1}.stage-small{width:128px;height:128px}
+.stage img{display:block;width:100%;height:100%}.floor{position:absolute;top:91.796875%;left:0;width:100%;height:1px;background:#9f6708;pointer-events:none}
+</style>
+<main><h1>Sora: first-contact placement</h1><p>Compare the previous and proposed placement at frame10. The proposed first-contact pose meets the floor; the following flight pose keeps its clearance.</p>
+<div class="controls"><button id="play">Play once</button><button id="pause">Pause</button>
+<label>Speed <select id="speed"><option value="1">Normal</option><option value="3">Slow</option></select></label>
+<label>Placement <select id="placement"><option value="proposed">Proposed</option><option value="previous">Previous</option></select></label><label><input id="floor" type="checkbox" checked> Floor guide</label><label>Frame <input id="scrub" type="range" min="0" max="11" value="0"></label><output id="readout"></output></div>
+<div class="views"><div><div class="stage stage-large"><img id="large" class="large" width="512" height="512" alt="Sora run-start pose"><div class="floor"></div></div><p class="caption">Working canvas</p></div>
+<div><div class="stage stage-small"><img id="small" class="small" width="128" height="128" alt="Same complete pose at game export size"><div class="floor"></div></div><p class="caption">128 px preview</p></div></div>
+<div id="thumbs" class="thumbs"></div><p>This is a placement candidate. All12 drawings are unchanged. Missing intermediate poses and inconsistent weapon projection remain unresolved.</p></main>
+<script src="Review.js"></script></html>

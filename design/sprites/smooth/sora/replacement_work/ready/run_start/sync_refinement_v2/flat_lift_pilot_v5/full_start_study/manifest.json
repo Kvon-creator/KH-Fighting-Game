@@ -1,0 +1,131 @@
+﻿{
+    "status":  "13-pose study only; not final sequence approval",
+    "frameCount":  13,
+    "newDrawingCount":  1,
+    "sourceDrawingsRetained":  12,
+    "durationMs":  860,
+    "onePass":  true,
+    "noIndividualProductionLayers":  true,
+    "originalSha256":  "6108be48aa93f736514c1860f1a9966de1998b0800814156c681321cb779530e",
+    "frames":  [
+                   {
+                       "index":  0,
+                       "sourceIndex":  0,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_00.png",
+                       "phase":  "Ready",
+                       "durationMs":  100,
+                       "file":  "frame_00.png",
+                       "sha256":  "6687a5dba50ed1cd0bcb470bad234055ad63dda4a85bfefd94ccb552b5f47fbf"
+                   },
+                   {
+                       "index":  1,
+                       "sourceIndex":  1,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_01.png",
+                       "phase":  "Release near hand",
+                       "durationMs":  40,
+                       "file":  "frame_01.png",
+                       "sha256":  "67cec567b7f91cb2a9a76bb63396904b0c9b04dd015ce4942ed06415059e9b28"
+                   },
+                   {
+                       "index":  2,
+                       "sourceIndex":  1.5,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v2\\flat_lift_pilot_v5\\sora_lift_01_02_midpoint.png",
+                       "phase":  "Local early-lift midpoint",
+                       "durationMs":  40,
+                       "file":  "frame_02.png",
+                       "sha256":  "e9e3a9478797f27e9017a04a26e3d5766164e7b0b627e599a1d17365aaa5996a"
+                   },
+                   {
+                       "index":  3,
+                       "sourceIndex":  2,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_02.png",
+                       "phase":  "Early lift",
+                       "durationMs":  80,
+                       "file":  "frame_03.png",
+                       "sha256":  "8a4464887eb74cc188ff236f2972d7ebe579db30655c6bb53cb05e43ae9ef062"
+                   },
+                   {
+                       "index":  4,
+                       "sourceIndex":  3,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_03.png",
+                       "phase":  "Upright lift",
+                       "durationMs":  60,
+                       "file":  "frame_04.png",
+                       "sha256":  "09ea63761142fdf41c008959df7266ff548d5861b56cc8b0082ff1d70d94db4f"
+                   },
+                   {
+                       "index":  5,
+                       "sourceIndex":  4,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_04.png",
+                       "phase":  "Turn overhead",
+                       "durationMs":  70,
+                       "file":  "frame_05.png",
+                       "sha256":  "e81a5c452a03a4fffde739c4ed4a977ab7dc70cd537ab7fd67fe4dab903120f1"
+                   },
+                   {
+                       "index":  6,
+                       "sourceIndex":  5,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_05.png",
+                       "phase":  "Lower into carry",
+                       "durationMs":  75,
+                       "file":  "frame_06.png",
+                       "sha256":  "16e4107acd7099c62523270010d843b40d1d9754162a4e7693c7fd4a0d7be744"
+                   },
+                   {
+                       "index":  7,
+                       "sourceIndex":  6,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_06.png",
+                       "phase":  "Settle carry",
+                       "durationMs":  75,
+                       "file":  "frame_07.png",
+                       "sha256":  "17d0964826c61b6f345a3cd9bbca70d29804d6d8fac2bc84fe210414c44495f3"
+                   },
+                   {
+                       "index":  8,
+                       "sourceIndex":  7,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_07.png",
+                       "phase":  "Prepare drive",
+                       "durationMs":  65,
+                       "file":  "frame_08.png",
+                       "sha256":  "af0faeab9fc25c81feea7a4929b1287c5ac2d659786012fa179e12b7bbb056da"
+                   },
+                   {
+                       "index":  9,
+                       "sourceIndex":  8,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_08.png",
+                       "phase":  "Forward lean",
+                       "durationMs":  65,
+                       "file":  "frame_09.png",
+                       "sha256":  "dc0296b0948001ef8be5819e5a60d71eae75019513ed2936134d54fd20bf58c0"
+                   },
+                   {
+                       "index":  10,
+                       "sourceIndex":  9,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_09.png",
+                       "phase":  "Knee drive",
+                       "durationMs":  65,
+                       "file":  "frame_10.png",
+                       "sha256":  "f9bc2947fbabfa493f4c5e2369479257c7f7b4d97372742264f6493438854b6f"
+                   },
+                   {
+                       "index":  11,
+                       "sourceIndex":  10,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_10.png",
+                       "phase":  "Leg reach",
+                       "durationMs":  55,
+                       "file":  "frame_11.png",
+                       "sha256":  "48d31e47f632eceac881afe84fbe6a70871d5a6664df479d9df4ba7eb42220c8"
+                   },
+                   {
+                       "index":  12,
+                       "sourceIndex":  11,
+                       "sourcePath":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\sync_refinement_v1\\timing_review_v1\\frame_11.png",
+                       "phase":  "First flight",
+                       "durationMs":  70,
+                       "file":  "frame_12.png",
+                       "sha256":  "cb54c1d39b5ea7a83a1bd053bd876a49391993d0ea2bec8a1d36472f1c6e737c"
+                   }
+               ],
+    "timing":  "Original01 duration80 split into40+40 with a new pose, total860ms retained; GIF resolution10ms",
+    "integration":  "No engine assets replaced"
+}

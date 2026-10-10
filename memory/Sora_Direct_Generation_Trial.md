@@ -1,5 +1,7 @@
 # Three-attempt direct generation trial
 
+**Latest method:** After the next first-step edit also received an output-stage content refusal, K'von selected "Use a single flat canvas locally." Direct local painting of complete images is now authorized; no individual production layers. See Sora_Flat_Canvas_Refinement.md for the current early-lift pilot/13-pose study, checks and remaining art work. This supersedes waiting for the image tool; the accepted original twelve drawings remain the base.
+
 **Latest correction:** K'von says the latest generated sprites have good art quality and need refinement to synchronize their motion. Do not start the layer workflow. Use the most recent twelve-frame sheet (attempt03) as the base for complete-image refinement. This supersedes the fallback decision below; the user accepts the art direction, not the current frame joins or final animation timing. Refinements of that sheet are authorized.
 
 **Current progress, October 10:** The apparent cut figures came from equal-grid exports, not the native sheet. `direct_imagegen_trial/whole_figure_review_v3/` separates twelve intact whole figures, uses one common export ratio and planted-sole registration, and preserves the original source hash. No body or weapon layers were created. Larger lift/first-step gaps and changing weapon projections remain; this is a review export, not a verified fluid cycle.
