@@ -1,0 +1,79 @@
+{
+  "purpose": "whole drawings as endpoint pose references; not production layers",
+  "pairs": [
+    [
+      1,
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      9,
+      10
+    ]
+  ],
+  "sources": [
+    {
+      "row": 0,
+      "side": "start",
+      "originalPose": 1,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_01.png",
+      "sha256": "67cec567b7f91cb2a9a76bb63396904b0c9b04dd015ce4942ed06415059e9b28"
+    },
+    {
+      "row": 0,
+      "side": "end",
+      "originalPose": 2,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_02.png",
+      "sha256": "8a4464887eb74cc188ff236f2972d7ebe579db30655c6bb53cb05e43ae9ef062"
+    },
+    {
+      "row": 1,
+      "side": "start",
+      "originalPose": 3,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_03.png",
+      "sha256": "09ea63761142fdf41c008959df7266ff548d5861b56cc8b0082ff1d70d94db4f"
+    },
+    {
+      "row": 1,
+      "side": "end",
+      "originalPose": 4,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_04.png",
+      "sha256": "e81a5c452a03a4fffde739c4ed4a977ab7dc70cd537ab7fd67fe4dab903120f1"
+    },
+    {
+      "row": 2,
+      "side": "start",
+      "originalPose": 5,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_05.png",
+      "sha256": "16e4107acd7099c62523270010d843b40d1d9754162a4e7693c7fd4a0d7be744"
+    },
+    {
+      "row": 2,
+      "side": "end",
+      "originalPose": 6,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_06.png",
+      "sha256": "17d0964826c61b6f345a3cd9bbca70d29804d6d8fac2bc84fe210414c44495f3"
+    },
+    {
+      "row": 3,
+      "side": "start",
+      "originalPose": 9,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_09.png",
+      "sha256": "f9bc2947fbabfa493f4c5e2369479257c7f7b4d97372742264f6493438854b6f"
+    },
+    {
+      "row": 3,
+      "side": "end",
+      "originalPose": 10,
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/whole_figure_review_v3/frame_10.png",
+      "sha256": "48d31e47f632eceac881afe84fbe6a70871d5a6664df479d9df4ba7eb42220c8"
+    }
+  ]
+}

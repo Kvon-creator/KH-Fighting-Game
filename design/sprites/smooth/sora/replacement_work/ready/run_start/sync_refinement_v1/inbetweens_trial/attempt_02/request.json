@@ -1,0 +1,13 @@
+{
+  "tool": "image_gen.imagegen",
+  "callable": "image_gen__imagegen",
+  "purpose": "Single full-drawing midpoint between user-selected sheet poses01 and02.",
+  "arguments": {
+    "prompt": "Draw ONE new complete sprite exactly halfway in motion between these two whole KH2 Sora reference frames. Preserve their smooth detailed finish, face/hair size, costume, camera, character scale and512px-relative canvas placement. Both boot soles stay in their existing planted positions; head/torso/hips stay very close to the endpoints. The near/front hand remains EMPTY, moving only halfway between its two shown positions.\nThe FAR gripping wrist and centered gold guard belong at the LOWER CHEST, visibly BELOW Sora's chin and well below his hair. The first image's low grip is around(220,280), the second raised grip around(214,234); place the new midpoint grip around(217,257) in512px reference coordinates. Do not raise it above the head or put it into shoulder carry yet. Bend the far elbow/forearm naturally to connect this wrist. Rotate the same rigid low weapon only halfway toward upright: shaft angle about-112deg from screen-right, tip around(142,72), keeping the same full shaft/crown and gold-guard proportions as the endpoints. Pommel, handle, collar and straight shaft stay collinear; attached chain hangs down. Exactly two complete hands/arms, one holding and one empty, correct thumbs/wrists. No glove gear, missing blade, resized body or copied endpoint. Transparent square canvas with safe margins, no text, effects, sheet or separate layers. Render only this true intermediate pose.",
+    "referenced_image_paths": [
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_01.png",
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_02.png"
+    ],
+    "transparent_background": true
+  }
+}

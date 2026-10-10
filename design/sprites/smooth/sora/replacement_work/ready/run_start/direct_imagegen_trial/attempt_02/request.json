@@ -1,0 +1,11 @@
+{
+  "tool": "image_gen.imagegen",
+  "callable": "image_gen__imagegen",
+  "arguments": {
+    "prompt": "Edit the provided 8-frame run-start sprite sheet. Preserve the approved smooth detailed KH2 Sora design, cel shading, right-facing three-quarter view, equal square4x2 cells, character scale and transparent background. Correct the WEAPON-LIFT motion in middle frames2,3,4 while preserving the first idle/compression and final shoulder-carry/running phases. Reading order left-to-right then next row: frame2 has the far hand alone gripping at waist/lower chest with near empty hand just beside guard and shaft angled up-left about-120deg; frame3 raises the far wrist/guard to lower chest, bends its connected elbow, and has the entire rigid Kingdom Key ALMOST VERTICAL, tip above the gripping hand with just a slight left lean (about-96deg); frame4 raises the far wrist/guard to the rear shoulder and rotates the whole weapon up-right (about-38deg), its upper shaft/crown clearly visible ABOVE the head so its intact full length can be verified; frame5 completes the far holding-arm shoulder carry with guard/hand screen-left of the head, shaft behind hair/head reappearing screen-right, tip slightly toward foreground. Frames6/7 push off and reach running precontact with small changes in the same carry. Use genuine smoothly spaced shoulder/elbow/wrist and body changes, no scaled or mirrored pose copies. ALL parts of the SAME weapon move together: pommel, black handle, centered gold guard, blue collar and straight shaft share one rigid axis/transform; identical physical length, guard width and three-tooth crown design in every frame. Exactly two full arms/hands; near hand empty from2 onward. No missing blade/head, shortened shaft, bent weapon, inverted grip, glove gears, extra hand or detached chain. Keep all parts safely within each cell. No text, numbers, gridlines, floor marks, effects or layers. Render a new complete corrected eight-frame sheet.",
+    "referenced_image_paths": [
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\attempt_01\\sora_run_start_original.png"
+    ],
+    "transparent_background": true
+  }
+}

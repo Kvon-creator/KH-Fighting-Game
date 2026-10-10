@@ -1,0 +1,8 @@
+{
+  "status": "result_unavailable_after_context_truncation",
+  "tool": "image_gen.imagegen",
+  "exactRequest": "request.json",
+  "error": null,
+  "errorClassification": "unknown; no tool validation, permissions rejection, content refusal or service failure message was received",
+  "review": "No stored tool result or newer generated file was found when resuming. Do not claim success or infer an error."
+}

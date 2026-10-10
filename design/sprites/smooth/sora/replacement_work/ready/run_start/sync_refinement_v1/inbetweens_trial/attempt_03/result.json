@@ -1,0 +1,12 @@
+{
+  "status": "blocked_no_image_returned",
+  "tool": "image_gen.imagegen",
+  "callable": "image_gen__imagegen",
+  "arguments": "request.json: arguments (exact submitted object)",
+  "errorClassification": "content refusal: output-stage moderation_blocked; not validation, permissions rejection or service failure",
+  "exactToolError": "image generation failed: http 400 Bad Request: Some(\"{\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID 978daf74-8efa-4411-8934-491cf9367540.\\\",\\n    \\\"type\\\": \\\"image_generation_user_error\\\",\\n    \\\"param\\\": null,\\n    \\\"code\\\": \\\"moderation_blocked\\\",\\n    \\\"moderation_details\\\": {\\n      \\\"moderation_stage\\\": \\\"output\\\",\\n      \\\"categories\\\": [\\n        \\\"other\\\"\\n      ]\\n    }\\n  }\\n}\")",
+  "httpStatus": 400,
+  "requestId": "978daf74-8efa-4411-8934-491cf9367540",
+  "image": null,
+  "action": "Stop image-generation calls in this pass; preserve existing complete sprites and continue whole-frame timing/registration review. No layer fallback."
+}

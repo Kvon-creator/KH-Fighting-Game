@@ -1,0 +1,119 @@
+{
+  "status": "diagnostic_not_approved",
+  "sourceSha256": "277c0f32635dbe2bacf62c6cf6d5cfc629da951fa25e9e95b694e6e95549a06d",
+  "nativeSize": [
+    1774,
+    887
+  ],
+  "grid": [
+    4,
+    2
+  ],
+  "nativeAlphaExtrema": [
+    0,
+    255
+  ],
+  "workingSize": [
+    512,
+    512
+  ],
+  "method": "equal whole-cell crop/resize; no pose fitting or generated intermediates",
+  "frames": [
+    {
+      "index": 0,
+      "nativeCrop": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "file": "frame_00.png",
+      "edgeRisk": true,
+      "pixelSha256": "4194394a9acbb795bcba56a33152fced343d6c2c701234b6629fbdcb7509fce8"
+    },
+    {
+      "index": 1,
+      "nativeCrop": [
+        444,
+        0,
+        887,
+        444
+      ],
+      "file": "frame_01.png",
+      "edgeRisk": true,
+      "pixelSha256": "22c8406ea882082072b47c45fc5e796ff0addfbf5fa3733ac44d10973f8db8fa"
+    },
+    {
+      "index": 2,
+      "nativeCrop": [
+        887,
+        0,
+        1330,
+        444
+      ],
+      "file": "frame_02.png",
+      "edgeRisk": true,
+      "pixelSha256": "4e5eea07713fb221acf1d64ddd558a3094c0e15c4aaa992f43adf0bb7ac67b6d"
+    },
+    {
+      "index": 3,
+      "nativeCrop": [
+        1330,
+        0,
+        1774,
+        444
+      ],
+      "file": "frame_03.png",
+      "edgeRisk": true,
+      "pixelSha256": "f57ea9a1f98c85444bacc6e4cfcbf2f7e7b2231eb6cb6ad1d6e4c396c07540d3"
+    },
+    {
+      "index": 4,
+      "nativeCrop": [
+        0,
+        444,
+        444,
+        887
+      ],
+      "file": "frame_04.png",
+      "edgeRisk": true,
+      "pixelSha256": "a40ca4981fc7abc1b61f931347e9e1ec8adab1cbae2d30ad0b82ac690101dee3"
+    },
+    {
+      "index": 5,
+      "nativeCrop": [
+        444,
+        444,
+        887,
+        887
+      ],
+      "file": "frame_05.png",
+      "edgeRisk": true,
+      "pixelSha256": "a48fb37830ec53d26b00e01c2fa8607d99225658bed53f5c9cdcb7db9ed81765"
+    },
+    {
+      "index": 6,
+      "nativeCrop": [
+        887,
+        444,
+        1330,
+        887
+      ],
+      "file": "frame_06.png",
+      "edgeRisk": true,
+      "pixelSha256": "27f9da241fd67298da45971174551e32f49548b1613c6f0550a3422c6f11dea4"
+    },
+    {
+      "index": 7,
+      "nativeCrop": [
+        1330,
+        444,
+        1774,
+        887
+      ],
+      "file": "frame_07.png",
+      "edgeRisk": true,
+      "pixelSha256": "6393898ff988d0723d078a4a17f21fd6191a94ad2c141c75e574ce474641e194"
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "status": "diagnostic_not_approved",
+  "sourceSha256": "6108be48aa93f736514c1860f1a9966de1998b0800814156c681321cb779530e",
+  "nativeSize": [
+    1448,
+    1086
+  ],
+  "grid": [
+    4,
+    3
+  ],
+  "nativeAlphaExtrema": [
+    0,
+    255
+  ],
+  "workingSize": [
+    512,
+    512
+  ],
+  "method": "equal whole-cell crop/resize; no pose fitting or generated intermediates",
+  "frames": [
+    {
+      "index": 0,
+      "nativeCrop": [
+        0,
+        0,
+        362,
+        362
+      ],
+      "file": "frame_00.png",
+      "edgeRisk": true,
+      "pixelSha256": "424d860d5afa216615f0254a95e520f1e673bb46ce106e68a2ce70432297e37b"
+    },
+    {
+      "index": 1,
+      "nativeCrop": [
+        362,
+        0,
+        724,
+        362
+      ],
+      "file": "frame_01.png",
+      "edgeRisk": true,
+      "pixelSha256": "02dd8e892ad61dc3b3adb29714952932bcbd8e7bc5f84285d15a4afb333e8c4b"
+    },
+    {
+      "index": 2,
+      "nativeCrop": [
+        724,
+        0,
+        1086,
+        362
+      ],
+      "file": "frame_02.png",
+      "edgeRisk": true,
+      "pixelSha256": "57a4aeb6564a3984390db65cdf1636166423f30a99da074b90afad40cb7863d2"
+    },
+    {
+      "index": 3,
+      "nativeCrop": [
+        1086,
+        0,
+        1448,
+        362
+      ],
+      "file": "frame_03.png",
+      "edgeRisk": true,
+      "pixelSha256": "237f83f1a8cf1235c80df229e27726cb524b8ff5791c58780ff450d9382d3a43"
+    },
+    {
+      "index": 4,
+      "nativeCrop": [
+        0,
+        362,
+        362,
+        724
+      ],
+      "file": "frame_04.png",
+      "edgeRisk": true,
+      "pixelSha256": "ea2101b38a0de6528ed97e1c6500bdf40e6c08f2f1db1307f419e09e027cf85a"
+    },
+    {
+      "index": 5,
+      "nativeCrop": [
+        362,
+        362,
+        724,
+        724
+      ],
+      "file": "frame_05.png",
+      "edgeRisk": true,
+      "pixelSha256": "debee5ef6080cb0e8e02e0af6ff15dfffda6e13764b43423f4eec42ea8d678a2"
+    },
+    {
+      "index": 6,
+      "nativeCrop": [
+        724,
+        362,
+        1086,
+        724
+      ],
+      "file": "frame_06.png",
+      "edgeRisk": true,
+      "pixelSha256": "1149c0f1667b434626afca88c54697b8b9294732ab4ab370c8f6779816b7b2f0"
+    },
+    {
+      "index": 7,
+      "nativeCrop": [
+        1086,
+        362,
+        1448,
+        724
+      ],
+      "file": "frame_07.png",
+      "edgeRisk": true,
+      "pixelSha256": "97fe7408b6c3fd4cdd7520907bb795157fb97ec8f7e9d0f7440b20a8d08bda10"
+    },
+    {
+      "index": 8,
+      "nativeCrop": [
+        0,
+        724,
+        362,
+        1086
+      ],
+      "file": "frame_08.png",
+      "edgeRisk": true,
+      "pixelSha256": "293bfdab24e1dedfe542fa17fb2559e4f795d8906d4466921c6f0e392f95141b"
+    },
+    {
+      "index": 9,
+      "nativeCrop": [
+        362,
+        724,
+        724,
+        1086
+      ],
+      "file": "frame_09.png",
+      "edgeRisk": true,
+      "pixelSha256": "62027af0313af31715465f740ce16381cf767a99d443afa188749cfc2438b980"
+    },
+    {
+      "index": 10,
+      "nativeCrop": [
+        724,
+        724,
+        1086,
+        1086
+      ],
+      "file": "frame_10.png",
+      "edgeRisk": true,
+      "pixelSha256": "cbe9f14edb527f201b8e862db07229c4d9df1bdf0d069d93978c6501d2ac8c8c"
+    },
+    {
+      "index": 11,
+      "nativeCrop": [
+        1086,
+        724,
+        1448,
+        1086
+      ],
+      "file": "frame_11.png",
+      "edgeRisk": true,
+      "pixelSha256": "9e450657141da262d17624bf52b4db2eb0de109e76a30829f0aceb1d71fe0e9f"
+    }
+  ]
+}

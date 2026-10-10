@@ -1,0 +1,13 @@
+{
+  "tool": "image_gen.imagegen",
+  "callable": "image_gen__imagegen",
+  "purpose": "Targeted complete-image early-lift midpoint; preserves selected sheet art.",
+  "arguments": {
+    "prompt": "Edit reference image 1 into ONE full transparent sprite that is the motion midpoint toward reference image 2. Both images show the same KH2 Sora in the established smooth detailed cel-shaded style. Keep image 1's head, face, hair, torso, hips, legs, boots, empty near hand and camera placement unchanged. Advance only the far gripping arm and its entire connected Kingdom Key halfway between the two references: raise the grip by about half the small visible height difference, with the gold guard still BELOW THE CHIN at lower chest height; turn the blade halfway from image 1's up-left diagonal toward image 2's near-upright blade. The new shaft should slant up-left at roughly 25 degrees left of vertical, with its crowned tip below the canvas top. This is an early lift, not overhead or shoulder carry. Preserve the same shaft length and connected collar/handle/guard; the wrist bends naturally, thumb grips correctly, chain stays attached to the pommel and hangs down. Maintain the existing planted feet and identical body size/placement. Render one complete finished Sora sprite on the same square transparent canvas, safe margins, no labels or effects. Do not copy either endpoint or enlarge/crop the figure.",
+    "referenced_image_paths": [
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_01.png",
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_02.png"
+    ],
+    "transparent_background": true
+  }
+}

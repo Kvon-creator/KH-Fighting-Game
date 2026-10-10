@@ -1,6 +1,6 @@
 # Gemini browser generation and review
 
-**Latest steering, October 10:** K'von says the sprites do not join naturally and some Keyblades are malformed. Treat generated sheets as rejected/draft until adjacent-frame continuity and connected weapon geometry actually pass. Restart the idle-to-run bridge from the approved idle itself, checking one small complete-frame joint change at a time before expanding a sequence. Phone pairing is deferred. Gemini complete-frame generation remains authorized; opposite far-arm shoulder carry behind the head remains the running target.
+**Latest steering, October 10:** K'von accepts the latest direct-generated12-pose sheet's art quality, cancels the proposed layer fallback and requests refinement of that sheet for synchronized movement. Continue complete-image refinements from direct_imagegen_trial/attempt_03; preserve older Gemini candidates. Phone pairing is deferred. Opposite far-arm shoulder carry behind the head remains the target. See Sora_Direct_Generation_Trial.md.
 
 **Fact or rule:** K'von requested direct communication with Gemini in a separate Brave browser session, using a local control port. Generate complete sprites without individual layers; Codex reviews against the approved idle style and established weapon/movement vision, sends specific corrections when needed and presents passing artwork to K'von for final approval. Gemini's URL is `https://gemini.google.com/app`. The user did not know its port; the prepared launcher selects loopback port 9222 and a dedicated project-local profile.
 

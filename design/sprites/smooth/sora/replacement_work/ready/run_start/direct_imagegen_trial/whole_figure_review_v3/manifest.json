@@ -1,0 +1,288 @@
+{
+  "status": "whole-figure extraction/placement review; joint and weapon refinement pending",
+  "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/direct_imagegen_trial/attempt_03/sora_run_start_original.png",
+  "sourceSha256": "6108be48aa93f736514c1860f1a9966de1998b0800814156c681321cb779530e",
+  "nativeSize": [
+    1448,
+    1086
+  ],
+  "frameCount": 12,
+  "uniformExportRatio": 1.1792207792207792,
+  "noIndividualBodyWeaponLayers": true,
+  "timing": "provisional70ms; display baseline/flight clearance not gameplay physics",
+  "frames": [
+    {
+      "index": 0,
+      "nativeBounds": [
+        53,
+        100,
+        338,
+        389
+      ],
+      "nativeFigureSize": [
+        285,
+        289
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 136.0,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        80,
+        129
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 1,
+      "nativeBounds": [
+        406,
+        98,
+        720,
+        390
+      ],
+      "nativeFigureSize": [
+        314,
+        292
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 148.25,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        65,
+        126
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 2,
+      "nativeBounds": [
+        776,
+        19,
+        1065,
+        390
+      ],
+      "nativeFigureSize": [
+        289,
+        371
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 128.5,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        88,
+        33
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 3,
+      "nativeBounds": [
+        1136,
+        9,
+        1420,
+        390
+      ],
+      "nativeFigureSize": [
+        284,
+        381
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 126.5,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        91,
+        21
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 4,
+      "nativeBounds": [
+        46,
+        386,
+        352,
+        769
+      ],
+      "nativeFigureSize": [
+        306,
+        383
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 126.5,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        91,
+        18
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 5,
+      "nativeBounds": [
+        408,
+        400,
+        720,
+        768
+      ],
+      "nativeFigureSize": [
+        312,
+        368
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 128.5,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        88,
+        36
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 6,
+      "nativeBounds": [
+        771,
+        462,
+        1074,
+        768
+      ],
+      "nativeFigureSize": [
+        303,
+        306
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 127.0,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        90,
+        109
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 7,
+      "nativeBounds": [
+        1124,
+        466,
+        1433,
+        770
+      ],
+      "nativeFigureSize": [
+        309,
+        304
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 130.0,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        87,
+        112
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 8,
+      "nativeBounds": [
+        23,
+        795,
+        369,
+        1060
+      ],
+      "nativeFigureSize": [
+        346,
+        265
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "solePivotNativeX": 132.0,
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        84,
+        158
+      ],
+      "placementMethod": "planted-sole midpoint, same whole-drawing scale",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 9,
+      "nativeBounds": [
+        386,
+        789,
+        718,
+        1060
+      ],
+      "nativeFigureSize": [
+        332,
+        271
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        85,
+        150
+      ],
+      "placementMethod": "shared late-phase source camera offset, no foot pinning",
+      "displaySoleBaseline": 470,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 10,
+      "nativeBounds": [
+        747,
+        789,
+        1091,
+        1068
+      ],
+      "nativeFigureSize": [
+        344,
+        279
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        84,
+        133
+      ],
+      "placementMethod": "shared late-phase source camera offset, no foot pinning",
+      "displaySoleBaseline": 462,
+      "nativeSheetEdgeRisk": false
+    },
+    {
+      "index": 11,
+      "nativeBounds": [
+        1107,
+        796,
+        1435,
+        1063
+      ],
+      "nativeFigureSize": [
+        328,
+        267
+      ],
+      "method": "complete connected figure plus nearest detached detail components; antialias margin1px",
+      "uniformScale": 1.1792207792207792,
+      "translation": [
+        82,
+        143
+      ],
+      "placementMethod": "shared late-phase source camera offset, no foot pinning",
+      "displaySoleBaseline": 458,
+      "nativeSheetEdgeRisk": false
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Movement quality and production order
 
-**Latest steering, October10:** Continue the authorized Gemini complete-frame workflow, correcting natural continuity and Keyblade defects before expanding animations. The generated sheets are diagnostic/rejected until actual adjacent poses join; retain running-before-aerial order. Earlier local layered progress below is preserved history, not the current requested production method. See Sora_Gemini_Browser_Workflow.md and the run-start CONTINUITY_PLAN.md.
+**Latest steering, October10:** K'von accepts the latest direct-generated12-pose sheet's art quality, cancels the proposed layer fallback and requests refining that sheet so the poses synchronize. Continue complete-image refinement from attempt03 while retaining running-before-aerial order. Earlier near-arm local constructions remain preserved history. See Sora_Direct_Generation_Trial.md.
 
 **Fact or rule:** Refine the current running animations until they match the approved idle pose's smooth artwork quality, then proceed to aerial movement. User said the latest batches look great but requested further polish. That feedback does not erase documented technical/art defects or make construction placeholders finished.
 

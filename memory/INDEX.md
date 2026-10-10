@@ -41,3 +41,4 @@
 - [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.
 - [Gemini Movement Trial](Sora_Gemini_Movement_Trial.md): Historical cancellation/local checkpoints and later authorized browser trial.
 - [Gemini Browser Workflow](Sora_Gemini_Browser_Workflow.md): New authorized Brave/Gemini complete-frame trial, local connection scripts, review criteria and final user approval.
+- [Direct Generation Trial](Sora_Direct_Generation_Trial.md): Latest twelve-pose sheet accepted for art quality; refine complete drawings without layers, preserving exact generation results.

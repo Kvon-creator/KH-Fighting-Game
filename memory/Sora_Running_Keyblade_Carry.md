@@ -1,5 +1,7 @@
 # Sora running Keyblade carry
 
+**Current method, October10:** K'von accepts the latest direct-generated12-pose sheet's art quality and explicitly cancels the proposed layer fallback. Refine that complete sheet's motion synchronization and connected weapon consistency. Keep the opposite far-arm carry target and all prior sources. Do not start local production layers or revert to the older near-arm carry. Source03 and new complete-image refinements are the active workflow; see Sora_Direct_Generation_Trial.md.
+
 **Latest correction, October 10:** K'von likes Gemini's attempt05 artwork but wants the Kingdom Key held by the other arm and carried over that arm's other shoulder, behind Sora's head. For the current right-facing pilot, switch from the visible near/front gripping arm to the opposite far arm; the near arm becomes the free swinging arm. Preserve Sora's facing, KH2 outfit, finish, connected weapon geometry and slight foreground tip. This changes the carry-arm target for the next complete-frame Gemini revision; earlier approved near-arm local constructions remain preserved references, not the new placement target.
 
 **Why:** K'von specifically requested the arm/shoulder switch after liking the latest pilot. It is approval of its general artwork with a requested carry correction, not final approval of that unchanged frame.
