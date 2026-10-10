@@ -14,6 +14,7 @@ from PIL import Image, ImageDraw
 parser = argparse.ArgumentParser()
 parser.add_argument("--middle-attempt")
 parser.add_argument("--adjacent-attempt")
+parser.add_argument("--reference-attempt")
 parser.add_argument("--end-attempt", default="attempt_08")
 parser.add_argument("--review", required=True)
 args = parser.parse_args()
@@ -32,6 +33,15 @@ out = trial / args.review
 if out.exists():
     raise RuntimeError("Preserve the existing review; choose a new version")
 idle = root / "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png"
+if hashlib.sha256(idle.read_bytes()).hexdigest() != "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7":
+    raise RuntimeError("Approved idle changed")
+if args.reference_attempt:
+    if not args.adjacent_attempt or not re.fullmatch(r"attempt_\d+", args.reference_attempt):
+        raise RuntimeError("A previous complete candidate may reference only an adjacent comparison")
+    previous = json.loads((trial / args.reference_attempt / "exchange_state.json").read_text(encoding="utf-8"))
+    idle = Path(previous.get("originalDownload") or previous["preview"]).resolve()
+    if idle.parent != trial / args.reference_attempt:
+        raise RuntimeError("Previous whole frame must belong to its preserved attempt")
 middle_sources = []
 if args.middle_attempt:
     middle = trial / args.middle_attempt / "frame_review_v1"
@@ -46,8 +56,6 @@ if end.parent != trial / endpoint_attempt:
     raise RuntimeError("Endpoint image must belong to its preserved attempt")
 sources = [idle] + middle_sources + [end]
 before = {file: hashlib.sha256(file.read_bytes()).hexdigest() for file in sources}
-if before[idle] != "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7":
-    raise RuntimeError("Approved idle changed")
 frames, metadata = [], []
 for index, file in enumerate(sources):
     with Image.open(file) as source:
@@ -61,7 +69,7 @@ for index, file in enumerate(sources):
     frames.append(frame)
     foreground = np.asarray(frame).min(axis=2) < 220
     edge = bool(foreground[:3].any() or foreground[-3:].any() or foreground[:, :3].any() or foreground[:, -3:].any())
-    metadata.append({"index": index, "role": "approved_idle_reference" if index == 0 else "generated_adjacent_candidate" if args.adjacent_attempt else "provisional_endpoint" if index == len(sources)-1 else "generated_inbetween",
+    metadata.append({"index": index, "role": ("previous_complete_candidate" if args.reference_attempt else "approved_idle_reference") if index == 0 else "generated_adjacent_candidate" if args.adjacent_attempt else "provisional_endpoint" if index == len(sources)-1 else "generated_inbetween",
                      "source": file.relative_to(root).as_posix(), "sourceSha256": before[file],
                      "nativeSize": list(native_size), "wholeCanvasRatio": 512 / native_size[0],
                      "edgeRisk": edge})

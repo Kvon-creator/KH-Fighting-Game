@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-10T19:23:24.448599+00:00",
+  "checkedAt": "2026-10-10T19:27:04.413527+00:00",
   "establishedSourcesUnchanged": true,
   "scope": "file provenance and image formats only; does not verify anatomy, weapon geometry, natural motion or final approval",
   "establishedSources": [
@@ -434,6 +434,38 @@
           "mode": "RGB",
           "hasAlpha": false,
           "sha256": "ae8b37d606dcaa81284ff95455c6256355eb8d77e2aa8eed527e9a23e186efcc"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_14",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "rejected_weapon_lift_ignored_free_arm_changed",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_j9uvzqj9uvzqj9uv.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "df7fb4a0b7f753d1baefacb7ddb2123ce6cb54da8424304088aa47d327f6115b"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "45eecb5898e12ff709a9491020142599e30b4bd3f13863d907fd1302a999712d"
         }
       ]
     },

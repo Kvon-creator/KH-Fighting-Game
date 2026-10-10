@@ -1,0 +1,38 @@
+{
+  "status": "diagnostic_not_approved_animation",
+  "scope": "adjacent-pose comparison; not a running cycle",
+  "canvas": [
+    512,
+    512
+  ],
+  "background": "white review composite; native originals preserved",
+  "transforms": "uniform whole-canvas export only; no per-pose fitting, registration correction or morphing",
+  "timing": "comparison flashes350ms normal/700ms slow; not animation timing",
+  "finalUserApproval": "pending",
+  "frames": [
+    {
+      "index": 0,
+      "role": "previous_complete_candidate",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_13/Gemini_Generated_Image_dlsykadlsykadlsy.jfif",
+      "sourceSha256": "ed5ba87a93daad5621ff231d64a09f65211bdb6bd6b391c1f7620ca2ed12a2c0",
+      "nativeSize": [
+        2048,
+        2048
+      ],
+      "wholeCanvasRatio": 0.25,
+      "edgeRisk": false
+    },
+    {
+      "index": 1,
+      "role": "generated_adjacent_candidate",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_14/Gemini_Generated_Image_j9uvzqj9uvzqj9uv.jfif",
+      "sourceSha256": "df7fb4a0b7f753d1baefacb7ddb2123ce6cb54da8424304088aa47d327f6115b",
+      "nativeSize": [
+        2048,
+        2048
+      ],
+      "wholeCanvasRatio": 0.25,
+      "edgeRisk": false
+    }
+  ]
+}

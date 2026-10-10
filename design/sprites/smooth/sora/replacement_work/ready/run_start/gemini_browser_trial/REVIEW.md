@@ -17,7 +17,8 @@ The user rejects unnatural joins and malformed Keyblades. No generated sheet bel
 |11|Provisional release endpoint: one hand releases clearly, far hand grips; free hand extends too far.|
 |12|Near hand moved close beside guard, connected bent forearm; invented glove gear requires cleanup.|
 |13|Glove gear removed; provisional complete hand-release art checkpoint, final user approval and motion continuity pending.|
+|14|Rejected first lift: weapon remains low, wrong free arm changes instead.|
 
-anticipation_review_v1 keeps09's six-pose unaligned comparison. registration_review_v1 applies a single uniform scale/translation to each whole genuine drawing from planted sole measurements. This reduces export-framing jitter but does not solve09's joint motion; it is not accepted production art. adjacent_review_v1 compares10 with the actual idle without fitting either character.
+anticipation_review_v1 keeps09's six-pose unaligned comparison. registration_review_v1 applies a single uniform scale/translation to each whole genuine drawing from planted sole measurements. This reduces export-framing jitter but does not solve09's joint motion; it is not accepted production art. adjacent_review_v1 compares10 with the actual idle without fitting either character. adjacent_review_v2 compares the corrected13 hand release with idle; adjacent_review_v3 compares13/14 and documents the failed lift. These are pose comparisons, not completed animation cycles.
 
 No sheet is accepted because its cells have unique pixels or because Gemini describes them as smooth. Judge joint progression, foot support, scale/camera, correct wrists and connected rigid weapon geometry on the actual drawings. All final user approval, transparent sprite export, gameplay timing and start/loop/stop seams remain pending. Running must reach idle quality before aerial movement.
