@@ -25,3 +25,9 @@ every possible platform approval or overrides Agent Setup.
 
 **Instructions:** Root `AGENTS.md` directs the agent to read the original
 Agent Setup and honor this preference. The Agent Setup file itself is unchanged.
+
+**October 10 reminder:** K'von reiterated that routine work should not trigger
+extra approval requests. Normal Node/CDP browser commands work inside the active
+sandbox. Use the default permission mode first; do not request elevation merely
+because a command controls the authorized browser. Respect actual platform
+rejections and request escalation only when required by an observed restriction.

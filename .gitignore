@@ -3,3 +3,10 @@
 
 # Godot 3 import cache, if present.
 .import/
+
+# Local browser profiles, cookies and connection diagnostics.
+/.local/
+
+# Raw browser UI diagnostics may include account labels.
+design/sprites/smooth/sora/replacement_work/ready/*/gemini_browser_trial/attempt_*/gemini_observation_*.json
+design/sprites/smooth/sora/replacement_work/ready/*/gemini_browser_trial/attempt_*/composer_text.txt

@@ -1,0 +1,30 @@
+{
+  "attempt": 5,
+  "review": "Pilot art review passed against approved finished idle and reviewed carry; final user approval pending.",
+  "finalUserApproval": "pending",
+  "animationPhaseCount": 1,
+  "images": [
+    {
+      "file": "Gemini_Generated_Image_941ytu941ytu941y.jfif",
+      "format": "JPEG",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "9a83ee271a9bdf6851aa8a37050b8756a69f849d6fcbcc87c4a5da0577c94f4c"
+    },
+    {
+      "file": "gemini_original_preview.jpg",
+      "format": "JPEG",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "b6bcd8b1d6c8192e1885728cbd160262821ada2bd2eff1dfe1ec290e84fb89bc"
+    }
+  ]
+}

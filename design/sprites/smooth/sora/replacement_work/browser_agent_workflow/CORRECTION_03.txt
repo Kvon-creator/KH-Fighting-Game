@@ -1,0 +1,7 @@
+Keep the latest body's pose, face, KH2 outfit, colors, proportions and finished cel-shaded quality. Keep the gold guard at the front/right shoulder and the connected shaft extending backward to the upper left.
+
+Correct the silver key head using uploaded reference 2: simple angular block teeth on the LOWER-LEFT side of the shaft at the upper-left tip. Your latest head has rounded hooks and round cut-outs on the opposite side. Remove those invented curves/holes and match the reference's Kingdom Key silhouette and proportions. Preserve the same physical weapon length and connected guard, grip and collar. Give the upper-left tip only subtle foreground foreshortening.
+
+Match reference 2's fingerless gripping glove and cuff; remove the invented large circular wheel/plate on the back of the hand. Keep the approved wrist/thumb orientation and a free counter-swinging arm.
+
+Generate one complete finished frame, without individual layers. Use plain white, since you stated true transparency is unsupported. Quote and stop on any generation refusal.

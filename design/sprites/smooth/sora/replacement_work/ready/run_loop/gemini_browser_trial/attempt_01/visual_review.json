@@ -1,0 +1,30 @@
+{
+  "attempt": 1,
+  "review": "Rejected carry direction and free-hand/blade overlap.",
+  "finalUserApproval": "pending",
+  "animationPhaseCount": 1,
+  "images": [
+    {
+      "file": "Gemini_Generated_Image_ueq6gfueq6gfueq6.jfif",
+      "format": "JPEG",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "5c5e30174b1c2d6b8323b4b82208f85dca9464ed68d560c98dea8a344a2c0398"
+    },
+    {
+      "file": "gemini_original_preview.jpg",
+      "format": "JPEG",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "c5fc5a40644cb4790b8c134d10d594188a2d87cb68d945c8e73c15d4a3d336a7"
+    }
+  ]
+}

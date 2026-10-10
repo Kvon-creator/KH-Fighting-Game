@@ -1,5 +1,7 @@
 # Gemini movement generation trial
 
+**Latest steering:** K'von has requested a new Brave/Gemini browser trial with complete sprites, Codex verification/corrections and final user approval. This supersedes the older no-Gemini-retries decision within that newly requested scope. Deleted handoff folders remain deleted and prior artwork remains preserved. See Sora_Gemini_Browser_Workflow.md.
+
 **Fact or rule:** On October 8, 2026, K'von ended the Gemini trial, requested returning to the original local workflow and explicitly instructed deleting the Gemini handoff folder. Local layered refinement is active again. Original sources, approved grip and protected engine files remain preserved; periodic main pushes remain authorized.
 
 **Why:** K'von explicitly requested returning to local work after evaluating Gemini's images and text analysis. Gemini also reported: "I can't generate the image you requested right now due to interests of third-party content providers. Please edit your prompt and try again." This is the reported message, not a verified diagnosis of its internal trigger.

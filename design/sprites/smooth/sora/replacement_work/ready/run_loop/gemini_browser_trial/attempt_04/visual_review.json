@@ -1,0 +1,30 @@
+{
+  "attempt": 4,
+  "review": "Construction-master reference did not materially change cutouts; preserved comparison revision.",
+  "finalUserApproval": "pending",
+  "animationPhaseCount": 1,
+  "images": [
+    {
+      "file": "Gemini_Generated_Image_c2nip6c2nip6c2ni.jfif",
+      "format": "JPEG",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "4864f62c617f9821288341ba6968951a20d84165ae818185b04fcac355d5b62a"
+    },
+    {
+      "file": "gemini_original_preview.jpg",
+      "format": "JPEG",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "c7cd8d85dd19f4e5cfbd4948cf2846b14fa9445ff06312d88c8d37364eb01a3b"
+    }
+  ]
+}

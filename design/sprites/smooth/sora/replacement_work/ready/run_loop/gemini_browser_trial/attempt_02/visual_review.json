@@ -1,0 +1,30 @@
+{
+  "attempt": 2,
+  "review": "Carry corrected; key-head side and invented glove wheel need correction.",
+  "finalUserApproval": "pending",
+  "animationPhaseCount": 1,
+  "images": [
+    {
+      "file": "Gemini_Generated_Image_wzpjdvwzpjdvwzpj.jfif",
+      "format": "JPEG",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "76da08e4b1a81cd1d12b51e25f51083d0d6920c828ef851285a7e361e171e4bc"
+    },
+    {
+      "file": "gemini_original_preview.jpg",
+      "format": "JPEG",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "124ae72c816074cc61d2a400f9870bfd29732beb9e1a904444a247edb482e1a0"
+    }
+  ]
+}

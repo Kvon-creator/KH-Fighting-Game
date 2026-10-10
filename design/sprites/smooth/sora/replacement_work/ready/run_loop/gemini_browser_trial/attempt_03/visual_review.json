@@ -1,0 +1,30 @@
+{
+  "attempt": 3,
+  "review": "Key-head side and glove corrected; rounded-cutout objection later recalibrated against approved idle.",
+  "finalUserApproval": "pending",
+  "animationPhaseCount": 1,
+  "images": [
+    {
+      "file": "Gemini_Generated_Image_poasi0poasi0poas.jfif",
+      "format": "JPEG",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "5f5ba16d16217aade5b65d02ee008d0475bd6521484e0e16ed6827896563253b"
+    },
+    {
+      "file": "gemini_original_preview.jpg",
+      "format": "JPEG",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "hasAlpha": false,
+      "sha256": "5b1506747fcd2062187dac0e5852ee3fa90b731c80387b9c33c699376e88b4db"
+    }
+  ]
+}

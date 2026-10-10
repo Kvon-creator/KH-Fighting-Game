@@ -1,0 +1,7 @@
+The body, KH2 costume, face, hair and clean cel-shaded finish are close. Keep those strengths and redraw one complete running sprite.
+
+Correct the weapon carry to match uploaded reference 2 exactly in screen orientation: the gripping hand and gold guard belong in front of the shoulder on the RIGHT side of the image, near his upper chest. The straight silver shaft runs diagonally backward toward the UPPER LEFT, behind the shoulder/head. The toothed key head is at the upper-left end. In your first image the guard is at the upper left and the blade crosses his chest toward the lower right; that carry does not match our established running design.
+
+Use the same arm's shoulder beneath the shaft. Keep the corrected hand orientation from reference 2, one connected rigid Kingdom Key, stable length and subtle foreground foreshortening of its upper-left tip. The free arm counter-swings; it must not hold or touch the blade.
+
+Keep right-facing three-quarter view and a genuine running contact pose. Deliver only one finished full-body image, without separate layers. Your first full-size download was an opaque 2048px JPEG. Produce a real transparent PNG if supported; otherwise keep a pure-white background and state that format limitation accurately. Do not paint a checkerboard. Stop and quote any generation refusal.

@@ -38,4 +38,5 @@
 - [Movement Quality Order](Sora_Movement_Quality_Order.md): Refine running to approved-idle art quality before aerial movement.
 - [Run-loop Gait Refinement](Sora_Run_Loop_Gait_Refinement.md): Latest sixteen-pose gait/upper follow-through candidate; preserved prior reviews and remaining material/anatomy/transition work.
 - [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.
-- [Gemini Movement Trial](Sora_Gemini_Movement_Trial.md): Trial ended, handoff folder deleted and local refinement resumed; current garment checkpoint recorded.
+- [Gemini Movement Trial](Sora_Gemini_Movement_Trial.md): Historical cancellation/local checkpoints and later authorized browser trial.
+- [Gemini Browser Workflow](Sora_Gemini_Browser_Workflow.md): New authorized Brave/Gemini complete-frame trial, local connection scripts, review criteria and final user approval.

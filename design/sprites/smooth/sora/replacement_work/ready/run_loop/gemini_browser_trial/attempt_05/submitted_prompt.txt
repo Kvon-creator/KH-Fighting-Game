@@ -1,0 +1,5 @@
+Carefully compare the newly uploaded weapon master with your last illustration, then generate one corrected COMPLETE Sora frame. Keep the approved idle's art style and the last body's pose, face, KH2 outfit and same-arm shoulder carry.
+
+The visible correction must be the key head. Match our CUSTOM master: THREE short rectangular block teeth, straight sloping edges and squared corners. Use a comb-like angular silhouette. Replace every round/Mickey-shaped notch with a straight-edged notch. Keep the teeth on the lower-left side of the upper-left tip, with sizes proportional to the shaft as in the master. Maintain its fixed connected guard, black grip, blue collar, silver shaft and physical length. Preserve the approved hand orientation and slight foreground tip perspective.
+
+Return one finished full-body image on plain white, without individual layers or explanatory prose. Quote and stop on any generation refusal.

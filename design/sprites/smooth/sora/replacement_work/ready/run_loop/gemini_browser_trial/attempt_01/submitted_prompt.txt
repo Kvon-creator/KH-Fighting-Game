@@ -1,0 +1,12 @@
+Generate one finished, complete Sora running sprite directly as a single image. Do not provide individual body or weapon layers.
+
+References, in order:
+1. Approved KH2 idle sprite: the authority for character identity, proportions, outfit, colors, linework and shading quality.
+2. Reviewed running sprite: reference for the pose, corrected gripping hand and shoulder carry; bring its entire finish up to the idle's quality.
+3. KHIV render: reference ONLY for hand/weapon construction and same-arm shoulder carry. Keep the KH2 outfit from reference 1.
+
+Use smooth clean outlines and detailed 2D cel shading. Preserve spiky brown hair, blue eyes, black KH2 jacket with white/silver trim, yellow straps, red waist cloth, baggy charcoal shorts and oversized black/yellow shoes with red inserts. Face right in the established three-quarter view. Draw a genuine running contact pose with a forward lean, one foot contacting the ground and the other recovering behind.
+
+Carry the Kingdom Key over the shoulder of the SAME arm that grips it. Preserve the corrected thumb, knuckle and wrist orientation. Gold guard, black grip, blue collar, straight silver shaft and toothed key head must connect as one rigid weapon with consistent geometry and length. Point its tip slightly toward the foreground; keep shoulder, wrist, grip and blade perspective coherent. Attach the chain to the pommel.
+
+Deliver one uncropped 512x512 transparent PNG, fully finished, with no captions, arrows, checkerboard or effects. If true transparency or that resolution is unavailable, state the limitation accurately. Wait for correction feedback before generating a cycle. If generation is refused, quote the exact refusal and stop.

@@ -1,0 +1,41 @@
+{
+  "status": "ready_for_visual_review",
+  "promptSha256": "d26773b17ba79843d633a3446c019217d2b9067d7ac587f4965bf7c2bae8347e",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\CORRECTION_05.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-10T16:38:32.277Z",
+  "baselineImages": [
+    "ceba4c4eee676f720ba9f2431754164ce346c2bbdd84b365c19c6d99e0610db7",
+    "2018cda1ff1689b040304004f524e0ec0ce8815928c4269662e2a84b89a143df",
+    "f02d46b946023f6933a11f30e427379fc73acfbcad69d9478d4c7e91183040c1",
+    "708fdd7db781286a99e6f7bb67b6272a12e5112f9206005c2baea92bffa3b4cc"
+  ],
+  "references": [
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\standing_idle\\sora_stand_idle_00.png",
+      "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7"
+    },
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\layers\\frame_00_review_v1\\sora_run_loop_00_review.png",
+      "sha256": "b171c554aef835fefe805b88c00431836d67f7b9f91e1f43f8f930257edea48e"
+    },
+    {
+      "file": "design\\references\\Sora_KHIV_Render.webp",
+      "sha256": "5dc59758a962e411e1b90f5f440f2d4cef0e42b07b1a91550d42455147f19a30"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-10T16:38:56.787Z",
+  "preview": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\gemini_browser_trial\\attempt_05\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\gemini_browser_trial\\attempt_05\\Gemini_Generated_Image_941ytu941ytu941y.jfif",
+  "nativePreviewSize": [
+    1024,
+    1024
+  ],
+  "imageFormat": "jpg",
+  "review": "pilot_art_passed",
+  "reviewNotes": "visual_review.json and ../REVIEW.md",
+  "referenceContext": [
+    "Construction master uploaded in attempt04 and retained in chat context; finished-idle detailed design takes precedence."
+  ]
+}
