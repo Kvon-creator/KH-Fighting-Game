@@ -2,6 +2,8 @@
 
 User authorization covers sprite-generation prompts, project art-reference uploads to Gemini, reviewing its outputs and sending concrete corrections. Google authentication is performed by the user. Final artwork approval belongs to the user.
 
+Latest correction: the user rejects the discontinuous poses and malformed weapons. No generated sheet is an approved animation. The current still-image trial anchors the transition to the actual approved idle and checks small anatomical changes before extending it. See `ready/run_start/gemini_browser_trial/CONTINUITY_PLAN.md` and candidate review notes. Phone pairing is deferred.
+
 ## Connection
 
 From PowerShell:
@@ -23,7 +25,19 @@ Sign in to Gemini in that separate window. Tell Codex when the chat is ready. A 
 
 Paths beginning `ready/` are relative to `design/sprites/smooth/sora/replacement_work/`.
 
-Use `PILOT_PROMPT.txt` first. No repository instructions, personal files, credentials or browser-profile files are uploaded.
+`PILOT_PROMPT.txt` is the historical near-arm pilot, not the current production prompt. No repository instructions, personal files, credentials or browser-profile files are uploaded.
+
+October10 correction: the user prefers the opposite far arm/back shoulder, with the shaft behind Sora's head. Attempt06 did not change the original carry. A fresh conversation with `--reference-set far-carry` uploaded only the approved idle and KHIV photo; attempt08 establishes the new provisional carry with both arms. Keep earlier near-arm art preserved. For this fresh context, use `FAR_CARRY_PILOT.txt`/`FAR_CARRY_REFINE_08.txt` rather than historical near-arm prompts. The new nine-pose run-start request is `RUN_START_09_POSES.txt`.
+
+The nine-pose result was rejected for discontinuity/missing and malformed weapons. The first guided opening segment still contains tiny captions, nearly duplicated00/01 poses and registration changes from the idle. Middle sheet04 reversed facing; edits05/06 retained the wrong weapon angle; fresh07 changed the angle but changed proportions and grip. Preserve these diagnostic/rejected attempts. `build_start_pose_guides.py` exports whole-frame schematic references with a fixed225px projected weapon axis; the current `guides_clean/` removes labels/ground lines. Older annotated `guides/` remains historical. Neither guide set is accepted final geometry or finished sprite layers.
+
+Run-start08 (`RUN_START_ADJACENT_01.txt`, `--reference-set idle-only`) retains planted boots and a connected weapon but makes too large a lean for the first adjacent frame. Use it only as a provisional deep-anticipation endpoint. Run-start09 (`RUN_START_COMPRESSION_INBETWEENS.txt`, `--reference-set anticipation-endpoints`) requests four genuine complete-image intermediates between the actual idle and08. Inspect the actual grid, extract it, and build the six-pose diagnostic with `build_anticipation_review.py`. This helper uses unaligned whole canvases, preserves source hashes and creates normal/slow/128px previews with a shared palette. It does not repair poses, create layers or confer approval. Review the endpoint transition, head/weapon scale and every adjacent pose before further lift/stride production.
+
+That bridge failed visual review. The separate `register_anticipation_review.py` diagnostic registers complete drawings to planted soles, recording scale/translation/source hashes. This corrects export framing, not movement or weapon shape; its result still has abrupt joint motion and overshoots. Never use it on stride/airborne poses. Run-start10's minimal compression matches style/framing but lacks a convincingly new joint phase.11 makes a clear near-hand release but extends it too far.12 edits that complete release endpoint to place the empty hand close to the guard. Do not accept a new pose from pixel differences or the provider's prose alone.
+
+For a single adjacent-frame diagnostic, use `build_anticipation_review.py --adjacent-attempt attempt_10 --review adjacent_review_v1`. It keeps the reference and candidate on their original whole canvases. `audit_browser_trials.py` verifies established reference hashes, captured prompt/receipt consistency, original preservation after extraction and actual native image formats. `AUDIT.json` is an updated file-provenance checkpoint, not an automatic art judge.
+
+`extract_sheet_review.py` extracts an already inspected regular grid into opaque512px full-frame PNGs, a contact sheet and normal/slow/128px GIFs. It uses a uniform whole-cell export ratio, never body/weapon parts or per-pose rescaling. It records source hashes and clipping risks and preserves the original download. Pass `--grid-confirmed` only after inspecting the actual image. Frame hashes establish distinct pixels, not correct anatomy or smooth timing; those remain visual checks.
 
 ## Review and corrections
 
@@ -44,6 +58,10 @@ Produce one animation at a time: run start, run loop, run stop. Each is a comple
 
 Request 512px RGBA frames or a regular sheet with complete equal-sized cells. Verify native dimensions, actual alpha and ordering; never claim that an upscaled image was generated at native resolution. Build local frame extraction, contact sheets and animated previews only after confirming the layout. Initial loop timing may use 60ms/frame for review; it is not approved gameplay timing.
 
+Known format limitation: the current Gemini image pipeline supplies opaque JPEGs, not true alpha. Do not repeatedly request transparency; complete art review first, then make a separate reviewed transparent export. Native downloads so far are2048px originals;512px is a whole-frame export size.
+
+Native video was tested once in run-loop09 and refused. Exact provider message: `I can't generate the video you requested right now due to interests of third-party content providers. Can I help you with something else?` Its saved raw response also includes an inconsistent progress footer. This is a provider content refusal, not a permissions rejection, validation failure or verified service outage. No video was produced or extracted; do not retry or disguise that request. Continue only the separately authorized still-image workflow. No media packages were installed.
+
 ## Compact agent exchange
 
 The main driver is the installed Node runtime. The optional PowerShell wrapper is blocked by the sandbox's PowerShell execution policy; no policy change is required to run the Node driver directly.
@@ -54,11 +72,13 @@ node design/sprites/smooth/sora/replacement_work/browser_agent_workflow/gemini_c
 
 One invocation verifies the composer, submits the stored concise prompt once, waits for a new generated image, saves the response/preview and full-size download, and returns a compact status. Receipts record reference hashes and keep final user approval pending. Rerunning a submitted attempt collects its result without sending the prompt again. No visual acceptance or automatic production replacement is performed by the script; Codex reviews the actual artwork and writes the next correction when needed. `inspect --verbose true` is reserved for interface troubleshooting.
 
+If multiple Gemini tabs exist, `inspect` lists their IDs and stops. Select the observed intended tab with `--target ID` on subsequent commands. New receipts bind in-progress attempts to that tab. `--reference-set far-carry` selects the two-reference fresh context; the `upload` command attaches it through the observed image input. Compact inspection suppresses generated prompt descriptions in image alt text.
+
 The second attempt exercised the full exchange successfully inside the sandbox: one correction, one new image, a saved response, 1024px JPEG preview and 2048px JPEG original. Gemini stated that its current pipeline does not support true transparency. Treat these as art candidates requiring a later transparent sprite export; never label them RGBA sprites or native512px outputs.
 
 The example above is the already completed fifth attempt: it returns the saved result and does not submit again. For a new revision, save a concise new prompt in this workflow folder and select a new attempt directory. `--timeout 180` controls the collection deadline (1-600 seconds); a timeout is collected by rerunning the same attempt. Optional `--weapon-reference true` adds the local construction master to that exchange. Use compact status for ordinary work and full inspection only when controls change.
 
-Current pilot: attempt05 passes Codex's single-frame art review and awaits final user approval. Attempts01-05 are revisions of one pose, not a run cycle. The original 2048px JPEGs are preserved; no production sprites or engine files were replaced. Detailed notes are in each attempt and `ready/run_loop/gemini_browser_trial/REVIEW.md`.
+Historical pilot: loop05 received positive general-art feedback with an explicit opposite-arm carry revision request; it is not final approval of that unchanged pose. Loop08 is the provisional far-arm carry reference with both arms restored, still pending final approval and cycle consistency. Attempts01-08 are single-pose revisions, not an animation. Original downloads and local art remain preserved; no production sprites or engine files were replaced.
 
 `CORRECTION_04.txt` and `CORRECTION_05.txt` are historical submitted prompts. Their insistence on rectangular cutouts was a reviewer error corrected by inspecting the approved finished idle. Do not reuse that restriction for new work. `verify_trial.py` checks the four unchanged reference hashes and records actual image formats/dimensions; it is a pilot audit helper, not an automatic visual judge.
 

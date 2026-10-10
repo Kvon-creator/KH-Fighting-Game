@@ -1,0 +1,21 @@
+{
+  "status": "provider_block",
+  "media": "video",
+  "tabId": "A2DA0A72CB7C74FA2F7D1C83FEB6B31F",
+  "chatUrl": "https://gemini.google.com/app",
+  "referenceSet": "motion-loop",
+  "promptSha256": "ed47a649e3878da24459b60e7deec9406ff0f1ca1fb16839a070f0a2eba099e2",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\RUN_LOOP_MOTION_PILOT.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-10T18:54:37.814Z",
+  "baselineImages": [],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\gemini_browser_trial\\attempt_08\\gemini_original_preview.jpg",
+      "sha256": "1b808302323851ddb5dfdac1fd0d0fd5a7328d7374d841df461d32cc94620004"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "exactResponse": "I can't generate the video you requested right now due to interests of third-party content providers. Can I help you with something else?\n\n\n\n\nPro\n\nGemini is AI and can make mistakes.\n\nI'm generating your video. This could take a few minutes, so check back to see when your video is ready."
+}

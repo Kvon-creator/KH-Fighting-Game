@@ -1,0 +1,162 @@
+{
+  "status": "diagnostic_not_approved_animation",
+  "method": "single uniform scale+translation for each whole drawing from measured planted sole anchors",
+  "limits": "Does not repair anatomy, change weapon design, produce in-betweens or prove fluidity. Do not use this on flight/toe-off frames.",
+  "targetSoles": [
+    [
+      104.0,
+      469.0
+    ],
+    [
+      395.0,
+      469.0
+    ]
+  ],
+  "finalUserApproval": "pending",
+  "frames": [
+    {
+      "index": 0,
+      "sourceSoles": [
+        [
+          104.0,
+          469.0
+        ],
+        [
+          395.0,
+          469.0
+        ]
+      ],
+      "uniformWholeDrawingScale": 1.0,
+      "translation": [
+        0.0,
+        0.0
+      ],
+      "verticalSoleResidual": [
+        0.0,
+        0.0
+      ],
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/anticipation_review_v1/frame_00_review.png",
+      "sourceSha256": "01ec8f28afacd675eff382b24ebf32d3f45a17c069e5a6e040aac9f8582e5fee"
+    },
+    {
+      "index": 1,
+      "sourceSoles": [
+        [
+          128.0,
+          502.0
+        ],
+        [
+          452.0,
+          501.0
+        ]
+      ],
+      "uniformWholeDrawingScale": 0.8981481481481481,
+      "translation": [
+        -10.962962962962962,
+        18.578703703703695
+      ],
+      "verticalSoleResidual": [
+        0.4490740740740762,
+        -0.4490740740740762
+      ],
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/anticipation_review_v1/frame_01_review.png",
+      "sourceSha256": "e787f6606281b2c78b491b61332332393710cdd5d1d14388e79f9c93c68ee553"
+    },
+    {
+      "index": 2,
+      "sourceSoles": [
+        [
+          86.0,
+          503.0
+        ],
+        [
+          409.0,
+          501.0
+        ]
+      ],
+      "uniformWholeDrawingScale": 0.9009287925696594,
+      "translation": [
+        26.520123839009287,
+        16.733746130030966
+      ],
+      "verticalSoleResidual": [
+        0.9009287925696299,
+        -0.9009287925696867
+      ],
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/anticipation_review_v1/frame_02_review.png",
+      "sourceSha256": "6678c014fd6cc6f1a290a5dc11605917d405b3b88c742e66a6db6fea2312a774"
+    },
+    {
+      "index": 3,
+      "sourceSoles": [
+        [
+          100.0,
+          467.0
+        ],
+        [
+          433.0,
+          465.0
+        ]
+      ],
+      "uniformWholeDrawingScale": 0.8738738738738738,
+      "translation": [
+        16.612612612612622,
+        61.77477477477481
+      ],
+      "verticalSoleResidual": [
+        0.8738738738738903,
+        -0.8738738738738334
+      ],
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/anticipation_review_v1/frame_03_review.png",
+      "sourceSha256": "6d520eca600fe069a34fae083d87c2803ee7b24e963b3aa305aa73e128645d8b"
+    },
+    {
+      "index": 4,
+      "sourceSoles": [
+        [
+          78.0,
+          467.0
+        ],
+        [
+          405.0,
+          466.0
+        ]
+      ],
+      "uniformWholeDrawingScale": 0.8899082568807339,
+      "translation": [
+        34.58715596330275,
+        53.85779816513764
+      ],
+      "verticalSoleResidual": [
+        0.4449541284403722,
+        -0.4449541284403722
+      ],
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/anticipation_review_v1/frame_04_review.png",
+      "sourceSha256": "996a7d6288352fde8778fcaf83badc3d160f417857c7f8f672cfba282e1e6367"
+    },
+    {
+      "index": 5,
+      "sourceSoles": [
+        [
+          104.0,
+          470.0
+        ],
+        [
+          395.0,
+          469.0
+        ]
+      ],
+      "uniformWholeDrawingScale": 1.0,
+      "translation": [
+        0.0,
+        -0.5
+      ],
+      "verticalSoleResidual": [
+        0.5,
+        -0.5
+      ],
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/anticipation_review_v1/frame_05_review.png",
+      "sourceSha256": "09848cdc43d87f122ba9ff26d90d85028928e2bf65bf0ddfa9f544310e7bc3f8"
+    }
+  ]
+}

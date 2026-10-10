@@ -1,0 +1,7 @@
+The last image finally has the correct far-arm/back-shoulder carry behind Sora's head. KEEP that exact carrying arm, raised grip, gold guard on screen-left, shaft behind hair and key head on screen-right. Do not switch hands, mirror him, or move the weapon to his chest.
+
+Finish the complete sprite with BOTH ARMS visible. The near/front arm is missing: add its KH2 short sleeve at the front shoulder, a natural upper arm and bent elbow, forearm swinging forward in front of the chest, and an EMPTY fingerless-gloved fist. Keep this free arm clearly separate from the silver shaft and guard. There must be exactly two arms/hands; only the far raised hand holds the weapon.
+
+Match the first attached approved idle's rich smooth cel shading: layered warm hair highlights, shaded facial planes, dark cloth folds with cool highlights, polished silver trim and dimensional chunky boots. Preserve the KH2 outfit, head proportions, right-facing three-quarter camera and rigid connected Kingdom Key. Keep its slight foreground tip, rounded crown cutouts and chain attached to pommel.
+
+Use a running CONTACT phase: near leading leg extended forward with its heel just touching a common flat ground line, far leg recovering bent behind; torso leans forward. Show the whole figure and weapon with safe white margins in a square image, no ground drawn, no effects, labels or separate layers. Output one finished complete image.

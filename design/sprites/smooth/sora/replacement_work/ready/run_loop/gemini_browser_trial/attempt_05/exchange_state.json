@@ -33,7 +33,7 @@
     1024
   ],
   "imageFormat": "jpg",
-  "review": "pilot_art_passed",
+  "review": "revision_requested_opposite_arm_carry",
   "reviewNotes": "visual_review.json and ../REVIEW.md",
   "referenceContext": [
     "Construction master uploaded in attempt04 and retained in chat context; finished-idle detailed design takes precedence."

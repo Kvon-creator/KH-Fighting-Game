@@ -1,0 +1,32 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "A2DA0A72CB7C74FA2F7D1C83FEB6B31F",
+  "chatUrl": "https://gemini.google.com/app/680d1cbd1fcad051",
+  "referenceSet": "release-cleanup",
+  "promptSha256": "a888a6874badf7e0f289eb79bd35cb41f2c9bfcce213053163ed15c6ee1c6afe",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\RUN_START_RELEASE_CLEANUP.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-10T19:20:53.525Z",
+  "baselineImages": [
+    "b0cdfb5371a6a9d2e469180c34b71a202c26492bb0be1617940c46439408f531",
+    "7e5c6a07cb13b2d4a6d92f89e457f3dd76812a845c613816fcd535e978d9cad4"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\gemini_browser_trial\\attempt_12\\gemini_original_preview.jpg",
+      "sha256": "ddb634c951ade149c0251a67a2f8f78758c49b579df20220a3834bfa16c6f44e"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-10T19:21:16.906Z",
+  "preview": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\gemini_browser_trial\\attempt_13\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\gemini_browser_trial\\attempt_13\\Gemini_Generated_Image_dlsykadlsykadlsy.jfif",
+  "nativePreviewSize": [
+    1024,
+    1024
+  ],
+  "imageFormat": "jpg",
+  "review": "provisional_hand_release_art_checkpoint_continuity_pending"
+}

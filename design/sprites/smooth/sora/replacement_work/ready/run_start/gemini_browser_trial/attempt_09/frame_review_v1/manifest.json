@@ -1,0 +1,103 @@
+{
+  "status": "draft_for_visual_review",
+  "source": "Gemini_Generated_Image_sw7xtcsw7xtcsw7x.jfif",
+  "sourceSha256": "32aa33a05d29441020c0a8d0e7d294315f5b77532fb45bc2715e38b7de27349a",
+  "nativeSheetSize": [
+    1024,
+    1024
+  ],
+  "grid": [
+    2,
+    2
+  ],
+  "frameCount": 4,
+  "workingCanvas": [
+    512,
+    512
+  ],
+  "gameReviewCanvas": [
+    128,
+    128
+  ],
+  "background": "opaque white; transparency export pending",
+  "provisionalDurationMs": 70,
+  "finalUserApproval": "pending",
+  "frames": [
+    {
+      "frame": 1,
+      "file": "sora_run_start_01.png",
+      "nativeCrop": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        85,
+        71,
+        506,
+        504
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "14e37f4527f519037b5e2c74fcc2f4ae2923e9a2ca03ec26bfed57d324e281a9"
+    },
+    {
+      "frame": 2,
+      "file": "sora_run_start_02.png",
+      "nativeCrop": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        44,
+        93,
+        464,
+        505
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "a94abd74526cd0d317b7df699a6a1e173e3e8c854db4c55f8cc7f0a5d9d85a1f"
+    },
+    {
+      "frame": 3,
+      "file": "sora_run_start_03.png",
+      "nativeCrop": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        57,
+        60,
+        505,
+        469
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "c61769ae6ab842eb5aa777b00d7f125b1862dd52323f7287e47ccb3830388469"
+    },
+    {
+      "frame": 4,
+      "file": "sora_run_start_04.png",
+      "nativeCrop": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        36,
+        60,
+        475,
+        469
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "7935050fe21a4fa337a0595b092714bcf71a7200497784d6841d91560f5da676"
+    }
+  ]
+}

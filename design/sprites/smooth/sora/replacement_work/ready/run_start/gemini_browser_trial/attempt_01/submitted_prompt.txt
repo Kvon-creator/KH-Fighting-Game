@@ -1,0 +1,16 @@
+Create ONE complete sprite sheet: exactly NINE full-body KH2 Sora drawings in a regular 3-column x 3-row grid, read left-to-right then top-to-bottom. Use a square canvas, plain white background, no drawn grid, labels, arrows, effects or layers. Each equal cell contains the whole character and Kingdom Key with clear margins. Keep the same right-facing three-quarter camera, body/head/boot proportions, dark outlines and rich cel shading as your last finished image. Use the first attached idle as the exact opening pose/design. This is one chronological RUN START animation, not separate unrelated poses.
+
+Keep one consistent rigid Kingdom Key, constant shaft length/guard/grip proportions, rounded crown cutouts and pommel chain. Begin with the approved low two-hand idle, shaft up-left. Transfer the black grip to the FAR arm, release the NEAR hand, then raise and rotate the whole connected weapon continuously into the last image's carry: guard on screen-left at the far/back shoulder, shaft over THAT shoulder BEHIND the head, tip reappearing toward screen-right with slight foreground perspective. In carrying frames the near/front arm is empty. Head/hair occlude the shaft; never draw it across the face/chest.
+
+The nine genuinely different poses, in order:
+1. Exact two-hand idle stance: bent knees, low grip, blade up-left.
+2. Anticipation: knees compress, body leans slightly right; both hands retain low grip.
+3. Weight shift to leading leg; near hand releases; far hand begins lifting guard at back/left waist, shaft still up-left.
+4. Far elbow bends and guard rises toward rear shoulder; blade swings upward to nearly vertical beside/behind head; free arm starts counter-swing.
+5. Weapon rotates through an upper-right diagonal behind the head toward far shoulder carry; rear heel lifts, leading knee advances.
+6. Shoulder carry settles with shaft behind head toward screen-right; body leans into running; rear toes push from the ground.
+7. Push-off: support leg extends, opposite knee rises; free near arm counter-swings.
+8. Brief flight: legs exchange, leading lower leg reaches forward, cloth/chain trail slightly.
+9. First near-foot heel contact into running: far leg bent/recovering behind, free near fist forward, carry stable behind head.
+
+Animate anatomy: real hip/knee/ankle changes, alternating leg depth, evolving torso/shoulder controls, natural free-arm motion, slight cloth/chain lag. No scaled/translated repeats or mirrored substitutes. Keep camera and physical character size constant, shared in-place root and common implied ground line in every cell. Genuine crouch/flight bob must come from joints. Restore the full detailed outfit and exactly two arms/hands in EVERY drawing. Generate the finished nine-pose sheet directly.

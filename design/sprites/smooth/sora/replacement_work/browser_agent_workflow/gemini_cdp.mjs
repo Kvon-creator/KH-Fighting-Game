@@ -14,7 +14,7 @@ while (argv.length) {
   if (!key.startsWith('--') || !argv.length) throw Error('Options require --name value.');
   options[key.slice(2)] = argv.shift();
 }
-const allowed = new Set(['inspect', 'screenshot', 'click', 'upload', 'type', 'hit-test', 'ax-menu', 'attach-references', 'save-image', 'download-image', 'record', 'exchange']);
+const allowed = new Set(['inspect', 'screenshot', 'click', 'upload', 'type', 'hit-test', 'ax-menu', 'attach-references', 'save-image', 'download-image', 'record', 'exchange', 'new-chat']);
 if (!allowed.has(command)) throw Error(`Unknown command: ${command}`);
 const port = Number(options.port || 9222);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw Error('Invalid local port.');
@@ -34,7 +34,7 @@ function candidateDirectory() {
   return out;
 }
 function isGemini(url) {
-  try { const u = new URL(url); return u.origin === 'https://gemini.google.com' && /^\/app(?:\/|$)/.test(u.pathname); }
+  try { const u = new URL(url); return u.origin === 'https://gemini.google.com' && /^\/(?:app|videos)(?:\/|$)/.test(u.pathname); }
   catch { return false; }
 }
 const response = await fetch(`http://127.0.0.1:${port}/json/list`, {signal: AbortSignal.timeout(5000)});
@@ -97,11 +97,52 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceFiles = [
+const referenceSets = {original: [
   'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
   'design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/sora_run_loop_00_review.png',
   'design/references/Sora_KHIV_Render.webp'
-].map(inside);
+], 'idle-only': [
+  'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png'
+], 'anticipation-endpoints': [
+  'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_08/gemini_original_preview.jpg'
+], 'release-endpoint': [
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_11/gemini_original_preview.jpg'
+], 'release-cleanup': [
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_12/gemini_original_preview.jpg'
+], 'first-lift': [
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_13/gemini_original_preview.jpg'
+], 'far-carry': [
+  'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
+  'design/references/Sora_KHIV_Render.webp'
+] , 'start-guide': [
+  'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
+  'design/references/Sora_KHIV_Render.webp',
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/guides/start_pose_guide_00_03.png'
+], 'start-guide-middle': [
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_03/frame_review_v1/sora_run_start_03.png',
+  'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
+  'design/references/Sora_KHIV_Render.webp',
+  'design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/guides/start_pose_guide_04_07.png'
+], 'motion-loop': [
+  'design/sprites/smooth/sora/replacement_work/ready/run_loop/gemini_browser_trial/attempt_08/gemini_original_preview.jpg'
+]};
+const referenceSet=options['reference-set']||'original';
+if(referenceSet==='start-new-pose') {
+  const pose=Number(options['next-pose']);
+  if(!Number.isInteger(pose)||pose<1||pose>11)throw Error('Start pose must be01-11.');
+  referenceSets[referenceSet]=['design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',`design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/guides_clean/guide_${String(pose).padStart(2,'0')}.png`];
+}
+if(referenceSet==='next-start-frame') {
+  const nextPose=Number(options['next-pose']);
+  if(!Number.isInteger(nextPose)||nextPose<1||nextPose>11)throw Error('Next start pose must be01-11.');
+  const previous=inside(options['previous-frame']||'');
+  const relative=path.relative(root,previous).replaceAll('\\','/');
+  if(!/^design\/sprites\/smooth\/sora\/replacement_work\/ready\/run_start\/gemini_browser_trial\/attempt_\d+\/frame_review_v1\/sora_run_start_\d+\.png$/.test(relative))throw Error('Previous frame must be a complete exported run-start candidate.');
+  referenceSets[referenceSet]=[relative,`design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/guides_clean/guide_${String(nextPose).padStart(2,'0')}.png`];
+}
+if(!Object.hasOwn(referenceSets,referenceSet))throw Error('Unknown project art reference set.');
+const referenceFiles=referenceSets[referenceSet].map(inside);
 async function guard() {
   const currentURL = await evaluate('location.href');
   if (!isGemini(currentURL)) throw Error(`Target left Gemini: ${currentURL}. Stop; login is performed by the user.`);
@@ -117,7 +158,9 @@ const observation = `(() => {
         label:e.getAttribute('aria-label'),text:e.innerText?.slice(0,140),disabled:!!e.disabled,
         classes:e.className,href:e.tagName==='A'?e.href:undefined})),
     fileInputs:queryAll('input[type="file"]').map(e=>({id:e.id,classes:e.className,accept:e.accept,multiple:e.multiple})),
+    videoControls:queryAll('a,button,[role="button"],[role="menuitem"]').filter(e=>visible(e)&&/^(Create video|Videos|Video)$/.test(e.innerText?.trim())||visible(e)&&/Create video/.test(e.getAttribute('aria-label')||'')).map(e=>({tag:e.tagName,role:e.getAttribute('role'),label:e.getAttribute('aria-label'),text:e.innerText?.trim(),classes:e.className,href:e.href})),
     images:queryAll('img').filter(e=>visible(e)&&e.naturalWidth>200).map(e=>({alt:e.alt,width:e.naturalWidth,height:e.naturalHeight})),
+    videos:queryAll('video').map(e=>({width:e.videoWidth,height:e.videoHeight,duration:Number.isFinite(e.duration)?e.duration:null,readyState:e.readyState,error:e.error?.code})),
     shadowHosts:roots.slice(1).map(r=>({tag:r.host.tagName,classes:r.host.className})),
     uploadMenuItems:queryAll('*').filter(e=>visible(e)&&e.children.length===0&&/^(Upload files|Create image|Add from Drive|More uploads)$/.test(e.textContent.trim())).map(e=>({text:e.textContent.trim(),tag:e.tagName,classes:e.className,parents:[e.parentElement,e.parentElement?.parentElement].filter(Boolean).map(p=>({tag:p.tagName,classes:p.className,role:p.getAttribute('role')}))})),
     viewport:{width:innerWidth,height:innerHeight,dpr:devicePixelRatio}};
@@ -134,12 +177,14 @@ async function paint() {
 }
 async function stateSummary() {
   const state=await evaluate(observation);
-  return {url:state.url,responseTail:state.text.slice(-1000),images:state.images,controls:state.controls.filter(c=>/Send message|Stop|Download|Enter a prompt|Open mode picker/.test(c.label||'')).map(c=>({label:c.label,disabled:c.disabled,text:c.text}))};
+  return {url:state.url,responseTail:state.text.slice(-1000),images:state.images.map(i=>({kind:i.alt.endsWith('generated')?'generated':i.alt==='Uploaded image preview'?'reference':i.alt.slice(0,80),width:i.width,height:i.height})),fileInputs:state.fileInputs.map(i=>({...i,accept:i.accept.startsWith('image')?i.accept:i.accept.slice(0,60)})),videoControls:state.videoControls,controls:state.controls.filter(c=>/Send message|Stop|Download|Enter a prompt|Open mode picker|Upload & tools/.test(c.label||'')).map(c=>({label:c.label,disabled:c.disabled,text:c.text}))};
 }
 function reportJob(job) {
-  console.log(JSON.stringify({status:job.status,attempt:options.output,preview:job.preview,originalDownload:job.originalDownload,size:job.nativePreviewSize,review:job.review,finalUserApproval:job.finalUserApproval,exactResponse:job.exactResponse,note:job.note}));
+  console.log(JSON.stringify({status:job.status,attempt:options.output,preview:job.preview,originalDownload:job.originalDownload,size:job.nativePreviewSize,video:job.videoMetadata,review:job.review,finalUserApproval:job.finalUserApproval,exactResponse:job.exactResponse,note:job.note}));
 }
 async function exchange() {
+  const media=options.media||'image';
+  if(!['image','video'].includes(media))throw Error('Media must be image or video.');
   const timeoutSeconds=Number(options.timeout||180);
   if(!Number.isFinite(timeoutSeconds)||timeoutSeconds<1||timeoutSeconds>600)throw Error('Timeout must be between 1 and 600 seconds.');
   const out=candidateDirectory();
@@ -150,19 +195,43 @@ async function exchange() {
   if(!prompt.trim()||prompt.length>16000)throw Error('Prompt is empty or too long.');
   const digest=text=>createHash('sha256').update(text).digest('hex');
   const images=()=>evaluate(`queryAll('img[alt$="generated"]').filter(e=>e.complete&&e.naturalWidth>0).map(e=>({url:e.src,width:e.naturalWidth,height:e.naturalHeight}))`);
+  const videos=()=>evaluate(`queryAll('video').map(e=>({url:e.currentSrc||e.src,width:e.videoWidth,height:e.videoHeight,duration:Number.isFinite(e.duration)?e.duration:null,readyState:e.readyState})).filter(e=>e.url)`);
   const save=state=>fs.writeFileSync(receipt,JSON.stringify(state,null,2));
   let job=fs.existsSync(receipt)?JSON.parse(fs.readFileSync(receipt,'utf8')):null;
   if(job&&job.promptSha256!==digest(prompt))throw Error('Attempt belongs to a different prompt; use another attempt directory.');
-  if(job?.status==='ready_for_visual_review'||job?.status==='provider_block') {reportJob(job);return;}
+  if(['ready_for_visual_review','ready_for_video_review','provider_block'].includes(job?.status)) {reportJob(job);return;}
+  if(job?.tabId&&job.tabId!==tab.id)throw Error('This in-progress attempt belongs to another Gemini tab; use its recorded --target.');
   await paint();
   await guard();
   if(!job) {
-    const state=await evaluate(observation);
+    let state=await evaluate(observation);
+    const uploadDeadline=Date.now()+30000;
+    while(state.text.includes('Uploading image')&&Date.now()<uploadDeadline) {
+      await new Promise(resolve=>setTimeout(resolve,1000));await paint();await guard();
+      state=await evaluate(observation);
+    }
+    if(state.text.includes('Uploading image'))throw Error('Art references are still uploading; no prompt submitted.');
+    const videoMode=state.controls.some(c=>c.label==='Deselect Videos');
+    if(media!=='video'&&videoMode)throw Error('Video mode is selected; do not submit an image/text request in this mode.');
+    if(media==='video'&&!videoMode)throw Error('Select the observed video mode before requesting a clip.');
     if(state.controls.some(c=>/^Stop/.test(c.label||'')))throw Error('Gemini is still responding; do not submit another prompt.');
     const composer='[aria-label="Enter a prompt for Gemini"]';
     const current=await evaluate(`queryOne(${JSON.stringify(composer)}).innerText`);
     if(current.trim())throw Error('Composer contains text; do not overwrite it.');
     const refs=[...referenceFiles];
+    if(options['attach-references']==='true') {
+      refs.forEach(f=>{if(!fs.statSync(f).isFile())throw Error(`Missing art reference: ${f}`);});
+      await evaluate(`queryOne('button[aria-label="Upload & tools"]').click()`);await paint();
+      const input=await evaluate(`queryOne('input[type="file"][accept^="image"]')`,false);
+      await send('DOM.setFileInputFiles',{files:refs,objectId:input.objectId});await paint();
+      const attachmentDeadline=Date.now()+30000;
+      let uploaded=await evaluate(observation);
+      while(uploaded.text.includes('Uploading image')&&Date.now()<attachmentDeadline) {
+        await new Promise(resolve=>setTimeout(resolve,1000));await paint();await guard();
+        uploaded=await evaluate(observation);
+      }
+      if(uploaded.text.includes('Uploading image'))throw Error('Art references are still uploading; no prompt submitted.');
+    }
     if(options['weapon-reference']==='true') {
       const weapon=inside('design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/kingdom_key_master_finished.png');
       await evaluate(`queryOne('button[aria-label="Upload & tools"]').click()`);await paint();
@@ -170,7 +239,7 @@ async function exchange() {
       await send('DOM.setFileInputFiles',{files:[weapon],objectId:input.objectId});await paint();
       refs.push(weapon);
     }
-    job={status:'prepared',promptSha256:digest(prompt),promptFile:path.relative(root,file),mode:state.controls.find(c=>c.label?.startsWith('Open mode picker'))?.text,createdAt:new Date().toISOString(),baselineImages:(await images()).map(i=>digest(i.url)),references:refs.map(f=>({file:path.relative(root,f),sha256:digest(fs.readFileSync(f))})),finalUserApproval:'pending'};
+    job={status:'prepared',media,tabId:tab.id,chatUrl:state.url,referenceSet,promptSha256:digest(prompt),promptFile:path.relative(root,file),mode:state.controls.find(c=>c.label?.startsWith('Open mode picker'))?.text,createdAt:new Date().toISOString(),baselineImages:(await images()).map(i=>digest(i.url)),baselineVideos:(await videos()).map(i=>digest(i.url)),references:refs.map(f=>({file:path.relative(root,f),sha256:digest(fs.readFileSync(f))})),finalUserApproval:'pending'};
     fs.writeFileSync(path.join(out,'submitted_prompt.txt'),prompt,{flag:'wx'});
     save(job);
     await evaluate(`queryOne(${JSON.stringify(composer)}).focus()`);
@@ -199,7 +268,17 @@ async function exchange() {
     const busy=state.controls.some(c=>/^Stop/.test(c.label||''));
     const replyStart=state.text.lastIndexOf('Gemini said');
     const reply=replyStart>=0?state.text.slice(replyStart+'Gemini said'.length).trim():'';
-    if(fresh.length===1&&!busy) {
+    if(media==='video') {
+      const clips=(await videos()).filter(v=>!(job.baselineVideos||[]).includes(digest(v.url))&&v.readyState>=1&&v.width>0&&v.duration>0);
+      if(clips.length===1) {
+        const {url,...videoMetadata}=clips[0];
+        fs.writeFileSync(path.join(out,'gemini_response.txt'),reply);
+        job={...job,status:'ready_for_video_review',chatUrl:state.url,completedAt:new Date().toISOString(),videoMetadata,review:'pending',finalUserApproval:'pending',note:'Video is ready in the browser. Preserve via its observed native download control before frame extraction.'};
+        save(job);reportJob(job);return;
+      }
+      if(clips.length>1)throw Error('Multiple new clips appeared; inspect before collecting.');
+    }
+    if(media==='image'&&fresh.length===1&&!busy) {
       const info=fresh[0];
       const resource=await send('Page.getResourceContent',{frameId:frameTree.frameTree.frame.id,url:info.url});
       if(!resource.base64Encoded)throw Error('Generated resource is not binary.');
@@ -220,7 +299,7 @@ async function exchange() {
         if(files.length>1)throw Error('Multiple original downloads; inspect the candidate directory.');
         await new Promise(resolve=>setTimeout(resolve,500));
       }
-      job={...job,status:'ready_for_visual_review',completedAt:new Date().toISOString(),preview,originalDownload:full,nativePreviewSize:[info.width,info.height],imageFormat:ext,review:'pending',finalUserApproval:'pending'};
+      job={...job,status:'ready_for_visual_review',chatUrl:state.url,completedAt:new Date().toISOString(),preview,originalDownload:full,nativePreviewSize:[info.width,info.height],imageFormat:ext,review:'pending',finalUserApproval:'pending'};
       save(job);reportJob(job);return;
     }
     if(fresh.length>1)throw Error('More than one new image appeared; inspect before continuing.');
@@ -237,6 +316,14 @@ try {
   await guard();
   if(command==='exchange') {
     await exchange();
+  } else if(command==='new-chat') {
+    await paint();
+    const state=await evaluate(observation);
+    if(state.controls.some(c=>/^Stop/.test(c.label||'')))throw Error('Finish the current generation before opening another context.');
+    const text=await evaluate(`queryOne('[aria-label="Enter a prompt for Gemini"]').innerText`);
+    if(text.trim())throw Error('Composer contains text; preserve it instead of navigating away.');
+    await send('Page.navigate',{url:'https://gemini.google.com/app'});
+    console.log(JSON.stringify({status:'opened_fresh_context',target:tab.id,url:'https://gemini.google.com/app',previousChatPreserved:true}));
   } else if (command === 'inspect') {
     await paint();
     console.log(JSON.stringify(options.verbose==='true'?await evaluate(observation):await stateSummary(),null,2));

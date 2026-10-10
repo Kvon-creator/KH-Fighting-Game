@@ -1,0 +1,103 @@
+{
+  "status": "draft_for_visual_review",
+  "source": "Gemini_Generated_Image_5g1ivt5g1ivt5g1i.jfif",
+  "sourceSha256": "ef3d3d582c85eb7f72d0ed7f5ee867eb9da76173075a0fc5640e8dc2e8ca5558",
+  "nativeSheetSize": [
+    2048,
+    2048
+  ],
+  "grid": [
+    2,
+    2
+  ],
+  "frameCount": 4,
+  "workingCanvas": [
+    512,
+    512
+  ],
+  "gameReviewCanvas": [
+    128,
+    128
+  ],
+  "background": "opaque white; transparency export pending",
+  "provisionalDurationMs": 90,
+  "finalUserApproval": "pending",
+  "frames": [
+    {
+      "frame": 0,
+      "file": "sora_run_start_00.png",
+      "nativeCrop": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        11,
+        12,
+        434,
+        478
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "5542558d8136fbd4995e7a09c8d373d3b06eb0a2b17dbf114825ca1d2dbdbe83"
+    },
+    {
+      "frame": 1,
+      "file": "sora_run_start_01.png",
+      "nativeCrop": [
+        1024,
+        0,
+        2048,
+        1024
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        11,
+        11,
+        430,
+        478
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "6c60713e696dde78f779e09ea4f6a0d91a77752fa1d8682dfdf7948800aef549"
+    },
+    {
+      "frame": 2,
+      "file": "sora_run_start_02.png",
+      "nativeCrop": [
+        0,
+        1024,
+        1024,
+        2048
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        12,
+        12,
+        432,
+        474
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "4ef5b199e24ca6665e2e4e4b6cae75d89491f1011077d212842edebb1783b6e3"
+    },
+    {
+      "frame": 3,
+      "file": "sora_run_start_03.png",
+      "nativeCrop": [
+        1024,
+        1024,
+        2048,
+        2048
+      ],
+      "opaqueRGB": true,
+      "darkPixelBounds": [
+        12,
+        12,
+        433,
+        474
+      ],
+      "edgeRisk": false,
+      "pixelSha256": "cb5888acaa2c4b7d5214156421d885c691286592ed0be81c23738e6fa0943bf0"
+    }
+  ]
+}

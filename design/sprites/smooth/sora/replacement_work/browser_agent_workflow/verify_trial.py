@@ -28,7 +28,7 @@ notes = {
     2: "Carry corrected; key-head side and invented glove wheel need correction.",
     3: "Key-head side and glove corrected; rounded-cutout objection later recalibrated against approved idle.",
     4: "Construction-master reference did not materially change cutouts; preserved comparison revision.",
-    5: "Pilot art review passed against approved finished idle and reviewed carry; final user approval pending.",
+    5: "User liked general art and requested opposite far-arm carry; unchanged pose not finally approved.",
 }
 prompt = Path(__file__).parent / "PILOT_PROMPT.txt"
 first = TRIAL / "attempt_01/submitted_prompt.txt"
@@ -65,8 +65,8 @@ for attempt, note in notes.items():
 
 receipt = TRIAL / "attempt_05/exchange_state.json"
 job = json.loads(receipt.read_text(encoding="utf-8"))
-if job.get("review") in {None, "pending"}:
-    job["review"] = "pilot_art_passed"
+if job.get("review") in {None, "pending", "pilot_art_passed"}:
+    job["review"] = "revision_requested_opposite_arm_carry"
 job.setdefault("reviewNotes", "visual_review.json and ../REVIEW.md")
 job["referenceContext"] = ["Construction master uploaded in attempt04 and retained in chat context; finished-idle detailed design takes precedence."]
 receipt.write_text(json.dumps(job, indent=2) + "\n", encoding="utf-8")

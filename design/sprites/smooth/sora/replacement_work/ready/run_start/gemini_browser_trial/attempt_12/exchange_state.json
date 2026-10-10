@@ -1,0 +1,31 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "A2DA0A72CB7C74FA2F7D1C83FEB6B31F",
+  "chatUrl": "https://gemini.google.com/app/680d1cbd1fcad051",
+  "referenceSet": "release-endpoint",
+  "promptSha256": "9a85d9bde81282ec3353cda14057826f2158799f28e6f38b9203d76260fe03e7",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\RUN_START_RELEASE_CLOSE.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-10T19:18:37.356Z",
+  "baselineImages": [
+    "b0cdfb5371a6a9d2e469180c34b71a202c26492bb0be1617940c46439408f531"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\gemini_browser_trial\\attempt_11\\gemini_original_preview.jpg",
+      "sha256": "0b8a5aee939d6994f4ed5d499f4800e9be60244d732e117bd03b38046f0631e0"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-10T19:19:28.688Z",
+  "preview": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\gemini_browser_trial\\attempt_12\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\gemini_browser_trial\\attempt_12\\Gemini_Generated_Image_p04bjnp04bjnp04b.jfif",
+  "nativePreviewSize": [
+    1024,
+    1024
+  ],
+  "imageFormat": "jpg",
+  "review": "near_hand_placement_improved_glove_badge_requires_cleanup"
+}

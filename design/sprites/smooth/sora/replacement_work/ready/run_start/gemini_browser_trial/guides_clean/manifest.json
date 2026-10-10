@@ -1,0 +1,330 @@
+{
+  "purpose": "whole-frame pose reference, not sprite layers",
+  "frameCount": 12,
+  "frames": [
+    {
+      "frame": 0,
+      "farGrip": [
+        224,
+        280
+      ],
+      "weaponAngleDegrees": -131,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        203.00611107230378,
+        255.8492934328713
+      ],
+      "tip": [
+        76.3867184771359,
+        110.19034444987628
+      ],
+      "pommel": [
+        242.3696528117342,
+        301.1318682462376
+      ],
+      "nearHand": [
+        232,
+        283
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 1,
+      "farGrip": [
+        225,
+        280
+      ],
+      "weaponAngleDegrees": -130,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        204.43079649003073,
+        255.4865778201927
+      ],
+      "tip": [
+        80.37278782052866,
+        107.64000029822995
+      ],
+      "pommel": [
+        242.9980530712231,
+        301.4492444073314
+      ],
+      "nearHand": [
+        233,
+        283
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 2,
+      "farGrip": [
+        226,
+        277
+      ],
+      "weaponAngleDegrees": -125,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        207.64555403676653,
+        250.78713458275226
+      ],
+      "tip": [
+        96.94530182101462,
+        92.69079003497686
+      ],
+      "pommel": [
+        242.0601402178293,
+        299.9362572400918
+      ],
+      "nearHand": [
+        234,
+        280
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 3,
+      "farGrip": [
+        226,
+        270
+      ],
+      "weaponAngleDegrees": -115,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        212.47621562429762,
+        240.9981508148272
+      ],
+      "tip": [
+        130.91089110834264,
+        66.08074791675375
+      ],
+      "pommel": [
+        237.83331132873957,
+        295.3766180370262
+      ],
+      "nearHand": [
+        244,
+        275
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 4,
+      "farGrip": [
+        224,
+        252
+      ],
+      "weaponAngleDegrees": -96,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        220.65508917543508,
+        220.17529934821525
+      ],
+      "tip": [
+        200.48109576477796,
+        28.23257354213851
+      ],
+      "pommel": [
+        226.9267969714943,
+        279.84661307031166
+      ],
+      "nearHand": [
+        258,
+        268
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 5,
+      "farGrip": [
+        220,
+        228
+      ],
+      "weaponAngleDegrees": -64,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        234.0278766972505,
+        199.23859051842666
+      ],
+      "tip": [
+        318.63350802754246,
+        25.771339582687403
+      ],
+      "pommel": [
+        207.72560788990583,
+        253.16623329637667
+      ],
+      "nearHand": [
+        281,
+        261
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 6,
+      "farGrip": [
+        218,
+        190
+      ],
+      "weaponAngleDegrees": -29,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        245.98783062846067,
+        174.4860921521172
+      ],
+      "tip": [
+        414.78943410636407,
+        80.91783544457417
+      ],
+      "pommel": [
+        193.5106482000969,
+        203.57466936689744
+      ],
+      "nearHand": [
+        306,
+        253
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 7,
+      "farGrip": [
+        216,
+        168
+      ],
+      "weaponAngleDegrees": 6,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        247.82470065178475,
+        171.34491082456492
+      ],
+      "tip": [
+        439.76742645786146,
+        191.51890423522204
+      ],
+      "pommel": [
+        188.15338692968834,
+        165.0732030285057
+      ],
+      "nearHand": [
+        333,
+        245
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 8,
+      "farGrip": [
+        215,
+        168
+      ],
+      "weaponAngleDegrees": 6,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        246.82470065178475,
+        171.34491082456492
+      ],
+      "tip": [
+        438.76742645786146,
+        191.51890423522204
+      ],
+      "pommel": [
+        187.15338692968834,
+        165.0732030285057
+      ],
+      "nearHand": [
+        354,
+        237
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 9,
+      "farGrip": [
+        213,
+        169
+      ],
+      "weaponAngleDegrees": 5,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        244.87823033893585,
+        171.78898376792506
+      ],
+      "tip": [
+        437.14380707064277,
+        188.61004211822308
+      ],
+      "pommel": [
+        185.10654845343112,
+        166.55963920306556
+      ],
+      "nearHand": [
+        357,
+        231
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 10,
+      "farGrip": [
+        215,
+        172
+      ],
+      "weaponAngleDegrees": 6,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        246.82470065178475,
+        175.34491082456492
+      ],
+      "tip": [
+        438.76742645786146,
+        195.51890423522204
+      ],
+      "pommel": [
+        187.15338692968834,
+        169.0732030285057
+      ],
+      "nearHand": [
+        361,
+        234
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    },
+    {
+      "frame": 11,
+      "farGrip": [
+        215,
+        170
+      ],
+      "weaponAngleDegrees": 6,
+      "projectedGripToTipLength": 225,
+      "collar": [
+        246.82470065178475,
+        173.34491082456492
+      ],
+      "tip": [
+        438.76742645786146,
+        193.51890423522204
+      ],
+      "pommel": [
+        187.15338692968834,
+        167.0732030285057
+      ],
+      "nearHand": [
+        360,
+        238
+      ],
+      "groundY": 470,
+      "guideNotFinalArtwork": true
+    }
+  ]
+}

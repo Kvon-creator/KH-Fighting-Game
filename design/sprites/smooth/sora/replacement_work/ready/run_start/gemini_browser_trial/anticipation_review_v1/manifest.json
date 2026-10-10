@@ -1,0 +1,86 @@
+{
+  "status": "diagnostic_not_approved_animation",
+  "scope": "idle-to-anticipation only; not a running cycle",
+  "canvas": [
+    512,
+    512
+  ],
+  "background": "white review composite; native originals preserved",
+  "transforms": "uniform whole-canvas export only; no per-pose fitting, registration correction or morphing",
+  "timing": "provisional70ms intermediates; endpoint holds and visible reset for inspection",
+  "finalUserApproval": "pending",
+  "frames": [
+    {
+      "index": 0,
+      "role": "approved_idle_reference",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png",
+      "sourceSha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7",
+      "nativeSize": [
+        512,
+        512
+      ],
+      "wholeCanvasRatio": 1.0,
+      "edgeRisk": false
+    },
+    {
+      "index": 1,
+      "role": "generated_inbetween",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_09/frame_review_v1/sora_run_start_01.png",
+      "sourceSha256": "e787f6606281b2c78b491b61332332393710cdd5d1d14388e79f9c93c68ee553",
+      "nativeSize": [
+        512,
+        512
+      ],
+      "wholeCanvasRatio": 1.0,
+      "edgeRisk": false
+    },
+    {
+      "index": 2,
+      "role": "generated_inbetween",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_09/frame_review_v1/sora_run_start_02.png",
+      "sourceSha256": "6678c014fd6cc6f1a290a5dc11605917d405b3b88c742e66a6db6fea2312a774",
+      "nativeSize": [
+        512,
+        512
+      ],
+      "wholeCanvasRatio": 1.0,
+      "edgeRisk": false
+    },
+    {
+      "index": 3,
+      "role": "generated_inbetween",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_09/frame_review_v1/sora_run_start_03.png",
+      "sourceSha256": "6d520eca600fe069a34fae083d87c2803ee7b24e963b3aa305aa73e128645d8b",
+      "nativeSize": [
+        512,
+        512
+      ],
+      "wholeCanvasRatio": 1.0,
+      "edgeRisk": false
+    },
+    {
+      "index": 4,
+      "role": "generated_inbetween",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_09/frame_review_v1/sora_run_start_04.png",
+      "sourceSha256": "996a7d6288352fde8778fcaf83badc3d160f417857c7f8f672cfba282e1e6367",
+      "nativeSize": [
+        512,
+        512
+      ],
+      "wholeCanvasRatio": 1.0,
+      "edgeRisk": false
+    },
+    {
+      "index": 5,
+      "role": "provisional_endpoint",
+      "source": "design/sprites/smooth/sora/replacement_work/ready/run_start/gemini_browser_trial/attempt_08/Gemini_Generated_Image_lj1yk6lj1yk6lj1y.jfif",
+      "sourceSha256": "1644aa06f8bfd2f81da70fba41c481c54fa8b1cf5a132edb24057c96bdac8912",
+      "nativeSize": [
+        1024,
+        1024
+      ],
+      "wholeCanvasRatio": 0.5,
+      "edgeRisk": false
+    }
+  ]
+}

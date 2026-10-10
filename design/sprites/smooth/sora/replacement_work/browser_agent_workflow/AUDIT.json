@@ -1,0 +1,706 @@
+{
+  "checkedAt": "2026-10-10T19:23:24.448599+00:00",
+  "establishedSourcesUnchanged": true,
+  "scope": "file provenance and image formats only; does not verify anatomy, weapon geometry, natural motion or final approval",
+  "establishedSources": [
+    {
+      "file": "design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png",
+      "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7"
+    },
+    {
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/sora_run_loop_00_review.png",
+      "sha256": "b171c554aef835fefe805b88c00431836d67f7b9f91e1f43f8f930257edea48e"
+    },
+    {
+      "file": "design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/kingdom_key_master_finished.png",
+      "sha256": "d942f08de984050119716906f0311a467f5be3150811ae634b40c327c6eaa800"
+    },
+    {
+      "file": "design/references/Sora_KHIV_Render.webp",
+      "sha256": "5dc59758a962e411e1b90f5f440f2d4cef0e42b07b1a91550d42455147f19a30"
+    }
+  ],
+  "attempts": [
+    {
+      "animation": "run_start",
+      "attempt": "attempt_01",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_4rnffb4rnffb4rnf.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "f9a803db182bac7c25ac926fa58b474e5c79fbbec22bde89cec394a2b39b76b2"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "3c0dc0ed5ecf743c4780cd54e10e252eb2a0ccb12b02abf73e70ca1f52282a74"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_02",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_5g1ivt5g1ivt5g1i.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "ef3d3d582c85eb7f72d0ed7f5ee867eb9da76173075a0fc5640e8dc2e8ca5558"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "d778d9a6a0bfd134733c37633efb8c2f1417e5f135ced47f73d3da079aad6996"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_03",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_9xc6dq9xc6dq9xc6.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "5052a8b6dab3a7f3b0cfb13f47f87fd256e69f42913c1a9a739ab5e904146c9e"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "12c192e2686acc15e6fcff207e40cf134481465e27c4cb11bb58abd376b39a75"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_04",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_f8uko2f8uko2f8uk.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "f3aaa59c188c4ff122c3339d7744d81adb073d0bc266b4daedefdb7f95c09071"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "00f097762660f6c6f3bfab54197c09355d35da756c81f533896e50375df31899"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_05",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_9vuhvc9vuhvc9vuh.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "50bb4903f745dc81d1e5b46e8a425302e68ab90ebd57330d3cfbb0ef1251b61a"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "dafe2b8a0fb158a88219f3dad9bcd2c71980b880f4c95010c06b8179db626228"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_06",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_faxc8cfaxc8cfaxc.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "5d106054acf270693ae262d45fa2c023e7520cfebb4c0aa6e12a86d4b678d080"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "025f529068b0e29cfcd6818d587b68f3b1a7497cb7e43801dd4dea0e67808837"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_07",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "rejected_continuity_grip_and_proportions",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_ymvr2vymvr2vymvr.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "a93601b0a759b1fdd631b9f9785e7ad5c7bf1d0a595b22b79e258ad8b32b4eaa"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "06cdedded130caa32cce10f732e7f6ebcd579d944f5ff2070e5351ea4b8860ba"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_08",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "provisional_anticipation_endpoint_not_adjacent_frame",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_lj1yk6lj1yk6lj1y.jfif",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "1644aa06f8bfd2f81da70fba41c481c54fa8b1cf5a132edb24057c96bdac8912"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "061f4138da877d9d8d5a1834e86955d82d1959b12296863f485eae142f56ead8"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_09",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "rejected_registration_and_pose_spacing",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_sw7xtcsw7xtcsw7x.jfif",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "32aa33a05d29441020c0a8d0e7d294315f5b77532fb45bc2715e38b7de27349a"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "2e5204697449a2ca3a7262218c75239696749e94a689fcd95c95d626fb3b2d79"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_10",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "style_framing_close_motion_change_unverified",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_fhez3gfhez3gfhez.jfif",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "bf0e2cf1b0ecd4b123f5be8d79328171d90ea43cdbadda4d0440da8d45789c17"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "2666948dece0f74beaa1803de0fb2fc209e6a42f20887bc12c0e595051378320"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_11",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "provisional_release_endpoint_hand_too_far",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_qx949bqx949bqx94.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "df9351bee0604157ee3a638193f79eec7d3c6623d746987b9e7d188f5c9c897d"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "0b8a5aee939d6994f4ed5d499f4800e9be60244d732e117bd03b38046f0631e0"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_12",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "near_hand_placement_improved_glove_badge_requires_cleanup",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_p04bjnp04bjnp04b.jfif",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "f2fbf008a947b05db2f5f79eb7e53f51fd1a8d51aaadb8e7345cc2d9a77312fb"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "ddb634c951ade149c0251a67a2f8f78758c49b579df20220a3834bfa16c6f44e"
+        }
+      ]
+    },
+    {
+      "animation": "run_start",
+      "attempt": "attempt_13",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "provisional_hand_release_art_checkpoint_continuity_pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_dlsykadlsykadlsy.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "ed5ba87a93daad5621ff231d64a09f65211bdb6bd6b391c1f7620ca2ed12a2c0"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "ae8b37d606dcaa81284ff95455c6256355eb8d77e2aa8eed527e9a23e186efcc"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_01",
+      "status": "historical_manual_capture",
+      "media": "image",
+      "review": "see preserved QA notes",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_ueq6gfueq6gfueq6.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "5c5e30174b1c2d6b8323b4b82208f85dca9464ed68d560c98dea8a344a2c0398"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "c5fc5a40644cb4790b8c134d10d594188a2d87cb68d945c8e73c15d4a3d336a7"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_02",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_wzpjdvwzpjdvwzpj.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "76da08e4b1a81cd1d12b51e25f51083d0d6920c828ef851285a7e361e171e4bc"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "124ae72c816074cc61d2a400f9870bfd29732beb9e1a904444a247edb482e1a0"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_03",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_poasi0poasi0poas.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "5f5ba16d16217aade5b65d02ee008d0475bd6521484e0e16ed6827896563253b"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "5b1506747fcd2062187dac0e5852ee3fa90b731c80387b9c33c699376e88b4db"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_04",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_c2nip6c2nip6c2ni.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "4864f62c617f9821288341ba6968951a20d84165ae818185b04fcac355d5b62a"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "c7cd8d85dd19f4e5cfbd4948cf2846b14fa9445ff06312d88c8d37364eb01a3b"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_05",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "revision_requested_opposite_arm_carry",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_941ytu941ytu941y.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "9a83ee271a9bdf6851aa8a37050b8756a69f849d6fcbcc87c4a5da0577c94f4c"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "b6bcd8b1d6c8192e1885728cbd160262821ada2bd2eff1dfe1ec290e84fb89bc"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_06",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_jb1of4jb1of4jb1o.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "14f977717bd90be5faef649aa58e1aca5e4bfe8e2782691a73c4e2904bcc573d"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "8c160cf14dbf98cca947d114629034a519dd0b1237b5a6d5ddbe41262eb5a02c"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_07",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_uwtiuhuwtiuhuwti.jfif",
+          "format": "JPEG",
+          "size": [
+            1792,
+            2400
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "beabd818dd5e7bd3e807a06246304119dc56bd3acfc5b539fe345c83f07793be"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            765,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "ddcd00e230d026e445b375abf3373e3b82ff3e51c0d5b85622e5c9c26919c16e"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_08",
+      "status": "ready_for_visual_review",
+      "media": "image",
+      "review": "pending",
+      "finalUserApproval": "pending",
+      "images": [
+        {
+          "file": "Gemini_Generated_Image_b05vhvb05vhvb05v.jfif",
+          "format": "JPEG",
+          "size": [
+            2048,
+            2048
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "0062f966750122f6f6c29bdbbc63c9977d43cffaa1204a8388ad1f5fb7a9ed4f"
+        },
+        {
+          "file": "gemini_original_preview.jpg",
+          "format": "JPEG",
+          "size": [
+            1024,
+            1024
+          ],
+          "mode": "RGB",
+          "hasAlpha": false,
+          "sha256": "1b808302323851ddb5dfdac1fd0d0fd5a7328d7374d841df461d32cc94620004"
+        }
+      ]
+    },
+    {
+      "animation": "run_loop",
+      "attempt": "attempt_09",
+      "status": "provider_block",
+      "media": "video",
+      "review": "see preserved QA notes",
+      "finalUserApproval": "pending",
+      "images": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "status": "ready_for_visual_review",
+  "tabId": "A2DA0A72CB7C74FA2F7D1C83FEB6B31F",
+  "chatUrl": "https://gemini.google.com/app/f70a152996defdcf",
+  "referenceSet": "far-carry",
+  "promptSha256": "68d93961f22aaebe9b6ee4c42fac5bc6d599a63943323a5cb405935d0c4380e6",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\FAR_CARRY_REFINE_08.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-10T17:24:54.833Z",
+  "baselineImages": [
+    "f7df6b28a383a73bfdf539ccdb1673b4b19f399776cd3e864b7ea84150725c40"
+  ],
+  "references": [
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\standing_idle\\sora_stand_idle_00.png",
+      "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7"
+    },
+    {
+      "file": "design\\references\\Sora_KHIV_Render.webp",
+      "sha256": "5dc59758a962e411e1b90f5f440f2d4cef0e42b07b1a91550d42455147f19a30"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-10T17:25:18.166Z",
+  "preview": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\gemini_browser_trial\\attempt_08\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\gemini_browser_trial\\attempt_08\\Gemini_Generated_Image_b05vhvb05vhvb05v.jfif",
+  "nativePreviewSize": [
+    1024,
+    1024
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}
