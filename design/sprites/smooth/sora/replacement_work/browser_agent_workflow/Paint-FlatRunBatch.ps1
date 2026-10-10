@@ -9,7 +9,7 @@ $soraStop=Join-Path $soraReady "run_stop/$StopVersion"
 foreach($soraDir in @($soraLoop,$soraStop)){if(Test-Path -LiteralPath $soraDir){throw "Preserve existing version: $soraDir"}}
 $soraHash=(Get-FileHash -LiteralPath $soraSource -Algorithm SHA256).Hash.ToLowerInvariant()
 Add-Type -AssemblyName System.Drawing
-Add-Type -Path (Join-Path $PSScriptRoot 'FlatRunPainting.cs') -ReferencedAssemblies System.Drawing
+Add-Type -Path @((Join-Path $PSScriptRoot 'FlatRunPainting.cs'),(Join-Path $PSScriptRoot 'ReferenceSurfacePainting.cs')) -ReferencedAssemblies System.Drawing
 function SoraPoint([double]$x,[double]$y){return [System.Drawing.PointF]::new($x,$y)}
 function SoraGround([double]$x,[double]$angle){return SoraPoint $x (470-[FlatRunPainting]::ShoeBottom($angle))}
 function SoraPose($phase,$bob,$pitch,$far,$fa,$near,$na,$elbow,$wrist,$grip,$wa,$lag,$hold=60,$second=$false){

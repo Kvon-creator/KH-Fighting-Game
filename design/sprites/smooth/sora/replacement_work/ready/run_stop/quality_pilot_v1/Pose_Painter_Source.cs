@@ -242,7 +242,7 @@ public static class FlatRunPainting {
                 painter.Leg(g,farHip,farAnkle,farAngle,false);painter.Leg(g,nearHip,nearAnkle,nearAngle,true);
                 s=g.Save();BodyTransform(g,pitch,bob);painter.Waist(g,lag);g.Restore(s);
                 painter.HoldingArm(g,Transform(new PointF(280,230),pitch,bob),grip,weaponAngle);
-                painter.FreeArm(g,Transform(new PointF(361,268),pitch,bob),elbow,wrist);
+                painter.FreeArm(g,Transform(new PointF(373,259),pitch,bob),elbow,wrist);
                 painter.Weapon(g,grip,weaponAngle,lag);
             }
             using(var reference=new Bitmap(512,512,PixelFormat.Format32bppArgb))using(var g=Graphics.FromImage(reference)){

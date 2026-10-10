@@ -1,5 +1,9 @@
 # Full run and stop: flat-canvas checkpoint
 
+**Latest correction, October10:** K'von says both new cycles need much more refinement to match `run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/Run_Start_13_Once.gif`. Treat that exact preview as the immediate art benchmark. V5's geometric sleeves, narrow shorts, simplified boots/hands and flatter materials are below that standard. Preserve v5 as a construction draft and improve the complete-frame artwork before expanding production or moving to aerial work.
+
+**Why:** The user explicitly identified the quality gap against the run-start preview. Offline geometry/decode checks do not establish matching art quality.
+
 **Fact or rule:** After liking the local early-lift treatment, K'von requested continuing with full run and run_stop. Active candidates: `ready/run_loop/flat_cycle_v5/` and `ready/run_stop/flat_stop_v5/`. Each contains16 whole512px RGBA drawings plus transparent128px exports,4×4 sheets, labeled boards and GIFs. This is the current no-layer workflow; older layered gait/stop packages are historical references.
 
 **Why:** K'von said, "I like it. We can continue on with the full run and run_stop animations."
