@@ -1,0 +1,407 @@
+﻿{
+  "sourceAndSelectedSheetPreserved": true,
+  "stopEntryByteIdentical": true,
+  "loop": {
+    "animation": "run_loop",
+    "frameCount": 16,
+    "maximumJointLengthRoundingError": 0.000845527412295155,
+    "allImagesDecode": true,
+    "transparent512And128": true,
+    "frames": [
+      {
+        "index": 0,
+        "phase": "near contact",
+        "bounds": [
+          145,
+          146,
+          472,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 1,
+        "phase": "near compression",
+        "bounds": [
+          151,
+          152,
+          470,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 2,
+        "phase": "near passing",
+        "bounds": [
+          174,
+          150,
+          472,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 3,
+        "phase": "near late passing",
+        "bounds": [
+          174,
+          145,
+          473,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 4,
+        "phase": "near heel-off",
+        "bounds": [
+          174,
+          143,
+          475,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 5,
+        "phase": "near toe-off",
+        "bounds": [
+          174,
+          141,
+          476,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 6,
+        "phase": "first flight",
+        "bounds": [
+          166,
+          136,
+          474,
+          456
+        ],
+        "lowerEdgeClearance": 14,
+        "detachedComponents": []
+      },
+      {
+        "index": 7,
+        "phase": "far pre-contact",
+        "bounds": [
+          152,
+          143,
+          473,
+          468
+        ],
+        "lowerEdgeClearance": 2,
+        "detachedComponents": []
+      },
+      {
+        "index": 8,
+        "phase": "far contact",
+        "bounds": [
+          156,
+          146,
+          472,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 9,
+        "phase": "far compression",
+        "bounds": [
+          165,
+          152,
+          470,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 10,
+        "phase": "far passing",
+        "bounds": [
+          174,
+          150,
+          472,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 11,
+        "phase": "far late passing",
+        "bounds": [
+          170,
+          145,
+          473,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 12,
+        "phase": "far heel-off",
+        "bounds": [
+          167,
+          143,
+          475,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 13,
+        "phase": "far toe-off",
+        "bounds": [
+          165,
+          141,
+          476,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 14,
+        "phase": "second flight",
+        "bounds": [
+          165,
+          136,
+          474,
+          456
+        ],
+        "lowerEdgeClearance": 14,
+        "detachedComponents": []
+      },
+      {
+        "index": 15,
+        "phase": "near pre-contact",
+        "bounds": [
+          152,
+          143,
+          473,
+          468
+        ],
+        "lowerEdgeClearance": 2,
+        "detachedComponents": []
+      }
+    ]
+  },
+  "stop": {
+    "animation": "run_stop",
+    "frameCount": 16,
+    "maximumJointLengthRoundingError": 0.0008506960679142139,
+    "allImagesDecode": true,
+    "transparent512And128": true,
+    "frames": [
+      {
+        "index": 0,
+        "phase": "near contact",
+        "bounds": [
+          145,
+          146,
+          472,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 1,
+        "phase": "braking compression",
+        "bounds": [
+          152,
+          152,
+          470,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 2,
+        "phase": "rear foot approaches",
+        "bounds": [
+          165,
+          153,
+          469,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 3,
+        "phase": "rear foot catches",
+        "bounds": [
+          168,
+          149,
+          468,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 4,
+        "phase": "weight recovers",
+        "bounds": [
+          171,
+          142,
+          469,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 5,
+        "phase": "blade clears shoulder",
+        "bounds": [
+          175,
+          136,
+          470,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 6,
+        "phase": "carry lifts clear",
+        "bounds": [
+          175,
+          103,
+          457,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 7,
+        "phase": "blade turns forward",
+        "bounds": [
+          176,
+          42,
+          420,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 8,
+        "phase": "recovery step reaches",
+        "bounds": [
+          167,
+          20,
+          407,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 9,
+        "phase": "recovery heel plants",
+        "bounds": [
+          152,
+          19,
+          406,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 10,
+        "phase": "guard lowers",
+        "bounds": [
+          152,
+          23,
+          403,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 11,
+        "phase": "empty hand approaches",
+        "bounds": [
+          140,
+          57,
+          402,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 12,
+        "phase": "second hand braces",
+        "bounds": [
+          100,
+          103,
+          402,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 13,
+        "phase": "guard settles",
+        "bounds": [
+          77,
+          133,
+          402,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 14,
+        "phase": "cloth follows through",
+        "bounds": [
+          67,
+          138,
+          402,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      },
+      {
+        "index": 15,
+        "phase": "ready hold",
+        "bounds": [
+          67,
+          138,
+          402,
+          470
+        ],
+        "lowerEdgeClearance": 0,
+        "detachedComponents": []
+      }
+    ]
+  },
+  "scope": "Offline decode, registration and construction QA; not a claim of final natural motion or Godot testing."
+}

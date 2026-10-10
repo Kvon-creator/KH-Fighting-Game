@@ -1,5 +1,9 @@
 # Local flat-canvas refinement
 
+**Latest approval, October10:** K'von likes the current flat-canvas result and explicitly requests continuing with the full run and run_stop animations. Extend the accepted complete-image treatment into a new alternating run cycle and a separate braking sequence. Preserve prior assets, use the far-arm shoulder carry and no individual production layers. This authorizes artwork development; it does not certify unfinished cycle motion or idle seams.
+
+**Why:** K'von said, "I like it. We can continue on with the full run and run_stop animations."
+
 **Fact or rule:** K'von explicitly selected "Use a single flat canvas locally" after the image service blocked the new whole-frame edits. Continue direct local painting of complete Sora sprites, with no individual body/weapon production layers. This is specific authorization for the alternative editing method; do not ask again. Preserve the accepted twelve-pose art source, prior versions, far-arm shoulder carry target, correct grip and connected rigid weapon. Do not restore the cancelled layered workflow.
 
 **Why:** Both the early-lift and first-step image-tool edits received output-stage content refusals. K'von chose local flat-canvas work when asked which method to use next.

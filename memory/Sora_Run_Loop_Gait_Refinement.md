@@ -1,5 +1,7 @@
 # Run-loop gait refinement checkpoint
 
+**Current workflow, October10:** This note records historical layered gait work. The user later cancelled production layers and approved whole-canvas painting. Continue `run_loop/flat_cycle_v5/` and `run_stop/flat_stop_v5/`; see Sora_Flat_Run_Cycles.md. Do not run these old layered helpers to update the current art.
+
 **Fact or rule:** The latest local running candidate is `design/sprites/smooth/sora/replacement_work/ready/run_loop/gait_refinement_v3/`, with sixteen gait poses and new upper-body follow-through. Preserve the eight-pose `review_cycle_v5` garment review, twelve-pose `gait_refinement_v1` and sixteen-pose `gait_refinement_v2`. The latest candidate is not approved-idle quality or gameplay-ready animation.
 
 **Why:** K'von said the garment progress looks good and requested continuing refinement on October 8, 2026. Inspection showed repeated leading-leg arrangements in the older sequence. The initial new gait draft also jumped too far from passing into toe-off, so two new drawings were added per stride.

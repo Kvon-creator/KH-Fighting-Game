@@ -1,0 +1,733 @@
+﻿{
+    "status":  "complete flat-canvas motion draft; visual refinement and idle seam pending",
+    "animation":  "run_loop",
+    "frameCount":  16,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "gameExport":  [
+                       128,
+                       128
+                   ],
+    "loop":  true,
+    "durationMs":  960,
+    "method":  "New articulated shorts, calves, shoes, arms, cloth and connected weapon painted directly on a full source canvas; no individual production layers",
+    "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_11.png",
+    "sourceSha256":  "cb54c1d39b5ea7a83a1bd053bd876a49391993d0ea2bec8a1d36472f1c6e737c",
+    "fixedProjectedThighLength":  86,
+    "fixedProjectedShinLength":  54,
+    "weapon":  "209-unit projected grip-to-tip, one rigid axis for guard/handle/collar/shaft/crown; far-arm same-shoulder carry behind protected source hair; foreground-facing projection held constant",
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_loop_00.png",
+                       "phase":  "near contact",
+                       "durationMs":  60,
+                       "bodyBob":  0,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          321
+                                      ],
+                                      [
+                                          211.719,
+                                          398.01
+                                      ],
+                                      [
+                                          187,
+                                          350
+                                      ],
+                                      [
+                                          292,
+                                          326
+                                      ],
+                                      [
+                                          362.116,
+                                          375.797
+                                      ],
+                                      [
+                                          337,
+                                          423.6
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          82,
+                                          0
+                                      ],
+                       "grip":  [
+                                    265,
+                                    191
+                                ],
+                       "weaponAngle":  14,
+                       "sha256":  "159a79c83a71aadbf61ead3141fcc656f787c8954f477c23236b012fc2f037fb"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_loop_01.png",
+                       "phase":  "near compression",
+                       "durationMs":  60,
+                       "bodyBob":  4,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          325
+                                      ],
+                                      [
+                                          219.118,
+                                          405.264
+                                      ],
+                                      [
+                                          193,
+                                          358
+                                      ],
+                                      [
+                                          292,
+                                          330
+                                      ],
+                                      [
+                                          357.497,
+                                          385.732
+                                      ],
+                                      [
+                                          319,
+                                          423.6
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          75,
+                                          0
+                                      ],
+                       "grip":  [
+                                    264,
+                                    195
+                                ],
+                       "weaponAngle":  15,
+                       "sha256":  "afb51c883866e8697f9d228126efa19e22bd91a99024ada5ce207829cf54c3e0"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_loop_02.png",
+                       "phase":  "near passing",
+                       "durationMs":  60,
+                       "bodyBob":  2,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          323
+                                      ],
+                                      [
+                                          311.343,
+                                          383.275
+                                      ],
+                                      [
+                                          259,
+                                          370
+                                      ],
+                                      [
+                                          292,
+                                          328
+                                      ],
+                                      [
+                                          343.094,
+                                          397.177
+                                      ],
+                                      [
+                                          296,
+                                          423.6
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          43,
+                                          0
+                                      ],
+                       "grip":  [
+                                    265,
+                                    192
+                                ],
+                       "weaponAngle":  14,
+                       "sha256":  "bd500a87ab3b82203d0b149012c8bcbde50f59106c3ee4546d024a8d28b10450"
+                   },
+                   {
+                       "index":  3,
+                       "file":  "sora_run_loop_03.png",
+                       "phase":  "near late passing",
+                       "durationMs":  60,
+                       "bodyBob":  "-1",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          320
+                                      ],
+                                      [
+                                          333.842,
+                                          339.144
+                                      ],
+                                      [
+                                          307,
+                                          386
+                                      ],
+                                      [
+                                          292,
+                                          325
+                                      ],
+                                      [
+                                          322.803,
+                                          405.294
+                                      ],
+                                      [
+                                          272,
+                                          423.6
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          10,
+                                          0
+                                      ],
+                       "grip":  [
+                                    266,
+                                    188
+                                ],
+                       "weaponAngle":  13,
+                       "sha256":  "9c83d83a184459ed24c403dbd3260bdd293753cd78a3bdff7f2491f2a5147d92"
+                   },
+                   {
+                       "index":  4,
+                       "file":  "sora_run_loop_04.png",
+                       "phase":  "near heel-off",
+                       "durationMs":  60,
+                       "bodyBob":  "-3",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          318
+                                      ],
+                                      [
+                                          333.873,
+                                          337.007
+                                      ],
+                                      [
+                                          333,
+                                          391
+                                      ],
+                                      [
+                                          292,
+                                          323
+                                      ],
+                                      [
+                                          299.309,
+                                          408.689
+                                      ],
+                                      [
+                                          246,
+                                          417.299
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          "-12",
+                                          15
+                                      ],
+                       "grip":  [
+                                    267,
+                                    185
+                                ],
+                       "weaponAngle":  12,
+                       "sha256":  "43fb130b90fc9038357647d6000107b649bb8d787949538bffbb718cd70d4a97"
+                   },
+                   {
+                       "index":  5,
+                       "file":  "sora_run_loop_05.png",
+                       "phase":  "near toe-off",
+                       "durationMs":  60,
+                       "bodyBob":  "-5",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          316
+                                      ],
+                                      [
+                                          329.481,
+                                          348.846
+                                      ],
+                                      [
+                                          339,
+                                          402
+                                      ],
+                                      [
+                                          292,
+                                          321
+                                      ],
+                                      [
+                                          276.999,
+                                          405.682
+                                      ],
+                                      [
+                                          223,
+                                          405.924
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          "-15",
+                                          35
+                                      ],
+                       "grip":  [
+                                    268,
+                                    182
+                                ],
+                       "weaponAngle":  12,
+                       "sha256":  "c9db28b6ebf00b0ccad953a55da30b5c757ea1de97cf12430f9b0b3fc96de650"
+                   },
+                   {
+                       "index":  6,
+                       "file":  "sora_run_loop_06.png",
+                       "phase":  "first flight",
+                       "durationMs":  60,
+                       "bodyBob":  "-10",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          311
+                                      ],
+                                      [
+                                          318.585,
+                                          362.885
+                                      ],
+                                      [
+                                          336,
+                                          414
+                                      ],
+                                      [
+                                          292,
+                                          316
+                                      ],
+                                      [
+                                          254.064,
+                                          393.181
+                                      ],
+                                      [
+                                          208,
+                                          365
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          "-8",
+                                          70
+                                      ],
+                       "grip":  [
+                                    267,
+                                    178
+                                ],
+                       "weaponAngle":  13,
+                       "sha256":  "1513a9f9de5d35d044ba794efcb518b137a9a53de034b6e6bfc48f9968fab780"
+                   },
+                   {
+                       "index":  7,
+                       "file":  "sora_run_loop_07.png",
+                       "phase":  "far pre-contact",
+                       "durationMs":  60,
+                       "bodyBob":  "-4",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          317
+                                      ],
+                                      [
+                                          314.817,
+                                          373.522
+                                      ],
+                                      [
+                                          334,
+                                          424
+                                      ],
+                                      [
+                                          292,
+                                          322
+                                      ],
+                                      [
+                                          233.391,
+                                          384.937
+                                      ],
+                                      [
+                                          194,
+                                          348
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          85
+                                      ],
+                       "grip":  [
+                                    266,
+                                    184
+                                ],
+                       "weaponAngle":  14,
+                       "sha256":  "18512ef3e927bc275746cf2d4b49f0e0522883a25f754526f240165475daf8f2"
+                   },
+                   {
+                       "index":  8,
+                       "file":  "sora_run_loop_08.png",
+                       "phase":  "far contact",
+                       "durationMs":  60,
+                       "bodyBob":  0,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          321
+                                      ],
+                                      [
+                                          320.347,
+                                          370.47
+                                      ],
+                                      [
+                                          330,
+                                          423.6
+                                      ],
+                                      [
+                                          292,
+                                          326
+                                      ],
+                                      [
+                                          234.415,
+                                          389.874
+                                      ],
+                                      [
+                                          198,
+                                          350
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          82
+                                      ],
+                       "grip":  [
+                                    265,
+                                    191
+                                ],
+                       "weaponAngle":  14,
+                       "sha256":  "3b5115f32d8898a41a1ba5c179b60190b3a1a31bf6ce8c0bda1b5e753185dcb3"
+                   },
+                   {
+                       "index":  9,
+                       "file":  "sora_run_loop_09.png",
+                       "phase":  "far compression",
+                       "durationMs":  60,
+                       "bodyBob":  4,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          325
+                                      ],
+                                      [
+                                          322.733,
+                                          370.89
+                                      ],
+                                      [
+                                          311,
+                                          423.6
+                                      ],
+                                      [
+                                          292,
+                                          330
+                                      ],
+                                      [
+                                          241.455,
+                                          399.579
+                                      ],
+                                      [
+                                          207,
+                                          358
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          75
+                                      ],
+                       "grip":  [
+                                    264,
+                                    195
+                                ],
+                       "weaponAngle":  15,
+                       "sha256":  "8eb62e86429f226f30141480ace049931918099b3333ebc0d61153a88e49c47b"
+                   },
+                   {
+                       "index":  10,
+                       "file":  "sora_run_loop_10.png",
+                       "phase":  "far passing",
+                       "durationMs":  60,
+                       "bodyBob":  2,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          323
+                                      ],
+                                      [
+                                          316.048,
+                                          378.079
+                                      ],
+                                      [
+                                          287,
+                                          423.6
+                                      ],
+                                      [
+                                          292,
+                                          328
+                                      ],
+                                      [
+                                          298.665,
+                                          413.741
+                                      ],
+                                      [
+                                          267,
+                                          370
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          43
+                                      ],
+                       "grip":  [
+                                    265,
+                                    192
+                                ],
+                       "weaponAngle":  14,
+                       "sha256":  "6b3a8f57de9852a0cb81d8618348eebf0f32d19228d73701b1a0571fa767233e"
+                   },
+                   {
+                       "index":  11,
+                       "file":  "sora_run_loop_11.png",
+                       "phase":  "far late passing",
+                       "durationMs":  60,
+                       "bodyBob":  "-1",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          320
+                                      ],
+                                      [
+                                          304.927,
+                                          386.174
+                                      ],
+                                      [
+                                          266,
+                                          423.6
+                                      ],
+                                      [
+                                          292,
+                                          325
+                                      ],
+                                      [
+                                          366.123,
+                                          368.609
+                                      ],
+                                      [
+                                          315,
+                                          386
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          10
+                                      ],
+                       "grip":  [
+                                    266,
+                                    188
+                                ],
+                       "weaponAngle":  13,
+                       "sha256":  "07c80a91e1c4d94a8e72dafbdd30fce87467a76740839022294a1f50e25964b6"
+                   },
+                   {
+                       "index":  12,
+                       "file":  "sora_run_loop_12.png",
+                       "phase":  "far heel-off",
+                       "durationMs":  60,
+                       "bodyBob":  "-3",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          318
+                                      ],
+                                      [
+                                          287.382,
+                                          395.45
+                                      ],
+                                      [
+                                          238,
+                                          417.299
+                                      ],
+                                      [
+                                          292,
+                                          323
+                                      ],
+                                      [
+                                          374.168,
+                                          348.387
+                                      ],
+                                      [
+                                          341,
+                                          391
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          15,
+                                          "-12"
+                                      ],
+                       "grip":  [
+                                    267,
+                                    185
+                                ],
+                       "weaponAngle":  12,
+                       "sha256":  "a0a14cda6176498f6d49b85ecced3cfa17c803d1a608b2e3c1ff3e82642da979"
+                   },
+                   {
+                       "index":  13,
+                       "file":  "sora_run_loop_13.png",
+                       "phase":  "far toe-off",
+                       "durationMs":  60,
+                       "bodyBob":  "-5",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          316
+                                      ],
+                                      [
+                                          268.668,
+                                          399.949
+                                      ],
+                                      [
+                                          215,
+                                          405.924
+                                      ],
+                                      [
+                                          292,
+                                          321
+                                      ],
+                                      [
+                                          371.958,
+                                          352.666
+                                      ],
+                                      [
+                                          350,
+                                          402
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          35,
+                                          "-15"
+                                      ],
+                       "grip":  [
+                                    268,
+                                    182
+                                ],
+                       "weaponAngle":  12,
+                       "sha256":  "7f3ca6a436bfba1fc41d888e640a3f79168ceb6f22cd44a06a527df025afc85e"
+                   },
+                   {
+                       "index":  14,
+                       "file":  "sora_run_loop_14.png",
+                       "phase":  "second flight",
+                       "durationMs":  60,
+                       "bodyBob":  "-10",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          311
+                                      ],
+                                      [
+                                          251.507,
+                                          396.987
+                                      ],
+                                      [
+                                          208,
+                                          365
+                                      ],
+                                      [
+                                          292,
+                                          316
+                                      ],
+                                      [
+                                          364.648,
+                                          362.025
+                                      ],
+                                      [
+                                          350,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          70,
+                                          "-8"
+                                      ],
+                       "grip":  [
+                                    267,
+                                    178
+                                ],
+                       "weaponAngle":  13,
+                       "sha256":  "c73333dd1e6a48fdf6b5ca7a33a36392b2f9a64c34cb4e6e99ecb7d536b73f18"
+                   },
+                   {
+                       "index":  15,
+                       "file":  "sora_run_loop_15.png",
+                       "phase":  "near pre-contact",
+                       "durationMs":  60,
+                       "bodyBob":  "-4",
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          250,
+                                          317
+                                      ],
+                                      [
+                                          217.495,
+                                          396.621
+                                      ],
+                                      [
+                                          194,
+                                          348
+                                      ],
+                                      [
+                                          292,
+                                          322
+                                      ],
+                                      [
+                                          360.707,
+                                          373.724
+                                      ],
+                                      [
+                                          341,
+                                          424
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          85,
+                                          0
+                                      ],
+                       "grip":  [
+                                    266,
+                                    184
+                                ],
+                       "weaponAngle":  14,
+                       "sha256":  "fc8ca061f0cbbc29a0af9c7168b5ab2ab9413763b2884d3aae89b1c9eb50b693"
+                   }
+               ],
+    "limitations":  [
+                        "Head/jacket source detail retained; new fabric/boot/skin materials require visual comparison.",
+                        "Drawing trajectories are provisional in-place display timing, not game physics.",
+                        "Stop ends in a new braced guard; approved-idle alignment remains a separate join to refine.",
+                        "Not integrated or tested in Godot."
+                    ]
+}
