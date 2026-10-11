@@ -1,0 +1,14 @@
+{
+  "tool": "image_gen.imagegen",
+  "orchestratorCallable": "tools.image_gen__imagegen",
+  "authorization": "Renewed complete-frame generation workflow; targeted carry continuity correction",
+  "arguments": {
+    "prompt": "Edit the first supplied Sora RUN STOP sheet. Make one targeted correction: the opening shoulder-carry sequence. Keep the exact same12-cell4x3 layout, character scale, KH2 costume, face/hair, polished smooth cel-shaded finish, legs, shoes and body poses. Preserve cells6 through11 as the existing recovery/guard drawings. Background must remain genuinely transparent alpha, without text, borders, glow or colored backdrop.\nIn cells0,1,2,3,4,5 ONLY, correct the FAR/REAR holding arm and complete Kingdom Key to remain carried over that SAME far shoulder behind Sora's head, matching image2's running carry. The guard/grip stays above the far shoulder to the left of the head, the straight shaft runs behind the head toward the right and the crown stays at the right terminal; the front/near arm remains empty. Cell0 must look like the top-left contact pose of image2, so run transitions into braking while keeping its carry. Cells1-4 progressively brake with that same carry. Cell5 begins a small upward clearance lift while keeping wrist, guard, collar and shaft attached. Then cell6's existing upright clearance pose starts the coherent lowering into the existing final low guard in cells7-11. Do not lower the weapon during0-4 and then return to shoulder carry at5. No holding-arm swap, inverted wrist, intersecting face, disconnected blade, extra hand or duplicated Keyblade.\nImage1 is the edit target, image2 supplies the running carry/model continuity, image3 is the physical same-arm carry and connected weapon reference only, with no KHIV costume transfer. Maintain exactly one consistent gold rectangular guard, black handle within it, blue/silver collar, straight silver shaft, crown/key-tooth terminal and attached pommel chain. Constant geometry and length; rotate these as one rigid object with slight foreground tip projection. All figures and weapons must fit in their cells.",
+    "referenced_image_paths": [
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\sora_run_stop_generated_original.png",
+      "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\sora_run_loop_generated_original.png",
+      "D:\\KH Fighting Game\\design\\references\\Sora_KHIV_Render.webp"
+    ],
+    "transparent_background": true
+  }
+}

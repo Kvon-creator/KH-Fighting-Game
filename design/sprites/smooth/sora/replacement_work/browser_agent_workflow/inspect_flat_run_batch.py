@@ -36,7 +36,7 @@ def components(alpha):
                 for dy in (-1, 0, 1):
                     for dx in (-1, 0, 1):
                         nx, ny = xx + dx, yy + dy
-                        if 0 <= nx < 512 and 0 <= ny < 512 and mask[ny, nx] and not seen[ny, nx]:
+                        if 0 <= nx < mask.shape[1] and 0 <= ny < mask.shape[0] and mask[ny, nx] and not seen[ny, nx]:
                             seen[ny, nx] = True; queue.append((nx, ny))
             if size > 8:
                 result.append((size, (x0, y0, x1 + 1, y1 + 1)))

@@ -1,0 +1,212 @@
+﻿{
+  "path": "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\sora_run_stop_generated_original.png",
+  "size": [
+    1536,
+    1024
+  ],
+  "mode": "RGBA",
+  "alphaExtrema": [
+    0,
+    254
+  ],
+  "transparentPixelCount": 1017645,
+  "nonopaquePixelCount": 1572864,
+  "nearlyOpaquePixelCount": 436660,
+  "completeFigureFrames": [
+    {
+      "index": 0,
+      "bounds": [
+        43,
+        16,
+        359,
+        326
+      ],
+      "area": 42642,
+      "nativeEyeX": 270.0,
+      "blueEyePixels": 11,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 1,
+      "bounds": [
+        456,
+        22,
+        739,
+        324
+      ],
+      "area": 39503,
+      "nativeEyeX": 659.76,
+      "blueEyePixels": 1,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 2,
+      "bounds": [
+        845,
+        15,
+        1105,
+        327
+      ],
+      "area": 37286,
+      "nativeEyeX": 1032.2,
+      "blueEyePixels": 2,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 3,
+      "bounds": [
+        1195,
+        18,
+        1490,
+        327
+      ],
+      "area": 38240,
+      "nativeEyeX": 1400.5,
+      "blueEyePixels": 4,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 4,
+      "bounds": [
+        56,
+        366,
+        337,
+        682
+      ],
+      "area": 41517,
+      "nativeEyeX": 256.0,
+      "blueEyePixels": 11,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 5,
+      "bounds": [
+        443,
+        359,
+        739,
+        683
+      ],
+      "area": 42308,
+      "nativeEyeX": 658.5,
+      "blueEyePixels": 6,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 6,
+      "bounds": [
+        838,
+        325,
+        1133,
+        682
+      ],
+      "area": 38251,
+      "nativeEyeX": 1040.0,
+      "blueEyePixels": 8,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 7,
+      "bounds": [
+        1197,
+        387,
+        1492,
+        685
+      ],
+      "area": 36070,
+      "nativeEyeX": 1409.4,
+      "blueEyePixels": 0,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 8,
+      "bounds": [
+        34,
+        699,
+        326,
+        1006
+      ],
+      "area": 37526,
+      "nativeEyeX": 256.0,
+      "blueEyePixels": 18,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 9,
+      "bounds": [
+        435,
+        699,
+        737,
+        1006
+      ],
+      "area": 35841,
+      "nativeEyeX": 660.5,
+      "blueEyePixels": 8,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 10,
+      "bounds": [
+        835,
+        705,
+        1137,
+        1004
+      ],
+      "area": 35125,
+      "nativeEyeX": 1059.0,
+      "blueEyePixels": 5,
+      "edgeClippingRisk": false
+    },
+    {
+      "index": 11,
+      "bounds": [
+        1217,
+        703,
+        1519,
+        1007
+      ],
+      "area": 35574,
+      "nativeEyeX": 1421.0,
+      "blueEyePixels": 5,
+      "edgeClippingRisk": false
+    }
+  ],
+  "rgbaProbes": {
+    "(0, 0)": [
+      82,
+      85,
+      82,
+      0
+    ],
+    "(256, 64)": [
+      139,
+      69,
+      25,
+      253
+    ],
+    "(240, 105)": [
+      254,
+      180,
+      123,
+      253
+    ],
+    "(150, 160)": [
+      126,
+      81,
+      23,
+      8
+    ],
+    "(250, 300)": [
+      15,
+      12,
+      8,
+      253
+    ],
+    "(380, 340)": [
+      55,
+      41,
+      17,
+      0
+    ]
+  },
+  "fileSha256": "89b6f8044e80f33f0ee8010acdf44942a0185ee82f8bb5a0adf5b1dad88d552e"
+}

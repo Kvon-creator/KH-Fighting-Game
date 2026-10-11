@@ -41,6 +41,6 @@
 - [Sora Running Keyblade Carry](Sora_Running_Keyblade_Carry.md): Same-arm shoulder carry and consistent connected weapon geometry, using supplied render as reference.
 - [Gemini Movement Trial](Sora_Gemini_Movement_Trial.md): Historical cancellation/local checkpoints and later authorized browser trial.
 - [Gemini Browser Workflow](Sora_Gemini_Browser_Workflow.md): New authorized Brave/Gemini complete-frame trial, local connection scripts, review criteria and final user approval.
-- [Direct Generation Trial](Sora_Direct_Generation_Trial.md): Latest twelve-pose sheet accepted for art quality; refine complete drawings without layers, preserving exact generation results.
+- [Direct Generation Trial](Sora_Direct_Generation_Trial.md): Renewed12-pose loop/stop generations succeeded; new review exports, unfinished motion/carry order and exact targeted-edit refusal; accepted start source preserved.
 - [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current quality_refinement_v9 whole-canvas run/stop, richer reference detail, fixed limbs, checked exports, comparison and unfinished motion/idle joins.

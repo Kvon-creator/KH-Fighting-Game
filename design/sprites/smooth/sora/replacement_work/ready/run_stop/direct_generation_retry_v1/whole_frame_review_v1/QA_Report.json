@@ -1,0 +1,336 @@
+﻿{
+  "scope": "Offline export/provenance QA; motion and weapon consistency remain unapproved. No Godot/browser playback test.",
+  "acceptedReferencesPreserved": true,
+  "animations": [
+    {
+      "animation": "run_loop",
+      "frameCount": 12,
+      "nativeSourcePreserved": true,
+      "transparent512And128": true,
+      "distinctImageHashes": 12,
+      "frames": [
+        {
+          "index": 0,
+          "bounds": [
+            94,
+            107,
+            480,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 1,
+          "bounds": [
+            126,
+            109,
+            485,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 2,
+          "bounds": [
+            132,
+            112,
+            474,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 3,
+          "bounds": [
+            56,
+            101,
+            484,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 4,
+          "bounds": [
+            56,
+            85,
+            493,
+            456
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 5,
+          "bounds": [
+            98,
+            95,
+            479,
+            468
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 6,
+          "bounds": [
+            136,
+            108,
+            480,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 7,
+          "bounds": [
+            122,
+            112,
+            471,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 8,
+          "bounds": [
+            56,
+            93,
+            484,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 9,
+          "bounds": [
+            50,
+            103,
+            492,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 10,
+          "bounds": [
+            64,
+            82,
+            500,
+            456
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 11,
+          "bounds": [
+            114,
+            88,
+            478,
+            468
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "animation": "run_stop",
+      "frameCount": 12,
+      "nativeSourcePreserved": true,
+      "transparent512And128": true,
+      "distinctImageHashes": 12,
+      "frames": [
+        {
+          "index": 0,
+          "bounds": [
+            116,
+            104,
+            489,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 1,
+          "bounds": [
+            144,
+            114,
+            477,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 2,
+          "bounds": [
+            163,
+            102,
+            469,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 3,
+          "bounds": [
+            142,
+            106,
+            490,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 4,
+          "bounds": [
+            150,
+            97,
+            480,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 5,
+          "bounds": [
+            130,
+            88,
+            479,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 6,
+          "bounds": [
+            146,
+            49,
+            494,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 7,
+          "bounds": [
+            134,
+            119,
+            481,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 8,
+          "bounds": [
+            122,
+            108,
+            467,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 9,
+          "bounds": [
+            118,
+            108,
+            474,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 10,
+          "bounds": [
+            120,
+            117,
+            476,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        },
+        {
+          "index": 11,
+          "bounds": [
+            143,
+            112,
+            500,
+            470
+          ],
+          "alphaExtrema": [
+            0,
+            255
+          ]
+        }
+      ]
+    }
+  ]
+}

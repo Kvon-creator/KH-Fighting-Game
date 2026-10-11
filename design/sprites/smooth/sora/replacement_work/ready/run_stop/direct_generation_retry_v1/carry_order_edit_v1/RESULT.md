@@ -1,0 +1,3 @@
+Tool: `image_gen.imagegen` (`tools.image_gen__imagegen`). Exact arguments: request.json. Complete observed exception: tool_error.txt.
+
+Classification: output-stage content refusal, HTTP400, code moderation_blocked, category other, request ID ab8edc2b-42f0-4029-b1f0-2dbe41793f90. The service accepted the call and produced an output-stage moderation rejection. This is not a tool argument validation error, platform permission rejection or service-availability failure. No edited image returned. No follow-up generation retry follows this refusal in this pass. Both successful original sheets remain preserved.

@@ -1,0 +1,257 @@
+﻿{
+    "status":  "AI whole-frame generation review; not approved motion or game integration",
+    "animation":  "run_stop",
+    "frameCount":  12,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "gameExport":  [
+                       128,
+                       128
+                   ],
+    "loop":  false,
+    "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\sora_run_stop_generated_original.png",
+    "sourceSha256":  "89b6f8044e80f33f0ee8010acdf44942a0185ee82f8bb5a0adf5b1dad88d552e",
+    "method":  "Complete generated figures extracted by alpha connectivity; one uniform resolution scale, temporary whole-figure selections, no body/weapon layers or new pose drawings",
+    "durationMs":  1200,
+    "faceAnchorIsEstimate":  true,
+    "floorOffsetsAreProvisional":  true,
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_stop_00.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            43,
+                                            16,
+                                            359,
+                                            326
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         116.316883116882940,
+                                         104.44155844155847
+                                     ],
+                       "blueFaceAnchorPixels":  11,
+                       "provisionalClearance":  0,
+                       "sha256":  "7885758f9d22b05b9c89c53ab560c43424a6f20fe6d73b5a36ac361691e4ec91"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_stop_01.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            456,
+                                            22,
+                                            739,
+                                            324
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         143.7219740259738672,
+                                         113.87532467532469
+                                     ],
+                       "blueFaceAnchorPixels":  1,
+                       "provisionalClearance":  0,
+                       "sha256":  "0a100ec20c33e09f15dfcb59d2bfe14d74e1bbf19c48dfaf2c194e8ea5cae252"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_stop_02.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            845,
+                                            15,
+                                            1105,
+                                            327
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         163.249870129869984,
+                                         102.08311688311687
+                                     ],
+                       "blueFaceAnchorPixels":  2,
+                       "provisionalClearance":  0,
+                       "sha256":  "cae6a16c19e35014c9bee32dbe9fe5e2ff6c9fd4873d4ec8af417eee078bb8cb"
+                   },
+                   {
+                       "index":  3,
+                       "file":  "sora_run_stop_03.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            1195,
+                                            18,
+                                            1490,
+                                            327
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         141.670129870129710,
+                                         105.62077922077924
+                                     ],
+                       "blueFaceAnchorPixels":  4,
+                       "provisionalClearance":  0,
+                       "sha256":  "c117ed0837ce33a5ab7f99687e9c81f34eef7f322fde25212eee442a54871e31"
+                   },
+                   {
+                       "index":  4,
+                       "file":  "sora_run_stop_04.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            56,
+                                            366,
+                                            337,
+                                            682
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         148.155844155844000,
+                                         97.36623376623379
+                                     ],
+                       "blueFaceAnchorPixels":  11,
+                       "provisionalClearance":  0,
+                       "sha256":  "f1c086256e2fb2d65299b2694cfb45149ce68bb669b18befd6831d854cc52732"
+                   },
+                   {
+                       "index":  5,
+                       "file":  "sora_run_stop_05.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            443,
+                                            359,
+                                            739,
+                                            683
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         129.877922077921910,
+                                         87.93246753246757
+                                     ],
+                       "blueFaceAnchorPixels":  6,
+                       "provisionalClearance":  0,
+                       "sha256":  "961b7a2001bd22f7ff13fbdae3969979bf6e80f58e1709a9fbbe9e4e5c239517"
+                   },
+                   {
+                       "index":  6,
+                       "file":  "sora_run_stop_06.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            838,
+                                            325,
+                                            1133,
+                                            682
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         145.797402597402440,
+                                         49.018181818181858
+                                     ],
+                       "blueFaceAnchorPixels":  8,
+                       "provisionalClearance":  0,
+                       "sha256":  "4befd189a1c8ac69cd366a19e1027818da0675e2e25fd930d2e6508b8bb285ea"
+                   },
+                   {
+                       "index":  7,
+                       "file":  "sora_run_stop_07.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            1197,
+                                            387,
+                                            1492,
+                                            685
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         133.533506493506328,
+                                         118.59220779220783
+                                     ],
+                       "blueFaceAnchorPixels":  0,
+                       "provisionalClearance":  0,
+                       "sha256":  "1e9b79d1e8fd025bab7632cb1458b8bdff522ecf03c287f9abe91311a0098716"
+                   },
+                   {
+                       "index":  8,
+                       "file":  "sora_run_stop_08.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            34,
+                                            699,
+                                            326,
+                                            1006
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         122.212987012986840,
+                                         107.97922077922078
+                                     ],
+                       "blueFaceAnchorPixels":  18,
+                       "provisionalClearance":  0,
+                       "sha256":  "e31e8c01ad25d2741907a610aa0aec28bb94a62da49ebb777456ec7057965336"
+                   },
+                   {
+                       "index":  9,
+                       "file":  "sora_run_stop_09.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            435,
+                                            699,
+                                            737,
+                                            1006
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         118.085714285714110,
+                                         107.97922077922078
+                                     ],
+                       "blueFaceAnchorPixels":  8,
+                       "provisionalClearance":  0,
+                       "sha256":  "e4ef83945580e682e7adda3400050093bc8f6bf694cc3a2a2959521b105d0220"
+                   },
+                   {
+                       "index":  10,
+                       "file":  "sora_run_stop_10.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            835,
+                                            705,
+                                            1137,
+                                            1004
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         119.854545454545280,
+                                         117.412987012987
+                                     ],
+                       "blueFaceAnchorPixels":  5,
+                       "provisionalClearance":  0,
+                       "sha256":  "98200bead1b3584e68a7a0e710af0adfdc50d3f17ea571300443d59de50f0802"
+                   },
+                   {
+                       "index":  11,
+                       "file":  "sora_run_stop_11.png",
+                       "durationMs":  100,
+                       "nativeBounds":  [
+                                            1217,
+                                            703,
+                                            1519,
+                                            1007
+                                        ],
+                       "uniformScale":  1.1792207792207792,
+                       "placement":  [
+                                         143.438961038960880,
+                                         111.51688311688315
+                                     ],
+                       "blueFaceAnchorPixels":  5,
+                       "provisionalClearance":  0,
+                       "sha256":  "8c719126b4d8a94b0c2b12f645afa107d313ca45285788d0ceceee72f70cf3f7"
+                   }
+               ],
+    "limitations":  [
+                        "Limb-role alternation, free-arm swing, source-to-loop and wrap continuity need visual correction.",
+                        "Stop begins with early lowered blade; shoulder-carry order edit was refused.",
+                        "Loop/stop entry drawings differ; they are not a seamless shared entry.",
+                        "Projected weapon geometry and final idle alignment remain unverified.",
+                        "No Godot or actual-browser playback test."
+                    ]
+}

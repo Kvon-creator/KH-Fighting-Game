@@ -1,5 +1,7 @@
 # Sora running Keyblade carry
 
+**Renewed AI trial:** User explicitly renewed complete-frame generation. New loop/stop12-pose sheets and previews are in direct_generation_retry_v1/ under their respective animation folders. Loop generally follows far-arm shoulder placement, with shape/length/grip consistency still unverified. Stop lowers early, then returns to carry; its targeted correction was refused at output moderation. No layers or automatic retry after refusal. Original carry targets and all local checkpoints remain; see Sora_Direct_Generation_Trial.md.
+
 **Active local quality checkpoint:** `run_loop/quality_refinement_v9/` and `run_stop/quality_refinement_v9/` supersede the flat v5 construction drafts for ongoing review. Single complete canvases, far-arm carry, connected209-unit projected weapon geometry and corrected native grip remain. Full reference brushes retain material detail; no component sprites or generation retries. See Sora_Flat_Run_Cycles.md for checks and unfinished joins.
 
 **Latest local checkpoint, October10:** User-approved flat-canvas treatment now extends into16 whole poses each for run and stop, under `flat_cycle_v5/` and `flat_stop_v5/`. Far-arm carry, connected projected geometry and corrected wrist remain. No new individual production layers or generation retries. See Sora_Flat_Run_Cycles.md; historical near-arm/layered rules below do not authorize restarting that method.

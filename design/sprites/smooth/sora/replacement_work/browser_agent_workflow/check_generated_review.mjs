@@ -1,0 +1,30 @@
+// Read-only offline preview checks; no actual browser or Godot playback.
+import fs from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const file=path.resolve(process.argv[2]);
+assert.ok(file.toLowerCase().startsWith('d:\\kh fighting game\\'));
+const html=fs.readFileSync(file,'utf8');
+const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
+new vm.Script(script);
+const elements=new Map();
+for(const id of ['large','small','kind','scrub','label','play','pause','slow'])elements.set('#'+id,{value:id==='kind'?'run':0,width:id==='large'?512:128,height:id==='large'?512:128,getContext:()=>({fillRect(){},drawImage(){}})});
+let timer=null,nextId=0;
+const context=vm.createContext({document:{querySelector:id=>elements.get(id)},Image:class{complete=true;naturalWidth=512;},setTimeout(fn,delay){timer={fn,delay,id:++nextId};return nextId;},clearTimeout(id){if(timer&&timer.id===id)timer=null;}});
+vm.runInContext(script,context);
+const frames=vm.runInContext('[...run,...stop]',context);
+assert.equal(frames.length,24);
+for(const frame of frames)assert.ok(fs.existsSync(path.resolve(path.dirname(file),frame.file)),frame.file);
+for(const match of html.matchAll(/href="([^"]+)"/g))assert.ok(fs.existsSync(path.resolve(path.dirname(file),match[1])),match[1]);
+function step(){assert.ok(timer);const pending=timer;timer=null;pending.fn();}
+elements.get('#kind').value='stop';elements.get('#kind').onchange();elements.get('#play').onclick();
+for(let index=0;index<12;index++)step();
+assert.equal(timer,null);assert.equal(vm.runInContext('index',context),11);
+elements.get('#kind').value='run';elements.get('#kind').onchange();elements.get('#play').onclick();
+for(let index=0;index<12;index++)step();
+assert.equal(vm.runInContext('index',context),0);assert.ok(timer);
+elements.get('#pause').onclick();assert.equal(timer,null);
+elements.get('#slow').onclick();elements.get('#play').onclick();assert.equal(timer.delay,240);
+elements.get('#scrub').value=7;elements.get('#scrub').oninput();assert.equal(timer,null);assert.equal(vm.runInContext('index',context),7);
+console.log('Preview syntax,24 frame links, native-sheet links, loop wrapping, one-pass stop, pause, x3 timing and scrubbing passed in an offline harness.');
