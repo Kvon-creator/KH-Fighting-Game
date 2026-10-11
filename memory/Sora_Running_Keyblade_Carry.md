@@ -1,5 +1,7 @@
 # Sora running Keyblade carry
 
+**Active local quality checkpoint:** `run_loop/quality_refinement_v9/` and `run_stop/quality_refinement_v9/` supersede the flat v5 construction drafts for ongoing review. Single complete canvases, far-arm carry, connected209-unit projected weapon geometry and corrected native grip remain. Full reference brushes retain material detail; no component sprites or generation retries. See Sora_Flat_Run_Cycles.md for checks and unfinished joins.
+
 **Latest local checkpoint, October10:** User-approved flat-canvas treatment now extends into16 whole poses each for run and stop, under `flat_cycle_v5/` and `flat_stop_v5/`. Far-arm carry, connected projected geometry and corrected wrist remain. No new individual production layers or generation retries. See Sora_Flat_Run_Cycles.md; historical near-arm/layered rules below do not authorize restarting that method.
 
 **Current method, October10:** K'von accepts the latest direct-generated12-pose sheet's art quality and explicitly cancels the proposed layer fallback. Refine that complete sheet's motion synchronization and connected weapon consistency. Keep the opposite far-arm carry target and all prior sources. Do not start local production layers or revert to the older near-arm carry. Source03 and new complete-image refinements are the active workflow; see Sora_Direct_Generation_Trial.md.

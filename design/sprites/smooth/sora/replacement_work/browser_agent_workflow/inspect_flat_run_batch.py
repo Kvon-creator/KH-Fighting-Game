@@ -56,14 +56,26 @@ def inspect(folder):
         bounds = alpha.getbbox()
         assert bounds[0] > 0 and bounds[1] > 0 and bounds[2] < 512 and bounds[3] < 512, bounds
         joints = frame["joints"]
-        for a, b, length in [(0, 1, 86), (1, 2, 54), (3, 4, 86), (4, 5, 54)]:
+        far_thigh = manifest.get("projectedFarThigh", 86)
+        near_thigh = manifest.get("projectedNearThigh", 86)
+        shin = manifest.get("projectedShin", 54)
+        far_shin = manifest.get("projectedFarShin", shin)
+        near_shin = manifest.get("projectedNearShin", shin)
+        for a, b, length in [(0, 1, far_thigh), (1, 2, far_shin), (3, 4, near_thigh), (4, 5, near_shin)]:
             maximum_error = max(maximum_error, abs(math.dist(joints[a], joints[b]) - length))
+        if "freeShoulder" in frame:
+            for a, b, length in [(frame["freeShoulder"], frame["freeElbow"], frame["freeUpperLength"]),
+                                 (frame["freeElbow"], frame["freeWrist"], frame["freeForearmLength"])]:
+                maximum_error = max(maximum_error, abs(math.dist(a, b) - length))
         all_components = components(np.asarray(alpha))
         assert not all_components[:-1], (frame["index"], all_components[:-1])
         if manifest["animation"] == "run_stop" or frame["index"] in (0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13):
             assert bounds[3] == 470, (frame["index"], bounds)
         elif frame["index"] in (6, 14):
-            assert bounds[3] == 456, (frame["index"], bounds)
+            if "qualityBenchmark" in manifest:
+                assert bounds[3] < 470, (frame["index"], bounds)
+            else:
+                assert bounds[3] == 456, (frame["index"], bounds)
         else:
             assert bounds[3] == 468, (frame["index"], bounds)
         rows.append(dict(index=frame["index"], phase=frame["phase"], bounds=bounds,
@@ -83,6 +95,12 @@ def inspect(folder):
         for i in range(gif.n_frames):
             gif.seek(i); delays.append(gif.info["duration"])
         assert delays == [f["durationMs"] for f in manifest["frames"]]
+    if "qualityBenchmark" in manifest:
+        benchmark = READY / manifest["qualityBenchmark"]
+        assert hashlib.sha256(benchmark.read_bytes()).hexdigest() == manifest["qualityBenchmarkSha256"]
+        assert Image.open(benchmark).n_frames == 13
+        for reference, sha256 in zip(manifest["sourcePaths"], manifest["sourceHashes"]):
+            assert hashlib.sha256(Path(reference).read_bytes()).hexdigest() == sha256
     return dict(animation=manifest["animation"], frameCount=16,
                 maximumJointLengthRoundingError=maximum_error,
                 allImagesDecode=True, transparent512And128=True,

@@ -1,4 +1,4 @@
-param([ValidatePattern('^flat_cycle_v[0-9]+$')][string]$LoopVersion='flat_cycle_v2',[ValidatePattern('^flat_stop_v[0-9]+$')][string]$StopVersion='flat_stop_v2')
+param([ValidatePattern('^(flat_cycle|quality_refinement)_v[0-9]+$')][string]$LoopVersion='flat_cycle_v2',[ValidatePattern('^(flat_stop|quality_refinement)_v[0-9]+$')][string]$StopVersion='flat_stop_v2')
 $ErrorActionPreference='Stop'
 $soraRoot=(Resolve-Path (Join-Path $PSScriptRoot '../../../../../..')).Path
 if($soraRoot -ne 'D:\KH Fighting Game'){throw "Unexpected workspace: $soraRoot"}
@@ -6,6 +6,11 @@ $soraReady=Join-Path $soraRoot 'design/sprites/smooth/sora/replacement_work/read
 $soraLoopDir=Join-Path $soraReady "run_loop/$LoopVersion"
 $soraStopDir=Join-Path $soraReady "run_stop/$StopVersion"
 foreach($soraDir in @($soraLoopDir,$soraStopDir)){if(Test-Path -LiteralPath (Join-Path $soraDir 'Contact_Sheet.png')){throw "Review already exists: $soraDir"}}
+foreach($soraDir in @($soraLoopDir,$soraStopDir)){
+    $soraPreflight=Get-Content -LiteralPath (Join-Path $soraDir 'manifest.json') -Raw | ConvertFrom-Json
+    if($soraPreflight.frameCount -ne 16){throw 'Only package a complete16-frame pass'}
+    foreach($soraFrame in $soraPreflight.frames){if(-not(Test-Path -LiteralPath (Join-Path $soraDir $soraFrame.file))){throw 'Incomplete pass'}}
+}
 Add-Type -AssemblyName System.Drawing
 Add-Type -Path (Join-Path $PSScriptRoot '../AnimationPackaging.cs') -ReferencedAssemblies System.Drawing
 $soraFont=[System.Drawing.Font]::new('Arial',10)
@@ -68,7 +73,7 @@ $soraStopData=ConvertTo-Json -InputObject @($soraAll.run_stop.frames | ForEach-O
 $soraHtml=@'
 <!doctype html><html lang="en"><meta charset="utf-8"><title>Sora run and stop review</title>
 <style>body{font:16px system-ui;background:#242b36;color:#f2f4f6;margin:24px}h1{font-size:23px}button,select{padding:9px;margin:3px;border-radius:5px;border:0}#views{display:flex;align-items:end;gap:24px;flex-wrap:wrap}figure{margin:14px 0}canvas{background:#fff;border:1px solid #606873}input{width:510px;max-width:90vw}small{color:#c2cad6}#large{width:min(512px,85vw);height:auto}</style>
-<h1>Sora: full run and run stop</h1><p>16 alternating strides, then 16 braking and guard-recovery drawings.</p>
+<h1>Sora: full run and run stop</h1><p>16 run poses and 16 braking and guard-recovery drawings.</p>
 <select id="kind"><option value="run">Run loop</option><option value="stop">Run stop</option></select>
 <button id="play">Play</button><button id="join">Run twice → stop</button><button id="pause">Pause</button><button id="slow">Slow: off</button>
 <div id="views"><figure><canvas id="large" width="512" height="512"></canvas><figcaption>Working art</figcaption></figure><figure><canvas id="small" width="128" height="128"></canvas><figcaption>128-pixel export size</figcaption></figure></div>

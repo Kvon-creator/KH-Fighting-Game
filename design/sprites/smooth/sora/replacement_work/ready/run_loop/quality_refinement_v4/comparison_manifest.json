@@ -1,0 +1,29 @@
+﻿{
+    "status":  "visual style comparison; different poses, not a quantitative style-match certificate",
+    "nativeCanvas":  512,
+    "allFiguresUnscaled":  true,
+    "inputs":  [
+                   "run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/frame_11.png",
+                   "run_loop/flat_cycle_v5/sora_run_loop_00.png",
+                   "run_loop/quality_refinement_v4/sora_run_loop_00.png",
+                   "run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/frame_12.png",
+                   "run_loop/flat_cycle_v5/sora_run_loop_14.png",
+                   "run_loop/quality_refinement_v4/sora_run_loop_14.png",
+                   "run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/frame_00.png",
+                   "run_stop/flat_stop_v5/sora_run_stop_15.png",
+                   "run_stop/quality_refinement_v4/sora_run_stop_15.png"
+               ],
+    "hashes":  [
+                   "48D31E47F632ECEAC881AFE84FBE6A70871D5A6664DF479D9DF4BA7EB42220C8",
+                   "0DE80FA354111EB1508E4F3D67FEB374769EDD1D74007B620C4603E5A64EBDEF",
+                   "E02210D0A16ACA27ECD4E64812CAD0D8E641FAB985CD926C4B906AC1FF52AB94",
+                   "CB54C1D39B5EA7A83A1BD053BD876A49391993D0EA2BEC8A1D36472F1C6E737C",
+                   "75A335DBA6E943CF380A01060B7046796911AB250F4FD8E9825960FAA94106BF",
+                   "EDCA81382ADFF46E16F2722E32523FC77E91AA7AD5D22851D0895D2B9FDAF196",
+                   "6687A5DBA50ED1CD0BCB470BAD234055AD63DDA4A85BFEFD94CCB552B5F47FBF",
+                   "F9C12AEDA52B03E5668793B73D452A6111B7AB41C6184CD0C146C5E73D7BDF0C",
+                   "49C233CC2500AE5C439DD875C27AD1E97B8F91BD4AC03A32DF7DB0615A9C737B"
+               ],
+    "benchmark":  "Run_Start_13_Once.gif",
+    "remaining":  "New anatomy, occlusion, surface projection and final idle join require visual review."
+}

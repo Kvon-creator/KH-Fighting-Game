@@ -1,0 +1,967 @@
+﻿{
+    "status":  "quality refinement draft; visual inspection required",
+    "animation":  "run_stop",
+    "frameCount":  16,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "gameExport":  [
+                       128,
+                       128
+                   ],
+    "loop":  false,
+    "durationMs":  1200,
+    "pilot":  false,
+    "method":  "One complete RGBA canvas; full original PNGs used as reference brushes with new joint poses and direct repainting; no cropped component bitmaps, part PNGs or production layers",
+    "qualityBenchmark":  "run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/Run_Start_13_Once.gif",
+    "qualityBenchmarkSha256":  "1f9f81975ea11f747e8956e72e9705968ae5fdb8379e5622bc785c7aad747d41",
+    "sourcePaths":  [
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_11.png",
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_start\\direct_imagegen_trial\\whole_figure_review_v3\\frame_08.png"
+                    ],
+    "sourceHashes":  [
+                         "cb54c1d39b5ea7a83a1bd053bd876a49391993d0ea2bec8a1d36472f1c6e737c",
+                         "dc0296b0948001ef8be5819e5a60d71eae75019513ed2936134d54fd20bf58c0"
+                     ],
+    "projectedNearThigh":  84.0238,
+    "projectedFarThigh":  75.82216,
+    "projectedNearShin":  48.79549,
+    "projectedFarShin":  48.01042,
+    "weapon":  "Shared209-unit connected blade axis; constant native guard/grip material; shoulder carry on far arm",
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_stop_00.png",
+                       "phase":  "near contact",
+                       "durationMs":  60,
+                       "bodyBob":  0,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          247,
+                                          316
+                                      ],
+                                      [
+                                          190,
+                                          366
+                                      ],
+                                      [
+                                          151,
+                                          338
+                                      ],
+                                      [
+                                          285,
+                                          317
+                                      ],
+                                      [
+                                          350.383,
+                                          369.774
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          82,
+                                          0
+                                      ],
+                       "grip":  [
+                                    265,
+                                    191
+                                ],
+                       "weaponAngle":  14,
+                       "freeShoulder":  [
+                                            350,
+                                            255
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         360.653381,
+                                         308.958374
+                                     ],
+                       "freeWrist":  [
+                                         322,
+                                         332
+                                     ],
+                       "sha256":  "85963251005c68e6b1fd48c2c7da27e5d006f6777e212a79bda23f1979d18e4a"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_stop_01.png",
+                       "phase":  "braking compression",
+                       "durationMs":  70,
+                       "bodyBob":  6,
+                       "bodyPitch":  0,
+                       "joints":  [
+                                      [
+                                          247,
+                                          322
+                                      ],
+                                      [
+                                          194.34,
+                                          376.552
+                                      ],
+                                      [
+                                          160,
+                                          343
+                                      ],
+                                      [
+                                          285,
+                                          323
+                                      ],
+                                      [
+                                          356.288,
+                                          367.475
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          73,
+                                          0
+                                      ],
+                       "grip":  [
+                                    265,
+                                    197
+                                ],
+                       "weaponAngle":  16,
+                       "freeShoulder":  [
+                                            350,
+                                            261
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         372.707642,
+                                         311.093536
+                                     ],
+                       "freeWrist":  [
+                                         340,
+                                         342
+                                     ],
+                       "sha256":  "dec6b4dd218743fca7d9885fbba5223c05d6d176f86f9629dc1a0fce61428c92"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_stop_02.png",
+                       "phase":  "rear foot approaches",
+                       "durationMs":  70,
+                       "bodyBob":  7,
+                       "bodyPitch":  "-1",
+                       "joints":  [
+                                      [
+                                          247.109,
+                                          323.505
+                                      ],
+                                      [
+                                          249.972,
+                                          399.273
+                                      ],
+                                      [
+                                          206,
+                                          380
+                                      ],
+                                      [
+                                          285.121,
+                                          323.842
+                                      ],
+                                      [
+                                          357.073,
+                                          367.234
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          32,
+                                          0
+                                      ],
+                       "grip":  [
+                                    265,
+                                    198
+                                ],
+                       "weaponAngle":  17,
+                       "freeShoulder":  [
+                                            349.028839,
+                                            260.7169
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         383.232422,
+                                         303.787933
+                                     ],
+                       "freeWrist":  [
+                                         354,
+                                         338
+                                     ],
+                       "sha256":  "24625cf813f8ef3b350c253ecf6ab09fe01bd8d6a5589086564638e626c55bc9"
+                   },
+                   {
+                       "index":  3,
+                       "file":  "sora_run_stop_03.png",
+                       "phase":  "rear foot catches",
+                       "durationMs":  70,
+                       "bodyBob":  5,
+                       "bodyPitch":  "-2",
+                       "joints":  [
+                                      [
+                                          247.227,
+                                          322.008
+                                      ],
+                                      [
+                                          279.842,
+                                          390.457
+                                      ],
+                                      [
+                                          238,
+                                          414
+                                      ],
+                                      [
+                                          285.239,
+                                          321.682
+                                      ],
+                                      [
+                                          355.525,
+                                          367.723
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    263,
+                                    194
+                                ],
+                       "weaponAngle":  16,
+                       "freeShoulder":  [
+                                            348.035461,
+                                            257.450928
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         391.447784,
+                                         291.2203
+                                     ],
+                       "freeWrist":  [
+                                         367,
+                                         329
+                                     ],
+                       "sha256":  "27dc9dd45a7b67c192338973dc074c1e8c7899b966820459085d195f12f6f4d1"
+                   },
+                   {
+                       "index":  4,
+                       "file":  "sora_run_stop_04.png",
+                       "phase":  "weight recovers",
+                       "durationMs":  70,
+                       "bodyBob":  1,
+                       "bodyPitch":  "-4",
+                       "joints":  [
+                                      [
+                                          247.489,
+                                          319.008
+                                      ],
+                                      [
+                                          278.491,
+                                          388.203
+                                      ],
+                                      [
+                                          238,
+                                          414
+                                      ],
+                                      [
+                                          285.466,
+                                          317.355
+                                      ],
+                                      [
+                                          351.55,
+                                          369.248
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    260,
+                                    186
+                                ],
+                       "weaponAngle":  11,
+                       "freeShoulder":  [
+                                            345.983124,
+                                            250.972
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         394.253082,
+                                         277.335083
+                                     ],
+                       "freeWrist":  [
+                                         373,
+                                         317
+                                     ],
+                       "sha256":  "e2b693befc76335c3c2faa39b9eeac0d2c1dcabd102e0c6c5f2df0e5631a63c5"
+                   },
+                   {
+                       "index":  5,
+                       "file":  "sora_run_stop_05.png",
+                       "phase":  "blade clears shoulder",
+                       "durationMs":  70,
+                       "bodyBob":  -3,
+                       "bodyPitch":  "-6",
+                       "joints":  [
+                                      [
+                                          247.786,
+                                          315.998
+                                      ],
+                                      [
+                                          276.982,
+                                          385.974
+                                      ],
+                                      [
+                                          238,
+                                          414
+                                      ],
+                                      [
+                                          285.682,
+                                          313.021
+                                      ],
+                                      [
+                                          344.492,
+                                          373.032
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    258,
+                                    177
+                                ],
+                       "weaponAngle":  1,
+                       "freeShoulder":  [
+                                            343.845551,
+                                            244.5662
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         394.375732,
+                                         266.284882
+                                     ],
+                       "freeWrist":  [
+                                         367,
+                                         302
+                                     ],
+                       "sha256":  "a86146a921fb4168dea7fb045bf8e0093fca078968cc182ec9a3dfacb21ac2f7"
+                   },
+                   {
+                       "index":  6,
+                       "file":  "sora_run_stop_06.png",
+                       "phase":  "carry lifts clear",
+                       "durationMs":  70,
+                       "bodyBob":  -3,
+                       "bodyPitch":  "-8",
+                       "joints":  [
+                                      [
+                                          248.117,
+                                          316.978
+                                      ],
+                                      [
+                                          270.555,
+                                          389.404
+                                      ],
+                                      [
+                                          223,
+                                          396
+                                      ],
+                                      [
+                                          285.887,
+                                          312.679
+                                      ],
+                                      [
+                                          344.036,
+                                          373.332
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          7,
+                                          0
+                                      ],
+                       "grip":  [
+                                    253,
+                                    168
+                                ],
+                       "weaponAngle":  "-16",
+                       "freeShoulder":  [
+                                            341.6253,
+                                            242.23645
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         389.46347,
+                                         269.375153
+                                     ],
+                       "freeWrist":  [
+                                         350,
+                                         291
+                                     ],
+                       "sha256":  "14b7288b7ad44cf7f177dc47b41e83c681c8b39e72d311ecbeadfd607a94fd08"
+                   },
+                   {
+                       "index":  7,
+                       "file":  "sora_run_stop_07.png",
+                       "phase":  "blade turns forward",
+                       "durationMs":  70,
+                       "bodyBob":  -3,
+                       "bodyPitch":  "-10",
+                       "joints":  [
+                                      [
+                                          248.482,
+                                          317.945
+                                      ],
+                                      [
+                                          251.817,
+                                          393.693
+                                      ],
+                                      [
+                                          204,
+                                          398
+                                      ],
+                                      [
+                                          286.079,
+                                          312.331
+                                      ],
+                                      [
+                                          343.423,
+                                          373.744
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          3,
+                                          0
+                                      ],
+                       "grip":  [
+                                    248,
+                                    173
+                                ],
+                       "weaponAngle":  "-37",
+                       "freeShoulder":  [
+                                            339.325134,
+                                            239.985611
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         374.9855,
+                                         281.8585
+                                     ],
+                       "freeWrist":  [
+                                         330,
+                                         283
+                                     ],
+                       "sha256":  "c3c0350f5046a543925477ef155295755ff88bb883b295dfd6797ad7e902156d"
+                   },
+                   {
+                       "index":  8,
+                       "file":  "sora_run_stop_08.png",
+                       "phase":  "recovery step reaches",
+                       "durationMs":  70,
+                       "bodyBob":  -3,
+                       "bodyPitch":  "-11",
+                       "joints":  [
+                                      [
+                                          248.678,
+                                          318.423
+                                      ],
+                                      [
+                                          229.693,
+                                          391.83
+                                      ],
+                                      [
+                                          183,
+                                          403
+                                      ],
+                                      [
+                                          286.17,
+                                          312.154
+                                      ],
+                                      [
+                                          343.031,
+                                          374.016
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          "-3",
+                                          0
+                                      ],
+                       "grip":  [
+                                    244,
+                                    204
+                                ],
+                       "weaponAngle":  "-59",
+                       "freeShoulder":  [
+                                            338.1459,
+                                            238.89064
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         352.798462,
+                                         291.902924
+                                     ],
+                       "freeWrist":  [
+                                         310,
+                                         278
+                                     ],
+                       "sha256":  "3d7524a7586df6c64c9be0ac83abe64bbfa4ad4261fe1053fb51a59d88b0bd44"
+                   },
+                   {
+                       "index":  9,
+                       "file":  "sora_run_stop_09.png",
+                       "phase":  "recovery heel plants",
+                       "durationMs":  70,
+                       "bodyBob":  -3,
+                       "bodyPitch":  "-12",
+                       "joints":  [
+                                      [
+                                          248.881,
+                                          318.898
+                                      ],
+                                      [
+                                          214.248,
+                                          386.349
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.259,
+                                          311.976
+                                      ],
+                                      [
+                                          342.547,
+                                          374.359
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    240,
+                                    236
+                                ],
+                       "weaponAngle":  "-80",
+                       "freeShoulder":  [
+                                            336.947784,
+                                            237.816422
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         333.854462,
+                                         292.72937
+                                     ],
+                       "freeWrist":  [
+                                         291,
+                                         279
+                                     ],
+                       "sha256":  "318c20a121440267a706b2a59ea6503fb6d7ba8ec4d4adf33aaaf38214c88138"
+                   },
+                   {
+                       "index":  10,
+                       "file":  "sora_run_stop_10.png",
+                       "phase":  "guard lowers",
+                       "durationMs":  70,
+                       "bodyBob":  -2,
+                       "bodyPitch":  "-13",
+                       "joints":  [
+                                      [
+                                          249.093,
+                                          320.37
+                                      ],
+                                      [
+                                          215.617,
+                                          388.402
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.344,
+                                          312.796
+                                      ],
+                                      [
+                                          345.679,
+                                          372.289
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    238,
+                                    246
+                                ],
+                       "weaponAngle":  "-99",
+                       "freeShoulder":  [
+                                            335.731079,
+                                            237.763275
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         318.849945,
+                                         290.108551
+                                     ],
+                       "freeWrist":  [
+                                         275,
+                                         280
+                                     ],
+                       "sha256":  "ba511a449e49faa14bb47b8ff8cefe2185f8cd2fb96c1624b447fb11cf7f710c"
+                   },
+                   {
+                       "index":  11,
+                       "file":  "sora_run_stop_11.png",
+                       "phase":  "empty hand approaches",
+                       "durationMs":  70,
+                       "bodyBob":  1,
+                       "bodyPitch":  "-14",
+                       "joints":  [
+                                      [
+                                          249.313,
+                                          323.838
+                                      ],
+                                      [
+                                          218.156,
+                                          392.962
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.426,
+                                          315.615
+                                      ],
+                                      [
+                                          350.844,
+                                          369.562
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    235,
+                                    255
+                                ],
+                       "weaponAngle":  "-115",
+                       "freeShoulder":  [
+                                            334.4962,
+                                            239.731522
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         304.894073,
+                                         286.085754
+                                     ],
+                       "freeWrist":  [
+                                         260,
+                                         283
+                                     ],
+                       "sha256":  "0d4f120874268f0c1cae12d4b30beb3704e2009d91c0096a19408307443d1bb3"
+                   },
+                   {
+                       "index":  12,
+                       "file":  "sora_run_stop_12.png",
+                       "phase":  "second hand braces",
+                       "durationMs":  70,
+                       "bodyBob":  4,
+                       "bodyPitch":  "-15",
+                       "joints":  [
+                                      [
+                                          249.541,
+                                          327.301
+                                      ],
+                                      [
+                                          219.94,
+                                          397.107
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.505,
+                                          318.432
+                                      ],
+                                      [
+                                          354.218,
+                                          368.181
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    232,
+                                    274
+                                ],
+                       "weaponAngle":  "-127",
+                       "freeShoulder":  [
+                                            333.243469,
+                                            241.721466
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         306.900024,
+                                         290.002136
+                                     ],
+                       "freeWrist":  [
+                                         262,
+                                         293
+                                     ],
+                       "sha256":  "32da6a84a176ffae836f9e40b0116e34eeb9f937fac7b8cf32fef833fef7b40e"
+                   },
+                   {
+                       "index":  13,
+                       "file":  "sora_run_stop_13.png",
+                       "phase":  "guard settles",
+                       "durationMs":  80,
+                       "bodyBob":  7,
+                       "bodyPitch":  "-15",
+                       "joints":  [
+                                      [
+                                          249.541,
+                                          330.301
+                                      ],
+                                      [
+                                          221.099,
+                                          400.587
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.505,
+                                          321.432
+                                      ],
+                                      [
+                                          356.917,
+                                          367.281
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    228,
+                                    295
+                                ],
+                       "weaponAngle":  "-134",
+                       "freeShoulder":  [
+                                            333.243469,
+                                            244.721466
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         313.611328,
+                                         296.0983
+                                     ],
+                       "freeWrist":  [
+                                         269,
+                                         302
+                                     ],
+                       "sha256":  "c561471f9c00471a0132265b9dd6776d3e206dbdf8b99dbf8ac08146f89707dc"
+                   },
+                   {
+                       "index":  14,
+                       "file":  "sora_run_stop_14.png",
+                       "phase":  "cloth follows through",
+                       "durationMs":  80,
+                       "bodyBob":  10,
+                       "bodyPitch":  "-14",
+                       "joints":  [
+                                      [
+                                          249.313,
+                                          332.838
+                                      ],
+                                      [
+                                          221.851,
+                                          403.512
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.426,
+                                          324.615
+                                      ],
+                                      [
+                                          359.174,
+                                          366.659
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    225,
+                                    310
+                                ],
+                       "weaponAngle":  "-137",
+                       "freeShoulder":  [
+                                            334.4962,
+                                            248.731522
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         314.640472,
+                                         300.022369
+                                     ],
+                       "freeWrist":  [
+                                         271,
+                                         311
+                                     ],
+                       "sha256":  "b3cdc66619f50189232170892fc6c69039597736807fb8dc89a6ab1f0b1f3b04"
+                   },
+                   {
+                       "index":  15,
+                       "file":  "sora_run_stop_15.png",
+                       "phase":  "ready hold",
+                       "durationMs":  140,
+                       "bodyBob":  10,
+                       "bodyPitch":  "-14",
+                       "joints":  [
+                                      [
+                                          249.313,
+                                          332.838
+                                      ],
+                                      [
+                                          221.851,
+                                          403.512
+                                      ],
+                                      [
+                                          175,
+                                          414
+                                      ],
+                                      [
+                                          286.426,
+                                          324.615
+                                      ],
+                                      [
+                                          359.174,
+                                          366.659
+                                      ],
+                                      [
+                                          371,
+                                          414
+                                      ]
+                                  ],
+                       "shoeAngles":  [
+                                          0,
+                                          0
+                                      ],
+                       "grip":  [
+                                    225,
+                                    310
+                                ],
+                       "weaponAngle":  "-137",
+                       "freeShoulder":  [
+                                            334.4962,
+                                            248.731522
+                                        ],
+                       "freeUpperLength":  55,
+                       "freeForearmLength":  45,
+                       "freeElbow":  [
+                                         314.640472,
+                                         300.022369
+                                     ],
+                       "freeWrist":  [
+                                         271,
+                                         311
+                                     ],
+                       "sha256":  "cb51a261c7808f010e13bc3c7addd1cc4349442f3aff372a14dc55120d1640fe"
+                   }
+               ],
+    "limitations":  [
+                        "Reference-based surface projection requires seam, occlusion and fold review.",
+                        "Skin, chain and final idle join require further drawing.",
+                        "No Godot or browser playback test."
+                    ]
+}
