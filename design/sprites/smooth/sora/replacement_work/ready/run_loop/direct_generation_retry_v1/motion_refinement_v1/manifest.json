@@ -1,0 +1,326 @@
+﻿{
+    "status":  "Motion refinement study; unfinished art and joins, not game integration",
+    "animation":  "run_loop",
+    "frameCount":  12,
+    "loop":  true,
+    "durationMs":  960,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "gameExport":  [
+                       128,
+                       128
+                   ],
+    "method":  "Complete generated canvases with articulated free arm painted using one whole-image reference brush and direct jacket/skin strokes; no component raster layers.",
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_loop_00.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_00.png",
+                       "sourceSha256":  "ece443e9917e8e7dd9ae3a49d39ce30c6d6f8257e2025617f436c4a44dc3461c",
+                       "durationMs":  80,
+                       "eyeY":  187.5,
+                       "upperAngle":  115,
+                       "forearmAngle":  -145,
+                       "shoulder":  [
+                                        365,
+                                        247
+                                    ],
+                       "elbow":  [
+                                     347.885284,
+                                     283.702667
+                                 ],
+                       "wrist":  [
+                                     318.3958,
+                                     263.053925
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "1a5fe66f49d2c65ab0713b2386b81cd47d8301bb3ec42ff31f04043b087a7a9a"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_loop_01.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_01.png",
+                       "sourceSha256":  "960948742ed696523ece3a9b9db831abb2b9458f1897b93bc9f89cf7f1a3f881",
+                       "durationMs":  80,
+                       "eyeY":  190.352936,
+                       "upperAngle":  108,
+                       "forearmAngle":  -133,
+                       "shoulder":  [
+                                        365,
+                                        249.852936
+                                    ],
+                       "elbow":  [
+                                     352.485779,
+                                     288.367767
+                                 ],
+                       "wrist":  [
+                                     327.933838,
+                                     262.039032
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "77a05c3305b2d7507af64e96a15116f3afbbf98208439a85eeb0b1c5f0ba6a29"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_loop_02.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_02.png",
+                       "sourceSha256":  "0e3edffa41ef35d32adf0e5696b73becf6c1a95a835c36978e43d095de111a07",
+                       "durationMs":  80,
+                       "eyeY":  193.266663,
+                       "upperAngle":  95,
+                       "forearmAngle":  -107,
+                       "shoulder":  [
+                                        365,
+                                        252.766663
+                                    ],
+                       "elbow":  [
+                                     361.470459,
+                                     293.109467
+                                 ],
+                       "wrist":  [
+                                     350.945068,
+                                     258.6825
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "87087db264d03a34dfb4807fa1e45b2666b1932ab1082c8d13bfb651fd166c5d"
+                   },
+                   {
+                       "index":  3,
+                       "file":  "sora_run_loop_03.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_03.png",
+                       "sourceSha256":  "2b560de87df51b4f8d51d21deab09537eecfbf35ec27efc58c77042ebc8aa766",
+                       "durationMs":  80,
+                       "eyeY":  182.27272,
+                       "upperAngle":  76,
+                       "forearmAngle":  -72,
+                       "shoulder":  [
+                                        365,
+                                        241.77272
+                                    ],
+                       "elbow":  [
+                                     374.7971,
+                                     281.066681
+                                 ],
+                       "wrist":  [
+                                     385.9217,
+                                     246.828644
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "70cbb94f6d2c85fa2273631151dcbbd110775d8d7e5f04da662d1c096de4807c"
+                   },
+                   {
+                       "index":  4,
+                       "file":  "sora_run_loop_04.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_04.png",
+                       "sourceSha256":  "7b99066edff462f69025cb5d8c499fdbf7ea9651d8505c335da554aa8303e5df",
+                       "durationMs":  80,
+                       "eyeY":  173.1,
+                       "upperAngle":  55,
+                       "forearmAngle":  -38,
+                       "shoulder":  [
+                                        365,
+                                        232.6
+                                    ],
+                       "elbow":  [
+                                     388.228058,
+                                     265.773132
+                                 ],
+                       "wrist":  [
+                                     416.596436,
+                                     243.609314
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "93e1cb581d4ae5914bed41833c7d977b0c2013b95dd498e5759b05aa60e83b47"
+                   },
+                   {
+                       "index":  5,
+                       "file":  "sora_run_loop_05.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_05.png",
+                       "sourceSha256":  "cc3f4576cce995bc5f36a9f6ad7e9fb1c61a97421e1e0eae72905655ad05ccb2",
+                       "durationMs":  80,
+                       "eyeY":  181.92308,
+                       "upperAngle":  45,
+                       "forearmAngle":  -18,
+                       "shoulder":  [
+                                        365,
+                                        241.42308
+                                    ],
+                       "elbow":  [
+                                     393.63562,
+                                     270.058716
+                                 ],
+                       "wrist":  [
+                                     427.873657,
+                                     258.9341
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "221a05371a228ef81b3968780cd526e790296714bd0e06fabb056bafa5fd1cc7"
+                   },
+                   {
+                       "index":  6,
+                       "file":  "sora_run_loop_06.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_06.png",
+                       "sourceSha256":  "764d7563b4cdd7c684af4e47138c53382c2d43e7e89c223d975d8d2c88daae66",
+                       "durationMs":  80,
+                       "eyeY":  200.333328,
+                       "upperAngle":  50,
+                       "forearmAngle":  -25,
+                       "shoulder":  [
+                                        365,
+                                        259.8333
+                                    ],
+                       "elbow":  [
+                                     391.0309,
+                                     290.855743
+                                 ],
+                       "wrist":  [
+                                     423.658,
+                                     275.641479
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "e962a8b2415bcf6784334c1ee8517d83fdf79edee96fcd6025fd2b5fe2c4a0d2"
+                   },
+                   {
+                       "index":  7,
+                       "file":  "sora_run_loop_07.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_07.png",
+                       "sourceSha256":  "2dce5ba424ff8144044a1ea9e7ad48c2b6f62422d9b83880523ffce5d05ba91b",
+                       "durationMs":  80,
+                       "eyeY":  192.428574,
+                       "upperAngle":  65,
+                       "forearmAngle":  -45,
+                       "shoulder":  [
+                                        365,
+                                        251.928574
+                                    ],
+                       "elbow":  [
+                                     382.114716,
+                                     288.631226
+                                 ],
+                       "wrist":  [
+                                     407.570557,
+                                     263.175385
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "4d111c36aed6a4bb4dc8c8a6661a357aa827201945031744f76d806ee253df4c"
+                   },
+                   {
+                       "index":  8,
+                       "file":  "sora_run_loop_08.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_08.png",
+                       "sourceSha256":  "081b3c86ac774bd0046b2fc35d249443f8ccfff0a5d8e0a6e4269ec7ee8d3b44",
+                       "durationMs":  80,
+                       "eyeY":  179.666672,
+                       "upperAngle":  88,
+                       "forearmAngle":  -86,
+                       "shoulder":  [
+                                        365,
+                                        239.166672
+                                    ],
+                       "elbow":  [
+                                     366.41333,
+                                     279.638916
+                                 ],
+                       "wrist":  [
+                                     368.924561,
+                                     243.726608
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "d19b851b558334aacec8269d0b9ca7423174378a5b69729464242101aab13e6b"
+                   },
+                   {
+                       "index":  9,
+                       "file":  "sora_run_loop_09.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_09.png",
+                       "sourceSha256":  "6753fd3a159ea7cae7abd4a95cfcd9e7fc19f46ab593f1203560e36629617c5b",
+                       "durationMs":  80,
+                       "eyeY":  196.642853,
+                       "upperAngle":  108,
+                       "forearmAngle":  -123,
+                       "shoulder":  [
+                                        365,
+                                        256.142853
+                                    ],
+                       "elbow":  [
+                                     352.485779,
+                                     294.657684
+                                 ],
+                       "wrist":  [
+                                     332.878784,
+                                     264.465546
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "b45e7b999bb360a98f8c25840be8bfba215225af577853ea381c723d016fa445"
+                   },
+                   {
+                       "index":  10,
+                       "file":  "sora_run_loop_10.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_10.png",
+                       "sourceSha256":  "a04cbad9d4158289be7ff02359867376999645c407eb7276867dec3c22f9abcc",
+                       "durationMs":  80,
+                       "eyeY":  171.333328,
+                       "upperAngle":  120,
+                       "forearmAngle":  -148,
+                       "shoulder":  [
+                                        365,
+                                        230.833328
+                                    ],
+                       "elbow":  [
+                                     344.751556,
+                                     265.904663
+                                 ],
+                       "wrist":  [
+                                     314.221832,
+                                     246.827576
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "a50e4fe076dc8214ab1a77f0d17b24cf25a2fcb49b6e9026e643eb0356389db3"
+                   },
+                   {
+                       "index":  11,
+                       "file":  "sora_run_loop_11.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_11.png",
+                       "sourceSha256":  "d6d118b623e32beda77151be408a8d879ed09541bb76c833d65dd4905a130f71",
+                       "durationMs":  80,
+                       "eyeY":  177.823532,
+                       "upperAngle":  121,
+                       "forearmAngle":  -151,
+                       "shoulder":  [
+                                        365,
+                                        237.323532
+                                    ],
+                       "elbow":  [
+                                     344.142548,
+                                     272.036133
+                                 ],
+                       "wrist":  [
+                                     312.65625,
+                                     254.583
+                                 ],
+                       "upperLength":  40.4969,
+                       "forearmLength":  36,
+                       "sha256":  "4b2d92e2ddc560f7b12215c9d4ceeb5ab71cc4896f9a53090709b0b8bb3f928a"
+                   }
+               ],
+    "limitations":  [
+                        "Arm-to-jacket contour and shadow joins still need art refinement.",
+                        "Generated leg roles, contacts, body jitter and loop wrap are not corrected by this arm study.",
+                        "Stop opening pose selection fixes carry chronology but foot paths and joins remain provisional.",
+                        "Weapon proportions across original sheets, foreground projection and final idle alignment remain unverified.",
+                        "Stop painting pilots contain waist seams and are not inserted.",
+                        "No Godot or actual-browser playback test."
+                    ]
+}

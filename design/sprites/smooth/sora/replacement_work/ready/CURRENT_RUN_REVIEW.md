@@ -1,5 +1,15 @@
 # Current run and stop artwork
 
+Current refinement study: **direct_generation_retry_v1/motion_refinement_v4**, saved in **D:\KH Fighting Game**.
+
+- [Original/new comparison with slow playback and frame stepping](run_loop/direct_generation_retry_v1/motion_refinement_v4/Review.html)
+- [Refined free-arm run study](run_loop/direct_generation_retry_v1/motion_refinement_v4/Preview_512_Loop.gif)
+- [Stop carry-order study, plays once](run_stop/direct_generation_retry_v1/motion_refinement_v4/Preview_512_Once.gif)
+- [Run drawing/motion review](run_loop/direct_generation_retry_v1/motion_refinement_v4/ART_REVIEW.md)
+- [Stop drawing/motion review](run_stop/direct_generation_retry_v1/motion_refinement_v4/ART_REVIEW.md)
+
+The loop now has distinct articulated free-arm poses while preserving the generated body detail. Version4 lowers the forward hand so it reads as empty rather than a second Keyblade grip. The stop selects complete carry poses before clearance/lowering and shares the exact loop entry. This is an unfinished study: alternating stride, arm/jacket joins, braking footwork, rigid weapon consistency and the final idle transition still need drawing. Failed stop repainting pilots are preserved and excluded. No individual production layers or additional image-generation retries were used.
+
 Newest AI trial: **direct_generation_retry_v1**. Workspace: **D:\KH Fighting Game**.
 
 Both original built-in generation requests returned new complete12-pose sheets with native transparency. The drawing style is closer to the accepted run-start artwork. Their motion remains unapproved: run stride alternation/free-arm swing, weapon geometry and the loop seam need work; stop lowers the weapon too early, then returns to carry. The targeted stop carry-order edit received an output-stage content refusal, so no more generation retries followed in this pass.

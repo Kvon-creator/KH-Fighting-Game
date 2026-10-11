@@ -1,0 +1,369 @@
+﻿{
+    "version":  "motion_refinement_v4",
+    "sharedEntryExact":  true,
+    "preservedSourceHashes":  {
+                                  "run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png":  "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+                                  "run_stop/direct_generation_retry_v1/sora_run_stop_generated_original.png":  "89b6f8044e80f33f0ee8010acdf44942a0185ee82f8bb5a0adf5b1dad88d552e",
+                                  "run_start/direct_imagegen_trial/attempt_03/sora_run_start_original.png":  "6108be48aa93f736514c1860f1a9966de1998b0800814156c681321cb779530e",
+                                  "run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/Run_Start_13_Once.gif":  "1f9f81975ea11f747e8956e72e9705968ae5fdb8379e5622bc785c7aad747d41",
+                                  "standing_idle/sora_stand_idle_00.png":  "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7"
+                              },
+    "allExportsDecodeWithTransparency":  true,
+    "sequences":  [
+                      {
+                          "animation":  "run_loop",
+                          "frameCount":  12,
+                          "durationMs":  960,
+                          "frames":  [
+                                         {
+                                             "index":  0,
+                                             "bounds":  [
+                                                            94,
+                                                            107,
+                                                            480,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  11629,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  4.4332223794185666E-06
+                                         },
+                                         {
+                                             "index":  1,
+                                             "bounds":  [
+                                                            126,
+                                                            109,
+                                                            485,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  12350,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.2043079117063371E-05
+                                         },
+                                         {
+                                             "index":  2,
+                                             "bounds":  [
+                                                            132,
+                                                            112,
+                                                            474,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  10087,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  7.218367890970967E-06
+                                         },
+                                         {
+                                             "index":  3,
+                                             "bounds":  [
+                                                            56,
+                                                            101,
+                                                            484,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  12183,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  4.5698621065071166E-06
+                                         },
+                                         {
+                                             "index":  4,
+                                             "bounds":  [
+                                                            56,
+                                                            85,
+                                                            493,
+                                                            456
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  12716,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.61593920253722E-05
+                                         },
+                                         {
+                                             "index":  5,
+                                             "bounds":  [
+                                                            98,
+                                                            95,
+                                                            481,
+                                                            468
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  11318,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.3698251088101188E-05
+                                         },
+                                         {
+                                             "index":  6,
+                                             "bounds":  [
+                                                            136,
+                                                            108,
+                                                            480,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  11199,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  2.4499317348158911E-05
+                                         },
+                                         {
+                                             "index":  7,
+                                             "bounds":  [
+                                                            122,
+                                                            112,
+                                                            472,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  10659,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  9.1613965693682076E-06
+                                         },
+                                         {
+                                             "index":  8,
+                                             "bounds":  [
+                                                            56,
+                                                            93,
+                                                            484,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  11929,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.3908153981390114E-05
+                                         },
+                                         {
+                                             "index":  9,
+                                             "bounds":  [
+                                                            50,
+                                                            103,
+                                                            492,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  11434,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.2043079117063371E-05
+                                         },
+                                         {
+                                             "index":  10,
+                                             "bounds":  [
+                                                            64,
+                                                            82,
+                                                            500,
+                                                            456
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  12777,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.0945365644943195E-05
+                                         },
+                                         {
+                                             "index":  11,
+                                             "bounds":  [
+                                                            114,
+                                                            88,
+                                                            478,
+                                                            468
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "changedPixels":  11753,
+                                             "protectedPixelsChanged":  0,
+                                             "jointLengthError":  1.6482496938863278E-05
+                                         }
+                                     ]
+                      },
+                      {
+                          "animation":  "run_stop",
+                          "frameCount":  12,
+                          "durationMs":  1300,
+                          "frames":  [
+                                         {
+                                             "index":  0,
+                                             "bounds":  [
+                                                            94,
+                                                            107,
+                                                            480,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  1,
+                                             "bounds":  [
+                                                            126,
+                                                            109,
+                                                            485,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  2,
+                                             "bounds":  [
+                                                            132,
+                                                            112,
+                                                            474,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  3,
+                                             "bounds":  [
+                                                            98,
+                                                            95,
+                                                            481,
+                                                            468
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  4,
+                                             "bounds":  [
+                                                            56,
+                                                            93,
+                                                            484,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  5,
+                                             "bounds":  [
+                                                            130,
+                                                            88,
+                                                            479,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  6,
+                                             "bounds":  [
+                                                            146,
+                                                            49,
+                                                            494,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  7,
+                                             "bounds":  [
+                                                            134,
+                                                            119,
+                                                            481,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  8,
+                                             "bounds":  [
+                                                            122,
+                                                            108,
+                                                            467,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  9,
+                                             "bounds":  [
+                                                            118,
+                                                            108,
+                                                            474,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  10,
+                                             "bounds":  [
+                                                            120,
+                                                            117,
+                                                            476,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         },
+                                         {
+                                             "index":  11,
+                                             "bounds":  [
+                                                            143,
+                                                            112,
+                                                            500,
+                                                            470
+                                                        ],
+                                             "detachedComponentsAbove8Pixels":  [
+
+                                                                                ],
+                                             "wholeSelectedSourceExact":  true
+                                         }
+                                     ]
+                      }
+                  ],
+    "limitations":  [
+                        "Read-only raster/provenance checks do not certify natural gait, rigid weapon geometry or idle quality.",
+                        "No actual-browser or Godot playback test."
+                    ],
+    "offlineViewerChecks":  "Offline checks passed: 48 original/study frame links, review links, run wrap, one-pass stop and36-frame join, x3 timing, scrub/step and guide controls."
+}

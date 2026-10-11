@@ -1,0 +1,134 @@
+﻿{
+    "status":  "Motion refinement study; unfinished art and joins, not game integration",
+    "animation":  "run_stop",
+    "frameCount":  12,
+    "loop":  false,
+    "durationMs":  1300,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "gameExport":  [
+                       128,
+                       128
+                   ],
+    "method":  "Complete-pose carry-order selection: loop00,01,02,05,08, then original stop05-11. No new braking-leg drawings.",
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_stop_00.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v3\\sora_run_loop_00.png",
+                       "sourceSha256":  "36f3b581df70a5be792240d2fb28fa3a4ca279ad580a0c4a2fbb05edfc14646a",
+                       "durationMs":  80,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "36f3b581df70a5be792240d2fb28fa3a4ca279ad580a0c4a2fbb05edfc14646a"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_stop_01.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v3\\sora_run_loop_01.png",
+                       "sourceSha256":  "3cc3d4e9a38e19c782697a34a0814f217fb71d2fe504047457bc53390f75e20f",
+                       "durationMs":  80,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "3cc3d4e9a38e19c782697a34a0814f217fb71d2fe504047457bc53390f75e20f"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_stop_02.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v3\\sora_run_loop_02.png",
+                       "sourceSha256":  "6407f9930a70ebfdd6cb980586f8c6d8169b4439031d2209b5413ed7bb74721d",
+                       "durationMs":  100,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "6407f9930a70ebfdd6cb980586f8c6d8169b4439031d2209b5413ed7bb74721d"
+                   },
+                   {
+                       "index":  3,
+                       "file":  "sora_run_stop_03.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v3\\sora_run_loop_05.png",
+                       "sourceSha256":  "6a7748544aa11f575df8a621827bd26f89ba42b85293af36b393f6af05454518",
+                       "durationMs":  80,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "6a7748544aa11f575df8a621827bd26f89ba42b85293af36b393f6af05454518"
+                   },
+                   {
+                       "index":  4,
+                       "file":  "sora_run_stop_04.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v3\\sora_run_loop_08.png",
+                       "sourceSha256":  "eb7d1bffaf63fba14d5f8cbf7e3ea78c4c0e5b656427b3c7f279032ec93b2156",
+                       "durationMs":  100,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "eb7d1bffaf63fba14d5f8cbf7e3ea78c4c0e5b656427b3c7f279032ec93b2156"
+                   },
+                   {
+                       "index":  5,
+                       "file":  "sora_run_stop_05.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_05.png",
+                       "sourceSha256":  "961b7a2001bd22f7ff13fbdae3969979bf6e80f58e1709a9fbbe9e4e5c239517",
+                       "durationMs":  100,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "961b7a2001bd22f7ff13fbdae3969979bf6e80f58e1709a9fbbe9e4e5c239517"
+                   },
+                   {
+                       "index":  6,
+                       "file":  "sora_run_stop_06.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_06.png",
+                       "sourceSha256":  "4befd189a1c8ac69cd366a19e1027818da0675e2e25fd930d2e6508b8bb285ea",
+                       "durationMs":  100,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "4befd189a1c8ac69cd366a19e1027818da0675e2e25fd930d2e6508b8bb285ea"
+                   },
+                   {
+                       "index":  7,
+                       "file":  "sora_run_stop_07.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_07.png",
+                       "sourceSha256":  "1e9b79d1e8fd025bab7632cb1458b8bdff522ecf03c287f9abe91311a0098716",
+                       "durationMs":  100,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "1e9b79d1e8fd025bab7632cb1458b8bdff522ecf03c287f9abe91311a0098716"
+                   },
+                   {
+                       "index":  8,
+                       "file":  "sora_run_stop_08.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_08.png",
+                       "sourceSha256":  "e31e8c01ad25d2741907a610aa0aec28bb94a62da49ebb777456ec7057965336",
+                       "durationMs":  120,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "e31e8c01ad25d2741907a610aa0aec28bb94a62da49ebb777456ec7057965336"
+                   },
+                   {
+                       "index":  9,
+                       "file":  "sora_run_stop_09.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_09.png",
+                       "sourceSha256":  "e4ef83945580e682e7adda3400050093bc8f6bf694cc3a2a2959521b105d0220",
+                       "durationMs":  120,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "e4ef83945580e682e7adda3400050093bc8f6bf694cc3a2a2959521b105d0220"
+                   },
+                   {
+                       "index":  10,
+                       "file":  "sora_run_stop_10.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_10.png",
+                       "sourceSha256":  "98200bead1b3584e68a7a0e710af0adfdc50d3f17ea571300443d59de50f0802",
+                       "durationMs":  120,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "98200bead1b3584e68a7a0e710af0adfdc50d3f17ea571300443d59de50f0802"
+                   },
+                   {
+                       "index":  11,
+                       "file":  "sora_run_stop_11.png",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_stop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_stop_11.png",
+                       "sourceSha256":  "8c719126b4d8a94b0c2b12f645afa107d313ca45285788d0ceceee72f70cf3f7",
+                       "durationMs":  200,
+                       "method":  "Unchanged complete-pose selection",
+                       "sha256":  "8c719126b4d8a94b0c2b12f645afa107d313ca45285788d0ceceee72f70cf3f7"
+                   }
+               ],
+    "limitations":  [
+                        "Arm-to-jacket contour and shadow joins still need art refinement.",
+                        "Generated leg roles, contacts, body jitter and loop wrap are not corrected by this arm study.",
+                        "Stop opening pose selection fixes carry chronology but foot paths and joins remain provisional.",
+                        "Weapon proportions across original sheets, foreground projection and final idle alignment remain unverified.",
+                        "Stop painting pilots contain waist seams and are not inserted.",
+                        "No Godot or actual-browser playback test."
+                    ]
+}
