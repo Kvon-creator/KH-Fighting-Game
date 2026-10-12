@@ -1,0 +1,27 @@
+﻿{
+    "status":  "provider_block",
+    "media":  "image",
+    "tabId":  "03FBD9632A8CE929401DC8831E11AEBA",
+    "chatUrl":  "https://gemini.google.com/app/43f0cbf3c6b49b58",
+    "referenceSet":  "original-run-sheet",
+    "promptSha256":  "04d0c542e75cdcc003df3f5ac93ecf6ddc848a232dd65e37ea45db33bd392aa0",
+    "promptFile":  "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\RUN_LOOP_GEMINI_BACKWARD_PILOT.txt",
+    "mode":  "Pro",
+    "createdAt":  "2026-10-12T16:53:44.054Z",
+    "baselineImages":  [
+
+                       ],
+    "baselineVideos":  [
+
+                       ],
+    "references":  [
+                       {
+                           "file":  "design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\sora_run_loop_generated_original.png",
+                           "sha256":  "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7"
+                       }
+                   ],
+    "finalUserApproval":  "pending",
+    "exactResponse":  "I was not able to generate that image.",
+    "failureClassification":  "unspecified provider generation failure; no reason supplied",
+    "note":  "Direct UI inspection found no Stop response control and no generated image. Collection stopped; no further submissions."
+}

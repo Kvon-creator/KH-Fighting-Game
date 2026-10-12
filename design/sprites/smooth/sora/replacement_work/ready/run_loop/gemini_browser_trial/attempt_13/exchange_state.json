@@ -1,5 +1,5 @@
 {
-  "status": "waiting_for_gemini",
+  "status": "provider_block",
   "media": "image",
   "tabId": "03FBD9632A8CE929401DC8831E11AEBA",
   "chatUrl": "https://gemini.google.com/app",
@@ -17,5 +17,6 @@
     }
   ],
   "finalUserApproval": "pending",
-  "note": "Timed out collecting; rerun this same attempt to collect without resubmitting."
+  "note": "Timed out collecting; rerun this same attempt to collect without resubmitting.",
+  "exactResponse": "Sorry, something went wrong. Please try your request again.\n\n\n\n\nPro\n\nGemini is AI and can make mistakes.\n\nCreating your image"
 }
