@@ -1,0 +1,50 @@
+﻿{
+    "status":  "New leg drawing pilot; not inserted into the cycle",
+    "bodyShiftY":  -4,
+    "protectedUpperExclusiveY":  308,
+    "nearShoeAngle":  -35,
+    "farShoeAngle":  0,
+    "joints":  [
+                   [
+                       257,
+                       316
+                   ],
+                   [
+                       328.078979,
+                       332.636627
+                   ],
+                   [
+                       304,
+                       373
+                   ],
+                   [
+                       291,
+                       321
+                   ],
+                   [
+                       318.304749,
+                       379.986877
+                   ],
+                   [
+                       278,
+                       400
+                   ]
+               ],
+    "nearThigh":  73,
+    "nearShin":  47,
+    "farThigh":  65,
+    "farShin":  45,
+    "sourceFiles":  [
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v4\\sora_run_loop_02.png",
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_02.png",
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_00.png"
+                    ],
+    "sourceHashes":  [
+                         "6407f9930a70ebfdd6cb980586f8c6d8169b4439031d2209b5413ed7bb74721d",
+                         "0e3edffa41ef35d32adf0e5696b73becf6c1a95a835c36978e43d095de111a07",
+                         "ece443e9917e8e7dd9ae3a49d39ce30c6d6f8257e2025617f436c4a44dc3461c"
+                     ],
+    "file":  "sora_near_passing_pilot.png",
+    "sha256":  "6bfefcbfd0030a7d9822d67a99c15db0106e6122613313580c2e2d762c7b8b03",
+    "method":  "One complete canvas, new fixed-length leg joints and direct calf painting; complete PNG clothing/shoe reference brushes; no part rasters, scaling or production layers"
+}

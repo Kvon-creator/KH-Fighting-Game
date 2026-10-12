@@ -1,0 +1,833 @@
+﻿{
+    "status":  "Alternating-leg and free-arm drawing study; unfinished garment/follow-through/transition refinement",
+    "counterSwing":  true,
+    "frameCount":  12,
+    "loop":  true,
+    "durationMs":  960,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "gameExport":  [
+                       128,
+                       128
+                   ],
+    "nearThigh":  83,
+    "nearShin":  47,
+    "farThigh":  65,
+    "farShin":  45,
+    "sourceFiles":  [
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\motion_refinement_v4\\sora_run_loop_02.png",
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_02.png",
+                        "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_00.png"
+                    ],
+    "sourceHashes":  [
+                         "6407f9930a70ebfdd6cb980586f8c6d8169b4439031d2209b5413ed7bb74721d",
+                         "0e3edffa41ef35d32adf0e5696b73becf6c1a95a835c36978e43d095de111a07",
+                         "ece443e9917e8e7dd9ae3a49d39ce30c6d6f8257e2025617f436c4a44dc3461c"
+                     ],
+    "floor":  470,
+    "floorDefinition":  "Exclusive bottom of solid pixels (alpha\u003e100); faint native edge/shadow alpha can extend below.",
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_loop_00.png",
+                       "phase":  "far contact",
+                       "durationMs":  80,
+                       "bodyShiftY":  -2,
+                       "protectedUpperExclusiveY":  268,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_00.png",
+                       "upperStageSha256":  "fa201ca46e597c6230150df19e266780087238a32f06b0997c64b3af64843c6a",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  60,
+                                   "wrist":  [
+                                                 421.11145,
+                                                 282.70040893554688
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -5,
+                                   "shoulder":  [
+                                                    365,
+                                                    250.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 385.248444,
+                                                 285.8380126953125
+                                             ]
+                               },
+                       "support":  "far",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  35,
+                       "farShoeAngle":  0,
+                       "joints":  [
+                                      [
+                                          272,
+                                          314
+                                      ],
+                                      [
+                                          237.825211,
+                                          389.637848
+                                      ],
+                                      [
+                                          205,
+                                          356
+                                      ],
+                                      [
+                                          291,
+                                          323
+                                      ],
+                                      [
+                                          345.325165,
+                                          358.689972
+                                      ],
+                                      [
+                                          330,
+                                          401
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_00_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "c5d6160c211a8fef2644c315810d97a9c7847d1ea9cfba8e6e9011598f613a1e"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_loop_01.png",
+                       "phase":  "far compression",
+                       "durationMs":  80,
+                       "bodyShiftY":  4,
+                       "protectedUpperExclusiveY":  274,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_01.png",
+                       "upperStageSha256":  "f114940e1b0186c04a3d4b8cfe7c603e3731f4b7cf9100968ce24d0645472781",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  56,
+                                   "wrist":  [
+                                                 423.508575,
+                                                 293.47772216796875
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  5,
+                                   "shoulder":  [
+                                                    365,
+                                                    256.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 387.645569,
+                                                 290.34011840820313
+                                             ]
+                               },
+                       "support":  "far",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  45,
+                       "farShoeAngle":  0,
+                       "joints":  [
+                                      [
+                                          272,
+                                          320
+                                      ],
+                                      [
+                                          225.105225,
+                                          388.482727
+                                      ],
+                                      [
+                                          205,
+                                          346
+                                      ],
+                                      [
+                                          291,
+                                          329
+                                      ],
+                                      [
+                                          345.080139,
+                                          365.060242
+                                      ],
+                                      [
+                                          318,
+                                          401
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_01_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "a8f5a4833954dfe09156eeded53eef99cb61747615923d0fe41ae1dc4d063a64"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_loop_02.png",
+                       "phase":  "far support, near recovery",
+                       "durationMs":  80,
+                       "bodyShiftY":  0,
+                       "protectedUpperExclusiveY":  270,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_02.png",
+                       "upperStageSha256":  "78d53314313a996faed87f1fcd1d73ccc428d10f9c69a3fdb0acefdef578f4fc",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  62,
+                                   "wrist":  [
+                                                 420.012146,
+                                                 288.5233154296875
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  0,
+                                   "shoulder":  [
+                                                    365,
+                                                    252.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 384.012146,
+                                                 288.5233154296875
+                                             ]
+                               },
+                       "support":  "far",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  15,
+                       "farShoeAngle":  0,
+                       "joints":  [
+                                      [
+                                          272,
+                                          316
+                                      ],
+                                      [
+                                          228.567627,
+                                          386.729248
+                                      ],
+                                      [
+                                          243,
+                                          342
+                                      ],
+                                      [
+                                          291,
+                                          325
+                                      ],
+                                      [
+                                          335.0591,
+                                          372.789063
+                                      ],
+                                      [
+                                          300,
+                                          401
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_02_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "6611cf677d7aca0b1edf58b89c6dfc3085789a6e9c77015ed5b49545d1234df9"
+                   },
+                   {
+                       "index":  3,
+                       "file":  "sora_run_loop_03.png",
+                       "phase":  "near passing",
+                       "durationMs":  80,
+                       "bodyShiftY":  -4,
+                       "protectedUpperExclusiveY":  266,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_03.png",
+                       "upperStageSha256":  "8a3d24dc3351320b46c986732ca102d38f9062168d7839fba2063138daa77127",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  77,
+                                   "wrist":  [
+                                                 403.5993,
+                                                 267.57687377929688
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -35,
+                                   "shoulder":  [
+                                                    365,
+                                                    248.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 374.109833,
+                                                 288.22561645507813
+                                             ]
+                               },
+                       "support":  "far",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  -35,
+                       "farShoeAngle":  0,
+                       "joints":  [
+                                      [
+                                          272,
+                                          312
+                                      ],
+                                      [
+                                          350.190033,
+                                          339.844543
+                                      ],
+                                      [
+                                          315,
+                                          371
+                                      ],
+                                      [
+                                          291,
+                                          321
+                                      ],
+                                      [
+                                          317.891968,
+                                          380.176178
+                                      ],
+                                      [
+                                          278,
+                                          401
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_03_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "d76fb5e629aa59f0e2cb3db0e0782010bc497759cd2fcc17c610d375da754beb"
+                   },
+                   {
+                       "index":  4,
+                       "file":  "sora_run_loop_04.png",
+                       "phase":  "far toe-off, near extension",
+                       "durationMs":  80,
+                       "bodyShiftY":  -7,
+                       "protectedUpperExclusiveY":  263,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_04.png",
+                       "upperStageSha256":  "237823fb1fbc27dad4c2412f35383e1ac74e7225afc5c3c02fdafc9497f87aac",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  99,
+                                   "wrist":  [
+                                                 355.527283,
+                                                 249.9019775390625
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -95,
+                                   "shoulder":  [
+                                                    365,
+                                                    245.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 358.6649,
+                                                 285.76498413085938
+                                             ]
+                               },
+                       "support":  "far",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  -25,
+                       "farShoeAngle":  25,
+                       "joints":  [
+                                      [
+                                          272,
+                                          309
+                                      ],
+                                      [
+                                          349.311523,
+                                          339.198151
+                                      ],
+                                      [
+                                          345,
+                                          386
+                                      ],
+                                      [
+                                          291,
+                                          318
+                                      ],
+                                      [
+                                          299.96582,
+                                          382.3787
+                                      ],
+                                      [
+                                          255,
+                                          384.131958
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_04_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "52856a587d37ea2c65021a1f87b18a93f6c4466df806c19d1b34a25d534736d4"
+                   },
+                   {
+                       "index":  5,
+                       "file":  "sora_run_loop_05.png",
+                       "phase":  "flight into near contact",
+                       "durationMs":  80,
+                       "bodyShiftY":  -10,
+                       "protectedUpperExclusiveY":  260,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_05.png",
+                       "upperStageSha256":  "8fc10678b541155519077e00b23915031c604530728e40c4f1dc50013e7b4d8b",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  113,
+                                   "wrist":  [
+                                                 326.036255,
+                                                 252.46664428710938
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -130,
+                                   "shoulder":  [
+                                                    365,
+                                                    242.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 349.1766,
+                                                 280.04425048828125
+                                             ]
+                               },
+                       "support":  "none",
+                       "supportOpaqueBottom":  453,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  -20,
+                       "farShoeAngle":  25,
+                       "joints":  [
+                                      [
+                                          272,
+                                          306
+                                      ],
+                                      [
+                                          347.6246,
+                                          340.2041
+                                      ],
+                                      [
+                                          352,
+                                          387
+                                      ],
+                                      [
+                                          291,
+                                          315
+                                      ],
+                                      [
+                                          270.881042,
+                                          376.807983
+                                      ],
+                                      [
+                                          230,
+                                          358
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  453,
+                                                      "file":  "whole_pose_05_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "c3d8ea13ac0ec40952dd1584319da687caafd4c7aa294fbb75be163d1c831a53"
+                   },
+                   {
+                       "index":  6,
+                       "file":  "sora_run_loop_06.png",
+                       "phase":  "near contact",
+                       "durationMs":  80,
+                       "bodyShiftY":  -2,
+                       "protectedUpperExclusiveY":  268,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_06.png",
+                       "upperStageSha256":  "b0e5e43a9f1ce4c3fa18204d53bcc3f7f0d00d07ac775e414080ca836e98b985",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  116,
+                                   "wrist":  [
+                                                 317.757843,
+                                                 266.51629638671875
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -145,
+                                   "shoulder":  [
+                                                    365,
+                                                    250.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 347.2473,
+                                                 287.1650390625
+                                             ]
+                               },
+                       "support":  "near",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  0,
+                       "farShoeAngle":  35,
+                       "joints":  [
+                                      [
+                                          272,
+                                          314
+                                      ],
+                                      [
+                                          344.269562,
+                                          354.818
+                                      ],
+                                      [
+                                          353,
+                                          401
+                                      ],
+                                      [
+                                          291,
+                                          323
+                                      ],
+                                      [
+                                          254.6985,
+                                          376.918457
+                                      ],
+                                      [
+                                          213,
+                                          360
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_06_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "78545618ac66e4a73cc4375108d0bffbe80c9a749969901186d8590b6f476fa3"
+                   },
+                   {
+                       "index":  7,
+                       "file":  "sora_run_loop_07.png",
+                       "phase":  "near compression",
+                       "durationMs":  80,
+                       "bodyShiftY":  4,
+                       "protectedUpperExclusiveY":  274,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_07.png",
+                       "upperStageSha256":  "1cbbd97846e03d40737128a1bbc5e86372e163e8a59892b593348371068d8863",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  112,
+                                   "wrist":  [
+                                                 320.340118,
+                                                 273.66598510742188
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -145,
+                                   "shoulder":  [
+                                                    365,
+                                                    256.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 349.8296,
+                                                 294.31472778320313
+                                             ]
+                               },
+                       "support":  "near",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  0,
+                       "farShoeAngle":  45,
+                       "joints":  [
+                                      [
+                                          272,
+                                          320
+                                      ],
+                                      [
+                                          347.447144,
+                                          354.593781
+                                      ],
+                                      [
+                                          340,
+                                          401
+                                      ],
+                                      [
+                                          291,
+                                          329
+                                      ],
+                                      [
+                                          251.331482,
+                                          380.491821
+                                      ],
+                                      [
+                                          225,
+                                          344
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_07_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "3297465f87a8567775d8f71fa2148c7e00e8ebe721a96663f5d57f4f8fa3b2f4"
+                   },
+                   {
+                       "index":  8,
+                       "file":  "sora_run_loop_08.png",
+                       "phase":  "near support, far recovery",
+                       "durationMs":  80,
+                       "bodyShiftY":  0,
+                       "protectedUpperExclusiveY":  270,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_08.png",
+                       "upperStageSha256":  "49f7b4d15334e04f9480f33d3aa29782bf8143113c2b6d7d50580f12f050735e",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  102,
+                                   "wrist":  [
+                                                 335.9315,
+                                                 262.88912963867188
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -125,
+                                   "shoulder":  [
+                                                    365,
+                                                    252.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 356.580231,
+                                                 292.37860107421875
+                                             ]
+                               },
+                       "support":  "near",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  0,
+                       "farShoeAngle":  15,
+                       "joints":  [
+                                      [
+                                          272,
+                                          316
+                                      ],
+                                      [
+                                          342.003967,
+                                          360.591949
+                                      ],
+                                      [
+                                          318,
+                                          401
+                                      ],
+                                      [
+                                          291,
+                                          325
+                                      ],
+                                      [
+                                          280.41922,
+                                          389.133026
+                                      ],
+                                      [
+                                          255,
+                                          352
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_08_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "2d0c71abe5a2a0838cf55dcb6cc47a74dd67714e175450f2d0b892b6bbfd7e8f"
+                   },
+                   {
+                       "index":  9,
+                       "file":  "sora_run_loop_09.png",
+                       "phase":  "far passing",
+                       "durationMs":  80,
+                       "bodyShiftY":  -4,
+                       "protectedUpperExclusiveY":  266,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_09.png",
+                       "upperStageSha256":  "5970e5518228654af3db18b328b89bdf2595c084542a307acce094b56fcf9dd8",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  88,
+                                   "wrist":  [
+                                                 363.275726,
+                                                 253.37588500976563
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -95,
+                                   "shoulder":  [
+                                                    365,
+                                                    248.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 366.41333,
+                                                 289.2388916015625
+                                             ]
+                               },
+                       "support":  "near",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  0,
+                       "farShoeAngle":  -35,
+                       "joints":  [
+                                      [
+                                          272,
+                                          312
+                                      ],
+                                      [
+                                          330.814728,
+                                          370.564728
+                                      ],
+                                      [
+                                          295,
+                                          401
+                                      ],
+                                      [
+                                          291,
+                                          321
+                                      ],
+                                      [
+                                          349.925934,
+                                          348.435974
+                                      ],
+                                      [
+                                          316,
+                                          378
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_09_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "d01c5059263be9a89f0898076a189f58d2a4c38fea48f85c118e0ca02075cb43"
+                   },
+                   {
+                       "index":  10,
+                       "file":  "sora_run_loop_10.png",
+                       "phase":  "near toe-off, far extension",
+                       "durationMs":  80,
+                       "bodyShiftY":  -7,
+                       "protectedUpperExclusiveY":  263,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_10.png",
+                       "upperStageSha256":  "49c704ec245b16af75d7c8fcd17440c7b83ffe35c549aee0492766d8c6fdf74b",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  72,
+                                   "wrist":  [
+                                                 398.162964,
+                                                 254.79202270507813
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -55,
+                                   "shoulder":  [
+                                                    365,
+                                                    245.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 377.514221,
+                                                 284.281494140625
+                                             ]
+                               },
+                       "support":  "near",
+                       "supportOpaqueBottom":  470,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  25,
+                       "farShoeAngle":  -25,
+                       "joints":  [
+                                      [
+                                          272,
+                                          309
+                                      ],
+                                      [
+                                          318.559357,
+                                          377.711182
+                                      ],
+                                      [
+                                          272,
+                                          384.131958
+                                      ],
+                                      [
+                                          291,
+                                          318
+                                      ],
+                                      [
+                                          349.055145,
+                                          347.233582
+                                      ],
+                                      [
+                                          330,
+                                          388
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  470,
+                                                      "file":  "whole_pose_10_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "3df6acd8e01ff99de99d72d6af51e545fa40d8f3d8fbdff370710eb496bc2c99"
+                   },
+                   {
+                       "index":  11,
+                       "file":  "sora_run_loop_11.png",
+                       "phase":  "flight into far contact",
+                       "durationMs":  80,
+                       "bodyShiftY":  -10,
+                       "protectedUpperExclusiveY":  260,
+                       "upperWholeCanvasStage":  "whole_canvas_stages/arm_pose_11.png",
+                       "upperStageSha256":  "88cff704223a8f53667dc1b64ecbfca52f8db8ec0a70ffe1a24fea61e260fe61",
+                       "arm":  {
+                                   "forearmLength":  36,
+                                   "upperAngle":  63,
+                                   "wrist":  [
+                                                 417.2141,
+                                                 266.53695678710938
+                                             ],
+                                   "upperLength":  40.4969,
+                                   "forearmAngle":  -20,
+                                   "shoulder":  [
+                                                    365,
+                                                    242.76666259765625
+                                                ],
+                                   "elbow":  [
+                                                 383.3852,
+                                                 278.84967041015625
+                                             ]
+                               },
+                       "support":  "none",
+                       "supportOpaqueBottom":  457,
+                       "supportRegistrationAdjustment":  0,
+                       "nearShoeAngle":  35,
+                       "farShoeAngle":  -20,
+                       "joints":  [
+                                      [
+                                          272,
+                                          306
+                                      ],
+                                      [
+                                          241.370865,
+                                          383.141785
+                                      ],
+                                      [
+                                          203,
+                                          356
+                                      ],
+                                      [
+                                          291,
+                                          315
+                                      ],
+                                      [
+                                          347.3219,
+                                          347.447571
+                                      ],
+                                      [
+                                          336,
+                                          391
+                                      ]
+                                  ],
+                       "registrationProbes":  [
+                                                  {
+                                                      "opaqueExclusiveBottom":  457,
+                                                      "file":  "whole_pose_11_probe_00.png"
+                                                  }
+                                              ],
+                       "sha256":  "a0b9ab6bd03f03e40efae8b481a6f10391f288c98e341f94a63e914f9bf24745"
+                   }
+               ],
+    "method":  "Twelve complete canvases with independently drawn articulated legs, new curved shorts/calf contours and complete native PNG reference brushes. Integer body bob; optional articulated free arm painted first on complete canvases. No part layers or pose scaling.",
+    "limitations":  [
+                        "Articulated free-arm counter-swing is added before leg drawing on complete canvases. Torso pitch, carrying shoulder, cloth and chain follow-through remain.",
+                        "Garment volume, hip texture seams and shoe depth still need polish against the run-start benchmark.",
+                        "Loop wrap and original start/stop joins need review and new complete poses.",
+                        "Weapon foreground yaw is inherited and stylized, not certified3D.",
+                        "No actual-browser or Godot playback test."
+                    ]
+}

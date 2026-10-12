@@ -1,6 +1,16 @@
 # Current run and stop artwork
 
-Current refinement study: **direct_generation_retry_v1/motion_refinement_v4**, saved in **D:\KH Fighting Game**.
+Current run-loop drawing study: **run_loop/direct_generation_retry_v1/gait_cycle_study_v4**, saved in **D:\KH Fighting Game**.
+
+- [Animated previous/new comparison, slow playback and frame stepping](run_loop/direct_generation_retry_v1/gait_cycle_study_v4/Review.html)
+- [New sixteen-pose run loop](run_loop/direct_generation_retry_v1/gait_cycle_study_v4/Preview_512_Loop.gif)
+- [New pose board](run_loop/direct_generation_retry_v1/gait_cycle_study_v4/Contact_Sheet.png)
+- [Drawing review and remaining work](run_loop/direct_generation_retry_v1/gait_cycle_study_v4/ART_REVIEW.md)
+- [Original/arm/stop comparison board](run_loop/direct_generation_retry_v1/motion_refinement_v4/Original_Refinement_Comparison.png)
+
+New legs alternate support, compression, passing and flight, while the free arm counter-swings below the blade. Four new articulated transitions reduce the largest adjacent ankle gap while preserving960ms timing. Sprites are complete flat canvases, with transparent128px exports. Garment/sleeve polish, torso/cloth/chain follow-through and run-start/stop/idle joins remain unfinished. The preserved stop below does not yet share the new loop entry. No actual-browser or Godot playback test.
+
+Previous arm and current stop carry-order study: **direct_generation_retry_v1/motion_refinement_v4**.
 
 - [Original/new comparison with slow playback and frame stepping](run_loop/direct_generation_retry_v1/motion_refinement_v4/Review.html)
 - [Refined free-arm run study](run_loop/direct_generation_retry_v1/motion_refinement_v4/Preview_512_Loop.gif)
