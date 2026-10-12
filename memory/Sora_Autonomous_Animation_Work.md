@@ -1,6 +1,6 @@
 # Autonomous animation work
 
-**October 12 reminder:** Kvon explicitly reiterated following memory instructions and periodically pushing all changes to GitHub main. Existing commit/push authorization remains. The current session produced gait_cycle_study_v5 (18 poses, same 960ms); delivery is pending locating Git, which was unavailable on PATH and at the standard Program Files path. Never report synchronization until commit/push actually succeeds.
+**October 12 reminder:** Kvon explicitly reiterated following memory instructions and periodically pushing all changes to GitHub main. Existing commit/push authorization remains. The current session produced gait_cycle_study_v5 (18 poses, same 960ms); Git was located at the user-provided per-user installation path and animation commit 1744069 was successfully pushed to origin/main on October 12. See Git_Executable.md.
 
 **Latest steering, October10:** K'von accepts the latest direct-generated12-pose sheet's art quality and cancels the proposed layer fallback. Refine that existing complete-image sheet for synchronized movement; no local production layers. Preserve sources/trials and pending final animation approval. Opposite far-arm shoulder carry remains the target. Phone pairing is deferred. Periodic main commits/pushes remain authorized; routine work needs no repeated permission request.
 

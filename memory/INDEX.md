@@ -1,4 +1,4 @@
-﻿# Project Memory
+# Project Memory
 
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
@@ -44,5 +44,5 @@
 - [Gemini Browser Workflow](Sora_Gemini_Browser_Workflow.md): New authorized Brave/Gemini complete-frame trial, local connection scripts, review criteria and final user approval.
 - [Direct Generation Trial](Sora_Direct_Generation_Trial.md): New generated-art arm-motion and stop carry-order studies; preserved originals and exact targeted-edit refusal; unfinished gait/weapon joins.
 - [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.
-- [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and pending GitHub delivery.
+- [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and completed GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
