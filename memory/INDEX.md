@@ -1,5 +1,6 @@
 # Project Memory
 
+- [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [Mobile Workflow](Codex_Mobile_Workflow.md): Phone pairing requested before further Gemini sprite generation; setup and status.

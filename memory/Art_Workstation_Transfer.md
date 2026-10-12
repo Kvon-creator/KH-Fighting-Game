@@ -1,0 +1,25 @@
+# Transfer to an art-capable computer
+
+**Fact or rule:** On October 12, 2026, Kvon asked to remember this conversation and said he will transfer the work to another computer that can handle local AI art generation. He prefers a completely free art-generation system that Codex can communicate with. Local ComfyUI was recommended, optionally with Krita AI Diffusion. This is a transfer plan, not authorization to install ComfyUI/Krita, download models or choose a model on the current or new computer. Check the new computer's GPU/VRAM, RAM, disk space and project location before proposing concrete setup. Do not assume hardware or paths match this computer.
+
+**Why:** Gemini's repeated correction failures and incomplete generated motion led Kvon to ask for another art-focused AI and prefer free usage. He will move the work to a more capable computer.
+
+## Resume point
+
+- Requested source: `design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png`, SHA256 `9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7`. Work from this original sheet, preserve its rich smooth KH2 Sora finish and originals.
+- Required corrections: clear near/far alternating support and flight, front empty arm swinging both forward and backward opposite the legs, consistent character/limb/shoe proportions, one rigid connected Kingdom Key held by the far arm over that same shoulder behind the head, complete cell fit, stable registration and smooth last-to-first join. Original-sheet request used 12 poses in a 4x3 layout. Individual complete-pose generation was proposed for better control; no component production layers or scaled static pose substitutes.
+- Built-in original-sheet edit saved a still-incomplete candidate in `sheet_correction_v1/`; targeted arm follow-up returned output-stage moderation_blocked/category other. Exact requests/errors are preserved. Do not automatically retry or disguise refused requests.
+- Gemini browser attempts10-12 are preserved diagnostic/rejected sheets: wrong/swapped/missing carry grip, forward-only free arm, wrong 16-cell layout, and later camera/style/weapon drift. Attempts13-14 are single-pose pilot/retry with no image: first "Sorry, something went wrong. Please try your request again.", then "I was not able to generate that image." No reason was supplied for the latter; do not invent a moderation, quota or outage diagnosis.
+- Earlier local gait candidate remains `gait_cycle_study_v5/`: 18 poses, 960ms; preserves all16 v4 drawings with two new landing transitions. Export/provenance/guide/GIF checks passed, but artwork/follow-through/start-stop-idle joins remain unfinished. No browser control or Godot playback validation. Stop remains `motion_refinement_v4` and does not share the new loop entry. No candidate is finally approved or integrated into gameplay.
+- Review entry: `design/sprites/smooth/sora/replacement_work/ready/CURRENT_RUN_REVIEW.md`. Related memory: Sora_Gemini_Browser_Workflow.md, Sora_Direct_Generation_Trial.md, Sora_Flat_Run_Cycles.md, Sora_Running_Keyblade_Carry.md and Agent_Setup.md.
+- Repo: `https://github.com/Kvon-creator/KH-Fighting-Game.git`, branch main. Last preceding pushed checkpoint `c4d5cf5` contains correction/failure records. This transfer note is to be committed/pushed too. Standing periodic main commit/push authorization persists; protected engine files and final art approval restrictions remain.
+
+## Machine-specific setup
+
+Current workspace is `D:\KH Fighting Game`. Git here is `C:\Users\kvong\AppData\Local\Programs\Git\cmd\git.exe`; identity is Kvon-creator / kvon.gates@gmail.com. New computer may need its own Git setup/authentication.
+
+Standalone Node v24.21.0 was installed under ignored `.local/tools/node-v24.21.0/node.exe` with official checksum verification. Brave uses loopback9222 and ignored `.local/browser-agent/brave-9222`; Google sign-in is user-operated. These runtime/browser profiles are not included in Git and should not be assumed transferred. Do not upload/copy credentials or private browser profiles as project artifacts.
+
+## Free local route discussed
+
+ComfyUI is local open-source generation with an API that can receive workflows/reference images and return images. Krita AI Diffusion adds reference/sketch/pose guidance and selected-region editing through a ComfyUI backend. Choose local models rather than paid cloud/API nodes for the user's free preference. No setup guarantees a correct sprite cycle without visual review. Official references: https://github.com/Comfy-Org/ComfyUI and https://github.com/Acly/krita-ai-diffusion . The latter recommends an NVIDIA GPU with at least6GB VRAM; CPU operation is very slow. Recheck current requirements/model fit on the destination computer before installation.
