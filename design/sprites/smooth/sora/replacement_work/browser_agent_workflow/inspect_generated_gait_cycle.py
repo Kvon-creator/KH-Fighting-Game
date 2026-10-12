@@ -16,7 +16,7 @@ assert version.startswith('gait_cycle_study_v') and version[len('gait_cycle_stud
 folder = READY / 'run_loop/direct_generation_retry_v1' / version
 manifest = json.loads((folder / 'manifest.json').read_text(encoding='utf-8-sig'))
 count = manifest['frameCount']
-assert count == len(manifest['frames']) and count in (12,16)
+assert count == len(manifest['frames']) and count in (12,16,18)
 assert sum(f['durationMs'] for f in manifest['frames']) == manifest['durationMs'] == 960
 for frame in manifest['frames']:
     key = frame.get('keyPosition',frame['index'])

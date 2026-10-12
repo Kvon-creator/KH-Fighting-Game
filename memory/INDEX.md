@@ -4,6 +4,7 @@
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [Mobile Workflow](Codex_Mobile_Workflow.md): Phone pairing requested before further Gemini sprite generation; setup and status.
 - [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
+- [Git Executable](Git_Executable.md): User-provided installation path for commits and periodic main pushes when Git is absent from PATH.
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
 - [Sora Frame Size](Sora_Frame_Size.md): Approved 128 x 128 for base movement, with larger canvas for extended attacks.
@@ -43,5 +44,5 @@
 - [Gemini Browser Workflow](Sora_Gemini_Browser_Workflow.md): New authorized Brave/Gemini complete-frame trial, local connection scripts, review criteria and final user approval.
 - [Direct Generation Trial](Sora_Direct_Generation_Trial.md): New generated-art arm-motion and stop carry-order studies; preserved originals and exact targeted-edit refusal; unfinished gait/weapon joins.
 - [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.
-- [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current motion_refinement_v4 on the new generated canvases, refined free arm, stop pose selection, QA and unfinished gait/weapon/idle joins; q9 preserved.
+- [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and pending GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.

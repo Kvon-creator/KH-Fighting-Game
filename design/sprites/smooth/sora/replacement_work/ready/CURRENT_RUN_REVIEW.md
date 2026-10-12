@@ -1,5 +1,17 @@
 # Current run and stop artwork
 
+Current landing-transition candidate, October 12: **run_loop/direct_generation_retry_v1/gait_cycle_study_v5**, saved in **D:\KH Fighting Game**.
+
+- [Previous/new comparison with pause, slow playback and frame stepping](run_loop/direct_generation_retry_v1/gait_cycle_study_v5/Review.html)
+- [New eighteen-pose loop GIF](run_loop/direct_generation_retry_v1/gait_cycle_study_v5/Preview_512_Loop.gif)
+- [Pose board](run_loop/direct_generation_retry_v1/gait_cycle_study_v5/Contact_Sheet.png)
+- [Drawing review and remaining work](run_loop/direct_generation_retry_v1/gait_cycle_study_v5/ART_REVIEW.md)
+- [Verified export and provenance checks](run_loop/direct_generation_retry_v1/gait_cycle_study_v5/QA_Report.json)
+
+Two new articulated flight-to-contact drawings bridge both landings, including the cycle wrap. All sixteen v4 drawings are unchanged; two 80 ms flight holds become 40/40 ms, preserving 960 ms total. Solid-sole support/flight, limb guides, protected carrying grip/face/blade, source hashes, transparent exports, GIF timing/repeat and viewer links pass validation. Browser controls and Godot playback were not tested in this session. Garment polish, torso/cloth follow-through, run-start/stop joins and final motion approval remain pending. Stop remains the preserved motion_refinement_v4 study.
+
+Previous sixteen-pose checkpoint:
+
 Current run-loop drawing study: **run_loop/direct_generation_retry_v1/gait_cycle_study_v4**, saved in **D:\KH Fighting Game**.
 
 - [Animated previous/new comparison, slow playback and frame stepping](run_loop/direct_generation_retry_v1/gait_cycle_study_v4/Review.html)

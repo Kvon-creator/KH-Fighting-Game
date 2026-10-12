@@ -1,0 +1,364 @@
+﻿{
+    "version":  "gait_cycle_study_v5",
+    "frameCount":  18,
+    "durationMs":  960,
+    "distinctRgbaExports":  true,
+    "alphaMarginsAndConnectedOpaqueFigure":  true,
+    "supportFlightAndGuideLengths":  true,
+    "protectedNativeCarryFaceBladeAndUpperBob":  true,
+    "sourceBenchmarkIdleHashesUnchanged":  true,
+    "previousDrawingsPreserved":  16,
+    "gifTimingAndRepeat":  true,
+    "viewerAssetsAndLinksExist":  true,
+    "frames":  [
+                   {
+                       "support":  "far",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      110,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  0,
+                       "index":  0
+                   },
+                   {
+                       "support":  "far",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      116,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  1,
+                       "index":  1
+                   },
+                   {
+                       "support":  "far",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      112,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  2,
+                       "index":  2
+                   },
+                   {
+                       "support":  "far",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      110,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  2.5,
+                       "index":  3
+                   },
+                   {
+                       "support":  "far",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      108,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  3,
+                       "index":  4
+                   },
+                   {
+                       "support":  "far",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      105,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  4,
+                       "index":  5
+                   },
+                   {
+                       "support":  "none",
+                       "solidFlightClearance":  17,
+                       "bounds":  [
+                                      132,
+                                      102,
+                                      474,
+                                      457,
+                                      453
+                                  ],
+                       "keyPosition":  5,
+                       "index":  6
+                   },
+                   {
+                       "support":  "none",
+                       "solidFlightClearance":  12,
+                       "bounds":  [
+                                      132,
+                                      106,
+                                      474,
+                                      465,
+                                      458
+                                  ],
+                       "keyPosition":  5.5,
+                       "index":  7
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      110,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  6,
+                       "index":  8
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      116,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  7,
+                       "index":  9
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      112,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  8,
+                       "index":  10
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      110,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  8.5,
+                       "index":  11
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      108,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  9,
+                       "index":  12
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      106,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  9.5,
+                       "index":  13
+                   },
+                   {
+                       "support":  "near",
+                       "solidFlightClearance":  0,
+                       "bounds":  [
+                                      132,
+                                      105,
+                                      474,
+                                      475,
+                                      470
+                                  ],
+                       "keyPosition":  10,
+                       "index":  14
+                   },
+                   {
+                       "support":  "none",
+                       "solidFlightClearance":  11,
+                       "bounds":  [
+                                      132,
+                                      104,
+                                      474,
+                                      464,
+                                      459
+                                  ],
+                       "keyPosition":  10.5,
+                       "index":  15
+                   },
+                   {
+                       "support":  "none",
+                       "solidFlightClearance":  13,
+                       "bounds":  [
+                                      132,
+                                      102,
+                                      474,
+                                      461,
+                                      457
+                                  ],
+                       "keyPosition":  11,
+                       "index":  16
+                   },
+                   {
+                       "support":  "none",
+                       "solidFlightClearance":  10,
+                       "bounds":  [
+                                      132,
+                                      106,
+                                      474,
+                                      467,
+                                      460
+                                  ],
+                       "keyPosition":  11.5,
+                       "index":  17
+                   }
+               ],
+    "cyclicAnkleStepMeasurements":  [
+                                        {
+                                            "from":  0,
+                                            "to":  1,
+                                            "nearAnkleDistance":  10,
+                                            "farAnkleDistance":  12
+                                        },
+                                        {
+                                            "from":  1,
+                                            "to":  2,
+                                            "nearAnkleDistance":  38.2099463490856,
+                                            "farAnkleDistance":  18
+                                        },
+                                        {
+                                            "from":  2,
+                                            "to":  3,
+                                            "nearAnkleDistance":  38.810436740650061,
+                                            "farAnkleDistance":  11
+                                        },
+                                        {
+                                            "from":  3,
+                                            "to":  4,
+                                            "nearAnkleDistance":  38.810436740650061,
+                                            "farAnkleDistance":  11
+                                        },
+                                        {
+                                            "from":  4,
+                                            "to":  5,
+                                            "nearAnkleDistance":  33.541019662496844,
+                                            "farAnkleDistance":  28.522462041586873
+                                        },
+                                        {
+                                            "from":  5,
+                                            "to":  6,
+                                            "nearAnkleDistance":  7.0710678118654755,
+                                            "farAnkleDistance":  36.164612937424948
+                                        },
+                                        {
+                                            "from":  6,
+                                            "to":  7,
+                                            "nearAnkleDistance":  7.0178344238090995,
+                                            "farAnkleDistance":  8.558621384311845
+                                        },
+                                        {
+                                            "from":  7,
+                                            "to":  8,
+                                            "nearAnkleDistance":  7.0178344238090995,
+                                            "farAnkleDistance":  8.558621384311845
+                                        },
+                                        {
+                                            "from":  8,
+                                            "to":  9,
+                                            "nearAnkleDistance":  13,
+                                            "farAnkleDistance":  20
+                                        },
+                                        {
+                                            "from":  9,
+                                            "to":  10,
+                                            "nearAnkleDistance":  22,
+                                            "farAnkleDistance":  31.048349392520048
+                                        },
+                                        {
+                                            "from":  10,
+                                            "to":  11,
+                                            "nearAnkleDistance":  11.5,
+                                            "farAnkleDistance":  33.154939300200809
+                                        },
+                                        {
+                                            "from":  11,
+                                            "to":  12,
+                                            "nearAnkleDistance":  11.5,
+                                            "farAnkleDistance":  33.154939300200809
+                                        },
+                                        {
+                                            "from":  12,
+                                            "to":  13,
+                                            "nearAnkleDistance":  14.400058641894484,
+                                            "farAnkleDistance":  8.6023252670426267
+                                        },
+                                        {
+                                            "from":  13,
+                                            "to":  14,
+                                            "nearAnkleDistance":  14.124872056091835,
+                                            "farAnkleDistance":  8.6023252670426267
+                                        },
+                                        {
+                                            "from":  14,
+                                            "to":  15,
+                                            "nearAnkleDistance":  37.257237756286244,
+                                            "farAnkleDistance":  3.3541019662496847
+                                        },
+                                        {
+                                            "from":  15,
+                                            "to":  16,
+                                            "nearAnkleDistance":  37.257237756286244,
+                                            "farAnkleDistance":  3.3541019662496847
+                                        },
+                                        {
+                                            "from":  16,
+                                            "to":  17,
+                                            "nearAnkleDistance":  1,
+                                            "farAnkleDistance":  5.8309518948453007
+                                        },
+                                        {
+                                            "from":  17,
+                                            "to":  0,
+                                            "nearAnkleDistance":  1,
+                                            "farAnkleDistance":  5.8309518948453007
+                                        }
+                                    ],
+    "limitations":  [
+                        "Viewer controls have not been executed in a browser or JavaScript runtime.",
+                        "No Godot integration or playback test.",
+                        "Geometry/export checks do not establish final artwork or natural-motion approval."
+                    ]
+}

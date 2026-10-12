@@ -16,8 +16,8 @@ const context=vm.createContext({document:{querySelector:id=>elements.get(id)},Im
   setTimeout(fn,delay){timer={fn,delay,id:++nextId};return nextId;},clearTimeout(id){if(timer&&timer.id===id)timer=null;}});
 vm.runInContext(script,context);
 const frames=vm.runInContext('frames',context);
-assert.equal(frames.length,16);
-for(const f of frames)for(const key of ['file','game','original','arm','gait']){
+assert.ok([16,18].includes(frames.length));
+for(const f of frames)for(const key of ['file','game','original','arm','gait',...(f.previous?['previous']:[])]){
   const asset=path.resolve(path.dirname(file),f[key]);
   assert.ok(asset.toLowerCase().startsWith('d:\\kh fighting game\\'));
   assert.ok(fs.existsSync(asset),asset);
@@ -26,7 +26,7 @@ for(const m of html.matchAll(/href="([^"]+)"/g))assert.ok(fs.existsSync(path.res
 function step(){assert.ok(timer);const pending=timer;timer=null;pending.fn();}
 elements.get('#play').onclick();
 let elapsed=0;
-for(let i=0;i<16;i++){assert.equal(timer.delay,frames[i].durationMs);elapsed+=timer.delay;step();}
+for(let i=0;i<frames.length;i++){assert.equal(timer.delay,frames[i].durationMs);elapsed+=timer.delay;step();}
 assert.equal(elapsed,960);assert.equal(vm.runInContext('index',context),0);assert.ok(timer);
 elements.get('#slow').onclick();assert.equal(timer.delay,240);
 elements.get('#scrub').value=3;elements.get('#scrub').oninput();assert.equal(timer,null);
@@ -36,4 +36,4 @@ elements.get('#next').onclick();assert.equal(vm.runInContext('index',context),4)
 elements.get('#previous').onclick();assert.equal(vm.runInContext('index',context),3);
 for(const kind of ['arm','original','gait']){elements.get('#kind').value=kind;elements.get('#kind').onchange();assert.equal(vm.runInContext('index',context),3);}
 elements.get('#guide').checked=false;elements.get('#guide').onchange();
-console.log('Offline checks passed: 80 frame/export/comparison links, review links, 16-frame wrap, 960ms timing, x3 speed, scrub/step/pause, comparison and floor controls.');
+console.log(`Offline checks passed: ${frames.length}-frame asset links and wrap, review links, 960ms timing, x3 speed, scrub/step/pause, comparison and floor controls.`);
