@@ -1,5 +1,7 @@
 # Current run and stop artwork
 
+Latest original-sheet correction attempt, October 12: [new generated candidate](run_loop/direct_generation_retry_v1/sheet_correction_v1/sora_run_loop_sheet_candidate.png) and [review/error record](run_loop/direct_generation_retry_v1/sheet_correction_v1/REVIEW.md). This candidate still holds the free arm forward in most poses. The targeted arm follow-up was rejected at image-service output moderation; no corrected follow-up image returned. The requested fixes are incomplete, and this attempt does not supersede the gait candidate below.
+
 Current landing-transition candidate, October 12: **run_loop/direct_generation_retry_v1/gait_cycle_study_v5**, saved in **D:\KH Fighting Game**.
 
 - [Previous/new comparison with pause, slow playback and frame stepping](run_loop/direct_generation_retry_v1/gait_cycle_study_v5/Review.html)
