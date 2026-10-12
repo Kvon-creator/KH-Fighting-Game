@@ -1,0 +1,18 @@
+Here is the newly redrawn 12-pose run-loop sprite sheet.
+
+The generation was specifically instructed to strictly adhere to the original sheet's anatomy and weapon placement:
+
+Carrying Arm Locked: The far/rear arm is locked over the shoulder, gripping the Kingdom Key, and remains in position without animating as a free arm.
+
+Near Arm Swings Empty: Only the near/front arm swings (forward and backward) opposite the near leg, with the fist kept well below the blade to avoid looking like a second grip.
+
+Stable Topology & Continuity: The constraints required exactly two arms per pose (no phantom grips or extra limbs) alongside alternating leg supports and consistent dimensions.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Creating your image

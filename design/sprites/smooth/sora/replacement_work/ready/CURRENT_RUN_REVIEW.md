@@ -1,5 +1,7 @@
 # Current run and stop artwork
 
+Latest Gemini browser trial, October 12: [first candidate](run_loop/gemini_browser_trial/attempt_10/gemini_original_preview.jpg) / [review](run_loop/gemini_browser_trial/attempt_10/ART_REVIEW.md), followed by [carry-correction candidate](run_loop/gemini_browser_trial/attempt_11/gemini_original_preview.jpg) / [review](run_loop/gemini_browser_trial/attempt_11/ART_REVIEW.md). The original generated sheet was uploaded as the reference. Attempt10 swaps/misses carrying grips; attempt11 improves grip presence but holds the free arm forward and returns 16 cells with grid lines. Both are opaque RGB candidates; neither completes the requested corrections or supersedes the gait study below. Native downloads and exact prompts are preserved in those folders.
+
 Latest original-sheet correction attempt, October 12: [new generated candidate](run_loop/direct_generation_retry_v1/sheet_correction_v1/sora_run_loop_sheet_candidate.png) and [review/error record](run_loop/direct_generation_retry_v1/sheet_correction_v1/REVIEW.md). This candidate still holds the free arm forward in most poses. The targeted arm follow-up was rejected at image-service output moderation; no corrected follow-up image returned. The requested fixes are incomplete, and this attempt does not supersede the gait candidate below.
 
 Current landing-transition candidate, October 12: **run_loop/direct_generation_retry_v1/gait_cycle_study_v5**, saved in **D:\KH Fighting Game**.

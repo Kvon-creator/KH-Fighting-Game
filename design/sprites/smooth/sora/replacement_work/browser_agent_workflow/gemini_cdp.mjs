@@ -97,7 +97,9 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {original: [
+const referenceSets = {'original-run-sheet': [
+  'design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png'
+], original: [
   'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
   'design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/frame_00_review_v1/sora_run_loop_00_review.png',
   'design/references/Sora_KHIV_Render.webp'
