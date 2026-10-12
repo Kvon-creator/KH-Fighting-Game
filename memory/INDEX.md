@@ -44,3 +44,4 @@
 - [Direct Generation Trial](Sora_Direct_Generation_Trial.md): New generated-art arm-motion and stop carry-order studies; preserved originals and exact targeted-edit refusal; unfinished gait/weapon joins.
 - [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current motion_refinement_v4 on the new generated canvases, refined free arm, stop pose selection, QA and unfinished gait/weapon/idle joins; q9 preserved.
+- [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
