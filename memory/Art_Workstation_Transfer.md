@@ -1,5 +1,7 @@
 # Transfer to an art-capable computer
 
+**October13 update:** Kvon requested continuing this workflow and confirmed "Use this computer" after inspection found GTX1650 with approximately4GiB VRAM,23.4GiB RAM and22.7GiB free on D:. Prepare a small one-pose local model pilot on this machine. The pinned portable ComfyUI/DreamShaper8 plan and tested API adapter are ready; specific package installation confirmation is still pending. See [Local AI Art Workflow](Local_AI_Art_Workflow.md). No stronger/transferred hardware, installed backend or successful generation is assumed.
+
 **Fact or rule:** On October 12, 2026, Kvon asked to remember this conversation and said he will transfer the work to another computer that can handle local AI art generation. He prefers a completely free art-generation system that Codex can communicate with. Local ComfyUI was recommended, optionally with Krita AI Diffusion. This is a transfer plan, not authorization to install ComfyUI/Krita, download models or choose a model on the current or new computer. Check the new computer's GPU/VRAM, RAM, disk space and project location before proposing concrete setup. Do not assume hardware or paths match this computer.
 
 **Why:** Gemini's repeated correction failures and incomplete generated motion led Kvon to ask for another art-focused AI and prefer free usage. He will move the work to a more capable computer.

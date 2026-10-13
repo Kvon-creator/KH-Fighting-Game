@@ -1,0 +1,16 @@
+{
+  "checkedOn": "2026-10-13",
+  "mockApiChecks": "PASS: local-only endpoints, workspace boundaries,8-node complete-image graph, live checkpoint check, multipart upload, queue receipt, no duplicate submission, bounded collection, preserved raw400/403/500 errors, separate validation/permissions/service classes, uncertain-submission recovery, pending review/approval and no transparency claim. Mock files retained under ignored .local; no real image generation.",
+  "testRuntime": "available Node REPL; project-local Node CLI checks stalled and were stopped",
+  "powershellSyntax": "passed; installer/launcher not executed",
+  "completeReference": "RGB512x512 on white; original sheet and registered source hashes unchanged",
+  "localConnection": {
+    "available": false,
+    "completeError": "TypeError: fetch failed",
+    "cause": "Error: connect ECONNREFUSED 127.0.0.1:8188"
+  },
+  "installation": "pending specific authorization",
+  "realGeneration": "not performed",
+  "artApproval": "pending",
+  "originalSheetVerifiedBeforeSubmission": true
+}
