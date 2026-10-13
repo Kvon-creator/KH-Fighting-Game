@@ -1,0 +1,12 @@
+{
+  "completedAtUtc": "2026-10-13T15:29:17.846Z",
+  "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File design/sprites/smooth/sora/replacement_work/local_ai_workflow/Stage-LocalModel.ps1 -ExtractorPid 19580 -Resume",
+  "resumedFromByte": 2046738123,
+  "sizeBytes": 2132625894,
+  "sha256": "879db523c30d3b9017143d56705015e15a2cb5628762c11d086fed9538abd7fd",
+  "helperExitCode": 0,
+  "sizeAndSha256Verified": true,
+  "checkpointPlaced": true,
+  "runtimeExtractionStillActive": true,
+  "imagePromptSubmitted": false
+}

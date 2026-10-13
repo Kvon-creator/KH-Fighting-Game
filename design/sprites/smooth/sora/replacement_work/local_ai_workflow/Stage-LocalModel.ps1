@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][int]$ExtractorPid)
+param([Parameter(Mandatory=$true)][int]$ExtractorPid,[switch]$Resume)
 $ErrorActionPreference='Stop'
 $soraRoot=(Resolve-Path (Join-Path $PSScriptRoot '../../../../../..')).Path
 if($soraRoot -ne 'D:\KH Fighting Game'){throw "Unexpected workspace: $soraRoot"}
@@ -6,7 +6,14 @@ $soraPlan=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'setup_plan.json') -
 $soraStage=[System.IO.Path]::GetFullPath((Join-Path $soraRoot ('.local/downloads/'+$soraPlan.model.file)))
 $soraTarget=[System.IO.Path]::GetFullPath((Join-Path $soraRoot ($soraPlan.runtime.portableRoot+'/ComfyUI/models/checkpoints/'+$soraPlan.model.file)))
 foreach($soraPath in @($soraStage,$soraTarget)){if(-not $soraPath.StartsWith($soraRoot+'\',[System.StringComparison]::OrdinalIgnoreCase)){throw 'Model path escaped workspace'}}
-if(-not (Test-Path -LiteralPath $soraStage)){
+if($Resume){
+    if(-not (Test-Path -LiteralPath $soraStage)){throw 'No partial model exists to resume'}
+    $soraPartialBytes=(Get-Item -LiteralPath $soraStage).Length
+    if($soraPartialBytes -le 0 -or $soraPartialBytes -ge $soraPlan.model.sizeBytes){throw 'Resume requires a nonempty partial model smaller than the pinned size'}
+    # Explicit resume only; curl rejects a server that does not honor the range.
+    & curl.exe --fail --location --proto '=https' --proto-redir '=https' --continue-at - --output $soraStage $soraPlan.model.url
+    if($LASTEXITCODE -ne 0){throw "Model resume failed; partial file preserved: $soraStage"}
+}elseif(-not (Test-Path -LiteralPath $soraStage)){
     & curl.exe --fail --location --proto '=https' --proto-redir '=https' --output $soraStage $soraPlan.model.url
     if($LASTEXITCODE -ne 0){throw "Model download failed; partial file preserved: $soraStage"}
 }

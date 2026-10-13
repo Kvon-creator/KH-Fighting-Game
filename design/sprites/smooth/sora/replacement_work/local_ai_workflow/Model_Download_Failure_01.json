@@ -1,0 +1,22 @@
+{
+  "occurredOn": "2026-10-13",
+  "classification": "network_tls_failure",
+  "tool": "functions.exec -> exec_command -> powershell.exe -> curl.exe",
+  "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File design/sprites/smooth/sora/replacement_work/local_ai_workflow/Stage-LocalModel.ps1 -ExtractorPid 19580",
+  "curlArguments": [
+    "--fail",
+    "--location",
+    "--proto",
+    "=https",
+    "--proto-redir",
+    "=https",
+    "--output",
+    "D:\\KH Fighting Game\\.local\\downloads\\DreamShaper_8_pruned.safetensors",
+    "https://huggingface.co/Lykon/DreamShaper/resolve/228d79cb20811466f5c5710aa91f05dabd0b8a14/DreamShaper_8_pruned.safetensors"
+  ],
+  "curlExitCode": 56,
+  "exactError": "curl: (56) schannel: server closed abruptly (missing close_notify)\r\nModel download failed; partial file preserved: D:\\KH Fighting Game\\.local\\downloads\\DreamShaper_8_pruned.safetensors\r\nAt D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\local_ai_workflow\\Stage-LocalModel.ps1:11 char:29\r\n+ ... CODE -ne 0){throw \"Model download failed; partial file preserved: $so ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : OperationStopped: (Model download ...ned.safetensors:String) [], RuntimeException\r\n    + FullyQualifiedErrorId : Model download failed; partial file preserved: D:\\KH Fighting Game\\.local\\downloads\\Drea \r\n   mShaper_8_pruned.safetensors\r\n \r\n",
+  "scriptAtSubmissionCommit": "266c948",
+  "partialPreserved": true,
+  "imagePromptSubmitted": false
+}
