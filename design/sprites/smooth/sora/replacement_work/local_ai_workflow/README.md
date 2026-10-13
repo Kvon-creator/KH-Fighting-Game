@@ -10,7 +10,7 @@ Runtime/model files stay in ignored `.local/` inside this workspace. No global P
 
 Sources: [official portable installation](https://docs.comfy.org/installation/comfyui_portable_windows), [pinned release](https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.39.0), [model author's repository](https://huggingface.co/Lykon/DreamShaper), [exact checkpoint](https://huggingface.co/Lykon/DreamShaper/blob/main/DreamShaper_8_pruned.safetensors), [pinned startup flags](https://github.com/Comfy-Org/ComfyUI/blob/v0.39.0/comfy/cli_args.py).
 
-**Installation and the first pilot are explicitly approved, October13.** The user selected "Install and run the pilot" for this exact portable runtime/model setup. The archive download has started; checksums, extraction, CUDA access and actual generation remain to be verified. No repeated installation confirmation is needed for this approved scope.
+**Installation and the first pilot are explicitly approved, October13.** The user selected "Install and run the pilot" for this exact portable runtime/model setup. The runtime archive downloaded and matched its published checksum; archive path and space checks passed. Extraction is active (58,480 files,5,580,961,635 expanded bytes). The approved model is downloading separately through `Stage-LocalModel.ps1`, which verifies its size/hash before placement while extraction is active. The original installer then verifies the checkpoint again. Do not rerun the active installer or run the incomplete runtime. CUDA access and actual generation remain to be verified. No repeated installation confirmation is needed for this approved scope.
 
 ## Complete-frame pilot
 
@@ -40,4 +40,4 @@ After the installation is authorized, use `Install-LocalComfy.ps1 -Install`, the
 
 [QA_Preparation.json](QA_Preparation.json) records successful PowerShell syntax checks, source/hash/512px RGB reference checks and a mock HTTP API test of upload, queuing, recovery, exact errors and pending approval. Mock copies/receipts remain under ignored `.local/comfy_adapter_checks/` and are not generated artwork.
 
-Project-local Node CLI checks stalled and were stopped; the adapter module and mock checks passed in the available Node REPL. No ComfyUI installation, model download, real GPU generation, new drawing, browser playback or Godot test has occurred. Local8188 returned ECONNREFUSED at inspection. The current preserved local drawing candidate remains gait_cycle_study_v5; its stop join and final artwork approval remain unfinished.
+Project-local Node CLI checks stalled and were stopped; the adapter module and mock checks passed in the available Node REPL. Runtime/model installation is in progress; no real GPU generation, new drawing, browser playback or Godot test has occurred. Local8188 returned ECONNREFUSED at preinstallation inspection. The current preserved local drawing candidate remains gait_cycle_study_v5; its stop join and final artwork approval remain unfinished.
