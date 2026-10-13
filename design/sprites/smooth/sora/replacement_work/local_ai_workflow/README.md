@@ -10,7 +10,7 @@ Runtime/model files stay in ignored `.local/` inside this workspace. No global P
 
 Sources: [official portable installation](https://docs.comfy.org/installation/comfyui_portable_windows), [pinned release](https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.39.0), [model author's repository](https://huggingface.co/Lykon/DreamShaper), [exact checkpoint](https://huggingface.co/Lykon/DreamShaper/blob/main/DreamShaper_8_pruned.safetensors), [pinned startup flags](https://github.com/Comfy-Org/ComfyUI/blob/v0.39.0/comfy/cli_args.py).
 
-**Installation is pending the user's specific confirmation.** Agent Setup requires asking before installing a package; continuing the transfer/preparation plan alone did not authorize installation. The scripts have been prepared, not executed for installation.
+**Installation and the first pilot are explicitly approved, October13.** The user selected "Install and run the pilot" for this exact portable runtime/model setup. The archive download has started; checksums, extraction, CUDA access and actual generation remain to be verified. No repeated installation confirmation is needed for this approved scope.
 
 ## Complete-frame pilot
 

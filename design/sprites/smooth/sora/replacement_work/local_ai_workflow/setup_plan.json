@@ -1,6 +1,7 @@
 {
   "preparedOn": "2026-10-13",
-  "installationStatus": "prepared_pending_specific_install_authorization",
+  "installationStatus": "authorized_install_in_progress",
+  "authorization": "2026-10-13: User selected Install and run the pilot for this exact runtime/model, about4GB downloads inside the workspace.",
   "workspace": "D:\\KH Fighting Game",
   "hardware": {
     "gpu": "NVIDIA GeForce GTX 1650",
