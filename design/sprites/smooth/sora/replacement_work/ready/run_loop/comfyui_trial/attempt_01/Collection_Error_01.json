@@ -1,0 +1,14 @@
+{
+  "tool": "mcp__node_repl__js",
+  "arguments": {
+    "code": "nodeRepl.write(await soraAdapter.collect(soraAttempt,40000));",
+    "timeout_ms": 55000,
+    "title": "Collect the final native complete-pose image"
+  },
+  "exactError": "Unsafe image path in history",
+  "classification": "client_path_validation_error",
+  "backendExecution": "success; completed",
+  "nativeSubfolder": "kh_sora\\run_loop",
+  "clientAtErrorCommit": "b19447a",
+  "imageRequestResubmitted": false
+}

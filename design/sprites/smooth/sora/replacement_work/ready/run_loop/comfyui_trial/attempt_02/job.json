@@ -1,0 +1,19 @@
+{
+  "animation": "run_loop",
+  "sourceSheet": "design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png",
+  "sourceSheetSha256": "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+  "reference": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v1/whole_pose_00_white.png",
+  "checkpoint": "DreamShaper_8_pruned.safetensors",
+  "positive": "(2D cel-shaded anime game sprite:1.4), (clean curved black line art and matte cel shading:1.3), Kingdom Hearts 2 Sora, same original detailed character and outfit. Near front empty arm pulls backward toward image left, elbow bent backward, empty closed black gloved fist clearly visible beside the near hip and left of the near shoulder. One short black sleeve with white trim, connected bare forearm, small black fingerless glove with thin yellow piping. Preserve original torso lean and leg positions, red waist fabric and yellow straps. Far arm keeps the same connected Kingdom Key over its own shoulder behind the head. Same three-quarter right-facing view, same rich original finish and proportions, plain white background, one complete figure.",
+  "negative": "3D render, glossy plastic, toy, realistic photograph, hood, changed costume, painterly gradients, extra arms, missing hand, disconnected elbow, extra fingers, forward extended free arm, weapon in near hand, two-handed grip, giant gauntlet, changed body proportions, text, cropped figure, scenery",
+  "seed": 8071310715,
+  "steps": 20,
+  "cfg": 6.5,
+  "denoise": 0.72,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "purpose": "Refine the empty arm through a temporary selection on the original complete flat canvas after attempt_01 failed style/carry review. Preserve all source pixels outside selection, including connected weapon, holding arm and head. No component production layers; final artwork approval pending.",
+  "mask": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v2/temporary_selection.png",
+  "referenceSha256": "a3681849fa6b2a235fd36622866057191f0d073d39ea9cff8b7e30764f6d9022",
+  "maskSha256": "b3a0ee25667143779a27610c86c402a190945e2f3fc209b1dc8a9f44b143b1d6"
+}

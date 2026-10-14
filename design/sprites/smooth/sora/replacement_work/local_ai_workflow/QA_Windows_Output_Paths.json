@@ -1,0 +1,66 @@
+{
+  "tests": [
+    {
+      "subfolder": "",
+      "allowed": true
+    },
+    {
+      "subfolder": "kh_sora/run_loop",
+      "allowed": true
+    },
+    {
+      "subfolder": "kh_sora\\run_loop",
+      "allowed": true
+    },
+    {
+      "subfolder": "../secret",
+      "blocked": true
+    },
+    {
+      "subfolder": "a\\..\\secret",
+      "blocked": true
+    },
+    {
+      "subfolder": "/absolute",
+      "blocked": true
+    },
+    {
+      "subfolder": "\\\\server\\share",
+      "blocked": true
+    },
+    {
+      "subfolder": "C:\\absolute",
+      "blocked": true
+    },
+    {
+      "subfolder": "a//b",
+      "blocked": true
+    },
+    {
+      "subfolder": "a/./b",
+      "blocked": true
+    },
+    {
+      "filename": "../p.png",
+      "blocked": true
+    },
+    {
+      "filename": "a\\p.png",
+      "blocked": true
+    },
+    {
+      "filename": "C:p.png",
+      "blocked": true
+    },
+    {
+      "filename": "p.txt",
+      "blocked": true
+    },
+    {
+      "filename": "",
+      "blocked": true
+    }
+  ],
+  "passed": true,
+  "scope": "Native Windows relative folders accepted; traversal/root/drive/invalid filenames rejected. No generation performed by these checks."
+}
