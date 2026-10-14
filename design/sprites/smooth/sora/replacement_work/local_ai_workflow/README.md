@@ -1,5 +1,7 @@
 # Local Sora art workflow
 
+**Current status, October14:** Installation recovery is complete. [Runtime_Validation.json](Runtime_Validation.json) records52,839 intact files plus5,641 missing entries restored and verified, for all58,480 archive files. The checkpoint size/SHA256 also match the pins. [CUDA_Diagnostic.json](CUDA_Diagnostic.json) preserves `RuntimeError: No CUDA GPUs are available`; GPU generation is unavailable for this runtime, with cause unestablished. The approved pilot is proceeding on CPU through `Start-LocalComfy.ps1 -Cpu`; the CPU API/core nodes/checkpoint passed live checks and attempt_01 is running with a saved request/receipt. Collect its existing prompt ID without resubmission; actual art review remains pending. No drivers, global settings, additional models or packages were changed. Earlier preparation/download text below is historical.
+
 Prepared October13 for the computer the user chose: GTX1650, approximately4GiB VRAM,23.4GiB RAM and22.7GiB free on D: at inspection. GPU inventory succeeded through WMI; NVIDIA-SMI reported insufficient permissions. Actual CUDA generation remains untested.
 
 ## Prepared installation
@@ -34,7 +36,7 @@ The backward-arm pilot holds the original leg pose to isolate the drawing correc
 - An uncertain submission stops without another POST. The raw error stays in `complete_error.txt`;400 validation,401/403 permission and5xx service errors remain separate from submission certainty. Unspecified errors are not labeled content refusals.
 - Downloads preserve native PNGs and hashes, with `generated_pending_review` and final user approval pending. PNG metadata is not an artwork/transparency certificate.
 
-After the installation is authorized, use `Install-LocalComfy.ps1 -Install`, then `Start-LocalComfy.ps1`. Both assert the D: root. Default installer invocation prints only the plan. Inspect launch logs/API status before submitting `pilot_job.json`. Collect the same attempt until terminal; open the resulting image for actual visual review before changing the job or presenting artwork.
+The current runtime is installed: do not rerun `Install-LocalComfy.ps1 -Install` on it. Inspect the saved receipt and current launch/API state. `Start-LocalComfy.ps1 -Cpu` is the approved same-model CPU fallback; GPU mode requires a successful CUDA check. These scripts assert the D: root. Inspect launch logs/API status before submitting `pilot_job.json`. Collect the same attempt until terminal; open the resulting image for actual visual review before changing the job or presenting artwork.
 
 ## Verification so far
 

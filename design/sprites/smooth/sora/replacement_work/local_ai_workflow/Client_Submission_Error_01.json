@@ -1,0 +1,12 @@
+{
+  "tool": "mcp__node_repl__js",
+  "arguments": {
+    "code": "soraFs.writeFileSync(soraAdapter.projectPath('design/sprites/smooth/sora/replacement_work/local_ai_workflow/Backend_Validation.json'),JSON.stringify({checkedAtUtc:new Date().toISOString(),clientWorkDate:'2026-10-14',executionMode:'cpu',...soraLive,definitions:undefined},null,2)+'\\n',{flag:'wx'}); var soraJob=soraAdapter.readJob('design/sprites/smooth/sora/replacement_work/local_ai_workflow/pilot_job.json'); nodeRepl.write(await soraAdapter.submit(soraClient,soraJob,'design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/attempt_01'));",
+    "timeout_ms": 60000,
+    "title": "Submit the first real whole-pose pilot to local ComfyUI"
+  },
+  "exactError": "soraLive is not defined",
+  "classification": "client_javascript_reference_error",
+  "promptQueued": false,
+  "settingsChanged": false
+}

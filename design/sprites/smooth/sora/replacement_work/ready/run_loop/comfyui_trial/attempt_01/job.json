@@ -1,0 +1,17 @@
+{
+  "animation": "run_loop",
+  "sourceSheet": "design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png",
+  "sourceSheetSha256": "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+  "reference": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v1/whole_pose_00_white.png",
+  "checkpoint": "DreamShaper_8_pruned.safetensors",
+  "positive": "Sora from Kingdom Hearts 2, same character and detailed outfit as reference, one complete full body running pose, right-facing three-quarter view. Far rear arm holds the connected Kingdom Key over its own far shoulder behind his head, same carry as reference. Near front empty arm swings backward with bent elbow and fist beside hip, visibly separated from the weapon. Brown spiky hair, blue eyes, black jacket with white trim, red waist clothing, black baggy shorts, detailed black and yellow large shoes, clean curved line art, rich cel shading, consistent proportions, original leg positions and torso lean, complete weapon guard handle shaft key teeth and attached chain, slight tip projection toward foreground, full figure inside generous white margins, plain white background.",
+  "negative": "extra arms, missing arm, extra fingers, inverted grip, two hands gripping the weapon, front hand holding keyblade, forward-only free arm, switched carrying hand, missing keyblade, broken detached blade, bent shaft, changing weapon length, distorted anatomy, thin shoes, side-profile camera, realistic photograph, pixel art, rough unfinished sketch, scaled duplicate, captions, text, grid, cropped feet, cropped weapon, background scenery",
+  "seed": 8071310714,
+  "steps": 28,
+  "cfg": 6.5,
+  "denoise": 0.55,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "purpose": "Single complete-pose backward free-arm pilot from the original sheet. Runtime/model installed; CPU fallback because CUDA is unavailable. Inspect actual art before attempting a full cycle; final artwork approval pending.",
+  "referenceSha256": "a3681849fa6b2a235fd36622866057191f0d073d39ea9cff8b7e30764f6d9022"
+}

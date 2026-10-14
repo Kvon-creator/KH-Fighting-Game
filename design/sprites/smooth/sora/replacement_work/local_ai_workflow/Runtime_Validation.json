@@ -1,0 +1,12 @@
+﻿{
+    "clientWorkDate":  "2026-10-14",
+    "recoveryFolder":  "D:\\KH Fighting Game\\.local\\comfyui-recovery\\20261014_182724_633",
+    "archiveFilesVerified":  58480,
+    "initialValid":  52839,
+    "repairedCount":  5641,
+    "allArchiveFilesVerified":  true,
+    "modelSizeAndSha256Verified":  true,
+    "torchProbe":  "{\"torch\": \"2.14.0+cu126\", \"cuda_runtime\": \"12.6\", \"cuda_available\": false, \"device\": null, \"vram_bytes\": null}",
+    "generationStatus":  "not submitted",
+    "artworkApproval":  "pending"
+}

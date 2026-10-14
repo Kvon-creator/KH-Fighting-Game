@@ -1,6 +1,6 @@
 {
   "preparedOn": "2026-10-13",
-  "installationStatus": "authorized_install_in_progress",
+  "installationStatus": "installed_integrity_verified_cuda_unavailable",
   "authorization": "2026-10-13: User selected Install and run the pilot for this exact runtime/model, about4GB downloads inside the workspace.",
   "workspace": "D:\\KH Fighting Game",
   "hardware": {
@@ -9,7 +9,7 @@
     "ramBytes": 25085620224,
     "driveFreeBytesAtInspection": 24355258368,
     "driver": "32.0.15.9282",
-    "note": "WMI inventory succeeded; NVIDIA-SMI/NVML access denied. CUDA generation remains untested. User confirmed using this computer."
+    "note": "October13 WMI inventory succeeded; NVIDIA-SMI/NVML access denied. October14 portable torch CUDA initialization reports No CUDA GPUs are available. All runtime/model integrity checks passed; approved pilot proceeding on CPU."
   },
   "runtime": {
     "version": "v0.39.0",
@@ -30,6 +30,14 @@
     "sha256": "879db523c30d3b9017143d56705015e15a2cb5628762c11d086fed9538abd7fd"
   },
   "endpoint": "http://127.0.0.1:8188",
-  "pilot": {"canvas": [512,512], "batch": 1, "steps": 28, "denoise": 0.55},
+  "pilot": {
+    "canvas": [
+      512,
+      512
+    ],
+    "batch": 1,
+    "steps": 28,
+    "denoise": 0.55
+  },
   "scope": "Portable runtime and one local checkpoint only. No Krita, custom nodes, cloud service, paid API, system Python/PATH changes, driver changes, asset replacement or game integration. Retain downloaded archive; no deletion."
 }

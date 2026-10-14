@@ -1,6 +1,6 @@
 # Project Memory
 
-- [Local AI Art Workflow](Local_AI_Art_Workflow.md): October13 current-computer choice, verified hardware, tested API adapter and pinned portable runtime/model/pilot explicitly approved; installation in progress.
+- [Local AI Art Workflow](Local_AI_Art_Workflow.md): October14 runtime recovery and full integrity checks complete; CUDA unavailable with exact diagnostic, approved CPU pilot running with saved prompt receipt.
 
 - [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.

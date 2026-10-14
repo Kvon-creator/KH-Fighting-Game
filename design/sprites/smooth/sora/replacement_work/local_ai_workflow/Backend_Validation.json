@@ -1,0 +1,74 @@
+{
+  "checkedAtUtc": "2026-10-14T18:47:14.947Z",
+  "clientWorkDate": "2026-10-14",
+  "executionMode": "cpu",
+  "available": true,
+  "endpoint": "http://127.0.0.1:8188",
+  "devices": [
+    {
+      "name": "cpu",
+      "type": "cpu",
+      "index": null,
+      "vram_total": 25085620224,
+      "vram_free": 6880772096,
+      "torch_vram_total": 25085620224,
+      "torch_vram_free": 6880772096
+    }
+  ],
+  "system": {
+    "os": "win32",
+    "ram_total": 25085620224,
+    "ram_free": 6880800768,
+    "comfyui_version": "0.39.0",
+    "required_frontend_version": "1.53.10",
+    "installed_templates_version": "0.11.76",
+    "required_templates_version": "0.11.76",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.53.10",
+        "required": "1.53.10"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.76",
+        "required": "0.11.76"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.13",
+        "required": "0.5.13"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.37",
+        "required": "0.2.37"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.5.5",
+        "required": "0.5.5"
+      }
+    ],
+    "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "pytorch_version": "2.14.0+cu126",
+    "embedded_python": true,
+    "deploy_environment": "local-portable",
+    "argv": [
+      "ComfyUI/main.py",
+      "--listen",
+      "127.0.0.1",
+      "--port",
+      "8188",
+      "--disable-auto-launch",
+      "--offline",
+      "--disable-all-custom-nodes",
+      "--disable-dynamic-vram",
+      "--cache-none",
+      "--use-split-cross-attention",
+      "--cpu"
+    ]
+  },
+  "missingNodes": [],
+  "checkpointAvailable": true
+}

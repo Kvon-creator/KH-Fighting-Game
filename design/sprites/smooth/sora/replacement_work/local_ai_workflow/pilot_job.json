@@ -12,5 +12,5 @@
   "denoise": 0.55,
   "sampler": "dpmpp_2m",
   "scheduler": "karras",
-  "purpose": "Single complete-pose backward free-arm pilot from the original sheet; inspect actual art before attempting a full cycle. Pending model installation and user final artwork approval."
+  "purpose": "Single complete-pose backward free-arm pilot from the original sheet. Runtime/model installed; CPU fallback because CUDA is unavailable. Inspect actual art before attempting a full cycle; final artwork approval pending."
 }

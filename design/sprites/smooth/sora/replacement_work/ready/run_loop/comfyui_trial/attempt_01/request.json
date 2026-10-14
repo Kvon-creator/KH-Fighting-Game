@@ -1,0 +1,103 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "DreamShaper_8_pruned.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "Sora from Kingdom Hearts 2, same character and detailed outfit as reference, one complete full body running pose, right-facing three-quarter view. Far rear arm holds the connected Kingdom Key over its own far shoulder behind his head, same carry as reference. Near front empty arm swings backward with bent elbow and fist beside hip, visibly separated from the weapon. Brown spiky hair, blue eyes, black jacket with white trim, red waist clothing, black baggy shorts, detailed black and yellow large shoes, clean curved line art, rich cel shading, consistent proportions, original leg positions and torso lean, complete weapon guard handle shaft key teeth and attached chain, slight tip projection toward foreground, full figure inside generous white margins, plain white background.",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "extra arms, missing arm, extra fingers, inverted grip, two hands gripping the weapon, front hand holding keyblade, forward-only free arm, switched carrying hand, missing keyblade, broken detached blade, bent shaft, changing weapon length, distorted anatomy, thin shoes, side-profile camera, realistic photograph, pixel art, rough unfinished sketch, scaled duplicate, captions, text, grid, cropped feet, cropped weapon, background scenery",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "4": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "sora_a3681849fa6b2a23.png"
+      }
+    },
+    "5": {
+      "class_type": "VAEEncode",
+      "inputs": {
+        "pixels": [
+          "4",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "6": {
+      "class_type": "KSampler",
+      "inputs": {
+        "seed": 8071310714,
+        "steps": 28,
+        "cfg": 6.5,
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
+        "denoise": 0.55,
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "2",
+          0
+        ],
+        "negative": [
+          "3",
+          0
+        ],
+        "latent_image": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "6",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "8": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "kh_sora/run_loop/attempt_01",
+        "images": [
+          "7",
+          0
+        ]
+      }
+    }
+  },
+  "client_id": "d9509d86-9320-4a4f-a382-35b60f2b7eec",
+  "extra_data": {
+    "sora_attempt": "attempt_01"
+  }
+}
