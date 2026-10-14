@@ -1,0 +1,31 @@
+{
+  "status": "generated_pending_review",
+  "createdAtUtc": "2026-10-14T19:20:26.204Z",
+  "endpoint": "http://127.0.0.1:8188",
+  "clientId": "8656fa2f-f8fb-49ea-a802-1382edead309",
+  "jobSha256": "b3d6c870be5f8fa424d1f3b43d3b6fe4c7300820ff83b2f4621da9efe53812a6",
+  "sourceSheet": "design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png",
+  "sourceSheetSha256": "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+  "reference": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v5/whole_pose_backward_arm_guide.png",
+  "referenceSha256": "74e8ed177c57d989ed0d83b253746aa64a7557555db286e046cbb50a7902c35a",
+  "finalUserApproval": "pending",
+  "mask": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v5/temporary_selection.png",
+  "maskSha256": "cdc80b1bf15bf86bda97a4f565bdc91db546290a9a865400ab333460cf7b0f70",
+  "promptId": "a0793ded-ae2e-426d-945b-9617cdd2c351",
+  "files": [
+    {
+      "file": "candidate_00.png",
+      "sha256": "0a701922785ba52ed9e21a4bda90045f5b83db6583a21d6af40d0b3de6aafbdb",
+      "width": 512,
+      "height": 512,
+      "colorType": 2,
+      "hasAlphaChannel": false,
+      "transparencyVerified": false,
+      "serverImage": {
+        "filename": "attempt_03_00001_.png",
+        "subfolder": "kh_sora\\run_loop",
+        "type": "output"
+      }
+    }
+  ]
+}

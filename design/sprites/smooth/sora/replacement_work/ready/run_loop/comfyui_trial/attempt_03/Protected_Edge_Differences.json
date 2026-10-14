@@ -1,0 +1,130 @@
+﻿[
+    {
+        "x":  404,
+        "y":  241,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  79
+    },
+    {
+        "x":  404,
+        "y":  242,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  243,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  244,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  245,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  246,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  247,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  248,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  249,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  250,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  251,
+        "original":  "FFFFFFFF",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  252,
+        "original":  "FFFFFFFF",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  253,
+        "original":  "FFFEFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  254,
+        "original":  "FFFFFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  255,
+        "original":  "FFFFFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    },
+    {
+        "x":  404,
+        "y":  256,
+        "original":  "FFFFFEFE",
+        "guide":  "FFFFFFFF",
+        "output":  "FFFEFEFE",
+        "maskRed":  127
+    }
+]

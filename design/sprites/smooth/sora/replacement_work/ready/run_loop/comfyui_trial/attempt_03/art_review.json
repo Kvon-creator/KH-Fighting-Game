@@ -1,0 +1,11 @@
+{
+  "status": "internal_single_pose_review_passed",
+  "finalUserApproval": "pending",
+  "preview": "final_pose_v1.png",
+  "comparison": "Original_Final_Comparison.png",
+  "wholeCanvas": true,
+  "componentProductionLayers": false,
+  "transparentSpriteReady": false,
+  "fullAnimationCycleReady": false,
+  "godotIntegrated": false
+}

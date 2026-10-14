@@ -1,0 +1,143 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "DreamShaper_8_pruned.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "(2D cel-shaded anime game sprite:1.4), (clean curved black line art and matte cel shading:1.3), Kingdom Hearts 2 Sora, faithfully refine this existing complete flat pose. Preserve the drawn backward upper arm and bent elbow, connected bare forearm and (closed empty black fingerless gloved fist beside the near hip:1.3). Same short black sleeve with white trim, dark fabric with detailed seams and folds, natural skin cel shading, small yellow glove piping. Same original red waist cloth, straps, shoes, torso lean and leg pose. Same far-arm shoulder carry behind the head, exactly connected Kingdom Key, same face and camera, white background. Improve drawing finish without changing pose or costume.",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "3D render, glossy plastic, toy, realistic photograph, hood, changed costume, painterly gradients, extra arms, missing hand, disconnected elbow, extra fingers, forward extended free arm, weapon in near hand, two-handed grip, giant gauntlet, changed body proportions, text, cropped figure, scenery",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "4": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "sora_74e8ed177c57d989.png"
+      }
+    },
+    "5": {
+      "class_type": "VAEEncode",
+      "inputs": {
+        "pixels": [
+          "4",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "6": {
+      "class_type": "KSampler",
+      "inputs": {
+        "seed": 8071310716,
+        "steps": 20,
+        "cfg": 6.5,
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
+        "denoise": 0.28,
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "2",
+          0
+        ],
+        "negative": [
+          "3",
+          0
+        ],
+        "latent_image": [
+          "11",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "6",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "8": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "kh_sora/run_loop/attempt_03",
+        "images": [
+          "10",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "LoadImageMask",
+      "inputs": {
+        "image": "sora_mask_cdc80b1bf15bf86b.png",
+        "channel": "red"
+      }
+    },
+    "10": {
+      "class_type": "ImageCompositeMasked",
+      "inputs": {
+        "destination": [
+          "4",
+          0
+        ],
+        "source": [
+          "7",
+          0
+        ],
+        "x": 0,
+        "y": 0,
+        "resize_source": false,
+        "mask": [
+          "9",
+          0
+        ]
+      }
+    },
+    "11": {
+      "class_type": "SetLatentNoiseMask",
+      "inputs": {
+        "samples": [
+          "5",
+          0
+        ],
+        "mask": [
+          "9",
+          0
+        ]
+      }
+    }
+  },
+  "client_id": "8656fa2f-f8fb-49ea-a802-1382edead309",
+  "extra_data": {
+    "sora_attempt": "attempt_03"
+  }
+}

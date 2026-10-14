@@ -1,0 +1,28 @@
+﻿{
+    "attempt":  "attempt_03",
+    "candidate":  "final_pose_v1.png",
+    "candidateSha256":  "3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b",
+    "nativeImageSha256":  "0a701922785ba52ed9e21a4bda90045f5b83db6583a21d6af40d0b3de6aafbdb",
+    "sourceAndSelectionHashesVerified":  true,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "pixels":  {
+                   "selectedPixels":  19589,
+                   "changedSelectedPixels":  19523,
+                   "outsidePixels":  242555,
+                   "changedOutsidePixels":  0,
+                   "changedProtectedRectangles":  [
+                                                      0,
+                                                      0,
+                                                      0
+                                                  ]
+               },
+    "protectedReference":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\comfyui_trial\\reference_v1\\whole_pose_00_white.png",
+    "protectedRegions":  "Original carrying grip/arm, head and connected weapon",
+    "preservationPassed":  true,
+    "visualArtAndPoseReview":  "required; preservation does not certify correct anatomy or movement",
+    "finalUserApproval":  "pending",
+    "gameplayTested":  false
+}

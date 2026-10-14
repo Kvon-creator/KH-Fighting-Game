@@ -1,6 +1,6 @@
 # Project Memory
 
-- [Local AI Art Workflow](Local_AI_Art_Workflow.md): October14 verified runtime/CPU backend; whole-image pilot rejected for art, original flat-canvas correction running with saved receipt.
+- [Local AI Art Workflow](Local_AI_Art_Workflow.md): October14 CPU pipeline and reviewed complete flat backward-arm pilot, exact source protection verified; final art approval and full run/stop work pending.
 
 - [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.

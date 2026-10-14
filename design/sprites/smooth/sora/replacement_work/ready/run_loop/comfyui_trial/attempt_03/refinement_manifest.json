@@ -1,0 +1,10 @@
+﻿{
+    "file":  "final_pose_v1.png",
+    "sha256":  "3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b",
+    "sourceNativeSha256":  "0a701922785ba52ed9e21a4bda90045f5b83db6583a21d6af40d0b3de6aafbdb",
+    "protectedReference":  "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v1/whole_pose_00_white.png",
+    "protectedReferenceSha256":  "a3681849fa6b2a235fd36622866057191f0d073d39ea9cff8b7e30764f6d9022",
+    "method":  "Direct empty-fist painting and hard source-pixel protection on one complete flat canvas; native model output preserved",
+    "componentProductionLayers":  false,
+    "finalUserApproval":  "pending"
+}

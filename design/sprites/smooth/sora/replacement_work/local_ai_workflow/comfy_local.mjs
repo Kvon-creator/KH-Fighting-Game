@@ -8,7 +8,7 @@ export const ROOT=path.resolve(HERE,'../../../../../..');
 if(ROOT.toLowerCase()!=='d:\\kh fighting game')throw new Error('Unexpected workspace');
 const READY='design/sprites/smooth/sora/replacement_work/ready';
 const CLASSES=['CheckpointLoaderSimple','CLIPTextEncode','LoadImage','VAEEncode','KSampler','VAEDecode','SaveImage'];
-const INPAINT_CLASSES=['LoadImageMask','VAEEncodeForInpaint','ImageCompositeMasked'];
+const INPAINT_CLASSES=['LoadImageMask','VAEEncodeForInpaint','ImageCompositeMasked','SetLatentNoiseMask'];
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const json=file=>JSON.parse(fs.readFileSync(file,'utf8').replace(/^\uFEFF/,''));
 function write(file,value,exclusive=false){fs.writeFileSync(file,JSON.stringify(value,null,2)+'\n',{flag:exclusive?'wx':'w'});}
@@ -34,6 +34,8 @@ export function readJob(file){
   const reference=fs.readFileSync(projectPath(job.reference,true)),info=pngInfo(reference);
   if(info.width!==512||info.height!==512||info.colorType!==2)throw new Error('Use one complete512px RGB reference on white');
   let maskSha256;
+  if(job.retainGuide!==undefined&&typeof job.retainGuide!=='boolean')throw new Error('retainGuide must be boolean');
+  if(job.retainGuide&&!job.mask)throw new Error('A retained flat guide needs a temporary selection');
   if(job.mask){
     const mask=fs.readFileSync(projectPath(job.mask,true)),maskInfo=pngInfo(mask);
     if(maskInfo.width!==512||maskInfo.height!==512||maskInfo.colorType!==2)throw new Error('Use one512px RGB temporary canvas selection');
@@ -55,7 +57,10 @@ export function workflow(job,uploadedName,prefix,uploadedMask){
   if(job.mask){
     if(!uploadedMask)throw new Error('Upload the temporary selection before building the inpaint graph');
     graph['9']={class_type:'LoadImageMask',inputs:{image:uploadedMask,channel:'red'}};
-    graph['5']={class_type:'VAEEncodeForInpaint',inputs:{pixels:['4',0],vae:['1',2],mask:['9',0],grow_mask_by:8}};
+    if(job.retainGuide){
+      graph['11']={class_type:'SetLatentNoiseMask',inputs:{samples:['5',0],mask:['9',0]}};
+      graph['6'].inputs.latent_image=['11',0];
+    }else graph['5']={class_type:'VAEEncodeForInpaint',inputs:{pixels:['4',0],vae:['1',2],mask:['9',0],grow_mask_by:8}};
     graph['10']={class_type:'ImageCompositeMasked',inputs:{destination:['4',0],source:['7',0],x:0,y:0,resize_source:false,mask:['9',0]}};
     graph['8'].inputs.images=['10',0];
   }
@@ -198,7 +203,7 @@ if(typeof process!=='undefined'&&process.argv[1]&&path.resolve(process.argv[1])=
     const [command,arg,attempt]=process.argv.slice(2),plan=json(path.join(HERE,'setup_plan.json'));
     let result;
     if(command==='status'){result=await new Comfy(plan.endpoint).status();delete result.definitions;}
-    else if(command==='plan'){const job=readJob(arg);result={job,workflow:workflow(job,'REFERENCE_UPLOADED_AFTER_SETUP','kh_sora/pilot'),status:'prepared_not_submitted'};}
+    else if(command==='plan'){const job=readJob(arg);result={job,workflow:workflow(job,'REFERENCE_UPLOADED_AFTER_SETUP','kh_sora/pilot',job.mask?'SELECTION_UPLOADED_AFTER_SETUP':undefined),status:'prepared_not_submitted'};}
     else if(command==='submit'){
       if(!/^attempt_[0-9]{2,}$/.test(attempt??''))throw new Error('Use a fresh numbered attempt');
       const job=readJob(arg);result=await submit(new Comfy(plan.endpoint),job,`${READY}/${job.animation}/comfyui_trial/${attempt}`);

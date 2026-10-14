@@ -1,0 +1,9 @@
+﻿{
+    "role":  "One complete flat pose guide with genuinely redrawn sleeve, backward elbow, forearm and closed empty fist",
+    "originalWholePoseSha256":  "a3681849fa6b2a235fd36622866057191f0d073d39ea9cff8b7e30764f6d9022",
+    "guideSha256":  "7b32f0452bad1edcd60a2d7c503605c3287042ac4ddeacced20624ead6326e91",
+    "changedPixels":  8130,
+    "outsideSelectionRestoredFromOriginal":  true,
+    "componentProductionLayers":  false,
+    "status":  "Pose guide only; inspect before AI finish or artwork approval"
+}

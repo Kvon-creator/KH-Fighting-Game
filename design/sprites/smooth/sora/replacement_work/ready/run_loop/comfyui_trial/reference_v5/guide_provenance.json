@@ -1,0 +1,10 @@
+﻿{
+    "role":  "One complete flat pose guide with genuinely redrawn sleeve, backward elbow, forearm and closed empty fist",
+    "originalWholePoseSha256":  "a3681849fa6b2a235fd36622866057191f0d073d39ea9cff8b7e30764f6d9022",
+    "guideSha256":  "74e8ed177c57d989ed0d83b253746aa64a7557555db286e046cbb50a7902c35a",
+    "selection":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\comfyui_trial\\reference_v5\\temporary_selection.png",
+    "changedPixels":  9736,
+    "outsideSelectionRestoredFromOriginal":  true,
+    "componentProductionLayers":  false,
+    "status":  "Pose guide only; inspect before AI finish or artwork approval"
+}

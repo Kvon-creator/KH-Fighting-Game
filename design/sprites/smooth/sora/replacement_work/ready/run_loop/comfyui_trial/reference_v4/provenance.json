@@ -1,0 +1,29 @@
+﻿{
+    "role":  "Temporary inpaint selection on one complete flat canvas; not a component sprite or production layer",
+    "sourceWholePose":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\comfyui_trial\\reference_v1\\whole_pose_00_white.png",
+    "sourceSha256":  "a3681849fa6b2a235fd36622866057191f0d073d39ea9cff8b7e30764f6d9022",
+    "maskSha256":  "b75f73a7a2b26b213aba14d7a54640dbb07a23f6d97cfe40660fd5edf515c7e0",
+    "white":  "allow model refinement",
+    "black":  "preserve original pixels",
+    "protectedRectangles":  [
+                                [
+                                    125,
+                                    100,
+                                    188,
+                                    140
+                                ],
+                                [
+                                    298,
+                                    100,
+                                    137,
+                                    139
+                                ],
+                                [
+                                    395,
+                                    177,
+                                    90,
+                                    80
+                                ]
+                            ],
+    "poseArtCreated":  false
+}

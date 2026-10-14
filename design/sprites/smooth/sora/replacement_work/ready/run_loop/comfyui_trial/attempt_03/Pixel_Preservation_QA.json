@@ -1,0 +1,25 @@
+﻿{
+    "attempt":  "attempt_03",
+    "nativeImageSha256":  "0a701922785ba52ed9e21a4bda90045f5b83db6583a21d6af40d0b3de6aafbdb",
+    "sourceAndSelectionHashesVerified":  true,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "pixels":  {
+                   "selectedPixels":  19589,
+                   "changedSelectedPixels":  19525,
+                   "outsidePixels":  242555,
+                   "changedOutsidePixels":  0,
+                   "changedProtectedRectangles":  [
+                                                      0,
+                                                      0,
+                                                      16
+                                                  ]
+               },
+    "protectedRegions":  "Original carrying grip/arm, head and connected weapon",
+    "preservationPassed":  false,
+    "visualArtAndPoseReview":  "required; preservation does not certify correct anatomy or movement",
+    "finalUserApproval":  "pending",
+    "gameplayTested":  false
+}

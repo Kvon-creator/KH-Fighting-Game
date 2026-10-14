@@ -1,0 +1,23 @@
+{
+  "originals": [
+    {
+      "file": "ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png",
+      "sha256": "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+      "unchanged": true
+    },
+    {
+      "file": "ready/standing_idle/sora_stand_idle_00.png",
+      "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7",
+      "unchanged": true
+    },
+    {
+      "file": "ready/run_start/sync_refinement_v2/flat_lift_pilot_v5/full_start_study/Run_Start_13_Once.gif",
+      "sha256": "1f9f81975ea11f747e8956e72e9705968ae5fdb8379e5622bc785c7aad747d41",
+      "unchanged": true
+    }
+  ],
+  "protectedMaskPixelsNonzero": 0,
+  "passed": true,
+  "imageEditingPerformed": false,
+  "scope": "Original hashes and future hard protection; no generation"
+}

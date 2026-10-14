@@ -1,0 +1,18 @@
+{
+  "animation": "run_loop",
+  "sourceSheet": "design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png",
+  "sourceSheetSha256": "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+  "reference": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v5/whole_pose_backward_arm_guide.png",
+  "checkpoint": "DreamShaper_8_pruned.safetensors",
+  "positive": "(2D cel-shaded anime game sprite:1.4), (clean curved black line art and matte cel shading:1.3), Kingdom Hearts 2 Sora, faithfully refine this existing complete flat pose. Preserve the drawn backward upper arm and bent elbow, connected bare forearm and (closed empty black fingerless gloved fist beside the near hip:1.3). Same short black sleeve with white trim, dark fabric with detailed seams and folds, natural skin cel shading, small yellow glove piping. Same original red waist cloth, straps, shoes, torso lean and leg pose. Same far-arm shoulder carry behind the head, exactly connected Kingdom Key, same face and camera, white background. Improve drawing finish without changing pose or costume.",
+  "negative": "3D render, glossy plastic, toy, realistic photograph, hood, changed costume, painterly gradients, extra arms, missing hand, disconnected elbow, extra fingers, forward extended free arm, weapon in near hand, two-handed grip, giant gauntlet, changed body proportions, text, cropped figure, scenery",
+  "seed": 8071310716,
+  "steps": 20,
+  "cfg": 6.5,
+  "denoise": 0.28,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "purpose": "Lighter finish of one manually redrawn complete flat guide after attempt_02 failed anatomy/costume review. Retain guide latents instead of clearing selection. Preserve all pixels outside selection; final complete flattened pose and user art approval pending.",
+  "mask": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/reference_v5/temporary_selection.png",
+  "retainGuide": true
+}
