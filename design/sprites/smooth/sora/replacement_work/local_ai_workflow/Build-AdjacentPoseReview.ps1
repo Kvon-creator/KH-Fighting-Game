@@ -34,7 +34,7 @@ $soraBoard.Save((Join-Path $soraOut 'Contact_Sheet.png'),[System.Drawing.Imaging
 [AnimationPackaging]::Gif((Join-Path $soraOut 'Three_Pose_Slow_Once.gif'),$soraImages.ToArray(),[int[]]@(320,320,320),$false)
 $soraHtml=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'adjacent_review_template.html') -Raw -Encoding UTF8
 $soraHtml=$soraHtml.Replace('__SEQUENCE_JSON__',($soraRecords | ConvertTo-Json -Depth 4 -Compress))
-$soraHtml | Set-Content -LiteralPath (Join-Path $soraOut 'Review.html') -Encoding UTF8
+($soraHtml.TrimEnd()+"`n") | Set-Content -LiteralPath (Join-Path $soraOut 'Review.html') -Encoding UTF8 -NoNewline
 [ordered]@{status='Three complete poses in the approved visual treatment; unfinished partial running study';frameCount=3;loop=$false;durationMs=240;canvas=@(512,512);background='opaque white';componentProductionLayers=$false;frames=$soraRecords;remaining='Full alternating gait, later phases, wrap/start/stop joins, cloth/chain follow-through, transparent export, final motion approval and engine integration';browserPlaybackTested=$false;godotIntegrated=$false} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $soraOut 'manifest.json') -Encoding UTF8
 $soraG.Dispose();$soraBoard.Dispose();$soraFont.Dispose();foreach($soraImage in $soraImages){$soraImage.Dispose()}
 Write-Output "Three-pose once-only review saved in $Version. This is not a complete loop."

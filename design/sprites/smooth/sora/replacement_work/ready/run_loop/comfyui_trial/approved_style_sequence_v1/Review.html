@@ -31,4 +31,3 @@ ui.scrub.oninput=()=>{stop();index=Number(ui.scrub.value);render();};ui.speed.on
 Promise.all(sequence.flatMap(frame=>[frame.original,frame.file]).map(src=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve();image.onerror=()=>reject(new Error(src));image.src=src;}))).then(()=>{ready=true;ui.play.disabled=false;ui.scrub.disabled=false;render();}).catch(error=>{ui.status.textContent='Image failed to load: '+error.message;});
 </script>
 </html>
-
