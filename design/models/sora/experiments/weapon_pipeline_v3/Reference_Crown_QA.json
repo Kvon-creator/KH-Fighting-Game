@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "reference": "Newest user-attached640px diagonal Kingdom Key image",
+  "method": "Approximate hand-traced crown silhouette with slanted outer prongs and two rounded inner projections; hidden root extends into shaft",
+  "sourceScene": "weapon_pipeline_pilot.blend",
+  "originalRootVertices": [
+    [
+      0.03138799965381622,
+      -0.02250000089406967,
+      1.1096320152282715
+    ],
+    [
+      0.04441500082612038,
+      -0.02250000089406967,
+      1.4118629693984985
+    ],
+    [
+      0.03138799965381622,
+      0.02250000089406967,
+      1.1096320152282715
+    ],
+    [
+      0.04441500082612038,
+      0.02250000089406967,
+      1.4118629693984985
+    ]
+  ],
+  "rootVerticesNow": [
+    [
+      -0.004999999888241291,
+      -0.02250000089406967,
+      1.1096320152282715
+    ],
+    [
+      -0.004999999888241291,
+      -0.02250000089406967,
+      1.4118629693984985
+    ],
+    [
+      -0.004999999888241291,
+      0.02250000089406967,
+      1.1096320152282715
+    ],
+    [
+      -0.004999999888241291,
+      0.02250000089406967,
+      1.4118629693984985
+    ]
+  ],
+  "noInvalidMeshData": true,
+  "headIntersectsShaftAxis": true,
+  "rigidRoot": "KingdomKey_Rigid_Root",
+  "scene": "kingdom_key_reference_crown.blend",
+  "sceneSha256": "ac1c92597bcce6518a3503b57fe687d7e6b3586ed95544ec2d61ae3fd6ab3f95",
+  "glb": "kingdom_key_reference_crown.glb",
+  "glbSha256": "0942628ad553bbe25434b48e71b805d2dc6265eb804ae5bc85c58ce4d638df8b",
+  "front": "reference_crown_front.png",
+  "detail": "reference_crown_detail.png",
+  "userApprovedExactGeometry": false,
+  "shoulderCarryOrSoraRigTested": false,
+  "gameplayIntegrated": false
+}

@@ -1,5 +1,8 @@
 # Project Memory
 
+- [Sora 3D-to-sprite experiment](Sora_3D_Sprite_Experiment.md): Verified Blender pipeline and latest reference-traced crown model; authorized Hunyuan character pilot failed with an unspecified null error, no mesh or retry.
+- [Art workstation hardware](Art_Workstation_Hardware.md): Confirmed24GB system RAM, separate4GB GPU VRAM, installed Blender5.2.2 path and successful CPU render test.
+
 - [Local AI Art Workflow](Local_AI_Art_Workflow.md): October19 pilot approval and two adjacent flat refinements, three-pose once-only preview and verified source/weapon/export checks. Full run/stop remains unfinished.
 
 - [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.

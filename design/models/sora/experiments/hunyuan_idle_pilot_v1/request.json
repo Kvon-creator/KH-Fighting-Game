@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "path": "/tmp/gradio/baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7/sora_idle.png",
+      "orig_name": "sora_idle.png",
+      "meta": {
+        "_type": "gradio.FileData"
+      }
+    },
+    null,
+    null,
+    null,
+    null,
+    30,
+    5,
+    1234,
+    256,
+    true,
+    8000,
+    false
+  ]
+}

@@ -1,0 +1,2 @@
+# Keep the raw event-stream framing byte-for-byte.
+events.sse -text -diff
