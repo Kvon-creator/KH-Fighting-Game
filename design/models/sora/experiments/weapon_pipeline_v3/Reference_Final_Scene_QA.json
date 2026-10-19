@@ -1,0 +1,134 @@
+{
+  "passed": true,
+  "blenderVersion": "5.2.2 LTS",
+  "savedSceneReopened": true,
+  "meshCount": 24,
+  "allMeshesShareRigidRoot": true,
+  "gripCollarsShaftShareLocalAxis": true,
+  "orthographicCamera": true,
+  "renderEngine": "CYCLES",
+  "device": "CPU",
+  "renders": [
+    {
+      "file": "reference_crown_front.png",
+      "sha256": "32f0dd921b5322d5f3cc5bcf5b9fb919f31f1e80ec3cdac28e0afea8ffbcb159",
+      "alphaRange": [
+        0.0,
+        1.0
+      ],
+      "boundsBottomOrigin": [
+        220,
+        48,
+        296,
+        456
+      ]
+    }
+  ],
+  "glbVersion": 2,
+  "glbMeshCount": 24,
+  "glbBytes": 209708,
+  "meshCounts": {
+    "guard_frame": {
+      "vertices": 32,
+      "polygons": 32
+    },
+    "crown_teeth": {
+      "vertices": 58,
+      "polygons": 31
+    },
+    "central_black_handle": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "gold_pommel": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "gold_collar": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "blue_collar": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "silver_shaft": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "silver_end_cap": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "grip_ridge_00": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "grip_ridge_01": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "grip_ridge_02": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "grip_ridge_03": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "grip_ridge_04": {
+      "vertices": 64,
+      "polygons": 34
+    },
+    "chain_link_00": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_01": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_02": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_03": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_04": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_05": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_06": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "chain_link_07": {
+      "vertices": 72,
+      "polygons": 72
+    },
+    "pendant_center": {
+      "vertices": 114,
+      "polygons": 128
+    },
+    "pendant_ear_left": {
+      "vertices": 114,
+      "polygons": 128
+    },
+    "pendant_ear_right": {
+      "vertices": 114,
+      "polygons": 128
+    }
+  },
+  "sceneSha256": "ac1c92597bcce6518a3503b57fe687d7e6b3586ed95544ec2d61ae3fd6ab3f95",
+  "glbSha256": "0942628ad553bbe25434b48e71b805d2dc6265eb804ae5bc85c58ce4d638df8b",
+  "blenderToonShaderPortableToGLB": false,
+  "fullSoraCharacterOrAnimationReady": false,
+  "gameplayIntegrated": false,
+  "paletteColorsVerified": 4
+}

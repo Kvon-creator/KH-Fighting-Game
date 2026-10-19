@@ -41,15 +41,15 @@ for item in report['renders']:
     assert min(alpha)==0 and max(alpha)>.99 and min(bounds[:2])>10 and max(bounds[2:])<501
     renders.append(dict(file=item['file'],sha256=hashlib.sha256(file.read_bytes()).hexdigest(),alphaRange=[min(alpha),max(alpha)],boundsBottomOrigin=bounds))
 glb=(OUT/report['model']).read_bytes()
-magic,version,length=struct.unpack_from('<4sII',glb)
-assert magic==b'glTF' and version==2 and length==len(glb)
+magic,glb_version,length=struct.unpack_from('<4sII',glb)
+assert magic==b'glTF' and glb_version==2 and length==len(glb)
 json_length,json_type=struct.unpack_from('<II',glb,12)
 assert json_type==0x4e4f534a
 gltf=json.loads(glb[20:20+json_length])
 assert gltf.get('meshes') and gltf.get('nodes') and gltf['buffers'][0]['byteLength']>0
 qa=dict(passed=True,blenderVersion=bpy.app.version_string,savedSceneReopened=True,meshCount=len(meshes),allMeshesShareRigidRoot=True,
         gripCollarsShaftShareLocalAxis=True,orthographicCamera=True,renderEngine=scene.render.engine,device=scene.cycles.device,
-        renders=renders,glbVersion=version,glbMeshCount=len(gltf['meshes']),glbBytes=len(glb),meshCounts=mesh_counts,
+        renders=renders,glbVersion=glb_version,glbMeshCount=len(gltf['meshes']),glbBytes=len(glb),meshCounts=mesh_counts,
         sceneSha256=hashlib.sha256((OUT/report['scene']).read_bytes()).hexdigest(),glbSha256=hashlib.sha256(glb).hexdigest(),
         blenderToonShaderPortableToGLB=False,fullSoraCharacterOrAnimationReady=False,gameplayIntegrated=False)
 if version=='weapon_pipeline_v3':
