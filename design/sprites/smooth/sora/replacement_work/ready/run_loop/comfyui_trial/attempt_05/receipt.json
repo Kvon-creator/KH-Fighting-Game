@@ -1,0 +1,15 @@
+{
+  "status": "queued",
+  "createdAtUtc": "2026-10-19T18:08:20.435Z",
+  "endpoint": "http://127.0.0.1:8188",
+  "clientId": "6896bd56-1302-4889-b9a4-bd2515b48b3f",
+  "jobSha256": "23be66c2dc8392fe947812ab52c4fa8b8584d044cb4dc20649c0ea93ae2a4ee9",
+  "sourceSheet": "design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png",
+  "sourceSheetSha256": "9d919b4f317981b331010a1ddb049a7807fb8f21ba214d82a40b04291c9065c7",
+  "reference": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/adjacent_guides_v3/pose_02/whole_pose_guide.png",
+  "referenceSha256": "fdb60562b1808b7a46dad6abcc98885d03fda38e65a995b5ee0d4bc078e06dec",
+  "finalUserApproval": "pending",
+  "mask": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/adjacent_guides_v3/pose_02/temporary_selection.png",
+  "maskSha256": "8fce83e3f8c6678ed89983bc5101e01baa9c1eb26c4ad3246dda36f9b94027e6",
+  "promptId": "85bb051d-4033-4570-bea3-876e8cb5d72d"
+}

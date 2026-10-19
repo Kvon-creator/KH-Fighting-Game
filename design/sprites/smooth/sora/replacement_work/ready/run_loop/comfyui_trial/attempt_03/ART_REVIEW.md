@@ -1,6 +1,6 @@
 # Backward-arm pilot review — October14
 
-**Internal result: ready for the user's single-pose art review. Final user approval remains pending.** Review `final_pose_v1.png` and `Original_Final_Comparison.png`; the native model output is preserved separately as `candidate_00.png`.
+**User approved this single pose on October19:** "Yes. Continue workflow." Use `final_pose_v1.png` as the style/carry anchor for subsequent complete flat running drawings. This is not approval of a full animation cycle. The original internal review and native model output remain preserved below.
 
 The third local render used one complete hand-drawn flat guide, retained it in the latent, and applied a lighter DreamShaper finish on CPU. Its native output completed in373.81seconds. Direct painting then clarified the closed empty fist and restored exact protected source pixels on the same full canvas. No component production layers or scaled pose substitutes were used.
 
@@ -12,4 +12,4 @@ The third local render used one complete hand-drawn flat guide, retained it in t
 
 Native exact-preservation QA initially found16 antialiased background-edge values at x404, not blade pixels. `Protected_Edge_Differences.json` and the failed native QA remain preserved. The flat refinement restores the original values, and future selection creation hard-protects rectangle edges. No model resubmission was needed for that correction.
 
-The preview is opaque RGB on white; transparent sprite export, chronological whole-frame loop/stop production, wrap/join/motion testing, Godot integration and final art approval remain unfinished. Run-start benchmark, original sheet, idle, gait_cycle_study_v5 and stop motion_refinement_v4 remain preserved. Do not promote this image into gameplay before user approval.
+The preview is opaque RGB on white; transparent sprite export, chronological whole-frame loop/stop production, wrap/join/motion testing and Godot integration remain unfinished. Run-start benchmark, original sheet, idle, gait_cycle_study_v5 and stop motion_refinement_v4 remain preserved. Single-pose approval authorizes continuing this visual treatment; it does not establish a finished animation or gameplay integration.

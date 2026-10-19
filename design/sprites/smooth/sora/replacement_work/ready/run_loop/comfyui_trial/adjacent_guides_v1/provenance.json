@@ -1,0 +1,73 @@
+﻿{
+    "status":  "Complete flat chronological guides; inspect before model submission",
+    "approvedAnchor":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\comfyui_trial\\attempt_03\\final_pose_v1.png",
+    "approvedAnchorSha256":  "3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b",
+    "originalWholePose":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\comfyui_trial\\reference_v1\\whole_pose_00_white.png",
+    "method":  "Whole source canvases and temporary selections on a single flat output; new articulated free arms; unchanged-resolution original01/02 leg drawings; whole upper carry integer bob",
+    "componentProductionLayers":  false,
+    "scaledPoseCopies":  false,
+    "frames":  [
+                   {
+                       "index":  1,
+                       "phase":  "compression after approved contact",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_01.png",
+                       "sourceSha256":  "960948742ed696523ece3a9b9db831abb2b9458f1897b93bc9f89cf7f1a3f881",
+                       "bodyShiftY":  3,
+                       "guide":  "pose_01/whole_pose_guide.png",
+                       "guideSha256":  "36ae8825c66031f48d1fbaf234a25d0c377f8eb10b61a9be994f84522802042d",
+                       "mask":  "pose_01/temporary_selection.png",
+                       "maskSha256":  "4900efd65ea074c5849f59c05cb64cc49c0daa0647c6eeaf1d3838d1d48a509a",
+                       "protectedRectangles":  [
+                                                   [
+                                                       125,
+                                                       103,
+                                                       188,
+                                                       140
+                                                   ],
+                                                   [
+                                                       298,
+                                                       103,
+                                                       137,
+                                                       139
+                                                   ],
+                                                   [
+                                                       404,
+                                                       180,
+                                                       81,
+                                                       80
+                                                   ]
+                                               ]
+                   },
+                   {
+                       "index":  2,
+                       "phase":  "early passing after compression",
+                       "source":  "D:\\KH Fighting Game\\design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\direct_generation_retry_v1\\whole_frame_review_v1\\sora_run_loop_02.png",
+                       "sourceSha256":  "0e3edffa41ef35d32adf0e5696b73becf6c1a95a835c36978e43d095de111a07",
+                       "bodyShiftY":  1,
+                       "guide":  "pose_02/whole_pose_guide.png",
+                       "guideSha256":  "3730b4ac6025d248df4f821770a619ee4c71d23b8545c76cddfca25834e87a87",
+                       "mask":  "pose_02/temporary_selection.png",
+                       "maskSha256":  "8fce83e3f8c6678ed89983bc5101e01baa9c1eb26c4ad3246dda36f9b94027e6",
+                       "protectedRectangles":  [
+                                                   [
+                                                       125,
+                                                       101,
+                                                       188,
+                                                       140
+                                                   ],
+                                                   [
+                                                       298,
+                                                       101,
+                                                       137,
+                                                       139
+                                                   ],
+                                                   [
+                                                       404,
+                                                       178,
+                                                       81,
+                                                       80
+                                                   ]
+                                               ]
+                   }
+               ]
+}

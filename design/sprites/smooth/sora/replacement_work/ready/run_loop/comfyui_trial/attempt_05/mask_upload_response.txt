@@ -1,0 +1,1 @@
+{"name": "sora_mask_8fce83e3f8c6678e.png", "subfolder": "", "type": "input"}

@@ -1,6 +1,8 @@
 {
   "status": "internal_single_pose_review_passed",
-  "finalUserApproval": "pending",
+  "finalUserApproval": "approved_single_pose",
+  "userApprovalDate": "2026-10-19",
+  "userApprovalMessage": "Yes. Continue workflow",
   "preview": "final_pose_v1.png",
   "comparison": "Original_Final_Comparison.png",
   "wholeCanvas": true,

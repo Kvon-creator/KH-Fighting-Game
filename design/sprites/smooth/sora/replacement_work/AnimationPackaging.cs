@@ -43,13 +43,18 @@ public static class AnimationPackaging {
         return bestStart+bestLength/2;
     }
     public static void Gif(string path,Bitmap[] frames,int[] delays) {
+        Gif(path,frames,delays,true);
+    }
+    public static void Gif(string path,Bitmap[] frames,int[] delays,bool repeat) {
         if(frames.Length!=delays.Length)throw new ArgumentException("Frame/delay mismatch");
         using(var output=new BinaryWriter(File.Create(path))) {
             output.Write(System.Text.Encoding.ASCII.GetBytes("GIF89a"));
             output.Write((ushort)frames[0].Width);output.Write((ushort)frames[0].Height);
             output.Write((byte)0x70);output.Write((byte)0);output.Write((byte)0);
-            output.Write(new byte[]{0x21,0xFF,11});output.Write(System.Text.Encoding.ASCII.GetBytes("NETSCAPE2.0"));
-            output.Write(new byte[]{3,1,0,0,0});
+            if(repeat) {
+                output.Write(new byte[]{0x21,0xFF,11});output.Write(System.Text.Encoding.ASCII.GetBytes("NETSCAPE2.0"));
+                output.Write(new byte[]{3,1,0,0,0});
+            }
             for(int n=0;n<frames.Length;n++) {
                 using(var flat=new Bitmap(frames[n].Width,frames[n].Height,PixelFormat.Format24bppRgb)) {
                     using(var graphics=Graphics.FromImage(flat)) {
