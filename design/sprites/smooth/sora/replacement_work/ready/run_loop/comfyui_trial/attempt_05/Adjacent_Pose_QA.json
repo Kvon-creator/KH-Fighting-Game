@@ -1,0 +1,40 @@
+{
+  "attempt": "attempt_05",
+  "index": 2,
+  "candidate": "candidate_00.png",
+  "candidateSha256": "9321e7c3ad2c79876334226abacfd86a0491929197a15a3b941cb084cb4114e1",
+  "nativeSha256": "9321e7c3ad2c79876334226abacfd86a0491929197a15a3b941cb084cb4114e1",
+  "canvas": [
+    512,
+    512
+  ],
+  "mode": "RGB",
+  "allInputHashesVerified": true,
+  "approvedAnchorSha256": "3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b",
+  "bodyShiftY": 1,
+  "outsideSelectionPixels": 252742,
+  "changedOutsideSelectionPixels": 0,
+  "changedSelectedPixels": 9291,
+  "changedApprovedProtectedRegions": [
+    0,
+    0,
+    0
+  ],
+  "selectedProtectedPixels": [
+    0,
+    0,
+    0
+  ],
+  "unchangedOpaqueOriginalLegPixels": 149,
+  "changedOpaqueOriginalLegPixels": 0,
+  "darkPixelBoundsInclusive": [
+    130,
+    108,
+    477,
+    467
+  ],
+  "preservationPassed": true,
+  "visualReview": "required; these checks do not certify anatomy, pose phase or natural motion",
+  "fullCycleReady": false,
+  "godotIntegrated": false
+}

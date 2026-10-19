@@ -40,7 +40,7 @@ for filename,delay in [('Three_Pose_Once.gif',80),('Three_Pose_Slow_Once.gif',32
 board=Image.open(folder/'Contact_Sheet.png');board.load()
 assert board.size==(1536,570)
 assert max(floors)-min(floors)<=2, 'Unexpected support-floor drift in this partial study'
-result=dict(passed=True,distinctCompletePoses=3,copiesMatchNativeHashes=True,fullCanvas=[512,512],background='opaque white',
+result=dict(passed=True,distinctCompletePoses=3,copiesMatchReviewedPoseHashes=True,fullCanvas=[512,512],background='opaque white',
             darkSoleExclusiveBottoms=floors,maximumFloorVariationPx=max(floors)-min(floors),gifs=gifs,poseBoard=[1536,570],
             approvedAnchorUnchanged=hashes[0]=='3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b',
             naturalFullCycleMotionCertified=False,fullLoopReady=False,stopUpdated=False,browserTested=False,godotIntegrated=False)

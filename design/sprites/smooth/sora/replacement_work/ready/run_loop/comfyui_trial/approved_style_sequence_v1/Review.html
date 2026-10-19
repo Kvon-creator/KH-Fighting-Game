@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sora — adjacent running poses</title>
+<style>
+body{margin:24px auto;padding:0 16px;max-width:1100px;background:#20252c;color:#edf0f3;font:16px system-ui,sans-serif}h1{font-size:24px}p{max-width:900px;line-height:1.5}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0}button,select{font:inherit;padding:8px 12px}figure{margin:0}figcaption{padding:8px 0}.poses{display:grid;grid-template-columns:1fr 1fr;gap:16px}img{display:block;background:white;width:100%;height:auto}a{color:#98d5ff}#status{min-height:24px}@media(max-width:650px){.poses{grid-template-columns:1fr}}
+</style>
+<h1>Sora: contact → compression → early passing</h1>
+<p>The approved pose leads two adjacent drawings. The empty arm swings forward while the original leg drawings compress and recover. The far-arm shoulder carry uses the approved weapon geometry with a small whole-shoulder bob.</p>
+<p>This is a three-pose study. Playback holds at the last pose; the full alternating run and stop are still being refined.</p>
+<div class="controls">
+<button id="play" disabled>Play once</button><button id="previous" disabled>Previous</button><button id="next" disabled>Next</button>
+<label>Speed <select id="speed"><option value="1">Normal</option><option value="0.25" selected>Slow</option></select></label>
+<label>Pose <input id="scrub" type="range" min="0" max="2" step="1" value="0" disabled></label>
+</div>
+<p id="status" role="status">Loading complete poses…</p>
+<div class="poses"><figure><figcaption>Original sheet drawing</figcaption><img id="original" alt="Original running pose"></figure><figure><figcaption>Approved treatment and adjacent refinement</figcaption><img id="refined" alt="Refined running pose"></figure></div>
+<p><a href="Contact_Sheet.png">Native-size pose board</a> · <a href="Three_Pose_Slow_Once.gif">Slow once-only GIF</a> · <a href="ART_REVIEW.md">Drawing review</a> · <a href="QA_Report.json">Export checks</a></p>
+<script>
+const sequence=[{"index":0,"file":"sora_run_loop_00.png","phase":"Approved contact anchor","durationMs":80,"source":"attempt_03/final_pose_v1.png","sha256":"3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b","original":"../../direct_generation_retry_v1/whole_frame_review_v1/sora_run_loop_00.png"},{"index":1,"file":"sora_run_loop_01.png","phase":"Compression / arm descends","durationMs":80,"source":"attempt_04/final_pose_v2.png","sha256":"839c2a6be354cf468c2407ba6377ac0ea0b0d2999ff4369be5ee78a32ea70c2e","original":"../../direct_generation_retry_v1/whole_frame_review_v1/sora_run_loop_01.png"},{"index":2,"file":"sora_run_loop_02.png","phase":"Early passing / arm forward","durationMs":80,"source":"attempt_05/final_pose_v2.png","sha256":"5b8b20375caa0efc422e7ca5358645428b4d6d83c25acb1f739197d9d856434a","original":"../../direct_generation_retry_v1/whole_frame_review_v1/sora_run_loop_02.png"}];
+const ui=Object.fromEntries(['play','previous','next','speed','scrub','status','original','refined'].map(id=>[id,document.getElementById(id)]));
+let index=0,playing=false,timer=null,ready=false;
+function stop(){playing=false;if(timer!==null)clearTimeout(timer);timer=null;ui.play.textContent='Play once';}
+function render(){const frame=sequence[index];ui.original.src=frame.original;ui.refined.src=frame.file;ui.scrub.value=index;ui.previous.disabled=!ready||index===0;ui.next.disabled=!ready||index===sequence.length-1;ui.status.textContent=`Pose ${index+1} / ${sequence.length}: ${frame.phase}${playing?' — playing once':''}`;}
+function schedule(){timer=setTimeout(()=>{if(index===sequence.length-1){stop();render();ui.status.textContent+=' — end of partial study';return;}index++;render();schedule();},sequence[index].durationMs/Number(ui.speed.value));}
+function start(){stop();index=0;playing=true;ui.play.textContent='Pause';render();schedule();}
+ui.play.onclick=()=>{if(playing){stop();render();}else start();};
+ui.previous.onclick=()=>{stop();index=Math.max(0,index-1);render();};ui.next.onclick=()=>{stop();index=Math.min(sequence.length-1,index+1);render();};
+ui.scrub.oninput=()=>{stop();index=Number(ui.scrub.value);render();};ui.speed.onchange=()=>{if(playing){clearTimeout(timer);schedule();}};
+Promise.all(sequence.flatMap(frame=>[frame.original,frame.file]).map(src=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve();image.onerror=()=>reject(new Error(src));image.src=src;}))).then(()=>{ready=true;ui.play.disabled=false;ui.scrub.disabled=false;render();}).catch(error=>{ui.status.textContent='Image failed to load: '+error.message;});
+</script>
+</html>
+

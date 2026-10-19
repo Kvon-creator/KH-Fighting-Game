@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "frameCount": 3,
+  "onceOnly": true,
+  "slowDelayMs": 320,
+  "normalDelayMs": 80,
+  "preloadAndAssets": true,
+  "playPauseStepScrub": true,
+  "loopWrapIntentionallyAbsent": true,
+  "actualBrowserTested": false,
+  "godotTested": false
+}

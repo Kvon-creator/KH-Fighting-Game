@@ -1,0 +1,12 @@
+﻿{
+    "file":  "final_pose_v2.png",
+    "sha256":  "5b8b20375caa0efc422e7ca5358645428b4d6d83c25acb1f739197d9d856434a",
+    "sourceNativeSha256":  "9321e7c3ad2c79876334226abacfd86a0491929197a15a3b941cb084cb4114e1",
+    "guide":  "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/adjacent_guides_v3/pose_02/whole_pose_guide.png",
+    "guideSha256":  "fdb60562b1808b7a46dad6abcc98885d03fda38e65a995b5ee0d4bc078e06dec",
+    "maskSha256":  "8fce83e3f8c6678ed89983bc5101e01baa9c1eb26c4ad3246dda36f9b94027e6",
+    "method":  "Whole-canvas flat finish: correct expanded sleeve/cuff, indistinct fist and chest-panel drift from complete guide; directly repaint articulated arm and seams; retain model waist blending and source protection",
+    "componentProductionLayers":  false,
+    "bodyShiftY":  1,
+    "finalUserApproval":  "approved treatment, new individual pose not separately reviewed"
+}

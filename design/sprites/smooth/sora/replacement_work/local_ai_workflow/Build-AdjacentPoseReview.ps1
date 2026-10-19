@@ -5,11 +5,11 @@ if($soraRoot -ne 'D:\KH Fighting Game'){throw "Unexpected workspace: $soraRoot"}
 $soraTrial=Join-Path $soraRoot 'design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial'
 $soraOut=Join-Path $soraTrial $Version
 if(Test-Path -LiteralPath $soraOut){throw 'Preserve previous review'}
-$soraFiles=@('attempt_03/final_pose_v1.png','attempt_04/candidate_00.png','attempt_05/candidate_00.png')
+$soraFiles=@('attempt_03/final_pose_v1.png','attempt_04/final_pose_v2.png','attempt_05/final_pose_v2.png')
 if((Get-FileHash -LiteralPath (Join-Path $soraTrial $soraFiles[0]) -Algorithm SHA256).Hash.ToLowerInvariant() -ne '3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b'){throw 'Approved pilot changed'}
 foreach($soraAttempt in @('attempt_04','attempt_05')){
-    $soraQa=Get-Content -LiteralPath (Join-Path $soraTrial "$soraAttempt/Adjacent_Pose_QA.json") -Raw | ConvertFrom-Json
-    if(-not $soraQa.preservationPassed -or (Get-FileHash -LiteralPath (Join-Path $soraTrial "$soraAttempt/candidate_00.png") -Algorithm SHA256).Hash.ToLowerInvariant() -ne $soraQa.nativeSha256){throw 'Pose preservation/hash check failed'}
+    $soraQa=Get-Content -LiteralPath (Join-Path $soraTrial "$soraAttempt/Final_Adjacent_Pose_QA.json") -Raw | ConvertFrom-Json
+    if(-not $soraQa.preservationPassed -or (Get-FileHash -LiteralPath (Join-Path $soraTrial "$soraAttempt/final_pose_v2.png") -Algorithm SHA256).Hash.ToLowerInvariant() -ne $soraQa.candidateSha256){throw 'Pose preservation/hash check failed'}
     $soraReview=Get-Content -LiteralPath (Join-Path $soraTrial "$soraAttempt/art_review.json") -Raw | ConvertFrom-Json
     if($soraReview.status -ne 'internal_adjacent_pose_review_passed'){throw 'Inspect native artwork before packaging'}
 }
@@ -32,7 +32,7 @@ for($soraIndex=0;$soraIndex -lt 3;$soraIndex++){
 $soraBoard.Save((Join-Path $soraOut 'Contact_Sheet.png'),[System.Drawing.Imaging.ImageFormat]::Png)
 [AnimationPackaging]::Gif((Join-Path $soraOut 'Three_Pose_Once.gif'),$soraImages.ToArray(),[int[]]@(80,80,80),$false)
 [AnimationPackaging]::Gif((Join-Path $soraOut 'Three_Pose_Slow_Once.gif'),$soraImages.ToArray(),[int[]]@(320,320,320),$false)
-$soraHtml=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'adjacent_review_template.html') -Raw
+$soraHtml=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'adjacent_review_template.html') -Raw -Encoding UTF8
 $soraHtml=$soraHtml.Replace('__SEQUENCE_JSON__',($soraRecords | ConvertTo-Json -Depth 4 -Compress))
 $soraHtml | Set-Content -LiteralPath (Join-Path $soraOut 'Review.html') -Encoding UTF8
 [ordered]@{status='Three complete poses in the approved visual treatment; unfinished partial running study';frameCount=3;loop=$false;durationMs=240;canvas=@(512,512);background='opaque white';componentProductionLayers=$false;frames=$soraRecords;remaining='Full alternating gait, later phases, wrap/start/stop joins, cloth/chain follow-through, transparent export, final motion approval and engine integration';browserPlaybackTested=$false;godotIntegrated=$false} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $soraOut 'manifest.json') -Encoding UTF8

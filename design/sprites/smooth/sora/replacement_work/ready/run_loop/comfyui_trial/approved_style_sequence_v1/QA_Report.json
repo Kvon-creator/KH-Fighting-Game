@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "distinctCompletePoses": 3,
+  "copiesMatchReviewedPoseHashes": true,
+  "fullCanvas": [
+    512,
+    512
+  ],
+  "background": "opaque white",
+  "darkSoleExclusiveBottoms": [
+    467,
+    468,
+    467
+  ],
+  "maximumFloorVariationPx": 1,
+  "gifs": [
+    {
+      "file": "Three_Pose_Once.gif",
+      "frameCount": 3,
+      "durationsMs": [
+        80,
+        80,
+        80
+      ],
+      "repeatExtension": false
+    },
+    {
+      "file": "Three_Pose_Slow_Once.gif",
+      "frameCount": 3,
+      "durationsMs": [
+        320,
+        320,
+        320
+      ],
+      "repeatExtension": false
+    }
+  ],
+  "poseBoard": [
+    1536,
+    570
+  ],
+  "approvedAnchorUnchanged": true,
+  "naturalFullCycleMotionCertified": false,
+  "fullLoopReady": false,
+  "stopUpdated": false,
+  "browserTested": false,
+  "godotIntegrated": false
+}

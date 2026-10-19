@@ -1,5 +1,5 @@
 {
-  "status": "queued",
+  "status": "generated_pending_review",
   "createdAtUtc": "2026-10-19T18:08:20.435Z",
   "endpoint": "http://127.0.0.1:8188",
   "clientId": "6896bd56-1302-4889-b9a4-bd2515b48b3f",
@@ -11,5 +11,21 @@
   "finalUserApproval": "pending",
   "mask": "design/sprites/smooth/sora/replacement_work/ready/run_loop/comfyui_trial/adjacent_guides_v3/pose_02/temporary_selection.png",
   "maskSha256": "8fce83e3f8c6678ed89983bc5101e01baa9c1eb26c4ad3246dda36f9b94027e6",
-  "promptId": "85bb051d-4033-4570-bea3-876e8cb5d72d"
+  "promptId": "85bb051d-4033-4570-bea3-876e8cb5d72d",
+  "files": [
+    {
+      "file": "candidate_00.png",
+      "sha256": "9321e7c3ad2c79876334226abacfd86a0491929197a15a3b941cb084cb4114e1",
+      "width": 512,
+      "height": 512,
+      "colorType": 2,
+      "hasAlphaChannel": false,
+      "transparencyVerified": false,
+      "serverImage": {
+        "filename": "attempt_05_00001_.png",
+        "subfolder": "kh_sora\\run_loop",
+        "type": "output"
+      }
+    }
+  ]
 }

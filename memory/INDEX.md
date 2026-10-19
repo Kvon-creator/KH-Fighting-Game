@@ -1,6 +1,6 @@
 # Project Memory
 
-- [Local AI Art Workflow](Local_AI_Art_Workflow.md): October19 single-pose style/carry approval; continue complete flat running poses with the verified local CPU workflow. Full run/stop remains unfinished.
+- [Local AI Art Workflow](Local_AI_Art_Workflow.md): October19 pilot approval and two adjacent flat refinements, three-pose once-only preview and verified source/weapon/export checks. Full run/stop remains unfinished.
 
 - [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.

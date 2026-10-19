@@ -1,0 +1,12 @@
+{
+  "status": "internal_adjacent_pose_review_passed",
+  "preview": "final_pose_v2.png",
+  "native": "candidate_00.png",
+  "reviewDate": "2026-10-19",
+  "finalUserApproval": "approved treatment; new individual pose not separately reviewed",
+  "wholeCanvas": true,
+  "componentProductionLayers": false,
+  "transparentSpriteReady": false,
+  "fullAnimationCycleReady": false,
+  "godotIntegrated": false
+}

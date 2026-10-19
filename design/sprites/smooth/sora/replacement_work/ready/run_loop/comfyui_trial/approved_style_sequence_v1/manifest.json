@@ -1,0 +1,44 @@
+﻿{
+    "status":  "Three complete poses in the approved visual treatment; unfinished partial running study",
+    "frameCount":  3,
+    "loop":  false,
+    "durationMs":  240,
+    "canvas":  [
+                   512,
+                   512
+               ],
+    "background":  "opaque white",
+    "componentProductionLayers":  false,
+    "frames":  [
+                   {
+                       "index":  0,
+                       "file":  "sora_run_loop_00.png",
+                       "phase":  "Approved contact anchor",
+                       "durationMs":  80,
+                       "source":  "attempt_03/final_pose_v1.png",
+                       "sha256":  "3dd7b620289eaf707973cb71ec05d901637f5251c45d3745f180f657a77b7d2b",
+                       "original":  "../../direct_generation_retry_v1/whole_frame_review_v1/sora_run_loop_00.png"
+                   },
+                   {
+                       "index":  1,
+                       "file":  "sora_run_loop_01.png",
+                       "phase":  "Compression / arm descends",
+                       "durationMs":  80,
+                       "source":  "attempt_04/final_pose_v2.png",
+                       "sha256":  "839c2a6be354cf468c2407ba6377ac0ea0b0d2999ff4369be5ee78a32ea70c2e",
+                       "original":  "../../direct_generation_retry_v1/whole_frame_review_v1/sora_run_loop_01.png"
+                   },
+                   {
+                       "index":  2,
+                       "file":  "sora_run_loop_02.png",
+                       "phase":  "Early passing / arm forward",
+                       "durationMs":  80,
+                       "source":  "attempt_05/final_pose_v2.png",
+                       "sha256":  "5b8b20375caa0efc422e7ca5358645428b4d6d83c25acb1f739197d9d856434a",
+                       "original":  "../../direct_generation_retry_v1/whole_frame_review_v1/sora_run_loop_02.png"
+                   }
+               ],
+    "remaining":  "Full alternating gait, later phases, wrap/start/stop joins, cloth/chain follow-through, transparent export, final motion approval and engine integration",
+    "browserPlaybackTested":  false,
+    "godotIntegrated":  false
+}
