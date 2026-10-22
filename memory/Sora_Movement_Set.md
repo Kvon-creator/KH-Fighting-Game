@@ -144,3 +144,12 @@ Pending review.
 - **Lesson:** the vertex-weight gap metric is unreliable. Its 'torso' set (mune/hara > .5) is mostly the inner shirt; the jacket side panels beside the elbow are weighted to the shoulder/arm bones (see `walk_fwd_v14/Gap_Measurement_Points.png`). Use rendered-alpha negative space instead.
 - **Alpha measurement:** background between the front arm and jacket is essentially none in both v12 and v14 (max 4-8 px in 1-2 rows near the hem).
 - **Status:** v14 is an experiment; Godot stays on v12. Asked Kvon whether to exceed the limits.
+
+**Chest-twist spec (15-22 deg, render-measured gap), October22:** Kvon pasted a spec: revert v13, twist the upper spine/chest 15-22 deg away from the camera on its local Z, measure open background in the final 512 output, require >= 10 px every frame, and no grip shift.
+
+- **Lessons found along the way:**
+  - On the KH2 rig `mune`'s local Z points sideways (world X). A local-Z rotation BENDS the chest back/forward instead of twisting it; v14/v15 did this. The twist axis up the spine is local X (`twist_axis='spine'`).
+  - The battle_v12 `shoulder_reach` step swings the collarbone to keep the front hand on the grip and undoes shoulder changes; v16 sets `no_reach_side` for the front arm.
+- **Result (v15 local Z; v16 spine axis, no front reach):** the front shoulder moves only ~0.5 px on screen across 15-22 deg, and the probe gap stays [0,4,7,12,10,11,10,0,0,0,0] px for every twist.
+- **Why it can't work:** in this sprite view Sora faces nearly toward the camera, so the shoulders sit across the screen and a twist about the spine moves the front shoulder mostly in depth. That is invisible from the sprite camera.
+- **Conclusion:** the twist cannot create the gap. v15/v16 are experiments; Godot stays on v12. Asked Kvon which constraint to relax.

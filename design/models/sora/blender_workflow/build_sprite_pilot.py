@@ -556,7 +556,9 @@ def hand_on(side, grip, bend_hint):
             wrist += Vector(grip) - hand_point(side)
 
     place_wrist(3 if LOOP else 1)
-    for _ in range(4 if POSE.get('shoulder_reach') else 0):
+    # v16+: the twisted front shoulder must not swing back toward the grip (it undid the twist).
+    no_reach = POSE.get('no_reach_side') == side
+    for _ in range(4 if POSE.get('shoulder_reach') and not no_reach else 0):
         miss = Vector(grip) - hand_point(side)
         if miss.length <= .01:
             break
@@ -629,7 +631,15 @@ def solve_pose(breath=0.0, lag=None):
     rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath)
     if POSE.get('chest_twist_deg'):
         # v14+ (Kvon): twist the upper spine/chest on its local Z so the front shoulder turns back.
-        rotate_world('mune', pose_world('mune').to_3x3().col[2].normalized(), POSE['chest_twist_deg'])
+        cols = pose_world('mune').to_3x3().normalized().col
+        if POSE.get('twist_axis') == 'spine':
+            # v16+: on the KH2 rig mune's local Z points sideways (local Z rotation bends the chest
+            # back, as v14/v15 did); twist about whichever local axis runs up the spine.
+            axis_ = max((Vector(c_) for c_ in cols), key=lambda c_: abs(c_.z))
+            axis_ = axis_ if axis_.z > 0 else -axis_
+        else:
+            axis_ = Vector(cols[2])
+        rotate_world('mune', axis_.normalized(), POSE['chest_twist_deg'])
     if POSE.get('neck_counter_deg'):
         rotate_world('kubi', ax_x, POSE['neck_counter_deg'])
     if b['head_counter_deg']:
@@ -1075,9 +1085,96 @@ if LOOP:
         GAP_TRIAL = {d_: round(gap_at(d_), 2) for d_ in (0.0, FRONT_ARM_RANGE[0], -FRONT_ARM_RANGE[0], 15.0, -15.0)}
         print("ARM_TRIAL", FRONT, GAP_TRIAL)
         ARM_SIGN = 1 if GAP_TRIAL[FRONT_ARM_RANGE[0]] > GAP_TRIAL[-FRONT_ARM_RANGE[0]] else -1
-        KATA_LOG = TWIST_LOG = None
-        if not GAIT.endswith(('_v12', '_v13')):
-            # v14+ (Kvon): no collarbone change. Twist the chest 6-10 deg away from the camera and, if
+        KATA_LOG = TWIST_LOG = ALPHA_LOG = None
+        if not GAIT.endswith(('_v12', '_v13', '_v14')):
+            # v15+ (Kvon's spec): chest twist 15-22 deg away from the camera on its local Z, no
+            # collarbone change, no grip shift. Validated on rendered pixels: open background between
+            # the front forearm and the jacket must be >= 10 px on every frame of the cycle.
+            POSE.pop('grip_offset_world', None)
+            POSE.pop('front_kata', None)
+            if not GAIT.endswith('_v15'):
+                POSE['twist_axis'] = 'spine'
+                POSE['no_reach_side'] = FRONT
+
+            def frame_pose(i_):
+                # The same per-frame foot, knee and weapon-drag setup as the main loop (stepped gait).
+                lead_w, lead_h, back_w, back_h, heel, body_w, bob_, _ = STEP_KEYS[i_]
+                follower_ = 'R' if leader == 'L' else 'L'
+                POSE['foot_pitch'] = {follower_: heel}
+                POSE['knee_in'] = {follower_: BACK_KNEE_IN[i_], leader: LEAD_KNEE_IN[i_]}
+                for side_, a_, h_ in ((leader, lead_w, lead_h),
+                                      (follower_, back_w, back_h + TOE_DIST*math.sin(math.radians(heel)))):
+                    pos_ = perp[side_] + walk_dir*(centre + a_ - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
+                    POSE[f'{side_}_foot'] = (pos_.x, pos_.y, h_)
+                return bob_, (Matrix.Rotation(math.radians(WEAPON_DRAG[i_]), 3, 'Z') @ BASE_BLADE).normalized()
+
+            def to_img(p_):
+                return (256 + (p_.dot(cam_right) - cam.location.dot(cam_right))*PX,
+                        256 - (p_.z - cam.location.z)*PX)
+
+            def silhouette():
+                eng, fs = scene.render.engine, scene.render.use_freestyle
+                scene.render.engine, scene.render.use_freestyle = 'BLENDER_WORKBENCH', False
+                probe = OUT / '_gap_probe.png'; scene.render.filepath = str(probe)
+                bpy.ops.render.render(write_still=True)
+                scene.render.engine, scene.render.use_freestyle = eng, fs
+                im_ = bpy.data.images.load(str(probe), check_existing=False); px_ = np.empty(512*512*4, np.float32)
+                im_.pixels.foreach_get(px_); bpy.data.images.remove(im_)
+                return px_.reshape(512, 512, 4)[::-1, :, 3] > .5
+
+            def open_gap(alpha, ex, ey, hx):
+                # Widest run of background bounded by figure pixels on both sides, in the rows around
+                # the front elbow, starting right of the elbow and ending before the hips' centre.
+                best_w = 0
+                for y_ in range(max(0, int(ey) - 40), min(512, int(ey) + 40)):
+                    xs_ = np.where(alpha[y_])[0]
+                    if len(xs_) < 2:
+                        continue
+                    lo_, hi_ = int(xs_.min()), int(min(hx, xs_.max()))
+                    seg = alpha[y_, lo_:hi_ + 1].astype(int)
+                    d_ = np.diff(seg)
+                    starts, ends = np.where(d_ == -1)[0] + 1, np.where(d_ == 1)[0] + 1
+                    for st in starts:
+                        en = ends[ends > st]
+                        if len(en) and lo_ + en[0] > ex - 8:
+                            best_w = max(best_w, int(en[0] - st))
+                return best_w
+
+            POSE.pop('chest_twist_deg', None); solve_pose(0.0)
+            base_depth = pose_world(f'{FRONT}_ude1').translation.dot(to_cam)
+            POSE['chest_twist_deg'] = 18; solve_pose(0.0)
+            TWIST_SIGN = 1 if pose_world(f'{FRONT}_ude1').translation.dot(to_cam) < base_depth else -1
+            results = []
+            for twist in range(15, 23):
+                for sign in (1, -1):
+                    POSE.update({'chest_twist_deg': TWIST_SIGN*twist, 'front_arm_side': FRONT,
+                                 'front_arm_deg': sign*FRONT_ARM_RANGE[0]})
+                    per = []
+                    for i_ in range(n):
+                        bob_, blade = frame_pose(i_)
+                        solve_pose(bob_, bob_)
+                        place_key()
+                        ex, ey = to_img(pose_world(f'{FRONT}_ude2').translation)
+                        hx = to_img(pose_world('hara').translation)[0]
+                        grip_l = (hand_point('L') - (hand_point('R') + blade*POSE['L_hand_along_handle'])).length
+                        per.append({'gap_px': open_gap(silhouette(), ex, ey, hx), 'grip_error_L_m': round(grip_l, 4),
+                                    'elbow_img': [round(ex, 1), round(ey, 1)], 'hip_img_x': round(hx, 1)})
+                    worst = min(f_['gap_px'] for f_ in per)
+                    results.append((twist, sign, worst, per))
+                    print('ALPHA_TRY', twist, sign, worst, [f_['gap_px'] for f_ in per],
+                          'shoulder_img', [round(c_, 1) for c_ in to_img(pose_world(f'{FRONT}_ude1').translation)])
+            (OUT / '_gap_probe.png').unlink(missing_ok=True)
+            # Smallest twist whose worst frame clears 13 px (3 px margin for the ink outline added in
+            # the 2D style); otherwise the best worst-case found.
+            ok = [r_ for r_ in results if r_[2] >= 13]
+            twist, sign, worst, per = ok[0] if ok else max(results, key=lambda r_: (r_[2], -r_[0]))
+            POSE.update({'chest_twist_deg': TWIST_SIGN*twist, 'front_arm_deg': sign*FRONT_ARM_RANGE[0]})
+            ARM_SIGN = sign
+            ALPHA_LOG = {'chest_twist_deg': twist, 'twist_sign': TWIST_SIGN, 'abduction_deg': FRONT_ARM_RANGE[0],
+                         'worst_gap_px_probe': worst, 'frames': per, 'met_target': bool(ok)}
+            print('ALPHA_BEST', twist, sign, worst, bool(ok))
+        elif GAIT.endswith('_v14'):
+            # v14 (Kvon): no collarbone change. Twist the chest 6-10 deg away from the camera and, if
             # the front elbow would hyper-extend, move the grip forward off the stomach by up to 3 cm.
             def front_shoulder_depth():
                 return pose_world(f'{FRONT}_ude1').translation.dot(to_cam)
@@ -1165,7 +1262,7 @@ if LOOP:
                     offset, lift = foot_at(side, i/n)
                     pos = STANCE[side] + walk_dir*offset
                     POSE[f'{side}_foot'] = (pos.x, pos.y, lift)
-        if V12:
+        if V12 and ALPHA_LOG is None:
             # Pick the abduction in 12-15 deg whose forearm gap lands closest to the 10-12 px band.
             best = None
             for step in range(7):
@@ -1230,7 +1327,7 @@ if LOOP:
         'root_motion_m': ROOT_MOTION if GAIT else None,
         'game_frames_60fps': globals().get('GAME_FRAMES'),
         'v12_spec': ({'front_arm_side': FRONT, 'per_frame': ARM_LOG, 'front_shoulder': KATA_LOG,
-                      'chest_twist': TWIST_LOG,
+                      'chest_twist': TWIST_LOG, 'silhouette_gap': ALPHA_LOG,
                       'root_px_per_drawing_384': [round(m*GAME_PX_PER_M, 3) for m in ROOT_MOTION]}
                      if V12 else None),
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
