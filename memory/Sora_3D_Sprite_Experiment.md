@@ -17,6 +17,10 @@
 
 **Why:** User approval of v4 and instruction to continue.
 
+**Grip correction, October21:** Kvon said the breathing is good, but the idle pose needs work and the Keyblade was held the wrong way. In v3 the Key was rotated 90 degrees about its blade (guard edge-on, teeth up) and anchored at the `buki` socket beyond the fingers. Rule now, per the approved idle: the guard's flat face toward the camera, teeth pointing down, and the fist inside the guard at the palm (midpoint of `te` and `buki`). This is `idle_loop_v4`. `idle_loop_v5` (current) adds automatic finger curl, but the rip's palms don't face the handle, so the fingers only partly close (mean ~5.6 cm from the handle). Wrist roll is still to do. Keep the breathing parameters.
+
+**Why:** User correction of the grip orientation.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.

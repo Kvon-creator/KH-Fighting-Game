@@ -13,12 +13,14 @@ from pathlib import Path
 import bmesh
 import bpy
 import numpy as np
-from mathutils import Matrix, Vector
+from mathutils import Euler, Matrix, Vector
 
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
 version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilot_v1'
 LOOP = version.startswith('idle_loop_v')  # refined pose + 10-frame breathing loop; sprite_pilot_v* = single frame
+KEY_FACES_CAMERA = LOOP and version not in ('idle_loop_v2', 'idle_loop_v3')  # user grip correction
+CURL_FINGERS = KEY_FACES_CAMERA and version != 'idle_loop_v4'  # close the rip's open hands on the handle
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -242,13 +244,18 @@ def reset_pose():
 
 
 def hand_on(side, grip, bend_hint):
-    # Place the hand so its weapon socket (buki), not the wrist, lands on the grip point.
+    # Place the hand so its weapon socket (buki), or the palm from v4, lands on the grip point.
     wrist = Vector(grip)
     for _ in range(3 if LOOP else 1):
         two_bone(f'{side}_ude1', f'{side}_ude2', f'{side}_te', wrist, bend_hint)
         if not LOOP:
             break
-        wrist += Vector(grip) - pose_world(f'{side}_buki').translation
+        wrist += Vector(grip) - hand_point(side)
+
+
+def hand_point(side):
+    socket = pose_world(f'{side}_buki').translation
+    return (pose_world(f'{side}_te').translation + socket) / 2 if KEY_FACES_CAMERA else socket
 
 
 ankle_z = pose_world('L_ashi1').translation.z
@@ -271,15 +278,64 @@ def solve_pose(breath=0.0, lag=None):
         two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), (sign*.3, -1, 0))
     hand_on('R', r_hand, (-1, .4, -.3))
     hand_on('L', l_hand, (1, .4, -.3))
+    for side, (curl_axis, curl_sign) in FINGERS.items():
+        set_curl(side, curl_axis, curl_sign)
     update()
 
 
+FINGERS = {}  # side -> (local axis, sign) chosen once, reapplied every frame
+
+
+def set_curl(side, curl_axis, curl_sign):
+    for bone, degrees in ((f'{side}_yubiB', 85), (f'{side}_yubiA', 40)):
+        pb = arm.pose.bones[bone]; pb.rotation_mode = 'QUATERNION'
+        e = Euler((0, 0, 0)); setattr(e, curl_axis, curl_sign*math.radians(degrees))
+        pb.rotation_quaternion = e.to_quaternion()
+    update()
+
+
+def pick_curl(side):
+    # Bone rolls differ per hand, so test each curl direction and keep the one that brings the
+    # finger vertices closest to the handle line.
+    grip = hand_point(side)
+    weighted = []
+    for o in body:
+        groups = {o.vertex_groups[n].index for n in (f'{side}_yubiB', f'{side}_yubiA') if n in o.vertex_groups}
+        weighted += [(o, v.index) for v in o.data.vertices if any(e.group in groups and e.weight > .3 for e in v.groups)]
+    best = None
+    for curl_axis in 'xz':
+        for curl_sign in (1, -1):
+            set_curl(side, curl_axis, curl_sign)
+            dg = bpy.context.evaluated_depsgraph_get()
+            meshes = {o: o.evaluated_get(dg).data for o in {o for o, _ in weighted}}
+            total = 0
+            for o, i in weighted:
+                r = o.matrix_world @ meshes[o].vertices[i].co - grip
+                total += (r - blade*r.dot(blade)).length
+            if best is None or total < best[0]:
+                best = (total / max(len(weighted), 1), curl_axis, curl_sign)
+    FINGERS[side] = best[1:]
+    return round(best[0], 4)
+
+
 solve_pose(0.0)
+FINGER_REPORT = {side: pick_curl(side) for side in ('R', 'L')} if CURL_FINGERS else {}
+if CURL_FINGERS:
+    solve_pose(0.0)
 
 # Kingdom Key in the right hand: grip at R_buki, blade up and back, away from the opponent.
 def place_key():
-    grip_world = pose_world('R_buki').translation
-    x_axis = blade.cross(Vector((0, 0, 1))).normalized()
+    if KEY_FACES_CAMERA:
+        # v4+ (user correction): guard face toward the camera, teeth (local +X) pointing down,
+        # grip in the palm between wrist and weapon socket so the fist sits inside the guard.
+        grip_world = (pose_world('R_te').translation + pose_world('R_buki').translation) / 2
+        facing = (to_cam - blade*to_cam.dot(blade)).normalized()
+        x_axis = facing.cross(blade).normalized()
+        if x_axis.z > 0:
+            x_axis = -x_axis
+    else:
+        grip_world = pose_world('R_buki').translation
+        x_axis = blade.cross(Vector((0, 0, 1))).normalized()
     y_axis = blade.cross(x_axis)
     key.matrix_world = Matrix.Translation(grip_world) @ Matrix((x_axis, y_axis, blade)).transposed().to_4x4()
     update()
@@ -330,7 +386,7 @@ if LOOP:
         small.filepath_raw = str(OUT / 'frames_128' / path512.name); small.file_format = 'PNG'; small.save()
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
-                       'grip_error_L_m': round((pose_world('L_buki').translation
+                       'grip_error_L_m': round((hand_point('L')
                                                 - (Vector(POSE['R_hand']) + Vector((0, 0, BREATH['hands_z']*lag))
                                                    + blade*POSE['L_hand_along_handle'])).length, 4)})
     scene.frame_start, scene.frame_end = 1, n
@@ -343,6 +399,9 @@ if LOOP:
         'canvas_size': [512, 512], 'ground_baseline_y': 470, 'body_anchor': [256, 470],
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
+        'key_faces_camera': KEY_FACES_CAMERA,
+        'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}
+                        for s, (a, g) in FINGERS.items()},
         'blend': blend.name,
     }
     (OUT / 'Idle_Loop_Report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
