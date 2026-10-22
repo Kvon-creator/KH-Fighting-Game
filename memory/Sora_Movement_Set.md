@@ -161,3 +161,14 @@ Pending review.
 - **Bug fixed:** the v17 report crashed because a Vector was stored in POSE; now a tuple. The fix was not re-run.
 - **Output removed:** the incomplete walk_fwd_v17 folder (my own output) was deleted.
 - **Status:** Godot stays on v12. Asked Kvon to choose between grip changes or a different readability goal (skin-vs-jacket contrast/ink line).
+
+**Forearm readability by ink (option 1), October22:** Kvon chose option 1: separate the arm from the jacket by contrast/outline instead of a background gap.
+
+- **Kept from v12:** the pose and grip are unchanged.
+- **Scripts:** `export_limb_screen.py -- walk_fwd_v12 R` writes `Limb_Screen.json` (front shoulder/elbow/wrist pixels per frame). `stylize_2d_frames.py walk_fwd_v12 walk_fwd2d_v12_ink` adds a 2 px ink band on the jacket side and a 1 px lightened skin rim, only inside a 26 px capsule around the front forearm. It only runs for `*_ink` output names, so approved outputs are unchanged.
+- **Result:** ~505-590 ink px and ~220-270 rim px per frame; mean luminance step across the boundary 97-101 (of 255).
+- **`walk_fwd2d_v12_ink` (current):** 384px frames replace `KingdomArena/assets/sora/walk_fwd_384`, with the same v12 timing/root motion; Godot screenshot verified. Includes the white 4x3 sheet and `Forearm_Ink_Before_After.png`.
+
+Pending review.
+
+**Why:** User choice.

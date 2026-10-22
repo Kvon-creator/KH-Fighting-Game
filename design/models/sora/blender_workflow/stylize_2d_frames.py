@@ -32,6 +32,41 @@ palette = np.vstack([palette, INK])  # ink is always available for line pixels
 
 (OUT / 'frames_512').mkdir(exist_ok=True); (OUT / 'frames_128').mkdir(exist_ok=True)
 src_report = json.loads((SORA / source / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
+# *_ink versions (Kvon, option 1): separate the front forearm from the dark jacket with a firm ink
+# line on the jacket side and a 1 px light rim on the skin side, only around that forearm.
+LIMB = SORA / source / 'Limb_Screen.json'
+FOREARM = json.loads(LIMB.read_text(encoding='utf-8'))['frames'] if version.endswith('_ink') and LIMB.exists() else None
+INK_LOG = []
+
+
+def capsule(shape, a_, b_, radius):
+    yy, xx = np.mgrid[:shape[0], :shape[1]]
+    a_, b_ = np.array(a_, float), np.array(b_, float)
+    d_ = b_ - a_
+    t_ = np.clip(((xx - a_[0])*d_[0] + (yy - a_[1])*d_[1]) / (d_ @ d_), 0, 1)
+    return np.hypot(xx - (a_[0] + t_*d_[0]), yy - (a_[1] + t_*d_[1])) <= radius
+
+
+def dilate(mask, px):
+    return np.asarray(Image.fromarray((mask*255).astype(np.uint8)).filter(ImageFilter.MaxFilter(2*px + 1))) > 127
+
+
+def ink_forearm(rgb, alpha, joints):
+    region = capsule(alpha.shape, joints['elbow'], joints['wrist'], 26) & (alpha > 200)
+    r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+    lum = rgb @ np.array([.299, .587, .114])
+    skin = region & (r > 120) & (r > g + 15) & (g > b) & (lum > 90)
+    dark = region & (lum < 70)
+    edge_dark = dark & dilate(skin, 2)          # 2 px ink band on the jacket side of the boundary
+    edge_skin = skin & dilate(dark, 1)          # 1 px light rim on the skin side
+    out = rgb.copy()
+    out[edge_dark] = INK
+    out[edge_skin] = np.clip(out[edge_skin]*1.18 + 12, 0, 255)
+    # Readability: mean luminance step across the skin/jacket boundary inside the region.
+    step = float(lum[edge_skin].mean() - (out[edge_dark] @ np.array([.299, .587, .114])).mean()) if edge_skin.any() and edge_dark.any() else 0.0
+    return out, {'ink_px': int(edge_dark.sum()), 'rim_px': int(edge_skin.sum()), 'boundary_luma_step': round(step, 1)}
+
+
 frames = []
 for entry in src_report['frames']:
     raw = Image.open(OUT / 'frames_512_raw' / entry['filename']).convert('RGBA')
@@ -54,12 +89,16 @@ for entry in src_report['frames']:
     rim = np.clip(grown - alpha, 0, 255) / 255
     a = np.clip(alpha + rim*255, 0, 255)
     rgb = rgb*(1 - rim[..., None]) + INK*rim[..., None]
+    if FOREARM is not None:
+        rgb, stats = ink_forearm(rgb, alpha, FOREARM[len(frames)])
+        INK_LOG.append(stats)
     out = Image.fromarray(np.dstack([rgb, a]).astype(np.uint8), 'RGBA')
     out.save(OUT / 'frames_512' / entry['filename'])
     out.resize((128, 128), Image.LANCZOS).save(OUT / 'frames_128' / entry['filename'])
     frames.append({**entry})
 report = {**src_report, 'version': version, 'frames': frames,
           'style_2d': {'source_loop': source, 'palette_from': 'design/references/sora_kh2_pose_sheet.png top-right',
-                       'palette_size': PALETTE_SIZE + 1, 'median_filter': 5, 'outer_ink_px': 2}}
+                       'palette_size': PALETTE_SIZE + 1, 'median_filter': 5, 'outer_ink_px': 2,
+                       'forearm_ink': INK_LOG or None}}
 (OUT / 'Idle_Loop_Report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
 print('STYLIZE_OK', len(frames))
