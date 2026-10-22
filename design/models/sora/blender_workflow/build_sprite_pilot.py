@@ -24,6 +24,8 @@ CURL_FINGERS = KEY_FACES_CAMERA and version != 'idle_loop_v4'  # close the rip's
 # v6+ (user request): twist each wrist so the palm faces the handle, and turn the teeth up.
 WRIST_TWIST = CURL_FINGERS and version != 'idle_loop_v5'
 KEY_TEETH_UP = WRIST_TWIST
+# v7+: pose from Kvon's Smash idle reference image instead of the approved 2D idle.
+REF_POSE = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 7)}
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -31,7 +33,8 @@ if OUT.exists():
 assert bpy.app.version[:2] == (5, 2), bpy.app.version_string
 IDLE = ROOT / 'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png'
 HEIGHT = 1.6          # meters, T-pose top of hair to sole
-KEY_REACH = .92       # grip-to-tip length, matching the approved idle's proportion
+# Grip-to-tip length: approved idle's proportion; v8+ reference shows a longer Key (tip near head height).
+KEY_REACH = 1.0 if REF_POSE and version != 'idle_loop_v7' else .92
 CAM_YAW = -40         # sprite three-quarter view; Sora faces screen right
 OUT.mkdir(parents=True)
 
@@ -180,7 +183,25 @@ for mat in {s.material for o in body + [key] for s in o.material_slots if s.mate
         links.new(emit.outputs[0], out.inputs['Surface'])
 
 # 4. Approximate approved-idle pose from hand/foot targets (world meters).
-if LOOP:
+if REF_POSE and version == 'idle_loop_v7':
+    # v7: Kvon's Smash idle reference (design/references/sora_smash_idle_pose_reference.png).
+    # Wide stance with mild knee bend and toes out, upright torso, both hands low in front of the
+    # waist, blade sweeping up and out past his right shoulder at a flat angle.
+    POSE = {
+        'drop': .10, 'lean_deg': 4,
+        'R_hand': (-.05, -.24, .74), 'L_hand_along_handle': -.075,
+        'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
+        'blade_dir': (-.80, .30, .52), 'toe_out_deg': 25, 'head_tilt_deg': 5,
+    }
+elif REF_POSE:
+    # v8: grip shifted to his right side and the blade steepened to match the reference.
+    POSE = {
+        'drop': .10, 'lean_deg': 4,
+        'R_hand': (-.12, -.24, .74), 'L_hand_along_handle': -.075,
+        'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
+        'blade_dir': (-.80, .30, .70), 'toe_out_deg': 25, 'head_tilt_deg': 5,
+    }
+elif LOOP:
     # Refined toward the approved idle: deeper, wider crouch; grip lower and further forward;
     # flatter blade; left hand placed on the handle by measuring its weapon socket.
     POSE = {
@@ -189,17 +210,18 @@ if LOOP:
         'R_foot': (-.40, .10, None), 'L_foot': (.38, -.08, None),
         'blade_dir': (-.25, .75, .55),
     }
-    # Breathing: body sinks and leans slightly at the exhale peak; feet stay planted.
-    BREATH = {'drop': .012, 'lean_deg': 1.5, 'hands_z': -.008, 'head_counter_deg': -.8}
-    DURATIONS_MS = [150, 130, 130, 150, 180, 150, 130, 130, 150, 180]  # approved idle timing
-    BREATH_LAG = 0 if version == 'idle_loop_v2' else .12  # fraction of a cycle
-else:
+elif not LOOP:
     POSE = {
         'drop': .15, 'lean_deg': 8,
         'R_hand': (-.04, -.24, .74), 'L_hand_along_handle': -.08,
         'R_foot': (-.36, .10, None), 'L_foot': (.34, -.08, None),
         'blade_dir': (-.25, .70, .67),
     }
+if LOOP:
+    # Breathing: body sinks and leans slightly at the exhale peak; feet stay planted.
+    BREATH = {'drop': .012, 'lean_deg': 1.5, 'hands_z': -.008, 'head_counter_deg': -.8}
+    DURATIONS_MS = [150, 130, 130, 150, 180, 150, 130, 130, 150, 180]  # approved idle timing
+    BREATH_LAG = 0 if version == 'idle_loop_v2' else .12  # fraction of a cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
     bones[name].use_inherit_rotation = False   # feet stay flat while the legs bend
@@ -276,9 +298,16 @@ def solve_pose(breath=0.0, lag=None):
         rotate_world('kubi', 'X', b['head_counter_deg']*lag)
     r_hand = Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
     l_hand = r_hand + blade*POSE['L_hand_along_handle']
+    toe_out = POSE.get('toe_out_deg', 0)
     for s, foot in (('R', POSE['R_foot']), ('L', POSE['L_foot'])):
         sign = -1 if s == 'R' else 1
-        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), (sign*.3, -1, 0))
+        # Knees track over turned-out toes.
+        knee = (sign*(.3 + toe_out/50), -1, 0)
+        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), knee)
+        if toe_out:
+            rotate_world(f'{s}_ashi1', 'Z', sign*toe_out)
+    if POSE.get('head_tilt_deg'):
+        rotate_world('atama', 'Y', POSE['head_tilt_deg'])  # top of head toward his left, as referenced
     hand_on('R', r_hand, (-1, .4, -.3))
     hand_on('L', l_hand, (1, .4, -.3))
     for side, degrees in TWIST.items():
@@ -431,6 +460,19 @@ if LOOP:
                                                 - (Vector(POSE['R_hand']) + Vector((0, 0, BREATH['hands_z']*lag))
                                                    + blade*POSE['L_hand_along_handle'])).length, 4)})
     scene.frame_start, scene.frame_end = 1, n
+    if REF_POSE:
+        # Pose check from roughly the reference screenshot's near-front angle (not a sprite view).
+        scene.frame_set(1)
+        ref_data = bpy.data.cameras.new('reference_angle_camera'); ref_data.type = 'ORTHO'
+        ref_data.ortho_scale = cam_data.ortho_scale
+        ref_cam = bpy.data.objects.new('reference_angle_camera', ref_data); scene.collection.objects.link(ref_cam)
+        ref_t = math.radians(-10)
+        ref_cam.location = Vector((0, 0, center_z)) + Vector((math.sin(ref_t), -math.cos(ref_t), 0))*6
+        ref_cam.rotation_euler = (math.radians(90), 0, ref_t)
+        scene.camera = ref_cam
+        scene.render.filepath = str(OUT / 'reference_angle_frame00.png')
+        bpy.ops.render.render(write_still=True)
+        scene.camera = cam
     blend = OUT / 'sora_idle_loop.blend'
     bpy.ops.wm.save_as_mainfile(filepath=str(blend))
     bpy.ops.file.make_paths_relative(); bpy.ops.wm.save_mainfile()

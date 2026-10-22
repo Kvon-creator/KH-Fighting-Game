@@ -29,6 +29,15 @@
 
 **Why:** User decisions on roster consistency and Keyblade orientation.
 
+**Smash pose reference, October21:** Kvon said he has no idea how to use Blender and asked me to pose Sora from a Smash Ultimate idle screenshot, saved as `design/references/sora_smash_idle_pose_reference.png` (SHA256 44367CE9...7A7B). It is a pose reference only; the KH2 model and three-quarter sprite camera stay.
+
+- **The pose:** wide toes-out stance, mild knee bend, upright torso, slight head tilt, both hands low in front, guard toward his right side facing out, blade up past his right shoulder (~49 degrees), teeth up, Key tip near head height (grip-to-tip 1.0 m).
+- **Current: `idle_loop_v8`**, with `Reference_vs_3D_pose.png`, which pairs the reference with a near-front check render and the sprite view.
+- **Known gap:** the left hand sits ~8 cm from its handle spot.
+- **Don't ask Kvon to pose in Blender;** pose from references he supplies.
+
+**Why:** User supplied the reference and asked me to do the posing.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.
