@@ -69,3 +69,14 @@ Pending review.
 **Knee correction, October22:** Kvon said "He should have his knee move towards the middle of his torso and then back to its original position." `walk_fwd_v6` (current) blends the back leg's knee bend direction toward the body midline during its swing: per-frame amounts [0,0,0,0,.3,.7,1,.5,0], peaking at the arc, then back out by the landing. Timing, root motion and floor contact are unchanged. The Godot frames were replaced; feet still hold exactly. Pending review.
 
 **Why:** User correction.
+
+**Foot correction, October22:** Kvon said "The foot should move towards the torso with his knee."
+
+- **v7:** pulled the swing foot toward the midline sideways (FOOT_IN .7). From the sprite camera that is mostly depth, so it was nearly invisible.
+- **`walk_fwd_v8` (current):** the back foot comes forward and up under his hips at the arc (back keys: push-off .14/.09, arc .42/.18, landing approach .37/.04, then .34), then reaches back out to land. Also keeps v6's knee-in and v7's lateral pull.
+- **Unchanged:** root motion and timing; feet still planted exactly in Godot.
+- **Lesson:** judge "toward X" in screen space for this three-quarter camera.
+
+Pending review.
+
+**Why:** User correction.

@@ -415,6 +415,17 @@ if LOOP:
             # peaking at the arc, then returns to its original outward position.
             BACK_KNEE_IN = ([0]*9 if GAIT.endswith(('_v4', '_v5'))
                             else [0, 0, 0, 0, .3, .7, 1.0, .5, 0])
+            # v7+ (Kvon): the foot moves toward the torso with the knee: it is pulled in toward the
+            # midline by the same profile, and tucks higher and further under him at the arc.
+            FOOT_IN = 0 if GAIT.endswith(('_v4', '_v5', '_v6')) else .7
+            if FOOT_IN and GAIT.endswith('_v7'):
+                STEP_KEYS[6] = (.90, .00, .26, .16, 10, .530, -.40, 50)
+            elif FOOT_IN:
+                # v8+: on screen "toward the torso" means forward and up under his hips: the back foot
+                # tucks under him at the arc, then reaches back out to its landing spot.
+                STEP_KEYS[5] = (.90, .00, .14, .09, 35, .480, .20, 50)
+                STEP_KEYS[6] = (.90, .00, .42, .18, 10, .530, -.40, 50)
+                STEP_KEYS[7] = (.90, .00, .37, .04, 15, .590, .00, 60)
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -933,7 +944,8 @@ if LOOP:
                 POSE['foot_pitch'] = {follower: heel}
                 POSE['knee_in'] = {follower: BACK_KNEE_IN[i]}
                 for side, a, h in ((leader, lead_w, lead_h), (follower, back_w, back_h + TOE_DIST*math.sin(rad))):
-                    pos = perp[side] + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
+                    tuck = FOOT_IN*BACK_KNEE_IN[i] if side == follower else 0
+                    pos = perp[side]*(1 - tuck) + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
                     POSE[f'{side}_foot'] = (pos.x, pos.y, h)
                 ROOT_MOTION.append(round(body_w - (STEP_KEYS[i - 1][5] - (STEP_LEN if i == 0 else 0)), 4))
             elif SHUFFLE:
