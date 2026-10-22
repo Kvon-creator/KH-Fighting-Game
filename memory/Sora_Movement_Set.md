@@ -7,6 +7,12 @@
 - **Landing.**
 - **Air poses:** one for rising to the apex of the jump and one for falling from the apex.
 
-**References:** `design/references/air_movement/air_movement_ref_01-04.png`. Kvon supplied these four stills of another fighting-game character's jump/air poses ("Think of the reference photo as an example"). They are pose references only, not Sora's design. How they map to rise/apex/fall was asked, not assumed.
+**References:** `design/references/air_movement/air_movement_ref_01-04.png`. Kvon supplied these four stills of another fighting-game character's jump/air poses ("Think of the reference photo as an example"). They are pose references only, not Sora's design. Kvon's mapping:
+  - ref_01 = rising toward the apex.
+  - ref_02 = the apex tuck, and also the brief transition pose before any air option that needs another input.
+  - ref_03 = falling toward the ground.
+  - ref_04 = back-dash.
+
+**Air transition rule:** Pose 1 (rising) -> Pose 2 (brief tuck) -> the air option. This applies to back-dash, forward-dash and any other air movement that needs an extra player input.
 
 **Why:** User additions to the movement list.
