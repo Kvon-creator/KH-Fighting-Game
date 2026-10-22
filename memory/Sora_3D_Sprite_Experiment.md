@@ -184,3 +184,7 @@ Pending review.
 - **Comparison image:** `Hands_v9_vs_v10.png`.
 
 **Why:** User request.
+
+**Palm slightly back, October22:** Kvon asked to slightly turn the left palm back toward Sora. `battle_v11` (current) applies `L_palm_back_deg` 25: both directions are tried and the one facing the palm more toward his hips is kept. The twist goes from -160 to -135 degrees; palm-to-camera drops from 0.62 to 0.57. The left fist is ~2.2 cm from its handle spot. Comparison image: `Hands_v10_vs_v11.png`.
+
+**Why:** User fine-tuning of the left palm.

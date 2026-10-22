@@ -264,6 +264,8 @@ if BATTLE:
         if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7', 'battle_v8', 'battle_v9'):
             # v10+ (user): turn the left wrist (the one not anchoring the Key) so its palm faces the screen.
             POSE['L_palm_to_camera'] = True
+        if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7', 'battle_v8', 'battle_v9', 'battle_v10'):
+            POSE['L_palm_back_deg'] = 25  # v11+: slightly back toward Sora
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
@@ -659,6 +661,19 @@ if ONE_HAND or TWO_HAND_BATTLE:
     FINGER_REPORT = {'grip_sides': list(GRIP_SIDES)}
     if POSE.get('L_palm_to_camera'):
         FINGER_REPORT['L_palm_to_camera_dot'] = pick_palm('L', to_cam)
+        if POSE.get('L_palm_back_deg'):
+            # v11+ (user): turn that palm slightly back toward Sora: try the offset both ways and
+            # keep the one that faces the palm more toward his body.
+            base, best = TWIST['L'], None
+            for offset in (POSE['L_palm_back_deg'], -POSE['L_palm_back_deg']):
+                TWIST['L'] = base + offset
+                solve_pose(0.0)
+                to_body = (pose_world('hara').translation - hand_point('L')).normalized()
+                score = palm_normal('L').dot(to_body)
+                if best is None or score > best[0]:
+                    best = (score, base + offset, palm_normal('L').dot(to_cam))
+            TWIST['L'] = best[1]
+            FINGER_REPORT.update({'L_palm_to_body_dot': round(best[0], 3), 'L_palm_to_camera_dot_after': round(best[2], 3)})
 elif PALM_ORIENT:
     for side in ('R', 'L'):
         pick_anatomical_curl(side)
