@@ -9,3 +9,5 @@
 **Bigger again, October22:** Kvon then said "Make them bigger again". The test scene now uses 256 x 256 frames (2x the 128px set; soles on row 235, floor anchor (128,236)); Sora is ~170 px tall on the 1280x720 screen. The 128/192 sets are kept. Whether 256 becomes the standard for the movement set is still to confirm.
 
 **Bigger again (2), October22:** Kvon asked for bigger again. The test scene now uses 320 x 320 frames (2.5x; soles on row 294, floor anchor (160,295)); Sora is ~213 px tall (~30% of the 720 px screen height). Earlier sizes are kept. The standard for the movement set is still to confirm.
+
+**Bigger again (3), October22:** Kvon asked for bigger again. The test scene now uses 384 x 384 frames (3x; soles on row 353, floor anchor (192,354)); Sora is ~256 px tall (~36% of the screen). The two Keyblade tips now overlap at the arena spawns (x 420/860). Earlier sizes are kept. The standard for the movement set is still to confirm.
