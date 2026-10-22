@@ -1,8 +1,10 @@
 extends Node2D
 ## Movement test for Sora: battle idle by default; hold D or Right to step forward. Pressing
-## forward plays the idle-to-walk transition once, then loops the walk. R resets his position.
-## Run with `-- --walk-demo --capture=<png path>` to walk for a moment, save a screenshot and quit
-## (used for automated checks).
+## forward plays the idle-to-walk transition once, then loops the walk; releasing it plays the
+## brake back into the idle. R resets his position.
+## Run with `-- --walk-demo --capture=<png path>` to walk for a moment, save a screenshot and quit,
+## or `-- --walk-demo-ticks=N` to hold forward for N game frames and then release (used for
+## automated checks).
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
 ## fighting game: each drawing is held an exact number of game frames, and the transition hands
@@ -28,11 +30,16 @@ const ANIMATIONS := {
 	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
 		[4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4],
 		[6.5, 4.875, 4.875, 6.5, 6.5, 6.5, 6.5, 4.875, 4.875, 6.5, 6.5], &"walk_forward"],
+	&"walk_stop": ["res://assets/sora/walk_stop_384/", "sora_walk_stop_",
+		[3, 3, 3, 3], [], &"idle"],
 }
 
 var _sprite: AnimatedSprite2D
 var _start_x := 420.0
 var _demo_walk := false
+## Game frames to hold forward in the timed demo (-1 = not used).
+var _demo_ticks := -1
+var _tick := 0
 ## Game frames the current drawing has been shown.
 var _hold := 0
 
@@ -57,17 +64,23 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg == "--walk-demo":
 			_demo_walk = true
+		elif arg.begins_with("--walk-demo-ticks="):
+			_demo_ticks = int(arg.trim_prefix("--walk-demo-ticks="))
 		elif arg.begins_with("--capture="):
 			_capture(arg.trim_prefix("--capture="))
 
 
 func _physics_process(_delta: float) -> void:
-	var forward := _demo_walk or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)
+	_tick += 1
+	var forward := _demo_walk or _tick <= _demo_ticks 		or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)
 	if forward and _sprite.animation == &"idle":
 		_show(&"walk_start")
 		return
-	if not forward and _sprite.animation != &"idle":
-		_show(&"idle")
+	if not forward and _sprite.animation in [&"walk_start", &"walk_forward"]:
+		_show(&"walk_stop")  # brake back into the idle
+		return
+	if forward and _sprite.animation == &"walk_stop":
+		_show(&"walk_start")
 		return
 	# Advance one game frame; move to the next drawing when this one's hold is used up.
 	_hold += 1

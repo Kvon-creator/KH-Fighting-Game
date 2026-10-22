@@ -188,3 +188,12 @@ Pending review.
 Pending review. Offered the matching brake transition.
 
 **Why:** User spec and reference.
+
+**Three-part spec (start / walk / brake), October22:** Kvon pasted a spec repeating parts 1-2 (already built as v18t/v18) and adding a 4-frame brake. The spec names the front arm L_ude1/L_ude2, but in this camera the front (nearer) arm is R; kept R. The forearm gap is still handled by ink, per his earlier choice.
+
+- **`walk_fwd_v18b`:** the brake. It is the same blend as v18t with the weights reversed (walk drawing 1 -> battle idle), 4 drawings x 3 game frames, in place. It is pixel-identical to v18t played backwards. 2D: `walk_fwd2d_v18b_ink` with a 4x1 white sheet.
+- **Godot:** new `walk_stop_384`. Releasing forward during walk_start or walk_forward plays walk_stop, then idle; pressing forward during the brake restarts walk_start. Timed demo option `--walk-demo-ticks=N`.
+- **Verified sequence:** start 3x4, walk 40, brake 3x4, idle.
+- **Known limit:** the brake starts from the feet-together contact pose, so releasing mid-stride (wide stance) snaps the feet. Contact-matched brake or finish-the-step options were offered.
+
+**Why:** User spec.

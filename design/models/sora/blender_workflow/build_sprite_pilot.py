@@ -481,7 +481,9 @@ if LOOP:
                 # splayed knees, low shuffle, 65 px per cycle, pitch/roll sway, weapon vertical lag.
                 # 'walk_fwd_v18t' is the 4-frame idle-to-walk transition into it.
                 V18 = V12 and not GAIT.endswith(tuple(f'_v{n_}' for n_ in range(12, 18)))
-                TRANSITION = V18 and GAIT.endswith('t')
+                # 'walk_fwd_v18b' is the matching 4-frame brake back into the idle (same blend, reversed).
+                BRAKE = V18 and GAIT.endswith('b')
+                TRANSITION = V18 and (GAIT.endswith('t') or BRAKE)
                 if V12:
                     # v12+ (Kvon's walk spec): constant root velocity, exactly 90 game px per 40-frame cycle
                     # (2.25 px per game frame, 135 px/s); step length matched so planted feet stay exact.
@@ -519,6 +521,8 @@ if LOOP:
                         if TRANSITION:
                             # 4 drawings x 3 game frames easing from the battle idle into walk drawing 1.
                             TRANS_T = [u_*u_*(3 - 2*u_) for u_ in (.2, .4, .6, .8)]
+                            if BRAKE:
+                                TRANS_T = TRANS_T[::-1]  # walk contact pose -> battle idle
                             GAME_FRAMES = [3, 3, 3, 3]
                             DURATIONS_MS = [50.0]*4
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
