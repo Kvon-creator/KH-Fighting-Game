@@ -265,7 +265,7 @@ if BATTLE:
             # v10+ (user): turn the left wrist (the one not anchoring the Key) so its palm faces the screen.
             POSE['L_palm_to_camera'] = True
         if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7', 'battle_v8', 'battle_v9', 'battle_v10'):
-            POSE['L_palm_back_deg'] = 25  # v11+: slightly back toward Sora
+            POSE['L_palm_back_deg'] = 25 if version == 'battle_v11' else 45  # v11: slightly back; v12+: a little more
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
