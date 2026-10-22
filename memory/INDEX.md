@@ -7,6 +7,7 @@
 - [Local AI Art Workflow](Local_AI_Art_Workflow.md): October19 pilot approval and two adjacent flat refinements, three-pose once-only preview and verified source/weapon/export checks. Full run/stop remains unfinished.
 
 - [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.
+- [Prompt handling](Prompt_Handling_Preference.md): Pasted prompts/specs are instructions for me; don't forward them to Gemini unless told to.
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [Mobile Workflow](Codex_Mobile_Workflow.md): Phone pairing requested before further Gemini sprite generation; setup and status.
