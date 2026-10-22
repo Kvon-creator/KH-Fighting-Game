@@ -494,6 +494,13 @@ if LOOP:
                     STEP_LEN = (65 if V18 else 90) / GAME_PX_PER_M
                     k_scale = STEP_LEN / .50
                     NARROW0 = .68 if V18 else .30      # v18: feet stay wide even when closest (legs still reach)
+                    if V18 and GAIT.startswith('walk_back'):
+                        NARROW0 = .62  # the backward-reaching planted leg ran out of reach at .68 (foot lifted 5 px)
+                    if V18 and GAIT.startswith('walk_fwd') and not GAIT.endswith(('_v18', '_v18t', '_v18b', '_v18w')):
+                        NARROW0 = .58  # v19 (Goku style): the sideways weight shift locked the trailing leg at .68
+                    # Retreat: the hips sat over the trailing foot and the leading leg locked straight; centre
+                    # the stance under the hips by shifting both feet toward the travel direction.
+                    STANCE_SHIFT = -.08 if V18 and GAIT.startswith('walk_back') else 0.0  # +.06 locked the leg further
                     LIFT_CAP = .01 if V18 else 1.0     # v18: stepping foot barely clears the floor
                     # Pelvis drops 6 render px on the passing poses (3, 9) and is at default on contacts.
                     PASSING = [0, .5, 1, .5, 0, 0, 0, .5, 1, .5, 0]
@@ -515,11 +522,43 @@ if LOOP:
                         CONTACT = [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
                         # 3.5 deg extra forward pitch on contacts, easing to 0 on passing frames.
                         PITCH = [3.5*(1 - p_) for p_ in PASSING]
+                        # walk_back_v18*: Gemini's retreat spec (relayed by Kvon): defensive posture with a slight
+                        # backward pitch, toe-first plants on the backward steps, Keyblade 2.5 cm nearer the chest.
+                        BACK = GAIT.startswith('walk_back')
+                        LEAD_TOE = [0]*len(PASSING)
+                        GUARD_IN = 0.0
+                        ROLL_DEG = 2.0
+                        # walk_fwd_v19+ (Gemini's Goku comparison, relayed by Kvon): inverted bounce (high with feet
+                        # together, 7 cm low at the wide contacts), 7 cm stomping arcs, deeper hunch with a spine twist
+                        # toward the stepping leg, shrugged shoulders, head locked forward, tighter weapon carry.
+                        if BACK:
+                            PITCH = [-1.5]*len(PASSING)
+                            # Stepping foot lands toe first and rolls to the heel (lead lands on 3-4, trail on 9-10).
+                            LEAD_TOE = [0, 6, 12, 8, 0, 0, 0, 0, 0, 0, 0]
+                            GUARD_IN = .025
                         # Weapon lags: +5 cm when the pelvis drops (passing), -3 cm when the body rises (contact).
                         HANDS_EXTRA = [.05*p_ - .03*c_ for p_, c_ in zip(PASSING, CONTACT)]
                         # Chest roll 2 deg toward the weight-bearing leg (F = trailing foot, L = leading foot).
                         ROLL = [('F', .3), ('F', 1), ('F', 1), ('F', .5), ('L', .5), ('L', .8), ('L', 1),
                                 ('L', 1), ('L', 1), ('L', .5), ('F', .3)]
+                        GOKU = (not BACK) and not GAIT.endswith(('_v18', '_v18t', '_v18b', '_v18w'))
+                        if GOKU:
+                            GBOB = [0, .25, .6, .9, 1, 1, .9, .6, .3, .1, 0]       # 1 = lowest (wide contacts)
+                            BREATH.update({'drop': .07, 'hands_z': -.07})
+                            HANDS_EXTRA = [.06*b_ - .04*(1 - b_) for b_ in GBOB]
+                            PITCH = [0]*len(GBOB)                                   # static hunch instead
+                            ROLL_DEG = 6.0
+                            # Twist weight: +1 = lead-side shoulder forward (lead foot planting), -1 = trail side.
+                            TWIST_W = [-1, -.6, 0, .6, 1, 1, .6, 0, -.6, -1, -1]
+                            TWIST_DEG, SHRUG_DEG, CENTER_SHIFT = 12.5, 8.0, .025
+                            GUARD_IN = .045
+                            # Stomp: 7 cm arcs that drop fast; lead swings on 1-3, trail on 7-9.
+                            STOMP = {1: (.05, 0), 2: (.07, 0), 3: (.03, 0), 7: (0, .05), 8: (0, .07), 9: (0, .03)}
+                            STEP_KEYS = [(k_[0], STOMP.get(ix, (k_[1], k_[3]))[0], k_[2], STOMP.get(ix, (k_[1], k_[3]))[1],
+                                          k_[4], k_[5], GBOB[ix], k_[7]) for ix, k_ in enumerate(STEP_KEYS)]
+                            POSE['hunch_deg'] = POSE.get('hunch_deg', 0) + 5
+                            POSE['lean_deg'] = POSE.get('lean_deg', 0) + 11
+                            POSE['neck_counter_deg'] = POSE.get('neck_counter_deg', 0) - 13.5
                         if TRANSITION:
                             # 4 drawings x 3 game frames easing from the battle idle into walk drawing 1.
                             TRANS_T = [u_*u_*(3 - 2*u_) for u_ in (.2, .4, .6, .8)]
@@ -658,6 +697,14 @@ def solve_pose(breath=0.0, lag=None):
         rotate_world('Root', 'Z', turn)
     set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'] - POSE.get('crouch_extra', 0)
                                                  - b['drop']*breath)) @ pose_world('center'))
+    if POSE.get('center_shift'):
+        # v19+: shift the pelvis sideways over the weight-bearing foot.
+        cs_side, cs_amt = POSE['center_shift']
+        fwd_c = (turn_m @ Vector((0, -1, 0))).normalized(); lat_c = fwd_c.cross(Vector((0, 0, 1)))
+        foot_c = turn_m @ Vector((POSE[f'{cs_side}_foot'][0], POSE[f'{cs_side}_foot'][1], 0))
+        hip_c = pose_world('center').translation.copy(); hip_c.z = 0
+        sgn = 1 if (foot_c - hip_c).dot(lat_c) > 0 else -1
+        set_pose_world('center', Matrix.Translation(lat_c*cs_amt*sgn) @ pose_world('center'))
     if POSE.get('hunch_deg'):
         rotate_world('hara', ax_x, POSE['hunch_deg'])
     rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath + POSE.get('pitch_extra', 0))
@@ -714,6 +761,13 @@ def solve_pose(breath=0.0, lag=None):
             ankle = pose_world(f'{side}_ashi1').translation
             fwd = pose_world(f'{side}_ashi2').translation - ankle; fwd.z = 0; fwd.normalize()
             rotate_world(f'{side}_ashi1', fwd.cross(Vector((0, 0, 1))).normalized(), -deg)
+    if POSE.get('head_yaw_cancel') and POSE.get('chest_twist_deg'):
+        rotate_world('kubi', 'Z', -POSE['chest_twist_deg'])  # v19+: face stays on the opponent
+    if POSE.get('shrug_deg'):
+        for sd_ in ('R', 'L'):
+            kh = pose_world(f'{sd_}_kata').translation
+            kd = pose_world(f'{sd_}_ude1').translation - kh
+            rotate_world(f'{sd_}_kata', kd.cross(Vector((0, 0, 1))).normalized(), POSE['shrug_deg'])
     if POSE.get('head_tilt_deg'):
         rotate_world('atama', ax_y, POSE['head_tilt_deg'])  # top of head toward his left, as referenced
     if POSE.get('front_flare_deg'):
@@ -1083,6 +1137,17 @@ if LOOP:
     V12 = GAIT and globals().get('V12')
     if V12:
         BASE_BLADE = blade.copy()
+        if V18 and globals().get('GOKU'):
+            lead_ = max(('R', 'L'), key=lambda s_: Vector((*POSE[f'{s_}_foot'][:2], 0)).dot(Vector((1, 0, 0))))
+            POSE.update({'twist_axis': 'spine', 'chest_twist_deg': 0}); solve_pose(0.0)
+            x0 = pose_world(f'{lead_}_kata').translation.dot(Vector((math.cos(t), math.sin(t), 0)))
+            POSE['chest_twist_deg'] = 10; solve_pose(0.0)
+            x1 = pose_world(f'{lead_}_kata').translation.dot(Vector((math.cos(t), math.sin(t), 0)))
+            TWIST_SIGN_G = 1 if x1 > x0 else -1
+            POSE['chest_twist_deg'] = 0
+        if V18 and globals().get('GUARD_IN'):
+            to_chest = pose_world('hara').translation - hand_point('R'); to_chest.z = 0; to_chest.normalize()
+            POSE['grip_offset_world'] = tuple(to_chest*GUARD_IN)
         cam_right = Vector((math.cos(t), math.sin(t), 0))
         PX = 512 / cam_data.ortho_scale
         FRONT = max(('R', 'L'), key=lambda sd: pose_world(f'{sd}_ude2').translation.dot(to_cam))
@@ -1312,7 +1377,13 @@ if LOOP:
                 j_ = SRC if TRANSITION else i
                 POSE.update({'crouch_extra': CROUCH_EXTRA*w_, 'pitch_extra': PITCH[j_]*w_,
                              'knee_splay': KNEE_SPLAY*w_, 'hands_extra_z': HANDS_EXTRA[j_]*w_,
-                             'chest_roll': (follower_ if ROLL[j_][0] == 'F' else leader, 2.0*ROLL[j_][1]*w_)})
+                             'chest_roll': (follower_ if ROLL[j_][0] == 'F' else leader, ROLL_DEG*ROLL[j_][1]*w_)})
+                if globals().get('GOKU'):
+                    weight_side = follower_ if ROLL[j_][0] == 'F' else leader
+                    POSE.update({'twist_axis': 'spine', 'chest_twist_deg': TWIST_SIGN_G*TWIST_DEG*TWIST_W[j_]*w_,
+                                 'head_yaw_cancel': True, 'shrug_deg': SHRUG_DEG*w_,
+                                 'center_shift': (weight_side, CENTER_SHIFT*ROLL[j_][1]*w_),
+                                 'knee_splay': (KNEE_SPLAY + .2*GBOB[j_])*w_})
             if STEPPED and TRANSITION:
                 # Idle -> walk drawing 1: feet move from the idle stance to the wide walk stance.
                 lead_w, lead_h, back_w, back_h, heel, body_w, bob, _ = WALK0
@@ -1322,7 +1393,8 @@ if LOOP:
                 POSE['foot_pitch'] = {}
                 POSE['knee_in'] = {leader: LEAD_KNEE_IN[SRC]*TRANS_T[i], follower: BACK_KNEE_IN[SRC]*TRANS_T[i]}
                 for side, a in ((leader, lead_w), (follower, back_w)):
-                    walk_pos = perp[side]*WIDTH_SCALE + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
+                    walk_pos = perp[side]*WIDTH_SCALE + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2
+                                                                  + STANCE_SHIFT)
                     pos = STANCE[side].lerp(walk_pos, TRANS_T[i])
                     POSE[f'{side}_foot'] = (pos.x, pos.y, 0.0)
                 ROOT_MOTION.append(0.0)
@@ -1331,16 +1403,20 @@ if LOOP:
                 breath, lag = bob, STEP_KEYS[i - 1][6]  # hands/head trail the body by one frame
                 if V12:
                     lag = bob  # hands drop with the pelvis on the same frame (grip intact)
-                    blade = (Matrix.Rotation(math.radians(WEAPON_DRAG[i]), 3, 'Z') @ BASE_BLADE).normalized()
+                    sweep = POSE.get('chest_twist_deg', 0) if globals().get('GOKU') else 0  # blade follows the twist
+                    blade = (Matrix.Rotation(math.radians(WEAPON_DRAG[i] + sweep), 3, 'Z') @ BASE_BLADE).normalized()
                 follower = 'R' if leader == 'L' else 'L'
                 rad = math.radians(heel)
-                POSE['foot_pitch'] = {follower: heel}
+                lead_toe = LEAD_TOE[i] if V18 else 0
+                trail_toe = (10 if i in (8, 9) else 0) if V18 and BACK else 0
+                POSE['foot_pitch'] = {follower: heel + trail_toe, leader: lead_toe}
                 POSE['knee_in'] = {follower: BACK_KNEE_IN[i], leader: LEAD_KNEE_IN[i]}
-                for side, a, h in ((leader, lead_w, lead_h), (follower, back_w, back_h + TOE_DIST*math.sin(rad))):
+                for side, a, h in ((leader, lead_w, lead_h + TOE_DIST*math.sin(math.radians(lead_toe))),
+                                   (follower, back_w, back_h + TOE_DIST*math.sin(math.radians(heel + trail_toe)))):
                     tuck = FOOT_IN*BACK_KNEE_IN[i] if side == follower else 0
                     width_ = WIDTH_SCALE if V18 else 1.0
                     pos = (perp[side]*width_*(1 - tuck)
-                           + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2))
+                           + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2 + globals().get('STANCE_SHIFT', 0)))
                     POSE[f'{side}_foot'] = (pos.x, pos.y, h)
                 ROOT_MOTION.append(round(body_w - (STEP_KEYS[i - 1][5] - (STEP_LEN if i == 0 else 0)), 4))
             elif SHUFFLE:

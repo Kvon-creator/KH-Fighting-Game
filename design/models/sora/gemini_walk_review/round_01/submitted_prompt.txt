@@ -1,0 +1,18 @@
+Here are Claude's results for the four-sequence Sora walk package. The four attached images are the sprite sheets, in order: (1) Start Transition 4x1, (2) Grounded Walk Cycle 4x3 with 11 frames and the 12th cell blank, (3) Brake 1 Feet Together 4x1, (4) Brake 2 Wide Stance 4x1. Every frame is 512x512 on plain white, same right-facing three-quarter camera and scale; they are rendered from the KH2 Sora rig in Blender, not generated.
+
+First-frame alignment points, in 512x512 frame pixels (x right, y down):
+1 Start: head top (248,140); head bone atama (265.0,200.4); front grip hand centre R_te (267.9,320.2); grip socket R_buki (268.9,324.1); feet on row 471.
+2 Walk: head top (250,168); atama (265.7,227.6); grip R_te (269.0,351.1); R_buki (269.8,354.9); feet row 471.
+3 Brake 1: head top (251,165); atama (265.6,224.4); grip R_te (269.9,346.4); R_buki (270.5,350.2); feet row 471.
+4 Brake 2: head top (252,164); atama (267.0,224.4); grip R_te (268.9,347.4); R_buki (269.7,351.3); feet row 471.
+In Godot the character is anchored at (256,472) in these frames, so all four sequences share one floor line.
+
+Measured results against the spec:
+- Start: 4 drawings x 3 game frames; center drops 0.12 m below idle; feet widen, knees splay, mune pitches 3.5 degrees; Keyblade moves to the walk's starting position. Head goes from row 140 down toward the walk.
+- Walk: 11 drawings held [4,3,3,4,4,4,4,3,3,4,4] = 40 game frames; root moves exactly 65 px per cycle at a constant 1.625 px per game frame (6.5 px per 4-frame hold, 4.875 px per 3-frame hold). Extra 6 px pelvis drop on passing frames (head rows 168 -> 173); stepping foot lift capped at 1 cm; planted feet hold within 1 px in Godot (rounding). mune pitch 3.5 deg on contacts easing to 0 on passing, 2 deg roll toward the weight-bearing leg. Weapon IK +5 cm on passing, -3 cm on contacts, -8 deg drag. Both hands stay on the handle (right 0.8 cm, left 2.2-3.3 cm from the handle line).
+- Brake 1: pixel-identical reversal of the Start Transition; head rises from row 165 to 140.
+- Brake 2: from the widest-stance contact frame back to idle; head rises from row 164 to 140. Godot picks Brake 2 when released on walk drawings 4-8 (feet 0.86 m or more apart), otherwise Brake 1.
+
+One constraint is handled differently: a true 10-12 px white background gap between the front forearm (R_ude2) and the jacket is not possible with both hands on the handle, because in this camera view the front arm sits in front of the jacket and the jacket outline extends past it on both sides. Tests with collarbone abduction, a 15-22 degree chest twist (the KH2 rig's mune local Z is a side axis, so the twist was done about the spine axis) and a screen-plane elbow flare all moved the elbow less than 2 px sideways. The user chose to separate the forearm from the jacket by contrast instead: a 2 px ink line on the jacket side plus a 1 px light rim on the skin side, with a 97-101 luminance step across the edge.
+
+Please review these against your spec and tell Claude exactly what to change next to create a new, improved walking cycle.

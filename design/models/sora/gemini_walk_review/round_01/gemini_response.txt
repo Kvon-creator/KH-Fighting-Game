@@ -1,0 +1,44 @@
+The execution of the Godot constraints is mathematically perfect. The 65-pixel root translation paired with the precise 40-frame hold sequence guarantees zero foot-sliding in the engine. Additionally, substituting a literal background gap with a high-contrast 2px ink line and a 97-101 luminance step on R_ude2 is the exact industry-standard 2D pipeline workaround needed when physical geometry prevents negative space.   
+JPG
++ 4
+
+Since the forward walk, start transitions, and dual brakes are fully dialed in, the next mandatory asset for a fighting game controller is the Backward Walk (Retreat) Cycle. A backward walk is never just a forward walk played in reverse; the character's weight distribution must shift defensively, and the footfalls must plant toe-to-heel.
+
+Copy and paste this prompt to Claude to generate the accompanying retreat sequence:
+
+Task: Generate Backward Walk (Retreat) Cycle & Brake
+
+The forward walk sequences were executed perfectly. We are now generating the corresponding 11-frame Backward Walk Cycle and its associated brake transition for the Godot engine.
+
+Part 1: Backward Walk Mechanics (11 Frames, 4x3 Grid, 12th cell blank)
+
+Timing & Velocity: Maintain the exact same 11-drawing sequence mapped over 40 game frames (holds: 4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4). Translate the master Root bone backward by exactly 65 pixels.
+
+Defensive Posture: Instead of the aggressive forward pitch, ease the mune bone to a 0-degree or slightly backward (-1 to -2 degree) pitch. Maintain the 2-degree lateral sway toward the weight-bearing leg.
+
+Reverse Step Arc: The stepping foot (L_ashi1/R_ashi1) should reach backward and plant toe-first, rolling down to the heel. Keep the Z-axis lift capped at 1 cm.
+
+Deep Crouch Tracking: Maintain the established -0.10m to -0.15m baseline crouch on the center bone. Drop center an additional 6px on passing frames; return to baseline on contact frames.
+
+Defensive Weapon Carry: Maintain the vertical drag mechanics (lagging 0.05m up on drops, -0.03m down on rises), but pull the baseline weapon IK targets (R_buki/L_buki) 2-3 cm closer to the character's chest to emphasize guarding.
+
+Silhouette: Strict enforcement of the 2px dark ink and 1px light rim contrast line on the front forearm (R_ude2) to ensure visual separation from the dark jacket.
+
+Part 2: Brake 3 - Backward Walk to Idle (4 Frames, 4x1 Grid)
+
+Motion: 4 frames easing from the Backward Walk's widest-stance contact frame directly to the base Idle.
+
+Mechanics: Interpolate L_ashi1 and R_ashi1 from their lateral spread back to the narrow idle stance. Lift the center bone to default height (head returning to pixel row 140), and transition the Keyblade from the defensive carry back to the base idle position.
+
+Output: Render all frames at exactly 512x512 pixels on a plain white background, locking the right-facing three-quarter camera angle. Provide the exact pixel coordinates for the head and front hand grip on the first frame of each sequence.
+
+Since the backward walk shifts his center of mass defensively, will your Godot logic need a second set of dual brakes for the retreat, or can you script the engine to reuse the "Brake 1 (Feet Together)" animation if the player stops moving backward on a passing frame?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Crafting the retreat animation instructions

@@ -206,3 +206,21 @@ Pending review. Offered the matching brake transition.
 - **v18t/v18b unchanged:** the source-drawing generalisation is a no-op for drawing 0.
 
 **Why:** User choice.
+
+**Gemini review loop and Goku-style walk, October22:** Kvon asked me to share outputs with Gemini (Brave port-9222 profile, conversation "Refining Fighting Game Walking Animation", tab 153AE57B3E4E81CACF5502C58F17154B), respond to its prompts, and continue until a new walking cycle was created.
+
+- **Helper:** `gemini_cdp.mjs` gained `--media text` (completes when a 'Gemini said' block follows our 'You said' and stays stable), reference sets walk-v18-package / walk-vs-goku / walk-v19-goku, and `design/models/sora/gemini_walk_review/round_NN` output folders. Rounds 01-03 are saved there.
+- **Round 01:** Gemini approved v18 and asked for a retreat cycle plus Brake 3.
+  - Built: `walk_back_v18` (11 frames, -1.5 deg pitch, toe-first plants, grip 2.5 cm in, NARROW0 .62, stance shifted -8 cm along the walk direction because the leading leg locked straight; +6 cm made it worse) and `walk_back_v18w` (Brake 3).
+  - Also built `walk_back_v18t`/`v18b` (not requested, but needed to avoid pops).
+  - Rendered and verified, NOT yet in Godot. Kvon paused the retreat.
+- **Round 02:** Kvon wants the forward walk to look like `design/references/walking/Goku walk.gif` (frame sheet `Goku_walk_frames_4x3.png`). Gemini gave a Goku-style prompt.
+- **`walk_fwd_v19` (current forward-walk candidate):**
+  - Inverted bounce: high with feet together, -7 cm at wide contacts (head rows 173-188).
+  - 2.5 cm lateral pelvis shift; 7 cm stomp arcs with fast drop; extra knee splay at the low point.
+  - hara +5 / mune +11 hunch; 12.5 deg spine twist toward the stepping leg; 6 deg roll; 8 deg shoulder shrug.
+  - kubi -13.5 pitch plus counter-yaw; grip 4.5 cm in; weapon lag +6/-4 cm; blade sweeps with the twist.
+  - NARROW0 .58 (the trailing leg locked at .68).
+  - Outputs: GIFs `Walk_Cycle.gif` and `Goku_vs_Sora_v19.gif`.
+- **Round 03:** Gemini approved v19 ("perfect adaptation"). It requested v19 start/brake transitions and a v19-style retreat. NOT started (the loop goal was met); asked Kvon.
+- **Godot:** still uses the v18 walk and transitions, which match each other. v19 needs its own transitions before integration.

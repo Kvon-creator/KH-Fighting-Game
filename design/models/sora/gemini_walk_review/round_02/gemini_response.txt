@@ -1,0 +1,69 @@
+Here is the exact breakdown of why Sora’s current walk looks like a smooth, cautious shuffle, while Goku’s looks like an aggressive, rhythmic stomp.
+
+Goku’s walk is defined by a massive vertical bounce, a high-stepping stride, a severe forward hunch, and a twisting upper body. Because Sora must keep both hands glued to the Keyblade, we cannot replicate Goku's alternating swinging fists—but we can inject that exact same aggression into Sora's posture, leg action, and weapon carry.
+
+Copy and paste this prompt directly to Claude to implement these precise changes using your KH2 rig:
+
+Task: Modify Forward Walk to Match "Goku" Reference Style
+Please overhaul the current 11-frame forward walk cycle to replicate the aggressive, stomping mechanics of the provided Goku reference.
+
+Apply the following specific bone adjustments and animation curves.
+
+1. Pelvis Rhythm & Bounce (center)
+
+Current Issue: Sora drops lowest on the passing frames and shuffles smoothly. Goku does the exact opposite: he rises when his leg is under him and squats deep into the step.
+
+Change: Invert the vertical rhythm. Set the passing frames (frames 4 and 10, feet together) as the highest baseline point. On the contact frames (frames 1 and 7, widest stance), drop the center bone an additional -0.06m to -0.08m to create a heavy, bouncing impact.
+
+Weight Shift: Shift the center bone laterally (side-to-side) by 2-3cm over the planted weight-bearing leg during the passing frames.
+
+2. Stomp Arc & Wide Knees (ashi1, ashi2, momo, sune)
+
+Current Issue: Sora’s 1cm lift is a slide. Goku physically stomps.
+
+Change: Remove the 1cm Z-axis lift cap. The stepping foot (ashi1 IK) must lift 6cm to 8cm off the floor during the passing frames in a prominent, aggressive arc.
+
+Change: Force the foot to plant firmly flat on contact, with a sharp deceleration curve (fast drop, hard stop).
+
+Change: Push the knee IK pole vectors (momo/sune influence) even further outward on the contact frames. The knees should visibly buckle outward into a wider sumo-style stance when he hits his lowest center point.
+
+3. Aggressive Hunch & Twist (hara, mune, L_kata, R_kata)
+
+Current Issue: Sora's torso is too upright and rigid. Goku hunches heavily and twists his shoulders into every step.
+
+Change (Lean): Pitch hara forward by 5 degrees and mune forward by an additional 10 to 12 degrees to create a permanent, aggressive hunch.
+
+Change (Twist): Introduce a heavy torso twist. Rotate the mune bone on its vertical spine axis by 10 to 15 degrees toward the leading leg on every step (e.g., when the left foot plants forward, the left shoulder twists forward).
+
+Change (Sway): Increase the lateral roll of mune from 2 degrees to 5-7 degrees toward the weight-bearing leg.
+
+Change (Shoulders): Rotate L_kata and R_kata slightly up and forward to shrug the shoulders, burying the neck into the torso.
+
+4. Predatory Head Tracking (kubi, atama)
+
+Current Issue: Sora's head follows his spine naturally. Goku's head is tucked, glaring up from under his brow.
+
+Change: Counter-rotate the kubi and atama bones against the new severe chest lean. Pitch them up (backward) by 12 to 15 degrees so the chin is tucked but the face remains pointed dead ahead.
+
+Change: Counter-animate the atama yaw to perfectly cancel out the new mune twist, ensuring the face stays 100% locked on the opponent regardless of the shoulder swing.
+
+5. Weapon Aggression (ude1, ude2, te, buki)
+
+Constraint Rule: Both hands (te) must remain locked to the buki handle. Do NOT separate the arms into Goku's swinging fists.
+
+Change: To match Goku's tight guard, translate the primary buki IK target 4-5cm closer to Sora's stomach/chest.
+
+Change: Exaggerate the vertical drag. When the center slams down on contact frames, the buki IK should lag upward by +0.06m. When the center rises on passing, punch the buki IK down by -0.04m.
+
+Change: Allow the Keyblade to swing horizontally. The buki bone should inherit the 10-15 degree left/right twist of the mune bone, causing the tip of the blade to sweep aggressively side-to-side with his strides.
+
+Silhouette Check: Maintain the 10-12px visual gap (using the 2px dark ink/1px light rim contrast rule) on R_ude2 despite the tighter weapon carry.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Emulating Goku's aggressive style

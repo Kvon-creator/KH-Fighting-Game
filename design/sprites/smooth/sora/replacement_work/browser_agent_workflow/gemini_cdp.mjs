@@ -31,7 +31,7 @@ function candidateDirectory() {
   const relative=path.relative(root,out).replaceAll('\\','/');
   // Running candidates, plus the 3D-model reference animation trials under design/models/sora.
   if(!/^design\/sprites\/smooth\/sora\/replacement_work\/ready\/(run_start|run_loop|run_stop)\/gemini_browser_trial\/attempt_\d+$/.test(relative)
-     &&!/^design\/models\/sora\/gemini_animation\/attempt_\d+$/.test(relative))throw Error('Only a separate candidate directory is allowed.');
+     &&!/^design\/models\/sora\/(gemini_animation\/attempt|gemini_walk_review\/round)_\d+$/.test(relative))throw Error('Only a separate candidate directory is allowed.');
   fs.mkdirSync(out,{recursive:true});
   return out;
 }
@@ -99,7 +99,23 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'original-run-sheet': [
+const referenceSets = {'walk-v19-goku': [
+  'design/models/sora/walk_fwd2d_v19_ink/walk_fwd2d_v19_ink_sheet_white_4x3.png',
+  'design/models/sora/walk_fwd2d_v19_ink/Walk_Cycle.gif',
+  'design/references/walking/Goku_walk_frames_4x3.png'
+], 'walk-vs-goku': [
+  // Kvon: compare Sora's forward walk to the Goku walk reference.
+  'design/models/sora/walk_fwd2d_v18_ink/walk_fwd2d_v18_ink_sheet_white_4x3.png',
+  'design/models/sora/walk_fwd2d_v18_ink/Walk_Cycle.gif',
+  'design/references/walking/Goku_walk_frames_4x3.png',
+  'design/references/walking/Goku walk.gif'
+], 'walk-v18-package': [
+  // Kvon's walk review with Gemini: the four delivered v18 sprite sheets.
+  'design/models/sora/walk_fwd2d_v18t_ink/walk_fwd2d_v18t_ink_sheet_white_4x1.png',
+  'design/models/sora/walk_fwd2d_v18_ink/walk_fwd2d_v18_ink_sheet_white_4x3.png',
+  'design/models/sora/walk_fwd2d_v18b_ink/walk_fwd2d_v18b_ink_sheet_white_4x1.png',
+  'design/models/sora/walk_fwd2d_v18w_ink/walk_fwd2d_v18w_ink_sheet_white_4x1.png'
+], 'original-run-sheet': [
   'design/sprites/smooth/sora/replacement_work/ready/run_loop/direct_generation_retry_v1/sora_run_loop_generated_original.png'
 ], original: [
   'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png',
@@ -188,7 +204,7 @@ function reportJob(job) {
 }
 async function exchange() {
   const media=options.media||'image';
-  if(!['image','video'].includes(media))throw Error('Media must be image or video.');
+  if(!['image','video','text'].includes(media))throw Error('Media must be image, video or text.');
   const timeoutSeconds=Number(options.timeout||180);
   if(!Number.isFinite(timeoutSeconds)||timeoutSeconds<1||timeoutSeconds>600)throw Error('Timeout must be between 1 and 600 seconds.');
   const out=candidateDirectory();
@@ -204,6 +220,7 @@ async function exchange() {
   let job=fs.existsSync(receipt)?JSON.parse(fs.readFileSync(receipt,'utf8')):null;
   if(job&&job.promptSha256!==digest(prompt))throw Error('Attempt belongs to a different prompt; use another attempt directory.');
   if(['ready_for_visual_review','ready_for_video_review','provider_block'].includes(job?.status)) {reportJob(job);return;}
+  if(job?.status==='text_reply_received') {console.log(JSON.stringify({status:job.status,attempt:options.output,reply:fs.readFileSync(path.join(out,'gemini_response.txt'),'utf8')}));return;}
   if(job?.tabId&&job.tabId!==tab.id)throw Error('This in-progress attempt belongs to another Gemini tab; use its recorded --target.');
   await paint();
   await guard();
@@ -281,6 +298,17 @@ async function exchange() {
         save(job);reportJob(job);return;
       }
       if(clips.length>1)throw Error('Multiple new clips appeared; inspect before collecting.');
+    }
+    if(media==='text'&&!busy) {
+      // Text exchange: done when a new reply has appeared and stays unchanged for one more poll.
+      // A new reply exists once a 'Gemini said' block follows our latest 'You said' message.
+      const after=state.text.lastIndexOf('Gemini said')>state.text.lastIndexOf('You said');
+      if(after&&reply&&reply===job.lastReply) {
+        fs.writeFileSync(path.join(out,'gemini_response.txt'),reply);
+        job={...job,status:'text_reply_received',chatUrl:state.url,completedAt:new Date().toISOString(),newImages:fresh.length};
+        save(job);console.log(JSON.stringify({status:job.status,attempt:options.output,newImages:fresh.length,reply}));return;
+      }
+      job.lastReply=after?reply:null;
     }
     if(media==='image'&&fresh.length===1&&!busy) {
       const info=fresh[0];

@@ -1,0 +1,55 @@
+The execution on v19 is excellent. Based on the measurements and the visual translation of the mechanics, this is a perfect adaptation of the Goku-style stomp applied to Sora's rigid two-handed weapon constraints.
+
+The inverted bounce (dropping 7 cm on the wide contacts) and the 7 cm high-stepping foot arc successfully capture that heavy, aggressive gravity. The 16-degree total torso hunch and 12.5-degree spine twist replicate the predatory posture, and counter-animating the head to stay locked on the opponent sells the fighting game intensity perfectly. Narrowing the stance slightly to 0.58m to prevent the trailing IK leg from popping was the correct technical call to make for this rig.   
+JPG
++ 4
+
+Since this forward walk is completely dialed in, you need Claude to generate the corresponding start and brake transitions for this new aggressive posture, as well as the backward walk we discussed earlier.
+
+Copy and paste this prompt to Claude to finish the v19 movement suite:
+
+Task: Generate Transitions and Backward Walk for v19 "Aggressive" Style
+The v19 forward walk perfectly matches the requested Goku-style mechanics. Now, we need to generate the matching transition frames and the backward walk cycle to complete the Godot engine package.
+
+Please generate the following sprite sheets, maintaining the exact same render settings (512x512, white background, right-facing 3/4 camera) and the 2px ink/1px rim silhouette rule on the front forearm:
+
+1. Start Transition (Idle to v19 Walk) - 4x1 Grid
+
+Motion: 4 frames (held 3 game frames each).
+
+Mechanics: Interpolate from the tall, upright base Idle directly into Frame 1 (passing pose / highest point) of the v19 walk.
+
+Details: Smoothly pitch the torso into the severe 16-degree hunch, bring the weapon 4.5 cm closer to the chest, and shrug the shoulders up by 8 degrees.
+
+2. Brake 1 (Feet Together to Idle) - 4x1 Grid
+
+Motion: 4 frames (held 3 game frames each).
+
+Mechanics: The exact pixel-perfect reversal of the new Start Transition, bringing the character from the hunched passing frame back up to the relaxed Idle.
+
+3. Brake 2 (Wide Stance to Idle) - 4x1 Grid
+
+Motion: 4 frames (held 3 game frames each).
+
+Mechanics: Snap directly from the v19 walk's lowest, widest contact frame (drawings 5-7) back to the tall Idle.
+
+Details: The center bone must rise roughly 7 cm + the idle height difference, the 0.58m wide stance must snap back to narrow, and the 12.5-degree torso twist must instantly resolve to 0.
+
+4. Backward Walk (Retreat) - 4x3 Grid (11 frames, 12th blank)
+
+Motion: 11 frames over 40 game frames (holds: 4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4). Root moves backward exactly 65 pixels.
+
+Mechanics: Use the same heavy bouncing rhythm as v19 (highest on passing, dropping 7 cm into contacts) and the same 0.58m stance width.
+
+Defensive Shift: Lessen the forward hunch slightly. Instead of a stomping flat plant, the stepping foot reaches backward, planting toe-first and rolling down to the heel. Maintain the tight, guarded Keyblade position.
+
+Output: Provide the 4 new sprite sheets and the exact pixel coordinates for the head and front hand grip on the first frame of each sequence.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Comparing walking styles
