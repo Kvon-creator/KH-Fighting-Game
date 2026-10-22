@@ -29,6 +29,12 @@ REF_POSE = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 7)}
 MESH_GRIP = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 12)}  # v12+: grip at visible hand
 # v14+ (user note): front (right) palm up, left wrist turned the opposite way, hands slid up toward the hilt.
 PALM_ORIENT = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 14)}
+# v15+ (user-approved): roll the fingers and thumbs around the handle with a "fist_wrap" shape key.
+FIST_WRAP = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 15)}
+# v15's plain roll curled the short fingers only 60-100 degrees; v16+ curls harder.
+WRAP_GAIN, WRAP_MAX_DEG = (1.0, 250) if version == 'idle_loop_v15' else (1.7, 270)
+# v17+: bend each wrist so the fingers cross the handle; v16's palm-up right fingers lay along it.
+SQUARE_WRISTS = FIST_WRAP and version not in ('idle_loop_v15', 'idle_loop_v16')
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -329,7 +335,12 @@ def hand_on(side, grip, bend_hint):
 HAND_VERTS = {}
 
 
+HAND_LOCAL = {}  # v15+: hand centre frozen in te-bone space so curled fingers don't drag the grip
+
+
 def hand_point(side):
+    if side in HAND_LOCAL:
+        return pose_world(f'{side}_te') @ HAND_LOCAL[side]
     if MESH_GRIP:
         # v12+: centre of the visible hand (vertices on te + finger bones). The te/buki midpoint
         # sat below the handle, leaving the fists under the guard.
@@ -381,6 +392,15 @@ def solve_pose(breath=0.0, lag=None):
     for side, degrees in TWIST.items():
         forearm = (pose_world(f'{side}_te').translation - pose_world(f'{side}_ude2').translation).normalized()
         rotate_world(f'{side}_te', forearm, degrees)
+    if SQUARE_WRISTS:
+        for side in ('R', 'L'):
+            m = pose_world(f'{side}_te'); head = m.translation.copy()
+            f = (pose_world(f'{side}_yubiB').translation - head).normalized()
+            across = f - blade*f.dot(blade)
+            if across.length > 1e-3:
+                turn = f.rotation_difference(across.normalized())
+                set_pose_world(f'{side}_te', Matrix.Translation(head) @ turn.to_matrix().to_4x4()
+                               @ Matrix.Translation(-head) @ m)
     for side, (curl_axis, curl_sign) in FINGERS.items():
         set_curl(side, curl_axis, curl_sign)
     update()
@@ -525,6 +545,70 @@ def place_key():
 
 
 place_key()
+WRAP_REPORT = {}
+
+
+def skin_matrix(o, v):
+    # Linear-blend skinning matrix (world) for one vertex, as the Armature modifier applies it.
+    total, acc = 0.0, Matrix.Diagonal((0, 0, 0, 0))
+    for e in v.groups:
+        name = o.vertex_groups[e.group].name
+        if name in arm.pose.bones and e.weight > 0:
+            pb = arm.pose.bones[name]
+            m = arm.matrix_world @ pb.matrix @ arm.data.bones[name].matrix_local.inverted() @ arm.matrix_world.inverted()
+            acc = acc + m*e.weight; total += e.weight
+    return acc*(1/total) if total else Matrix.Identity(4)
+
+
+def build_fist_wrap():
+    # Roll every finger/thumb vertex onto a circle around the handle line, measured from its
+    # knuckle: arc length past the knuckle becomes angle around the handle (palm stays behind).
+    origin, d = key.matrix_world.translation.copy(), blade
+    dg = bpy.context.evaluated_depsgraph_get()
+    targets = {}
+    for side in ('R', 'L'):
+        for bone, part in ((f'{side}_yubiB', 'fingers'), (f'{side}_yubiA', 'thumb')):
+            m = pose_world(bone); knuckle = m.translation.copy()
+            along = (knuckle - origin).dot(d); centre = origin + d*along
+            u = knuckle - centre; r0 = u.length; u.normalize()
+            f = (m.to_3x3() @ Vector((0, 1, 0))).normalized()
+            t = f - d*f.dot(d) - u*f.dot(u)
+            t = t.normalized() if t.length > 1e-4 else d.cross(u).normalized()
+            WRAP_REPORT[f'{side}_{part}_radius_m'] = round(r0, 4)
+            for o in body:
+                g = o.vertex_groups.get(bone)
+                if not g:
+                    continue
+                ev = o.evaluated_get(dg).data
+                for v in o.data.vertices:
+                    w = next((e.weight for e in v.groups if e.group == g.index), 0)
+                    if w < .05:
+                        continue
+                    p = o.matrix_world @ ev.vertices[v.index].co
+                    rel = p - knuckle
+                    s, h, a = rel.dot(t), rel.dot(u), rel.dot(d)
+                    if s <= 0:
+                        continue
+                    theta = min(WRAP_GAIN*s / max(r0, .012), math.radians(WRAP_MAX_DEG))
+                    wrapped = centre + d*a + (u*math.cos(theta) + t*math.sin(theta))*(r0 + h)
+                    targets.setdefault(o, {})[v.index] = p.lerp(wrapped, min(w, 1))
+    moved = 0
+    for o, verts in targets.items():
+        if not o.data.shape_keys:
+            o.shape_key_add(name='Basis', from_mix=False)
+        sk = o.shape_key_add(name='fist_wrap', from_mix=False)
+        for i, world in verts.items():
+            rest_world = skin_matrix(o, o.data.vertices[i]).inverted() @ world
+            sk.data[i].co = o.matrix_world.inverted() @ rest_world
+            moved += 1
+        sk.value = 1.0
+    update()
+    WRAP_REPORT['vertices_wrapped'] = moved
+
+
+if FIST_WRAP:
+    HAND_LOCAL.update({s: pose_world(f'{s}_te').inverted() @ hand_point(s) for s in ('R', 'L')})
+    build_fist_wrap()
 if not LOOP:
     # Single frame: ride the weapon bone. The loop re-places the Key each frame instead, because
     # the re-solved hand twists slightly per frame and a bone-parented Key wobbled visibly.
@@ -601,7 +685,7 @@ if LOOP:
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
-        'hand_search': FINGER_REPORT,
+        'hand_search': FINGER_REPORT, 'fist_wrap': WRAP_REPORT,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}
                         for s, (a, g) in FINGERS.items()},
         'blend': blend.name,

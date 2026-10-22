@@ -68,6 +68,16 @@
 
 **Why:** User's own grip suggestion.
 
+**Fist wrap, October22:** Kvon asked for the best and easiest way to make both hands appear to wrap the handle, then approved the proposed bend approach. It is implemented as a `fist_wrap` shape key: each finger/thumb vertex is rolled around the handle line from its knuckle, then converted back to rest space through the vertex's skinning matrix. The hand centre is frozen in te-bone space first (`HAND_LOCAL`), so the curl doesn't move the grip.
+
+- **v15:** the plain curl was too weak.
+- **v16:** `WRAP_GAIN` 1.7 curls harder; the left fist forms, but the palm-up right fingers lay along the handle.
+- **`idle_loop_v17` (current):** squares each wrist so the fingers cross the handle before wrapping. Both hands form fists and the front fist reads as wrapping the handle inside the guard.
+- **Lesson:** fingers must cross the handle to wrap it.
+- **Status:** pending review.
+
+**Why:** User-approved approach to finishing the grip.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.
