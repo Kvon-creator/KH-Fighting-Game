@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'walk-v19-goku': [
+const referenceSets = {'shuffle-v3': [
+  'design/models/sora/shuffle2d_fwd_v3/shuffle2d_fwd_v3_sheet_white_4x2.png',
+  'design/models/sora/shuffle2d_fwd_v3/Idle_Shuffle_Idle.gif',
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
+], 'walk-v19-goku': [
   'design/models/sora/walk_fwd2d_v19_ink/walk_fwd2d_v19_ink_sheet_white_4x3.png',
   'design/models/sora/walk_fwd2d_v19_ink/Walk_Cycle.gif',
   'design/references/walking/Goku_walk_frames_4x3.png'

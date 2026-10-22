@@ -581,6 +581,11 @@ if LOOP:
                        (1, 0, .3, .012, 4), (1, 0, .75, .018, 4), (1, 0, .95, .004, 4)]
             if not GAIT.endswith('_v1'):
                 SH_KEYS = [(*k[:4], 4) for k in SH_KEYS]  # 28 frames per cycle
+            if not GAIT.endswith(('_v1', '_v2')):
+                # v3+ (Kvon: too slow, not enough distance): longer 0.30 m step with a deeper hip dip so
+                # the legs still reach, and quicker 3-frame holds (4 on the landing): 22 frames per cycle.
+                SH_STEP, SH_DIP = .30, .075  # .06 left both legs fully straight at the widest point
+                SH_KEYS = [(*k[:4], f) for k, f in zip(SH_KEYS, [3, 3, 3, 4, 3, 3, 3])]
                 # Same breathing settings as the battle idle, frozen at its first frame, so drawing 1
                 # matches the idle exactly.
                 BREATH = {'drop': .025, 'lean_deg': 1.0, 'hands_z': -.012, 'head_counter_deg': -.5}

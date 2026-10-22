@@ -237,3 +237,14 @@ Pending review. Offered the matching brake transition.
 - **Godot:** `sora_move_test.gd` now uses idle + shuffle_forward + shuffle_back only (D/Right forward, A/Left back). The shuffle starts straight from the idle; on release it finishes the cycle and then stands (no transitions/brakes needed). Verified: exact 4-frame holds, planted feet pixel-exact, clean stop.
 - **Shelved:** the v18/v19 walk sets and their transitions/brakes stay on disk but are not used. The v19 transitions and retreat built in the background were not reviewed.
 - **Known:** starting while the idle is mid-bounce can pop the upper body by up to the idle bounce (~4 px at 384).
+
+**Faster shuffle, October22:** Kvon said the shuffle was too slow and didn't cover enough distance, then asked me to get Gemini's suggestions.
+
+- **`shuffle_fwd_v3` / `shuffle_back_v3` (current in Godot):** 0.30 m step, hip dip 7.5 cm (6 cm left both legs fully straight at the widest point), holds [3,3,3,4,3,3,3] = 22 frames.
+- **Root px:** [1.35, 6.77, 12.18, 8.12, 8.12, 12.18, 5.42] = 54.1 px per step, ~148 px/s (was 40 px / 85 px/s).
+- **Verified in Godot:** exact holds, planted feet pixel-exact, clean stop both ways.
+- **Gemini round 04 suggestions** (`gemini_walk_review/round_04`), NOT implemented yet; asked Kvon:
+  - ~75 px per step over 18 frames (holds [3,2,2,4,2,2,3], ~250 px/s); step 0.42-0.45 m.
+  - Foot lift 4.5-5 cm so it steps instead of skating.
+  - Hip dip 9-10 cm; knee poles 3-4 cm further out on the widest drawings.
+  - Upper body stays locked.

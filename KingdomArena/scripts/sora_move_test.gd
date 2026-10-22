@@ -18,14 +18,14 @@ const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
-## 180.5 px per metre), so planted feet stay exactly in place: 39.7 px per 28-frame cycle, ~85 px/s.
+## 180.5 px per metre), so planted feet stay exactly in place: 54.1 px per 22-frame cycle, ~148 px/s.
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
 		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], []],
 	&"shuffle_forward": ["res://assets/sora/shuffle_fwd_384/", "sora_shuffle_fwd_",
-		[4, 4, 4, 4, 4, 4, 4], [0.99, 4.96, 8.93, 5.96, 5.96, 8.93, 3.97]],
+		[3, 3, 3, 4, 3, 3, 3], [1.35, 6.77, 12.18, 8.12, 8.12, 12.18, 5.42]],
 	&"shuffle_back": ["res://assets/sora/shuffle_back_384/", "sora_shuffle_back_",
-		[4, 4, 4, 4, 4, 4, 4], [-0.99, -4.96, -8.93, -5.96, -5.96, -8.93, -3.97]],
+		[3, 3, 3, 4, 3, 3, 3], [-1.35, -6.77, -12.18, -8.12, -8.12, -12.18, -5.42]],
 }
 
 var _sprite: AnimatedSprite2D

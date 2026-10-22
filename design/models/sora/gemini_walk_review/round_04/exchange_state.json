@@ -1,0 +1,31 @@
+{
+  "status": "text_reply_received",
+  "media": "text",
+  "tabId": "153AE57B3E4E81CACF5502C58F17154B",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "shuffle-v3",
+  "promptSha256": "0ae147f6cca96b8077a64c987fdcd27637ced6c0ee36df2fbdc8fe4fe05abd33",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\WALK_REVIEW_ROUND_04.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-22T23:33:05.679Z",
+  "baselineImages": [],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\shuffle2d_fwd_v3\\shuffle2d_fwd_v3_sheet_white_4x2.png",
+      "sha256": "807b0a69c8310d23da701a96524c76d67b5daef4e35280dc6c9782b3d986e1e6"
+    },
+    {
+      "file": "design\\models\\sora\\shuffle2d_fwd_v3\\Idle_Shuffle_Idle.gif",
+      "sha256": "efa10ffc19991ae55888787daa1f59f563509118bdebbed470b522daba05b347"
+    },
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "lastReply": "To make this shuffle faster, cover more distance, and feel less stiff while strictly locking the upper body to the base idle pose, the legs must do all the work to sell the momentum and weight. Right now, because the feet only lift 1.2–1.8 cm, increasing the speed and distance will make him look like he is ice skating.   \nJPG\n+ 1\n\nTo fix this, you need to increase the foot lift to create a snapping \"step\" rather than a slide, deepen the pelvis drop to allow a wider reach without breaking the IK, and tighten the frame holds.\n\nCopy and paste this exact prompt to Claude:\n\nTask: Refine Idle Shuffle for Speed and Distance\nWe need to upgrade the 7-drawing forward idle shuffle to move faster and cover more distance.Strict Constraint: The upper body must remain perfectly locked to the local rotations/translations of the approved battle idle. Drawing 1 must remain identical to the idle frame.\n\nPlease apply the following mechanical adjustments to the rig:\n\n1. Timing & Velocity (Godot Specs)\n\nCurrent: 54 px per step over 22 game frames (holds: 3,3,3,4,3,3,3).\n\nNew Target: Increase distance to ~75 pixels per step. Compress the timing to 18 game frames per step using snappier holds: [3, 2, 2, 4, 2, 2, 3].\n\nThis will double the speed to roughly 250 px/second while giving a solid 4-frame anchor on the widest stance.\n\n2. Stride Distance & Foot Lift (ashi1, ashi2)\n\nDistance: Increase the front foot's forward translation from 0.30m to 0.42m - 0.45m to cover the new 75-pixel engine distance.\n\nLift: A 1.8 cm lift looks like ice-skating at high speeds. Increase the Z-axis lift on the passing feet (drawings 2-3 for the front foot, drawings 5-6 for the back foot) to 4.5 cm - 5.0 cm. The feet must snap up and plant hard, not slide.\n\n3. Pelvis Dip (center)\n\nDepth: Because the stride is now 0.45m wide, the center bone must dip lower to prevent the IK legs from popping straight. Increase the maximum Z-axis dip on drawing 4 from -7.5 cm to -0.09m or -0.10m.\n\nSpacing: Keep the center perfectly centered between the planted feet so there is zero sliding in-engine.\n\n4. Knee Splay (momo, sune IK poles)\n\nAdjustment: As the legs stretch out to the new 0.45m distance on drawing 4, the IK system might pull the knees inward. Translate the knee pole vectors (momo/sune) outward laterally by an additional 3-4 cm during the widest drawings (3, 4, and 5) to maintain the aggressive, wide stance of the original idle.\n\n5. Locked Upper Body (hara, mune, kubi, atama, L/R_kata, ude1, ude2, te, buki)\n\nConstraint Check: Do not apply any overlapping action, twisting, or pitching to these bones. They must retain their exact local transform values from Drawing 1 (the base idle). They will only move globally by inheriting the vertical dip of the center bone.\n\n\n\n\nPro\n\nGemini is AI and can make mistakes.\n\nImproving Sora's shuffle mechanics",
+  "completedAt": "2026-10-22T23:33:41.999Z",
+  "newImages": 0
+}

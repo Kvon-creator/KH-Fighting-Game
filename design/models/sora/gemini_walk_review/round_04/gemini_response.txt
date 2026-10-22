@@ -1,0 +1,49 @@
+To make this shuffle faster, cover more distance, and feel less stiff while strictly locking the upper body to the base idle pose, the legs must do all the work to sell the momentum and weight. Right now, because the feet only lift 1.2–1.8 cm, increasing the speed and distance will make him look like he is ice skating.   
+JPG
++ 1
+
+To fix this, you need to increase the foot lift to create a snapping "step" rather than a slide, deepen the pelvis drop to allow a wider reach without breaking the IK, and tighten the frame holds.
+
+Copy and paste this exact prompt to Claude:
+
+Task: Refine Idle Shuffle for Speed and Distance
+We need to upgrade the 7-drawing forward idle shuffle to move faster and cover more distance.Strict Constraint: The upper body must remain perfectly locked to the local rotations/translations of the approved battle idle. Drawing 1 must remain identical to the idle frame.
+
+Please apply the following mechanical adjustments to the rig:
+
+1. Timing & Velocity (Godot Specs)
+
+Current: 54 px per step over 22 game frames (holds: 3,3,3,4,3,3,3).
+
+New Target: Increase distance to ~75 pixels per step. Compress the timing to 18 game frames per step using snappier holds: [3, 2, 2, 4, 2, 2, 3].
+
+This will double the speed to roughly 250 px/second while giving a solid 4-frame anchor on the widest stance.
+
+2. Stride Distance & Foot Lift (ashi1, ashi2)
+
+Distance: Increase the front foot's forward translation from 0.30m to 0.42m - 0.45m to cover the new 75-pixel engine distance.
+
+Lift: A 1.8 cm lift looks like ice-skating at high speeds. Increase the Z-axis lift on the passing feet (drawings 2-3 for the front foot, drawings 5-6 for the back foot) to 4.5 cm - 5.0 cm. The feet must snap up and plant hard, not slide.
+
+3. Pelvis Dip (center)
+
+Depth: Because the stride is now 0.45m wide, the center bone must dip lower to prevent the IK legs from popping straight. Increase the maximum Z-axis dip on drawing 4 from -7.5 cm to -0.09m or -0.10m.
+
+Spacing: Keep the center perfectly centered between the planted feet so there is zero sliding in-engine.
+
+4. Knee Splay (momo, sune IK poles)
+
+Adjustment: As the legs stretch out to the new 0.45m distance on drawing 4, the IK system might pull the knees inward. Translate the knee pole vectors (momo/sune) outward laterally by an additional 3-4 cm during the widest drawings (3, 4, and 5) to maintain the aggressive, wide stance of the original idle.
+
+5. Locked Upper Body (hara, mune, kubi, atama, L/R_kata, ude1, ude2, te, buki)
+
+Constraint Check: Do not apply any overlapping action, twisting, or pitching to these bones. They must retain their exact local transform values from Drawing 1 (the base idle). They will only move globally by inheriting the vertical dip of the center bone.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Improving Sora's shuffle mechanics
