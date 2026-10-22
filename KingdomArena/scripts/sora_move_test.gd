@@ -7,13 +7,16 @@ extends Node2D
 const FLOOR_Y := 600.0
 ## Pixel in each 384 x 384 frame that sits on the floor (shared by every Sora animation).
 const FEET := Vector2(192, 354)
-## Forward walk speed in pixels per second. Matches the planted foot's slide in the walk frames
-## (0.618 m/s at 180.5 px per metre), so his feet don't skate.
-const WALK_SPEED := 112.0
-## name -> [folder, file prefix, frame durations in ms]
+## Rightmost position he may walk to.
+const RIGHT_LIMIT := 1280.0 - 120.0
+## name -> [folder, file prefix, frame durations in ms, root motion in px per frame]
+## Root motion is how far his body moves forward as each frame starts, taken from the render
+## (metres x 180.5 px per metre), so planted feet stay exactly in place. The walk averages 112 px/s.
 const ANIMATIONS := {
-	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_", [100, 90, 90, 100, 120, 100, 90, 90, 100, 120]],
-	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_", [55, 55, 55, 55, 55, 55, 55, 55, 55, 55]],
+	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
+		[100, 90, 90, 100, 120, 100, 90, 90, 100, 120], []],
+	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
+		[70, 55, 55, 70, 70, 50, 50, 60, 70], [0.0, 2.7, 3.6, 4.5, 16.2, 9.0, 9.0, 10.8, 5.4]],
 }
 
 var _sprite: AnimatedSprite2D
@@ -41,6 +44,7 @@ func _ready() -> void:
 	_sprite.offset = -FEET
 	_sprite.position = Vector2(_start_x, FLOOR_Y)
 	add_child(_sprite)
+	_sprite.frame_changed.connect(_on_frame_changed)
 	_sprite.play(&"idle")
 
 	for arg in OS.get_cmdline_user_args():
@@ -50,14 +54,20 @@ func _ready() -> void:
 			_capture(arg.trim_prefix("--capture="))
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var forward := _demo_walk or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)
 	if forward:
-		_sprite.position.x = minf(_sprite.position.x + WALK_SPEED * delta, 1280.0 - 120.0)
 		if _sprite.animation != &"walk_forward":
 			_sprite.play(&"walk_forward")
 	elif _sprite.animation != &"idle":
 		_sprite.play(&"idle")
+
+
+## Moves Sora by the current frame's root motion whenever a new frame starts.
+func _on_frame_changed() -> void:
+	var motion: Array = ANIMATIONS[_sprite.animation][3]
+	if _sprite.frame < motion.size():
+		_sprite.position.x = minf(_sprite.position.x + motion[_sprite.frame], RIGHT_LIMIT)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:

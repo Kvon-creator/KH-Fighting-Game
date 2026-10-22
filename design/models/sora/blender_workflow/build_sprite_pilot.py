@@ -391,6 +391,26 @@ if LOOP:
         if SHUFFLE:
             STEP_LEN, NARROW, LIFT = .34, .56, .06  # metres: step, closed spacing, foot lift
             DURATIONS_MS = [55]*10  # 0.34 m per 0.55 s = 0.62 m/s, about the v2 speed
+        # v4+ (Kvon, "Do all suggestions"): keyed shimmy. Weight shifts over the front foot before
+        # the back foot moves; back heel lifts and pushes off from the toes; back foot arcs high
+        # and lands toe-first; uneven step/hold rhythm; per-frame root motion for the game; body
+        # dips on the front-foot landing and rises as the back foot passes.
+        STEPPED = SHUFFLE and not GAIT.endswith('_v3')
+        if STEPPED:
+            # Along the walk axis (m, world): lead, lead lift, back, back lift, back heel-up deg,
+            # body (hips), bob (+ dips, - rises), frame ms.
+            STEP_KEYS = [
+                (.56, .00, .00, .00, 0, .280, .00, 70),   # settled
+                (.64, .07, .00, .00, 0, .295, .15, 55),   # front foot lifts
+                (.82, .08, .00, .00, 0, .315, .30, 55),   # front foot reaches
+                (.90, .00, .00, .00, 0, .340, 1.0, 70),   # front foot lands, body absorbs
+                (.90, .00, .00, .00, 20, .430, .60, 70),  # weight over front foot, back heel up
+                (.90, .00, .05, .05, 35, .480, .20, 50),  # back foot pushes off the toes
+                (.90, .00, .20, .12, 10, .530, -.40, 50), # back foot arcs high, body rises
+                (.90, .00, .33, .02, 15, .590, .00, 60),  # back foot lands toe-first
+                (.90, .00, .34, .00, 0, .620, .15, 70),   # settle (body = start + one step)
+            ]
+            DURATIONS_MS = [k[7] for k in STEP_KEYS]
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -538,6 +558,12 @@ def solve_pose(breath=0.0, lag=None):
         two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', turn_m @ Vector((foot[0], foot[1], ankle_z + lift)), knee)
         if toe or turn:
             rotate_world(f'{s}_ashi1', 'Z', sign*toe + turn)  # feet don't inherit the body turn
+    for side, deg in POSE.get('foot_pitch', {}).items():
+        if deg:
+            # Heel up about the ankle, toes down (the ankle target was raised to keep toes on the floor).
+            ankle = pose_world(f'{side}_ashi1').translation
+            fwd = pose_world(f'{side}_ashi2').translation - ankle; fwd.z = 0; fwd.normalize()
+            rotate_world(f'{side}_ashi1', fwd.cross(Vector((0, 0, 1))).normalized(), -deg)
     if POSE.get('head_tilt_deg'):
         rotate_world('atama', ax_y, POSE['head_tilt_deg'])  # top of head toward his left, as referenced
     hand_on('R', r_hand, (-1, .4, -.3))
@@ -871,6 +897,14 @@ if LOOP:
                 body = STEP_LEN*phase + STEP_LEN/2  # constant speed; centres the feet over the cycle
                 return ((NARROW/2 + lead - body, lift_lead), (-NARROW/2 + back - body, lift_back))
 
+        ROOT_MOTION = []  # metres the body advances when each frame starts (stepped gait)
+        TOE_DIST = (pose_world('L_ashi2').translation - pose_world('L_ashi1').translation).length
+        if GAIT.endswith(('_v1', '_v2', '_v3', '_v4')):
+            pass
+        else:
+            # v5+: the shoe tip reaches ~1.5x past the toe joint; v4's heel-up frame sank the toes 6 px.
+            TOE_DIST *= 1.5
+
         def foot_at(side, phase):
             phase = (phase + (0 if side == leader else .5)) % 1
             if phase < SWING:  # swing: travel forward with a lift
@@ -882,7 +916,17 @@ if LOOP:
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
         lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
         if GAIT:
-            if SHUFFLE:
+            if STEPPED:
+                lead_w, lead_h, back_w, back_h, heel, body_w, bob, _ = STEP_KEYS[i]
+                breath, lag = bob, STEP_KEYS[i - 1][6]  # hands/head trail the body by one frame
+                follower = 'R' if leader == 'L' else 'L'
+                rad = math.radians(heel)
+                POSE['foot_pitch'] = {follower: heel}
+                for side, a, h in ((leader, lead_w, lead_h), (follower, back_w, back_h + TOE_DIST*math.sin(rad))):
+                    pos = perp[side] + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
+                    POSE[f'{side}_foot'] = (pos.x, pos.y, h)
+                ROOT_MOTION.append(round(body_w - (STEP_KEYS[i - 1][5] - (STEP_LEN if i == 0 else 0)), 4))
+            elif SHUFFLE:
                 breath = (1 - math.cos(2*math.pi*i/n)) / 2  # one bounce per cycle
                 lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
                 (lead_a, lead_h), (back_a, back_h) = shuffle_at(i/n)
@@ -944,6 +988,7 @@ if LOOP:
         'canvas_size': [512, 512], 'ground_baseline_y': 470, 'body_anchor': [256, 470],
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
+        'root_motion_m': ROOT_MOTION if GAIT else None,
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
         'hand_search': FINGER_REPORT, 'fist_wrap': WRAP_REPORT, 'reach_misses_m': REACH_REPORT,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}

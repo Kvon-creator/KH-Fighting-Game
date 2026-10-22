@@ -53,3 +53,15 @@ Pending review.
 Pending review.
 
 **Why:** User correction.
+
+**Natural shimmy, October22:** Kvon said the back leg appeared to drag. I suggested six fixes: weight shift, back-foot push-off, arced foot path, uneven step/hold rhythm, per-frame root motion, and a body bob on landing. He said "Do all suggestions".
+
+- **`walk_fwd_v5` (current):** 9 keyed frames (70,55,55,70,70,50,50,60,70 ms = 550 ms): settle, front lift, reach, land+dip, weight shift with back heel up 20 deg, toe push-off 35 deg, high arc with body rise, toe-first landing, settle.
+- **Root motion per frame (384px):** [0, 2.7, 3.6, 4.5, 16.2, 9.0, 9.0, 10.8, 5.4] px = 61.2 px per cycle, avg 112 px/s.
+- **v4:** its heel-up frame sank the toes 6 px; v5 scales the toe reach x1.5.
+- **Godot:** `sora_move_test.gd` now moves on the AnimatedSprite2D `frame_changed` signal by each frame's root motion (no constant speed). Verified: planted feet hold the exact same pixel; 167 px in 1.5 s.
+- **Deleted file:** I removed the obsolete 10th walk frame `walk_fwd_384/sora_walk_fwd_09.png` (+ .import), my own earlier output; it is in git history.
+
+Pending review.
+
+**Why:** User request.
