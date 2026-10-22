@@ -21,6 +21,9 @@ version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilo
 LOOP = version.startswith('idle_loop_v')  # refined pose + 10-frame breathing loop; sprite_pilot_v* = single frame
 KEY_FACES_CAMERA = LOOP and version not in ('idle_loop_v2', 'idle_loop_v3')  # user grip correction
 CURL_FINGERS = KEY_FACES_CAMERA and version != 'idle_loop_v4'  # close the rip's open hands on the handle
+# v6+ (user request): twist each wrist so the palm faces the handle, and turn the teeth up.
+WRIST_TWIST = CURL_FINGERS and version != 'idle_loop_v5'
+KEY_TEETH_UP = WRIST_TWIST
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -278,12 +281,16 @@ def solve_pose(breath=0.0, lag=None):
         two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), (sign*.3, -1, 0))
     hand_on('R', r_hand, (-1, .4, -.3))
     hand_on('L', l_hand, (1, .4, -.3))
+    for side, degrees in TWIST.items():
+        forearm = (pose_world(f'{side}_te').translation - pose_world(f'{side}_ude2').translation).normalized()
+        rotate_world(f'{side}_te', forearm, degrees)
     for side, (curl_axis, curl_sign) in FINGERS.items():
         set_curl(side, curl_axis, curl_sign)
     update()
 
 
 FINGERS = {}  # side -> (local axis, sign) chosen once, reapplied every frame
+TWIST = {}    # side -> wrist twist about the forearm in degrees (v6+)
 
 
 def set_curl(side, curl_axis, curl_sign):
@@ -318,8 +325,42 @@ def pick_curl(side):
     return round(best[0], 4)
 
 
+def finger_distance(side):
+    # Mean distance of the side's finger/thumb vertices from the handle line through the right palm.
+    grip = hand_point('R')
+    dg = bpy.context.evaluated_depsgraph_get()
+    total = count = 0
+    for o in body:
+        groups = {o.vertex_groups[n].index for n in (f'{side}_yubiB', f'{side}_yubiA') if n in o.vertex_groups}
+        if not groups:
+            continue
+        evaluated = o.evaluated_get(dg).data
+        for v in o.data.vertices:
+            if any(e.group in groups and e.weight > .3 for e in v.groups):
+                r = o.matrix_world @ evaluated.vertices[v.index].co - grip
+                total += (r - blade*r.dot(blade)).length; count += 1
+    return total / max(count, 1)
+
+
+def pick_hand(side):
+    # Search wrist twist (15-degree steps) together with the finger-curl direction.
+    best = None
+    for degrees in range(-180, 180, 15):
+        for curl in (('x', 1), ('x', -1), ('z', 1), ('z', -1)):
+            TWIST[side] = degrees; FINGERS[side] = curl
+            solve_pose(0.0)
+            d = finger_distance(side)
+            if best is None or d < best[0]:
+                best = (d, degrees, curl)
+    TWIST[side], FINGERS[side] = best[1], best[2]
+    return round(best[0], 4)
+
+
 solve_pose(0.0)
-FINGER_REPORT = {side: pick_curl(side) for side in ('R', 'L')} if CURL_FINGERS else {}
+if WRIST_TWIST:
+    FINGER_REPORT = {side: pick_hand(side) for side in ('R', 'L')}
+else:
+    FINGER_REPORT = {side: pick_curl(side) for side in ('R', 'L')} if CURL_FINGERS else {}
 if CURL_FINGERS:
     solve_pose(0.0)
 
@@ -331,7 +372,7 @@ def place_key():
         grip_world = (pose_world('R_te').translation + pose_world('R_buki').translation) / 2
         facing = (to_cam - blade*to_cam.dot(blade)).normalized()
         x_axis = facing.cross(blade).normalized()
-        if x_axis.z > 0:
+        if (x_axis.z > 0) != KEY_TEETH_UP:
             x_axis = -x_axis
     else:
         grip_world = pose_world('R_buki').translation
@@ -399,7 +440,7 @@ if LOOP:
         'canvas_size': [512, 512], 'ground_baseline_y': 470, 'body_anchor': [256, 470],
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
-        'key_faces_camera': KEY_FACES_CAMERA,
+        'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}
                         for s, (a, g) in FINGERS.items()},
         'blend': blend.name,

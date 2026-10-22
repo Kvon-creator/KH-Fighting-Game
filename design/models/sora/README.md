@@ -21,7 +21,8 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 - **Loop:** 10 frames with the approved idle's timing (1480 ms). The body sinks and leans with the breath; hands, Key and head trail by 12% of a cycle.
 - **Key placement:** placed rigidly at the grip every frame, because a bone-parented Key wobbled as the re-solved hand twisted.
-- **Current:** [idle_loop_v5](idle_loop_v5/Approved_vs_3D_idle.gif). After Kvon said the Keyblade was held the wrong way, v4 turns the guard face toward the camera with the teeth down and puts the fist inside the guard. v5 adds an automatic finger curl (partial; the palms still need a wrist roll).
+- **Current:** [idle_loop_v6](idle_loop_v6/Approved_vs_3D_idle.gif). Per Kvon, the Keyblade teeth face up, and each wrist is twisted about its forearm so the palm wraps the handle; twist and finger curl are searched per hand.
+- **v5:** After Kvon said the Keyblade was held the wrong way, v4 turns the guard face toward the camera with the teeth down and puts the fist inside the guard. v5 adds an automatic finger curl (partial; the palms still need a wrist roll).
 - **v3:** the breathing Kvon approved, with the wrong grip orientation. It includes 512/128px frames, a 5x2 sheet, looping GIFs, a keyed `.blend` and `Package_QA.json` (GIF timings, loop flag, soles at y=470-471, 10 distinct frames).
 - **Earlier:** v2 is kept and repeats frames in a ping-pong, from a symmetric breath with no lag. v1 was an aborted first render.
 - **Not done:** not tested in Godot, and not user-approved.

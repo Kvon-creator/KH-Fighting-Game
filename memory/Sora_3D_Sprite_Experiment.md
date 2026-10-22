@@ -21,6 +21,14 @@
 
 **Why:** User correction of the grip orientation.
 
+**Model choice and teeth direction, October21:**
+
+- **Keep the KH2 rip.** Kvon rejected switching to a higher-quality Smash Ultimate Sora because it would outclass the other KH2-era character models. Keep the roster visually consistent, and fix limitations by rigging (wrist roll, then possibly added finger bones) rather than by swapping in models.
+- **Teeth up.** Kvon asked to rotate the wrists and flip the Keyblade so the teeth face up. This supersedes v4/v5's teeth-down reading of the approved idle; the guard still faces the camera.
+- **idle_loop_v6 (current):** a per-hand wrist twist about the forearm (R -165, L -150 degrees) plus finger curl, chosen by search. Fingers now average 3.4 cm from the handle (was 5.6 cm).
+
+**Why:** User decisions on roster consistency and Keyblade orientation.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.
