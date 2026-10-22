@@ -385,6 +385,12 @@ if LOOP:
         # Two steps per cycle: the body bobs twice (handled in the loop), 10 frames x 80 ms.
         BREATH = {'drop': .02, 'lean_deg': .8, 'hands_z': -.01, 'head_counter_deg': -.4}
         DURATIONS_MS = [80]*10 if GAIT.endswith('_v1') else [65]*10  # v2+: a little faster
+        # v3+ (Kvon): shuffle step. The front foot steps out (feet spread to the idle width), then the
+        # back foot closes up (feet come together); one shoulder bounce per cycle instead of per step.
+        SHUFFLE = not GAIT.endswith(('_v1', '_v2'))
+        if SHUFFLE:
+            STEP_LEN, NARROW, LIFT = .34, .56, .06  # metres: step, closed spacing, foot lift
+            DURATIONS_MS = [55]*10  # 0.34 m per 0.55 s = 0.62 m/s, about the v2 speed
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -846,6 +852,25 @@ if LOOP:
         # The foot nearer the travel direction steps first; the other follows half a cycle later.
         leader = max(('R', 'L'), key=lambda s: STANCE[s].dot(walk_dir))
 
+        if SHUFFLE:
+            along = {sd: STANCE[sd].dot(walk_dir) for sd in STANCE}
+            perp = {sd: STANCE[sd] - walk_dir*along[sd] for sd in STANCE}
+            centre = (along['R'] + along['L']) / 2
+
+            def ease(u):
+                return u*u*(3 - 2*u)
+
+            def shuffle_at(phase):
+                # World positions along the walk axis; the body advances STEP_LEN per cycle.
+                if phase < .5:
+                    u = phase / .5
+                    lead, back, lift_lead, lift_back = STEP_LEN*ease(u), 0.0, LIFT*math.sin(math.pi*u), 0.0
+                else:
+                    u = (phase - .5) / .5
+                    lead, back, lift_lead, lift_back = STEP_LEN, STEP_LEN*ease(u), 0.0, LIFT*math.sin(math.pi*u)
+                body = STEP_LEN*phase + STEP_LEN/2  # constant speed; centres the feet over the cycle
+                return ((NARROW/2 + lead - body, lift_lead), (-NARROW/2 + back - body, lift_back))
+
         def foot_at(side, phase):
             phase = (phase + (0 if side == leader else .5)) % 1
             if phase < SWING:  # swing: travel forward with a lift
@@ -857,12 +882,21 @@ if LOOP:
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
         lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
         if GAIT:
-            breath = (1 - math.cos(4*math.pi*i/n)) / 2  # one dip per step
-            lag = (1 - math.cos(4*math.pi*(i/n - BREATH_LAG/2))) / 2
-            for side in ('R', 'L'):
-                offset, lift = foot_at(side, i/n)
-                pos = STANCE[side] + walk_dir*offset
-                POSE[f'{side}_foot'] = (pos.x, pos.y, lift)
+            if SHUFFLE:
+                breath = (1 - math.cos(2*math.pi*i/n)) / 2  # one bounce per cycle
+                lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
+                (lead_a, lead_h), (back_a, back_h) = shuffle_at(i/n)
+                for side in ('R', 'L'):
+                    a, h = (lead_a, lead_h) if side == leader else (back_a, back_h)
+                    pos = perp[side] + walk_dir*(centre + a)
+                    POSE[f'{side}_foot'] = (pos.x, pos.y, h)
+            else:
+                breath = (1 - math.cos(4*math.pi*i/n)) / 2  # one dip per step
+                lag = (1 - math.cos(4*math.pi*(i/n - BREATH_LAG/2))) / 2
+                for side in ('R', 'L'):
+                    offset, lift = foot_at(side, i/n)
+                    pos = STANCE[side] + walk_dir*offset
+                    POSE[f'{side}_foot'] = (pos.x, pos.y, lift)
         solve_pose(breath, lag)
         place_key()
         for pb in arm.pose.bones:

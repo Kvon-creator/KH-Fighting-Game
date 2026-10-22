@@ -69,8 +69,10 @@ for name, expect in (('sora_idle3d_preview.gif', durations), ('sora_idle3d_128_x
                      ('Approved_vs_3D_idle.gif', pair_durs)):
     gif = Image.open(OUT / name); got = []
     for k in range(gif.n_frames):
-        gif.seek(k); got.append(gif.info['duration'])
-    checks[name] = {'frames': gif.n_frames, 'durations_match': got == expect, 'loop': gif.info.get('loop')}
+        gif.seek(k); got.append(gif.info.get('duration'))
+    # GIF stores delays in 10 ms units, so 55 ms frames are written as 50 or 60 ms.
+    close = len(got) == len(expect) and all(g is not None and abs(g - e) <= 5 for g, e in zip(got, expect))
+    checks[name] = {'frames': gif.n_frames, 'durations_match': close, 'loop': gif.info.get('loop')}
 alpha = [im.getchannel('A').getbbox() for im in frames]
 checks['frames_512'] = {'count': len(frames), 'sizes_ok': all(im.size == (512, 512) for im in frames),
                         'lowest_opaque_row': max(b[3] for b in alpha) - 1, 'distinct': len({im.tobytes() for im in frames})}
