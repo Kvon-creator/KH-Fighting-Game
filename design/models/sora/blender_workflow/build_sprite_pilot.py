@@ -18,6 +18,7 @@ from mathutils import Matrix, Vector
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
 version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilot_v1'
+LOOP = version.startswith('idle_loop_v')  # refined pose + 10-frame breathing loop; sprite_pilot_v* = single frame
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -173,13 +174,27 @@ for mat in {s.material for o in body + [key] for s in o.material_slots if s.mate
     else:
         links.new(emit.outputs[0], out.inputs['Surface'])
 
-# 4. Approximate approved-idle pose with IK targets (world meters).
-POSE = {
-    'drop': .15, 'lean_deg': 8,
-    'R_hand': (-.04, -.24, .74), 'L_hand_along_handle': -.08,
-    'R_foot': (-.36, .10, None), 'L_foot': (.34, -.08, None),
-    'blade_dir': (-.25, .70, .67),
-}
+# 4. Approximate approved-idle pose from hand/foot targets (world meters).
+if LOOP:
+    # Refined toward the approved idle: deeper, wider crouch; grip lower and further forward;
+    # flatter blade; left hand placed on the handle by measuring its weapon socket.
+    POSE = {
+        'drop': .20, 'lean_deg': 10,
+        'R_hand': (-.02, -.26, .70), 'L_hand_along_handle': -.07,
+        'R_foot': (-.40, .10, None), 'L_foot': (.38, -.08, None),
+        'blade_dir': (-.25, .75, .55),
+    }
+    # Breathing: body sinks and leans slightly at the exhale peak; feet stay planted.
+    BREATH = {'drop': .012, 'lean_deg': 1.5, 'hands_z': -.008, 'head_counter_deg': -.8}
+    DURATIONS_MS = [150, 130, 130, 150, 180, 150, 130, 130, 150, 180]  # approved idle timing
+    BREATH_LAG = 0 if version == 'idle_loop_v2' else .12  # fraction of a cycle
+else:
+    POSE = {
+        'drop': .15, 'lean_deg': 8,
+        'R_hand': (-.04, -.24, .74), 'L_hand_along_handle': -.08,
+        'R_foot': (-.36, .10, None), 'L_foot': (.34, -.08, None),
+        'blade_dir': (-.25, .70, .67),
+    }
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
     bones[name].use_inherit_rotation = False   # feet stay flat while the legs bend
@@ -219,30 +234,66 @@ def two_bone(upper, lower, end, target, bend_hint):
     aim(lower, end, h + dn*dist)
 
 
+def reset_pose():
+    for pb in arm.pose.bones:
+        pb.location = (0, 0, 0); pb.scale = (1, 1, 1)
+        pb.rotation_quaternion = (1, 0, 0, 0); pb.rotation_euler = (0, 0, 0)
+    update()
+
+
+def hand_on(side, grip, bend_hint):
+    # Place the hand so its weapon socket (buki), not the wrist, lands on the grip point.
+    wrist = Vector(grip)
+    for _ in range(3 if LOOP else 1):
+        two_bone(f'{side}_ude1', f'{side}_ude2', f'{side}_te', wrist, bend_hint)
+        if not LOOP:
+            break
+        wrist += Vector(grip) - pose_world(f'{side}_buki').translation
+
+
 ankle_z = pose_world('L_ashi1').translation.z
-set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'])) @ pose_world('center'))
-rotate_world('mune', 'X', POSE['lean_deg'])
 blade = Vector(POSE['blade_dir']).normalized()
-r_hand = Vector(POSE['R_hand'])
-l_hand = r_hand + blade*POSE['L_hand_along_handle']
-for s, foot in (('R', POSE['R_foot']), ('L', POSE['L_foot'])):
-    sign = -1 if s == 'R' else 1
-    two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), (sign*.3, -1, 0))
-two_bone('R_ude1', 'R_ude2', 'R_te', r_hand, (-1, .4, -.3))
-two_bone('L_ude1', 'L_ude2', 'L_te', l_hand, (1, .4, -.3))
-update()
+
+
+def solve_pose(breath=0.0, lag=None):
+    # `lag` is the breath phase for hands/Key/head follow-through (trails the body slightly).
+    lag = breath if lag is None else lag
+    reset_pose()
+    b = BREATH if LOOP else {'drop': 0, 'lean_deg': 0, 'hands_z': 0, 'head_counter_deg': 0}
+    set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'] - b['drop']*breath)) @ pose_world('center'))
+    rotate_world('mune', 'X', POSE['lean_deg'] + b['lean_deg']*breath)
+    if b['head_counter_deg']:
+        rotate_world('kubi', 'X', b['head_counter_deg']*lag)
+    r_hand = Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
+    l_hand = r_hand + blade*POSE['L_hand_along_handle']
+    for s, foot in (('R', POSE['R_foot']), ('L', POSE['L_foot'])):
+        sign = -1 if s == 'R' else 1
+        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), (sign*.3, -1, 0))
+    hand_on('R', r_hand, (-1, .4, -.3))
+    hand_on('L', l_hand, (1, .4, -.3))
+    update()
+
+
+solve_pose(0.0)
 
 # Kingdom Key in the right hand: grip at R_buki, blade up and back, away from the opponent.
-grip_world = pose_world('R_buki').translation
-x_axis = blade.cross(Vector((0, 0, 1))).normalized()
-y_axis = blade.cross(x_axis)
-key.matrix_world = Matrix.Translation(grip_world) @ Matrix((x_axis, y_axis, blade)).transposed().to_4x4()
-update()
-world = key.matrix_world.copy()
-key.parent = arm; key.parent_type = 'BONE'; key.parent_bone = 'R_buki'
-update()
-key.matrix_world = world
-update()
+def place_key():
+    grip_world = pose_world('R_buki').translation
+    x_axis = blade.cross(Vector((0, 0, 1))).normalized()
+    y_axis = blade.cross(x_axis)
+    key.matrix_world = Matrix.Translation(grip_world) @ Matrix((x_axis, y_axis, blade)).transposed().to_4x4()
+    update()
+
+
+place_key()
+if not LOOP:
+    # Single frame: ride the weapon bone. The loop re-places the Key each frame instead, because
+    # the re-solved hand twists slightly per frame and a bone-parented Key wobbled visibly.
+    world = key.matrix_world.copy()
+    key.parent = arm; key.parent_type = 'BONE'; key.parent_bone = 'R_buki'
+    update()
+    key.matrix_world = world
+    update()
 
 # 5. Fixed sprite camera framed like the approved idle: about 385px tall, soles at y=470 of 512.
 lo, hi = world_bounds(body)
@@ -254,6 +305,51 @@ center_z = ground + (470 - 256) / 512 * cam_data.ortho_scale
 cam.location = Vector((0, 0, center_z)) + to_cam*6
 cam.rotation_euler = (math.radians(90), 0, t)
 scene.camera = cam
+
+if LOOP:
+    # Breathing loop: re-solve every frame from the rest pose, key all bones, render 512 + 128.
+    (OUT / 'frames_512').mkdir(); (OUT / 'frames_128').mkdir()
+    n = len(DURATIONS_MS)
+    frames = []
+    for i in range(n):
+        breath = (1 - math.cos(2*math.pi*i/n)) / 2
+        # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
+        lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
+        solve_pose(breath, lag)
+        place_key()
+        for pb in arm.pose.bones:
+            for path in ('location', 'rotation_quaternion', 'rotation_euler', 'scale'):
+                pb.keyframe_insert(path, frame=i + 1)
+        key.keyframe_insert('location', frame=i + 1); key.keyframe_insert('rotation_euler', frame=i + 1)
+        scene.frame_set(i + 1)
+        path512 = OUT / 'frames_512' / f'sora_idle3d_{i:02d}.png'
+        scene.render.filepath = str(path512)
+        bpy.ops.render.render(write_still=True)
+        img = bpy.data.images.load(str(path512))
+        small = img.copy(); small.scale(128, 128)
+        small.filepath_raw = str(OUT / 'frames_128' / path512.name); small.file_format = 'PNG'; small.save()
+        frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
+                       'lag': round(lag, 4),
+                       'grip_error_L_m': round((pose_world('L_buki').translation
+                                                - (Vector(POSE['R_hand']) + Vector((0, 0, BREATH['hands_z']*lag))
+                                                   + blade*POSE['L_hand_along_handle'])).length, 4)})
+    scene.frame_start, scene.frame_end = 1, n
+    blend = OUT / 'sora_idle_loop.blend'
+    bpy.ops.wm.save_as_mainfile(filepath=str(blend))
+    bpy.ops.file.make_paths_relative(); bpy.ops.wm.save_mainfile()
+    report = {
+        'version': version, 'blender': bpy.app.version_string, 'animation': 'standing_breathing_idle',
+        'source': 'downloads/p_ex150.fbx + downloads/Kingdom Key/Kingdom Key.obj', 'loop': True,
+        'canvas_size': [512, 512], 'ground_baseline_y': 470, 'body_anchor': [256, 470],
+        'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
+        'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
+        'blend': blend.name,
+    }
+    (OUT / 'Idle_Loop_Report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+    print('LOOP_OK', json.dumps({k: report[k] for k in ('version', 'total_duration_ms')}),
+          'grip_errors', [f['grip_error_L_m'] for f in frames])
+    raise SystemExit(0)
+
 frame = OUT / 'sora_sprite_pilot_512.png'
 scene.render.filepath = str(frame)
 bpy.ops.render.render(write_still=True)

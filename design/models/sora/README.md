@@ -17,4 +17,12 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 - **Earlier revisions (kept):** v1 used IK constraints (twisted legs) and drew every rip seam. v2 cleaned the lines but stood narrow and upright. v3 widened the stance but stayed too dark from dense interior outlines.
 - **Not done:** the pose is approximate and the left hand only roughly reaches the handle. No animation, no final approval.
 
+**Idle breathing loop (October21):** `build_sprite_pilot.py -- idle_loop_vN` renders a refined pose: deeper, wider crouch, lower and more forward grip, flatter blade. The left hand's weapon socket is placed on the handle, landing within about 2 cm. Packaging: `python package_idle_loop.py idle_loop_vN`.
+
+- **Loop:** 10 frames with the approved idle's timing (1480 ms). The body sinks and leans with the breath; hands, Key and head trail by 12% of a cycle.
+- **Key placement:** placed rigidly at the grip every frame, because a bone-parented Key wobbled as the re-solved hand twisted.
+- **Current:** [idle_loop_v3](idle_loop_v3/Approved_vs_3D_idle.gif). It includes 512/128px frames, a 5x2 sheet, looping GIFs, a keyed `.blend` and `Package_QA.json` (GIF timings, loop flag, soles at y=470-471, 10 distinct frames).
+- **Earlier:** v2 is kept and repeats frames in a ping-pong, from a symmetric breath with no lag. v1 was an aborted first render.
+- **Not done:** not tested in Godot, and not user-approved.
+
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.

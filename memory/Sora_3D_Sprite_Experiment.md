@@ -13,6 +13,10 @@
 
 **Why:** User approved the proposed Sora pipeline pilot.
 
+**Pilot approved, October21:** Kvon said "v4 looks great. Continue to the next step." Keep v4's look (cel ramp, outer contour + faint interior lines, camera yaw -40, framing). The next step was the refined pose plus breathing idle loop. `idle_loop_v3` is the current candidate: 10 distinct frames on the approved 1480 ms timing, Key re-placed rigidly each frame, follow-through lag 0.12 cycle. It is pending the user's review and not tested in Godot. Lessons: a bone-parented Key wobbles when arms are re-solved per frame, and a symmetric breath without lag produces duplicate ping-pong frames.
+
+**Why:** User approval of v4 and instruction to continue.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.
