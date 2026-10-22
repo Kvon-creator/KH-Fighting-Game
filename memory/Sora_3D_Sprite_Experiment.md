@@ -246,3 +246,7 @@ Pending review.
 - **Status:** pending Kvon's comparison verdict. sprite2d_v3 remains the approved version.
 
 **Why:** User chose item 1.
+
+**Decision: stay with the PS2 model, October22:** After comparing sheet2d_v1 (from-scratch rig) with sprite2d_v3, Kvon said "Stay with the ps2 model." Use the downloaded PS2 rips for all characters; the approved Sora sprites are battle_v12 (3D render) and sprite2d_v3 (2D style). Don't continue refining the from-scratch model (`character_blockout_v*`, `sheet_*`) unless Kvon asks; those files stay as a preserved experiment.
+
+**Why:** User choice after the side-by-side comparison.

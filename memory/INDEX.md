@@ -1,6 +1,6 @@
 # Project Memory
 
-- [Sora 3D-to-sprite experiment](Sora_3D_Sprite_Experiment.md): October22 battle_v12 guard-crouch idle approved "for now"; October21 experiments folder deleted (scripts reproduce it); next: user-downloaded Models Resource Sora (site blocks bots, keep rips out of Git); earlier procedural blockout v5; V4 crown refinement and matching-view comparison after the user's v3 correction; verified Blender pipeline; Hunyuan character pilot failed with an unspecified null error, no mesh or retry.
+- [Sora 3D-to-sprite experiment](Sora_3D_Sprite_Experiment.md): October22: PS2-model workflow chosen; approved battle_v12 idle and sprite2d_v3 2D style; from-scratch model parked; October21 experiments folder deleted (scripts reproduce it); next: user-downloaded Models Resource Sora (site blocks bots, keep rips out of Git); earlier procedural blockout v5; V4 crown refinement and matching-view comparison after the user's v3 correction; verified Blender pipeline; Hunyuan character pilot failed with an unspecified null error, no mesh or retry.
 - [Character model folders](Character_Model_Folders.md): Downloaded models for Sora, Riku, Kairi, Xemnas, Larxene, Xigbar (pushed to GitHub); formats, rigs; Source Tools 3.4.2 (project-local) imported rigged Xigbar/Riku/Kairi SMDs; roster not confirmed.
 - [Art workstation hardware](Art_Workstation_Hardware.md): Confirmed24GB system RAM, separate4GB GPU VRAM, installed Blender5.2.2 path and successful CPU render test.
 

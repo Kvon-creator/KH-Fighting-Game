@@ -46,6 +46,8 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 **From-scratch articulated Sora (October22):** [character_blockout_v7](character_blockout_v7/Rig_Test_Board.png) is the procedural Sora (approved v2 proportions, v5 face/hair) with pose-sheet outfit details. It has a 19-bone (26 from v8) KH2-named skeleton and skin weights, and the articulation test bends the arms, chest, head and knee. v6 had stretched cloth pieces from a weighting bug. It has not yet been posed into the battle crouch.
 
+**Decision (October22):** Kvon chose to stay with the PS2 model. The from-scratch model below is preserved but parked.
+
 **From-scratch model as a sprite (October22):** [sheet2d_v1](sheet2d_v1/Reference_vs_PS2_2D_vs_Sheet_2D.png) shows the rigged from-scratch Sora (`character_blockout_v9`) posed with the approved battle_v12 recipe (`build_sprite_pilot.py -- battle_v12 sheet_battle_v3`) and rendered in the approved 2D style. [Game-size comparison](sheet2d_v1/Game_Size_PS2_vs_Sheet_x2.png) with sprite2d_v3.
 
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.
