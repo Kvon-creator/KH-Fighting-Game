@@ -224,7 +224,7 @@ Pending review.
 **From-scratch articulated Sora, October22:** This is the second requested attempt.
 
 - **Builder:** `build_character_blockout.py -- character_blockout_vN`. v6+ outputs go to `design/models/sora/character_blockout_vN` (experiments/ stays deleted).
-- **Rig:** 23 bones with KH2-style names (center, hara, mune, kubi, atama, L/R kata, ude1, ude2, te, momo, sune, ashi1), so the sprite pose tools can be reused. Every mesh has an Armature modifier before Subdivision.
+- **Rig:** 19 bones in v6/v7 (26 from v8) with KH2-style names (center, hara, mune, kubi, atama, L/R kata, ude1, ude2, te, momo, sune, ashi1), so the sprite pose tools can be reused. Every mesh has an Armature modifier before Subdivision.
 - **Weights:** head/hair/face parts are rigid to atama, hands to te, shoes to ashi1, pendant/shirt to mune. Everything else blends the two nearest bones (1/d^4) on its own side.
 - **Pose-sheet outfit changes:** black shoes with yellow tongue/collar and silver soles, silver shoulder pads, red inner shirt, yellow thigh straps, red left waist cloth.
 - **v6:** weights were computed before `view_layer.update()`, so scaled blob/ring pieces stretched when posed. Kept as a diagnostic.
@@ -232,3 +232,17 @@ Pending review.
 - **Not done yet:** posing into the battle_v12 crouch, Keyblade, animation, user review.
 
 **Why:** User asked to try the other method after approving sprite2d_v3.
+
+**From-scratch model in the battle loop, October22:** Kvon asked how long full refinement would take; I gave no fixed estimate, scoped six items, and recommended item 1 (battle-crouch loop) first. He said "Continue with item 1".
+
+- **`character_blockout_v8`:** adds Root, L/R yubiB/yubiA/buki bones (26 total); fingers/thumbs are rigid to the yubi bones; the model is parented to the rig.
+- **v9:** eye decals get an Armature modifier. In v6-v8 they floated above the head when posed.
+- **`build_sprite_pilot.py -- battle_v12 sheet_*`:** runs the approved battle_v12 recipe on the from-scratch rig (appended from the .blend, subdivision render-only, A-pose palm directions).
+- **sheet_battle_v1:** wrongly scaled to 0.62, because appended objects' matrix_world is stale until `view_layer.update()`; fixed.
+- **sheet_battle_v2:** eyes floating.
+- **`sheet_battle_v3`:** correct 10-frame loop, both fists on the handle.
+- **`sheet2d_v1` (current):** the approved 2D style applied to it. Comparisons: `Reference_vs_PS2_2D_vs_Sheet_2D.png` and `Game_Size_PS2_vs_Sheet_x2.png`.
+- **Known gaps:** the face reads generic; soles look like separate plates; proportions are chunkier and more chibi than the sheet; facing is more frontal than the PS2 sprite.
+- **Status:** pending Kvon's comparison verdict. sprite2d_v3 remains the approved version.
+
+**Why:** User chose item 1.

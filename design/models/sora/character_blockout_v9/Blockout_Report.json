@@ -1,0 +1,52 @@
+{
+  "version": "character_blockout_v9",
+  "blender": "5.2.2 LTS",
+  "role": "Procedural approximate KH2 Sora blockout; not extracted game data or approved model",
+  "pose": "Neutral A-pose, facing -Y, ground at Z=0, units in meters",
+  "mesh_objects": 117,
+  "evaluated_vertices": 96680,
+  "height_m": 1.5697,
+  "min_z": -0.0,
+  "materials": [
+    "Material",
+    "accent_red_cel",
+    "eye_white_cel",
+    "hair_brown_cel",
+    "hair_light_cel",
+    "iris_blue_cel",
+    "jacket_black_cel",
+    "mouth_cel",
+    "pocket_grey_cel",
+    "pupil_cel",
+    "shoe_yellow_cel",
+    "silver_cel",
+    "skin_cel",
+    "sole_black_cel",
+    "trim_white_cel"
+  ],
+  "renders": [
+    "front.png",
+    "sprite_three_quarter.png",
+    "side.png",
+    "back.png",
+    "face_front.png",
+    "face_three_quarter.png",
+    "Turnaround.png"
+  ],
+  "blend": "sora_character_blockout.blend",
+  "not_included": [
+    "animation",
+    "Keyblade attachment",
+    "GLB export",
+    "user approval"
+  ],
+  "rig": {
+    "bones": 26,
+    "weighted_vertices": 13154,
+    "pose_test": [
+      "pose_test_front.png",
+      "pose_test_sprite_three_quarter.png",
+      "pose_test_side.png"
+    ]
+  }
+}

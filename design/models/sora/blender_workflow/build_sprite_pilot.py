@@ -17,7 +17,12 @@ from mathutils import Euler, Matrix, Quaternion, Vector
 
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
-version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilot_v1'
+ARGS = sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else ['sprite_pilot_v1']
+version = ARGS[0]  # pose recipe
+# Optional output name. sheet_*: same recipe on the from-scratch rig (character_blockout_v8)
+# instead of the downloaded PS2 model.
+OUT_NAME = ARGS[1] if len(ARGS) > 1 else version
+SHEET_MODEL = OUT_NAME.startswith('sheet_')
 # one_hand_v*: user's one-handed idle, right hand only, blade angled down toward his feet.
 # battle_v*: battle-ready one-handed stance (staggered feet, body turned to the opponent, blade
 # low and back, guard hand up, combat bounce), following design/references/Sora_battle_stance.gif.
@@ -44,7 +49,7 @@ WRAP_GAIN, WRAP_MAX_DEG = (1.0, 250) if version == 'idle_loop_v15' else (1.7, 27
 # v17+: bend each wrist so the fingers cross the handle; v16's palm-up right fingers lay along it.
 SQUARE_WRISTS = FIST_WRAP and version not in ('idle_loop_v15', 'idle_loop_v16')
 SORA = ROOT / 'design/models/sora'
-OUT = SORA / version
+OUT = SORA / OUT_NAME
 if OUT.exists():
     raise RuntimeError('Preserve existing pilot; choose a new version')
 assert bpy.app.version[:2] == (5, 2), bpy.app.version_string
@@ -96,11 +101,27 @@ def world_bounds(objs):
 
 
 # 1. Sora: import and normalize height.
-bpy.ops.import_scene.fbx(filepath=str(SORA / 'downloads/p_ex150.fbx'))
+if SHEET_MODEL:
+    sheet_rig = 'character_blockout_v8' if OUT_NAME in ('sheet_battle_v1', 'sheet_battle_v2') else 'character_blockout_v9'
+    with bpy.data.libraries.load(str(SORA / sheet_rig / 'sora_character_blockout.blend')) as (src, dst):
+        dst.objects = list(src.objects)
+    for o in dst.objects:
+        if o.type != 'CAMERA':
+            scene.collection.objects.link(o)
+    # Appended objects' matrix_world is stale until updated (sheet_battle_v1 measured 2.57 m).
+    bpy.context.view_layer.update()
+else:
+    bpy.ops.import_scene.fbx(filepath=str(SORA / 'downloads/p_ex150.fbx'))
 arm = next(o for o in scene.objects if o.type == 'ARMATURE')
 body = [o for o in scene.objects if o.type == 'MESH']
+if SHEET_MODEL:
+    # Hand/finger maths reads evaluated vertices by original index; keep subdivision render-only.
+    for o in body:
+        for mod in o.modifiers:
+            if mod.type == 'SUBSURF':
+                mod.show_viewport = False
 # The rip stores faces as separate strips; weld coincident vertices (UVs and weights are kept).
-for o in body:
+for o in ([] if SHEET_MODEL else body):
     bm = bmesh.new(); bm.from_mesh(o.data)
     size = max(o.dimensions) / max(max(o.matrix_world.to_scale()), 1e-12)
     bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=size*1e-4)
@@ -592,13 +613,21 @@ def pick_hand(side):
 
 
 REST_PALM = Vector((0, 0, -1))  # T-pose palms face down (thumb bones point forward)
+if SHEET_MODEL:
+    # A-pose rig: arms 50 degrees from vertical, palms toward the body (down and inward).
+    REST_PALM = {'L': Vector((-math.cos(math.radians(50)), 0, -math.sin(math.radians(50)))),
+                 'R': Vector((math.cos(math.radians(50)), 0, -math.sin(math.radians(50))))}
+
+
+def rest_palm(side):
+    return REST_PALM[side] if isinstance(REST_PALM, dict) else REST_PALM
 
 
 def palm_normal(side):
     pb = arm.pose.bones[f'{side}_te']
     posed = (arm.matrix_world @ pb.matrix).to_3x3().normalized()
     rest = (arm.matrix_world @ arm.data.bones[f'{side}_te'].matrix_local).to_3x3().normalized()
-    return (posed @ rest.inverted() @ REST_PALM).normalized()
+    return (posed @ rest.inverted() @ rest_palm(side)).normalized()
 
 
 def pick_anatomical_curl(side):
@@ -611,7 +640,7 @@ def pick_anatomical_curl(side):
         set_curl(side, *curl)
         m = pose_world(f'{side}_yubiB')
         tip = m.to_translation() + m.to_3x3() @ Vector((0, arm.data.bones[f'{side}_yubiB'].length, 0))
-        score = (tip - rest_tip).dot(REST_PALM)
+        score = (tip - rest_tip).dot(rest_palm(side))
         if best is None or score > best[0]:
             best = (score, curl)
     FINGERS[side] = best[1]

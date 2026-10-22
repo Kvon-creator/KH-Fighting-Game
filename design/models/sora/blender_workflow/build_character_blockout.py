@@ -120,13 +120,26 @@ if VN >= 6:
             f'{side}_momo': ((s*.10, 0, .72), (s*.10, -.01, .39), 'center'),
             f'{side}_sune': ((s*.10, -.01, .39), (s*.10, 0, .12), f'{side}_momo'),
             f'{side}_ashi1': ((s*.10, 0, .12), (s*.10, -.20, .05), f'{side}_sune')})
+        if VN >= 8:
+            # Sockets the sprite pose tools use: fingers, thumb and weapon grip.
+            BONES.update({
+                f'{side}_yubiB': (tuple(wr + dd*.06), tuple(wr + dd*.115), f'{side}_te'),
+                f'{side}_yubiA': (tuple(wr + dd*.025 + Vector((0, -.03, 0))), tuple(wr + dd*.06 + Vector((0, -.05, 0))), f'{side}_te'),
+                f'{side}_buki': (tuple(wr + dd*.07), tuple(wr + dd*.07 + Vector((0, -.03, 0))), f'{side}_te')})
+    if VN >= 8:
+        BONES['Root'] = ((0, 0, 0), (0, 0, .10), None)
+        BONES['center'] = (BONES['center'][0], BONES['center'][1], 'Root')
     for name, (head, tail, parent) in BONES.items():
         eb = rig_data.edit_bones.new(name); eb.head, eb.tail = head, tail
+    for name, (head, tail, parent) in BONES.items():
+        eb = rig_data.edit_bones[name]
         if parent:
             eb.parent = rig_data.edit_bones[parent]
             eb.use_connect = Vector(rig_data.edit_bones[parent].tail) == Vector(head)
     bpy.ops.object.mode_set(mode='OBJECT')
     RIG.data.display_type = 'STICK'; RIG.show_in_front = True
+    if VN >= 8:
+        root.parent = RIG  # scaling or moving the rig carries the whole model
 
 
 def finish(obj, mat, subdiv=2):
@@ -262,6 +275,8 @@ if VN >= 5:
         mesh = bpy.data.meshes.new(name); mesh.from_pydata([tuple(v) for v in verts], [], faces); mesh.update()
         obj = bpy.data.objects.new(name, mesh); scene.collection.objects.link(obj)
         obj.parent = root; obj.data.materials.append(mat)
+        if RIG and VN >= 9:  # v6-v8 decals had no Armature modifier and stayed put when the head moved
+            obj.modifiers.new('rig', 'ARMATURE').object = RIG
         return obj
 
     W, Z0, Z1 = .054, 1.298, 1.307  # eye width, inner and outer corner heights
@@ -466,6 +481,7 @@ if VN >= 6:
     # never crossing to the opposite side.
     import re
     RIGID = [(('head', 'ear_', 'eye', 'iris_', 'pupil_', 'brow_', 'nose', 'mouth', 'hair_'), 'atama'),
+             *([(('fingers_',), '{s}_yubiB'), (('thumb_',), '{s}_yubiA')] if VN >= 8 else []),
              (('hand_', 'fingers_', 'thumb_'), '{s}_te'), (('shoe', 'sole_'), '{s}_ashi1'),
              (('crown_pendant', 'necklace_cord', 'inner_shirt'), 'mune')]
     segs = {b.name: (RIG.matrix_world @ b.head_local, RIG.matrix_world @ b.tail_local) for b in RIG.data.bones}
