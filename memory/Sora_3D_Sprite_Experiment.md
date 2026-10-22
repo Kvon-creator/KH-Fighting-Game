@@ -192,3 +192,7 @@ Pending review.
 **Palm a little more, October22:** Kvon asked to rotate it a little more. `battle_v12` (current) uses `L_palm_back_deg` 45, about 20 degrees past v11. The twist goes to -115 degrees; palm-to-camera is now 0.44 and the palm faces slightly toward the body (0.10). The left fist is ~1.9 cm from its handle spot.
 
 **Why:** User fine-tuning.
+
+**battle_v12 approved for now, October22:** Kvon said "That is perfect for now." Treat `battle_v12` (mirrored pose-sheet guard crouch, both fists on the handle, left palm turned 45 degrees back from the camera, combat bounce) as Sora's current approved battle idle. "For now" means it may be revisited. Don't change it unless asked. Rebuild with `build_sprite_pilot.py -- battle_v12`; later pose work should use new version names. Not yet tested in Godot or integrated into gameplay.
+
+**Why:** User approval.
