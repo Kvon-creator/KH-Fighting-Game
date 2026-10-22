@@ -34,7 +34,7 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 **One-handed pose (October22):** [one_hand_v3](one_hand_v3/Pose_Views.png) (front, side, sprite views). The right hand holds the Key at the hip, wrapped by the fist shape key; the blade angles down toward his right foot and stops just above the floor; the left arm is relaxed. The breathing loop and packaging are the same as the idle. Earlier tries: v1 (vertical blade, below the floor), v2 (teeth 2px below the floor).
 
-**Mirrored guard crouch (October22):** [battle_v5](battle_v5/Mirrored_Reference_vs_3D_pose.png) copies the top-right pose of the pose sheet, mirrored, with both hands on the handle (v3 had misread it as one-handed). The blade runs level out to his left and rises slightly, in a wide hunched squat with the head turned toward the opponent. v4 was the first pass, with the crouch too deep.
+**Mirrored guard crouch (October22):** [battle_v6](battle_v6/Mirrored_Reference_vs_Sprite_v5_v6.png) turns his body to the drawing's angle in the sprite view (camera unchanged). [battle_v5](battle_v5/Mirrored_Reference_vs_3D_pose.png) copies the top-right pose of the pose sheet, mirrored, with both hands on the handle (v3 had misread it as one-handed). The blade runs level out to his left and rises slightly, in a wide hunched squat with the head turned toward the opponent. v4 was the first pass, with the crouch too deep.
 
 **Guard crouch (October22):** [battle_v3](battle_v3/Reference_vs_3D_pose.png) emulates the top-right pose of `design/references/sora_kh2_pose_sheet.png`: a wide, hunched crouch with the Key in the right fist at the hip, the blade level to his right, and the left arm down.
 

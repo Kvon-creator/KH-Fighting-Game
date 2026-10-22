@@ -245,6 +245,11 @@ if BATTLE:
             # blade rising a little more.
             POSE.update({'drop': .19, 'R_foot': (-.56, .02, None), 'L_foot': (.56, .00, None),
                          'R_hand': (.03, -.22, .66), 'blade_dir': (.93, -.05, .30)})
+        if version not in ('battle_v4', 'battle_v5'):
+            # v6+ (user): stand at the drawing's angle in the sprite view. The camera sits at yaw -40;
+            # turning the body -25 degrees faces him nearly at the camera, turned slightly toward
+            # screen right, as drawn. The blade turns with the body.
+            POSE.update({'body_turn_deg': -25, 'turn_blade': True})
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
@@ -432,6 +437,8 @@ def hand_point(side):
 
 ankle_z = pose_world('L_ashi1').translation.z
 blade = Vector(POSE['blade_dir']).normalized()
+if POSE.get('turn_blade'):  # blade_dir given in the body frame (battle_v6+)
+    blade = (Matrix.Rotation(math.radians(POSE['body_turn_deg']), 3, 'Z') @ blade).normalized()
 
 
 def solve_pose(breath=0.0, lag=None):

@@ -153,3 +153,7 @@ Pending review.
 - **Not reproducible:** the gritted-teeth face and the hanging chain with the Mickey token.
 
 **Why:** User instruction to mirror and copy the reference exactly.
+
+**Standing angle, October22:** Kvon asked to change the angle Sora stands at to match the reference. Interpreted as his body orientation in the sprite view; the three-quarter camera (yaw -40) is unchanged. `battle_v6` (current) turns the whole body -25 degrees (blade and hand targets turn with it) so he faces nearly at the camera, turned slightly toward screen right, as in the mirrored drawing. Comparison image: `Mirrored_Reference_vs_Sprite_v5_v6.png`.
+
+**Why:** User correction of the stance angle.
