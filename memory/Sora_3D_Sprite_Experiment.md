@@ -216,3 +216,7 @@ Pending review.
 - **Status:** pending Kvon's review. The new 3D-model attempt has not been started.
 
 **Why:** User choice.
+
+**sprite2d_v3 approved, October22:** Kvon said "I love the attempt. Save it and try other method as well." `sprite2d_v3` (2D illustration-style re-render of battle_v12) is approved and saved; don't change it unless asked. Next: the other attempt, a fully articulated 3D Sora built from scratch with the pose sheet as reference.
+
+**Why:** User approval and instruction.
