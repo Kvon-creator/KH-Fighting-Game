@@ -3,14 +3,14 @@ extends Node2D
 ## facing each other, so both facings can be checked at once. Press F to swap their facing.
 ## Run with `-- --capture=<absolute png path>` to save a screenshot after 2 seconds and quit.
 
-## 192 x 192 frames (1.5x the 128 px set), made from the 512 px renders so they stay sharp.
-const FRAME_DIR := "res://assets/sora/idle_battle_192/"
+## 256 x 256 frames (2x the 128 px set), made from the 512 px renders so they stay sharp.
+const FRAME_DIR := "res://assets/sora/idle_battle_256/"
 ## Frame durations of sprite2d_v3 in milliseconds (1000 ms loop).
 const FRAME_MS: Array[int] = [100, 90, 90, 100, 120, 100, 90, 90, 100, 120]
 ## Floor surface of arena.tscn.
 const FLOOR_Y := 600.0
-## Pixel in each 192 x 192 frame that sits on the floor: body centre, just below the soles.
-const FEET := Vector2(96, 177)
+## Pixel in each 256 x 256 frame that sits on the floor: body centre, just below the soles.
+const FEET := Vector2(128, 236)
 
 var _sprites: Array[AnimatedSprite2D] = []
 
