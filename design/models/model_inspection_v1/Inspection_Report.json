@@ -1,0 +1,568 @@
+[
+  {
+    "file": "kairi/downloads/Kairi_KH2/Kairi_KH2.obj",
+    "status": "imported",
+    "mesh_objects": 7,
+    "vertices": 2716,
+    "faces": 3280,
+    "materials": [
+      "texture000_texture000.png",
+      "texture001_texture001.png",
+      "texture002_texture002.png",
+      "texture003",
+      "texture004_texture004.png",
+      "texture005_texture005.png",
+      "texture006_texture006.png"
+    ],
+    "images": [
+      {
+        "name": "texture000.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Kairi_KH2\\texture000.png",
+        "loaded": true
+      },
+      {
+        "name": "texture001.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Kairi_KH2\\texture001.png",
+        "loaded": true
+      },
+      {
+        "name": "texture002.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Kairi_KH2\\texture002.png",
+        "loaded": true
+      },
+      {
+        "name": "texture004.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Kairi_KH2\\texture004.png",
+        "loaded": true
+      },
+      {
+        "name": "texture005.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Kairi_KH2\\texture005.png",
+        "loaded": true
+      },
+      {
+        "name": "texture006.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Kairi_KH2\\texture006.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "kairi__Kairi_KH2__Kairi_KH2_obj_front.png",
+      "kairi__Kairi_KH2__Kairi_KH2_obj_side.png",
+      "kairi__Kairi_KH2__Kairi_KH2_obj_back.png"
+    ],
+    "bbox_size": [
+      147.1855,
+      38.4084,
+      154.5658
+    ]
+  },
+  {
+    "file": "kairi/downloads/Kairi_KH2/Kairi_KH2.smd",
+    "status": "not imported",
+    "reason": "Source engine SMD needs an add-on such as Blender Source Tools"
+  },
+  {
+    "file": "kairi/downloads/Oath Keeper (Keyblade)/Oathkeeper.obj",
+    "status": "imported",
+    "mesh_objects": 1,
+    "vertices": 1443,
+    "faces": 481,
+    "materials": [
+      "Material03"
+    ],
+    "images": [
+      {
+        "name": "OathKeeper.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\kairi\\downloads\\Oath Keeper (Keyblade)\\OathKeeper.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "kairi__Oath_Keeper_(Keyblade)__Oathkeeper_obj_front.png",
+      "kairi__Oath_Keeper_(Keyblade)__Oathkeeper_obj_side.png",
+      "kairi__Oath_Keeper_(Keyblade)__Oathkeeper_obj_back.png"
+    ],
+    "bbox_size": [
+      50.4015,
+      176.9458,
+      5.5237
+    ]
+  },
+  {
+    "file": "larxene/downloads/Larxene/Larxene.obj",
+    "status": "imported",
+    "mesh_objects": 1,
+    "vertices": 3360,
+    "faces": 3231,
+    "materials": [
+      "55"
+    ],
+    "images": [
+      {
+        "name": "Larxene.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\larxene\\downloads\\Larxene\\Larxene.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "larxene__Larxene__Larxene_obj_front.png",
+      "larxene__Larxene__Larxene_obj_side.png",
+      "larxene__Larxene__Larxene_obj_back.png"
+    ],
+    "bbox_size": [
+      221.0294,
+      87.079,
+      231.8832
+    ]
+  },
+  {
+    "file": "riku/downloads/Riku_KH2/Riku_2.smd",
+    "status": "not imported",
+    "reason": "Source engine SMD needs an add-on such as Blender Source Tools"
+  },
+  {
+    "file": "riku/downloads/Riku_KH2/Riku_KH2.obj",
+    "status": "imported",
+    "mesh_objects": 4,
+    "vertices": 2349,
+    "faces": 3019,
+    "materials": [
+      "texture000_texture000_texture000.png",
+      "texture001_texture001_texture001.png",
+      "texture002_texture002_texture002.png",
+      "texture003_texture003_texture003.png"
+    ],
+    "images": [
+      {
+        "name": "texture000.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\riku\\downloads\\Riku_KH2\\texture000.png",
+        "loaded": true
+      },
+      {
+        "name": "texture001.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\riku\\downloads\\Riku_KH2\\texture001.png",
+        "loaded": true
+      },
+      {
+        "name": "texture002.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\riku\\downloads\\Riku_KH2\\texture002.png",
+        "loaded": true
+      },
+      {
+        "name": "texture003.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\riku\\downloads\\Riku_KH2\\texture003.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "riku__Riku_KH2__Riku_KH2_obj_front.png",
+      "riku__Riku_KH2__Riku_KH2_obj_side.png",
+      "riku__Riku_KH2__Riku_KH2_obj_back.png"
+    ],
+    "bbox_size": [
+      179.1904,
+      57.1911,
+      185.2922
+    ]
+  },
+  {
+    "file": "riku/downloads/Way To The Dawn/Way To The Dawn.dae",
+    "status": "not imported",
+    "reason": "Collada import was removed in Blender 5.0"
+  },
+  {
+    "file": "riku/downloads/Way To The Dawn/Way To The Dawn.obj",
+    "status": "imported",
+    "mesh_objects": 2,
+    "vertices": 1151,
+    "faces": 573,
+    "materials": [
+      "w_ri140_00",
+      "w_ri140_01"
+    ],
+    "images": [
+      {
+        "name": "w_ri140_00.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\riku\\downloads\\Way To The Dawn\\w_ri140_00.png",
+        "loaded": true
+      },
+      {
+        "name": "w_ri140_01.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\riku\\downloads\\Way To The Dawn\\w_ri140_01.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "riku__Way_To_The_Dawn__Way_To_The_Dawn_obj_front.png",
+      "riku__Way_To_The_Dawn__Way_To_The_Dawn_obj_side.png",
+      "riku__Way_To_The_Dawn__Way_To_The_Dawn_obj_back.png"
+    ],
+    "bbox_size": [
+      0.0165,
+      0.0006,
+      0.0044
+    ]
+  },
+  {
+    "file": "sora/downloads/Kingdom Key/Kingdom Key.DAE",
+    "status": "not imported",
+    "reason": "Collada import was removed in Blender 5.0"
+  },
+  {
+    "file": "sora/downloads/Kingdom Key/Kingdom Key.obj",
+    "status": "imported",
+    "mesh_objects": 1,
+    "vertices": 233,
+    "faces": 335,
+    "materials": [
+      "Material__47"
+    ],
+    "images": [
+      {
+        "name": "23fcb0dd.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\Kingdom Key\\23fcb0dd.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "sora__Kingdom_Key__Kingdom_Key_obj_front.png",
+      "sora__Kingdom_Key__Kingdom_Key_obj_side.png",
+      "sora__Kingdom_Key__Kingdom_Key_obj_back.png"
+    ],
+    "bbox_size": [
+      31.6369,
+      134.273,
+      8.8643
+    ]
+  },
+  {
+    "file": "sora/downloads/p_ex150.dae",
+    "status": "not imported",
+    "reason": "Collada import was removed in Blender 5.0"
+  },
+  {
+    "file": "sora/downloads/p_ex150.fbx",
+    "status": "imported",
+    "mesh_objects": 5,
+    "vertices": 3814,
+    "faces": 1867,
+    "materials": [
+      "n_ex050_00",
+      "n_ex050_01",
+      "n_ex050_02",
+      "n_ex050_E",
+      "n_ex050_M"
+    ],
+    "images": [
+      {
+        "name": "Image",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_00.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.001",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_01.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.002",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_02.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.003",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_E.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.004",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_M.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.005",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_00.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.006",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_01.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.007",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_02.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.008",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_E.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.009",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_M.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 1,
+    "bones": 49,
+    "skinned_meshes": 5,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "sora__p_ex150_fbx_front.png",
+      "sora__p_ex150_fbx_side.png",
+      "sora__p_ex150_fbx_back.png"
+    ],
+    "bbox_size": [
+      0.0159,
+      0.0063,
+      0.0169
+    ]
+  },
+  {
+    "file": "sora/downloads/p_ex150.obj",
+    "status": "imported",
+    "mesh_objects": 5,
+    "vertices": 3175,
+    "faces": 1867,
+    "materials": [
+      "n_ex050_00",
+      "n_ex050_01",
+      "n_ex050_02",
+      "n_ex050_E",
+      "n_ex050_M"
+    ],
+    "images": [
+      {
+        "name": "n_ex050_00.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_00.png",
+        "loaded": true
+      },
+      {
+        "name": "n_ex050_01.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_01.png",
+        "loaded": true
+      },
+      {
+        "name": "n_ex050_02.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_02.png",
+        "loaded": true
+      },
+      {
+        "name": "n_ex050_E.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_E.png",
+        "loaded": true
+      },
+      {
+        "name": "n_ex050_M.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\sora\\downloads\\n_ex050_M.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "sora__p_ex150_obj_front.png",
+      "sora__p_ex150_obj_side.png",
+      "sora__p_ex150_obj_back.png"
+    ],
+    "bbox_size": [
+      0.0159,
+      0.0063,
+      0.0169
+    ]
+  },
+  {
+    "file": "xemnas/downloads/b_eh110.dae",
+    "status": "not imported",
+    "reason": "Collada import was removed in Blender 5.0"
+  },
+  {
+    "file": "xemnas/downloads/b_eh110.fbx",
+    "status": "imported",
+    "mesh_objects": 5,
+    "vertices": 4356,
+    "faces": 2196,
+    "materials": [
+      "b_eh110_00",
+      "b_eh110_01",
+      "b_eh110_02",
+      "b_eh110_E",
+      "b_eh110_M"
+    ],
+    "images": [
+      {
+        "name": "Image",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_00.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.001",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_01.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.002",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_02.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.003",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_E.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.004",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_M.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.005",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_00.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.006",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_01.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.007",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_02.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.008",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_E.png",
+        "loaded": true
+      },
+      {
+        "name": "Image.009",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_M.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 1,
+    "bones": 86,
+    "skinned_meshes": 5,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "xemnas__b_eh110_fbx_front.png",
+      "xemnas__b_eh110_fbx_side.png",
+      "xemnas__b_eh110_fbx_back.png"
+    ],
+    "bbox_size": [
+      0.0202,
+      0.0084,
+      0.0225
+    ]
+  },
+  {
+    "file": "xemnas/downloads/b_eh110.obj",
+    "status": "imported",
+    "mesh_objects": 5,
+    "vertices": 3612,
+    "faces": 2196,
+    "materials": [
+      "b_eh110_00",
+      "b_eh110_01",
+      "b_eh110_02",
+      "b_eh110_E",
+      "b_eh110_M"
+    ],
+    "images": [
+      {
+        "name": "b_eh110_00.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_00.png",
+        "loaded": true
+      },
+      {
+        "name": "b_eh110_01.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_01.png",
+        "loaded": true
+      },
+      {
+        "name": "b_eh110_02.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_02.png",
+        "loaded": true
+      },
+      {
+        "name": "b_eh110_E.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_E.png",
+        "loaded": true
+      },
+      {
+        "name": "b_eh110_M.png",
+        "path": "D:\\KH Fighting Game\\design\\models\\xemnas\\downloads\\b_eh110_M.png",
+        "loaded": true
+      }
+    ],
+    "missing_images": [],
+    "armatures": 0,
+    "bones": 0,
+    "skinned_meshes": 0,
+    "shape_keys": 0,
+    "actions": 0,
+    "renders": [
+      "xemnas__b_eh110_obj_front.png",
+      "xemnas__b_eh110_obj_side.png",
+      "xemnas__b_eh110_obj_back.png"
+    ],
+    "bbox_size": [
+      0.0202,
+      0.0084,
+      0.0225
+    ]
+  },
+  {
+    "file": "xigbar/downloads/Xigbar.smd",
+    "status": "not imported",
+    "reason": "Source engine SMD needs an add-on such as Blender Source Tools"
+  }
+]

@@ -9,6 +9,6 @@ Kvon chose3D animation rendered into2D sprites. Existing sprite assets and gamep
 
 Run e.g. `blender --background --factory-startup --python blender_workflow/build_character_blockout.py -- character_blockout_v5`. Builders refuse to overwrite an existing version folder.
 
-**Next direction:** Kvon proposed using a downloaded Sora model from The Models Resource instead of building from scratch. The site blocks automated access (Cloudflare challenge), so Kvon downloads it manually into `design/models/sora/downloads/`. Ripped game models should stay out of Git unless Kvon decides otherwise.
+**Downloaded models (current direction):** Kvon downloaded models from The Models Resource into each character's `downloads/` folder and approved pushing them to GitHub. Sora's KH2 model `downloads/p_ex150.fbx` is rigged (49 bones, T-pose); `downloads/Kingdom Key/` holds the weapon. [inspect_downloaded_models.py](blender_workflow/inspect_downloaded_models.py) imports every OBJ/FBX read-only; results and front/side/back previews are in [../model_inspection_v1/](../model_inspection_v1/Inspection_Report.json).
 
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.

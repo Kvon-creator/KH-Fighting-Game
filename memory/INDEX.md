@@ -1,6 +1,7 @@
 # Project Memory
 
 - [Sora 3D-to-sprite experiment](Sora_3D_Sprite_Experiment.md): October21 experiments folder deleted (scripts reproduce it); next: user-downloaded Models Resource Sora (site blocks bots, keep rips out of Git); earlier procedural blockout v5; V4 crown refinement and matching-view comparison after the user's v3 correction; verified Blender pipeline; Hunyuan character pilot failed with an unspecified null error, no mesh or retry.
+- [Character model folders](Character_Model_Folders.md): Downloaded models for Sora, Riku, Kairi, Xemnas, Larxene, Xigbar (pushed to GitHub); formats, rigs, SMD/DAE limits; roster not confirmed.
 - [Art workstation hardware](Art_Workstation_Hardware.md): Confirmed24GB system RAM, separate4GB GPU VRAM, installed Blender5.2.2 path and successful CPU render test.
 
 - [Local AI Art Workflow](Local_AI_Art_Workflow.md): October19 pilot approval and two adjacent flat refinements, three-pose once-only preview and verified source/weapon/export checks. Full run/stop remains unfinished.
