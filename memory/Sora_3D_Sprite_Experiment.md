@@ -250,3 +250,12 @@ Pending review.
 **Decision: stay with the PS2 model, October22:** After comparing sheet2d_v1 (from-scratch rig) with sprite2d_v3, Kvon said "Stay with the ps2 model." Use the downloaded PS2 rips for all characters; the approved Sora sprites are battle_v12 (3D render) and sprite2d_v3 (2D style). Don't continue refining the from-scratch model (`character_blockout_v*`, `sheet_*`) unless Kvon asks; those files stay as a preserved experiment.
 
 **Why:** User choice after the side-by-side comparison.
+
+**Godot idle test, October22:** Kvon asked to test in Godot first, then do all of Sora's movement animations. He chose sprite2d_v3 for the test.
+
+- **Added only new files:** `KingdomArena/assets/sora/idle_battle/sora_idle_00-09.png` (the 128px sprite2d_v3 frames, plus generated .import files), `scenes/sora_idle_test.tscn` and `scripts/sora_idle_test.gd`. demo.tscn, test_fighter and project.godot are unchanged.
+- **Scene:** builds SpriteFrames in code: fps 10 with relative durations ms/100, LOOP_LINEAR. Two AnimatedSprite2D stand at spawn x 420/860 with feet on y=600 (`centered=false`, offset `-(64,118)`; soles are on row 117 of each 128px frame). The right one has `flip_h`; F swaps facing.
+- **Tested:** the run screenshot (`design/models/sora/sprite2d_v3/Godot_Arena_Test.png`) shows both standing on the floor facing each other. A 45-frame movie at 30 fps shows all 10 poses in order and looping. No gameplay/controls integration yet.
+- **Next agreed:** Sora's movement animations.
+
+**Why:** User request.

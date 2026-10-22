@@ -11,6 +11,7 @@
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [Mobile Workflow](Codex_Mobile_Workflow.md): Phone pairing requested before further Gemini sprite generation; setup and status.
 - [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
+- [Godot executable](Godot_Executable.md): Godot 4.7.2 path, KingdomArena project, online-docs use, verified import/capture/movie test commands.
 - [Git Executable](Git_Executable.md): User-provided installation path for commits and periodic main pushes when Git is absent from PATH.
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
