@@ -224,3 +224,16 @@ Pending review. Offered the matching brake transition.
   - Outputs: GIFs `Walk_Cycle.gif` and `Goku_vs_Sora_v19.gif`.
 - **Round 03:** Gemini approved v19 ("perfect adaptation"). It requested v19 start/brake transitions and a v19-style retreat. NOT started (the loop goal was met); asked Kvon.
 - **Godot:** still uses the v18 walk and transitions, which match each other. v19 needs its own transitions before integration.
+
+**Idle shuffle adopted for the walk, October22:** Kvon asked what the absolute easiest walk would be while keeping the idle pose and screen angle; I suggested an "idle shuffle". He interrupted the v19 check and said "Do the idle shuffle you suggested".
+
+- **Recipe:** `build_sprite_pilot.py -- shuffle_fwd_v2` / `shuffle_back_v2`.
+  - The battle_v12 upper body is unchanged, with the idle's BREATH values frozen at idle frame 1 (lag .1355), so drawing 1 matches the idle (max pixel diff 7/255).
+  - The lead foot slides 0.22 m forward, then the back foot follows; lifts 1.2-1.8 cm.
+  - The body sits midway between the feet, giving exact planted feet.
+  - Hips dip up to 3 cm while the feet are spread, so the legs reach (grip sinks with them). v1's 0.28 m step locked both legs straight from the already-wide idle stance.
+- **Timing:** 7 drawings x 4 game frames = 28 frames (0.467 s). Root [0.99,4.96,8.93,5.96,5.96,8.93,3.97] px at 384 (39.7 px per cycle, ~85 px/s). Back is mirrored.
+- **2D:** `shuffle2d_fwd_v2` / `shuffle2d_back_v2`, same style as sprite2d_v3 (no forearm ink, to match the idle). 4x2 white sheets, GIFs.
+- **Godot:** `sora_move_test.gd` now uses idle + shuffle_forward + shuffle_back only (D/Right forward, A/Left back). The shuffle starts straight from the idle; on release it finishes the cycle and then stands (no transitions/brakes needed). Verified: exact 4-frame holds, planted feet pixel-exact, clean stop.
+- **Shelved:** the v18/v19 walk sets and their transitions/brakes stay on disk but are not used. The v19 transitions and retreat built in the background were not reviewed.
+- **Known:** starting while the idle is mid-bounce can pop the upper body by up to the idle bounce (~4 px at 384).

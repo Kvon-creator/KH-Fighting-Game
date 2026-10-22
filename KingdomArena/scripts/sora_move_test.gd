@@ -1,49 +1,38 @@
 extends Node2D
-## Movement test for Sora: battle idle by default; hold D or Right to step forward. Pressing
-## forward plays the idle-to-walk transition once, then loops the walk; releasing it plays the
-## brake back into the idle. R resets his position.
-## Run with `-- --walk-demo --capture=<png path>` to walk for a moment, save a screenshot and quit,
-## or `-- --walk-demo-ticks=N` to hold forward for N game frames and then release (used for
-## automated checks).
+## Movement test for Sora: battle idle by default. Hold D or Right to shuffle forward, A or Left
+## to shuffle back. The shuffle's first drawing is the idle stance, so it starts straight from the
+## idle; when the key is released he finishes the current step (back to the idle stance) and
+## stands. R resets his position.
+## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
+## holds back; `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
-## fighting game: each drawing is held an exact number of game frames, and the transition hands
-## over to the walk on the very next frame.
+## fighting game: each drawing is held an exact number of game frames.
 
 ## Floor surface of arena.tscn.
 const FLOOR_Y := 600.0
 ## Pixel in each 384 x 384 frame that sits on the floor (shared by every Sora animation).
 const FEET := Vector2(192, 354)
-## Rightmost position he may walk to.
+## How far he may walk toward either screen edge.
+const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
-## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing, next]
-## `next` is the animation to continue with after the last drawing (itself = loop).
-## Root motion is how far his body moves forward as each drawing starts, taken from the render
-## (metres x 180.5 px per metre), so planted feet stay exactly in place. The walk moves him at a
-## constant 1.625 px per game frame (6.5 px per 4-frame hold, 4.875 px per 3-frame hold):
-## 65 px per 40-frame cycle, 97.5 px/s. The transition crouches in place.
+## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing]
+## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
+## 180.5 px per metre), so planted feet stay exactly in place: 39.7 px per 28-frame cycle, ~85 px/s.
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
-		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], [], &"idle"],
-	&"walk_start": ["res://assets/sora/walk_start_384/", "sora_walk_start_",
-		[3, 3, 3, 3], [], &"walk_forward"],
-	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
-		[4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4],
-		[6.5, 4.875, 4.875, 6.5, 6.5, 6.5, 6.5, 4.875, 4.875, 6.5, 6.5], &"walk_forward"],
-	&"walk_stop": ["res://assets/sora/walk_stop_384/", "sora_walk_stop_",
-		[3, 3, 3, 3], [], &"idle"],
-	&"walk_stop_wide": ["res://assets/sora/walk_stop_wide_384/", "sora_walk_stop_wide_",
-		[3, 3, 3, 3], [], &"idle"],
+		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], []],
+	&"shuffle_forward": ["res://assets/sora/shuffle_fwd_384/", "sora_shuffle_fwd_",
+		[4, 4, 4, 4, 4, 4, 4], [0.99, 4.96, 8.93, 5.96, 5.96, 8.93, 3.97]],
+	&"shuffle_back": ["res://assets/sora/shuffle_back_384/", "sora_shuffle_back_",
+		[4, 4, 4, 4, 4, 4, 4], [-0.99, -4.96, -8.93, -5.96, -5.96, -8.93, -3.97]],
 }
-## Walk drawings (0-based) where his feet are wide apart (0.86 m or more): releasing forward on
-## these brakes from the wide-stance contact; on the others, from the feet-together contact.
-const WIDE_DRAWINGS := [3, 4, 5, 6, 7]
 
 var _sprite: AnimatedSprite2D
 var _start_x := 420.0
-var _demo_walk := false
-## Game frames to hold forward in the timed demo (-1 = not used).
-var _demo_ticks := -1
+## Game frames to hold forward / back in the timed demos (-1 = not used).
+var _demo_forward_ticks := -1
+var _demo_back_ticks := -1
 var _tick := 0
 ## Game frames the current drawing has been shown.
 var _hold := 0
@@ -67,27 +56,24 @@ func _ready() -> void:
 	_show(&"idle")
 
 	for arg in OS.get_cmdline_user_args():
-		if arg == "--walk-demo":
-			_demo_walk = true
-		elif arg.begins_with("--walk-demo-ticks="):
-			_demo_ticks = int(arg.trim_prefix("--walk-demo-ticks="))
+		if arg.begins_with("--walk-demo-ticks="):
+			_demo_forward_ticks = int(arg.trim_prefix("--walk-demo-ticks="))
+		elif arg.begins_with("--back-demo-ticks="):
+			_demo_back_ticks = int(arg.trim_prefix("--back-demo-ticks="))
 		elif arg.begins_with("--capture="):
 			_capture(arg.trim_prefix("--capture="))
 
 
 func _physics_process(_delta: float) -> void:
 	_tick += 1
-	var forward := _demo_walk or _tick <= _demo_ticks 		or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)
-	if forward and _sprite.animation == &"idle":
-		_show(&"walk_start")
-		return
-	if not forward and _sprite.animation in [&"walk_start", &"walk_forward"]:
-		# Brake back into the idle from whichever contact pose is closest to the current drawing.
-		var wide := _sprite.animation == &"walk_forward" and _sprite.frame in WIDE_DRAWINGS
-		_show(&"walk_stop_wide" if wide else &"walk_stop")
-		return
-	if forward and _sprite.animation in [&"walk_stop", &"walk_stop_wide"]:
-		_show(&"walk_start")
+	var forward := _tick <= _demo_forward_ticks or Input.is_physical_key_pressed(KEY_D) \
+		or Input.is_physical_key_pressed(KEY_RIGHT)
+	var back := _tick <= _demo_back_ticks or Input.is_physical_key_pressed(KEY_A) \
+		or Input.is_physical_key_pressed(KEY_LEFT)
+	var wanted: StringName = &"shuffle_forward" if forward and not back else (
+		&"shuffle_back" if back and not forward else &"idle")
+	if _sprite.animation == &"idle" and wanted != &"idle":
+		_show(wanted)  # drawing 1 of the shuffle is the idle stance
 		return
 	# Advance one game frame; move to the next drawing when this one's hold is used up.
 	_hold += 1
@@ -95,8 +81,12 @@ func _physics_process(_delta: float) -> void:
 	if _hold >= holds[_sprite.frame]:
 		if _sprite.frame + 1 < holds.size():
 			_show(_sprite.animation, _sprite.frame + 1)
+		elif _sprite.animation == &"idle":
+			_show(&"idle")
 		else:
-			_show(ANIMATIONS[_sprite.animation][4])
+			# End of a step cycle: the feet are back in the idle stance, so he can stand, switch
+			# direction or keep going without any pop.
+			_show(wanted)
 
 
 ## Shows a drawing and applies its root motion as it starts.
@@ -106,7 +96,7 @@ func _show(anim: StringName, drawing: int = 0) -> void:
 	_hold = 0
 	var motion: Array = ANIMATIONS[anim][3]
 	if drawing < motion.size():
-		_sprite.position.x = minf(_sprite.position.x + motion[drawing], RIGHT_LIMIT)
+		_sprite.position.x = clampf(_sprite.position.x + motion[drawing], LEFT_LIMIT, RIGHT_LIMIT)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
