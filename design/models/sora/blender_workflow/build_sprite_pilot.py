@@ -23,6 +23,11 @@ version = ARGS[0]  # pose recipe
 # instead of the downloaded PS2 model.
 OUT_NAME = ARGS[1] if len(ARGS) > 1 else version
 SHEET_MODEL = OUT_NAME.startswith('sheet_')
+# walk_fwd_v* / walk_back_v*: in-place guard shuffle on the one-handed battle-ready stance
+# (battle_v2), per Kvon's movement grip rule (right hand only, Keyblade low and behind).
+GAIT = version if version.startswith(('walk_fwd_v', 'walk_back_v')) else None
+if GAIT:
+    version = 'battle_v2'
 # one_hand_v*: user's one-handed idle, right hand only, blade angled down toward his feet.
 # battle_v*: battle-ready one-handed stance (staggered feet, body turned to the opponent, blade
 # low and back, guard hand up, combat bounce), following design/references/Sora_battle_stance.gif.
@@ -374,6 +379,11 @@ if LOOP:
         # Combat bounce: a quicker, deeper bob through the knees instead of a slow breath.
         BREATH = {'drop': .025, 'lean_deg': 1.0, 'hands_z': -.012, 'head_counter_deg': -.5}
         DURATIONS_MS = [100, 90, 90, 100, 120, 100, 90, 90, 100, 120]
+    if GAIT:
+        # Two steps per cycle: the body bobs twice (handled in the loop), 10 frames x 80 ms.
+        BREATH = {'drop': .02, 'lean_deg': .8, 'hands_z': -.01, 'head_counter_deg': -.4}
+        DURATIONS_MS = [80]*10
+        STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
     bones[name].use_inherit_rotation = False   # feet stay flat while the legs bend
@@ -516,7 +526,8 @@ def solve_pose(breath=0.0, lag=None):
         toe = POSE.get('toe_deg', {}).get(s, toe_out)
         # Knees track over turned-out toes.
         knee = turn_m @ Vector((sign*(.3 + toe/50), -1, 0))
-        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', turn_m @ Vector((foot[0], foot[1], ankle_z)), knee)
+        lift = foot[2] or 0  # walk gait raises the swinging foot
+        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', turn_m @ Vector((foot[0], foot[1], ankle_z + lift)), knee)
         if toe or turn:
             rotate_world(f'{s}_ashi1', 'Z', sign*toe + turn)  # feet don't inherit the body turn
     if POSE.get('head_tilt_deg'):
@@ -824,10 +835,32 @@ if LOOP:
     (OUT / 'frames_512').mkdir(); (OUT / 'frames_128').mkdir()
     n = len(DURATIONS_MS)
     frames = []
+    if GAIT:
+        # Walk direction on the floor: toward the opponent (screen right) or away, in the body frame.
+        turn_m = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z')
+        screen_right = Vector((math.cos(t), math.sin(t), 0))
+        walk_dir = (turn_m.inverted() @ screen_right) * (1 if GAIT.startswith('walk_fwd') else -1)
+        STANCE = {s: Vector((POSE[f'{s}_foot'][0], POSE[f'{s}_foot'][1], 0)) for s in ('R', 'L')}
+        # The foot nearer the travel direction steps first; the other follows half a cycle later.
+        leader = max(('R', 'L'), key=lambda s: STANCE[s].dot(walk_dir))
+
+        def foot_at(side, phase):
+            phase = (phase + (0 if side == leader else .5)) % 1
+            if phase < SWING:  # swing: travel forward with a lift
+                u = phase / SWING; u = u*u*(3 - 2*u)
+                return -STRIDE + 2*STRIDE*u, LIFT*math.sin(math.pi*phase/SWING)
+            return STRIDE - 2*STRIDE*(phase - SWING)/(1 - SWING), 0.0  # stance: planted, slides back
     for i in range(n):
         breath = (1 - math.cos(2*math.pi*i/n)) / 2
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
         lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
+        if GAIT:
+            breath = (1 - math.cos(4*math.pi*i/n)) / 2  # one dip per step
+            lag = (1 - math.cos(4*math.pi*(i/n - BREATH_LAG/2))) / 2
+            for side in ('R', 'L'):
+                offset, lift = foot_at(side, i/n)
+                pos = STANCE[side] + walk_dir*offset
+                POSE[f'{side}_foot'] = (pos.x, pos.y, lift)
         solve_pose(breath, lag)
         place_key()
         for pb in arm.pose.bones:
