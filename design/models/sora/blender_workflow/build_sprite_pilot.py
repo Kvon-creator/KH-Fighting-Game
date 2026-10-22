@@ -27,7 +27,9 @@ SHEET_MODEL = OUT_NAME.startswith('sheet_')
 # (battle_v2), per Kvon's movement grip rule (right hand only, Keyblade low and behind).
 GAIT = version if version.startswith(('walk_fwd_v', 'walk_back_v')) else None
 if GAIT:
-    version = 'battle_v2'
+    # v1: one-handed battle_v2 stance. v2+ (Kvon): keep both hands on the Keyblade, so the walk
+    # starts from the approved two-handed battle idle (battle_v12) with no grip change.
+    version = 'battle_v2' if GAIT.endswith('_v1') else 'battle_v12'
 # one_hand_v*: user's one-handed idle, right hand only, blade angled down toward his feet.
 # battle_v*: battle-ready one-handed stance (staggered feet, body turned to the opponent, blade
 # low and back, guard hand up, combat bounce), following design/references/Sora_battle_stance.gif.
@@ -382,7 +384,7 @@ if LOOP:
     if GAIT:
         # Two steps per cycle: the body bobs twice (handled in the loop), 10 frames x 80 ms.
         BREATH = {'drop': .02, 'lean_deg': .8, 'hands_z': -.01, 'head_counter_deg': -.4}
-        DURATIONS_MS = [80]*10
+        DURATIONS_MS = [80]*10 if GAIT.endswith('_v1') else [65]*10  # v2+: a little faster
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):

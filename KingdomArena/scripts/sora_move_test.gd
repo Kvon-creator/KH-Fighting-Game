@@ -8,12 +8,12 @@ const FLOOR_Y := 600.0
 ## Pixel in each 384 x 384 frame that sits on the floor (shared by every Sora animation).
 const FEET := Vector2(192, 354)
 ## Forward walk speed in pixels per second. Matches the planted foot's slide in the walk frames
-## (0.5 m/s at 180.5 px per metre), so his feet don't skate.
-const WALK_SPEED := 90.0
+## (0.615 m/s at 180.5 px per metre), so his feet don't skate.
+const WALK_SPEED := 111.0
 ## name -> [folder, file prefix, frame durations in ms]
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_", [100, 90, 90, 100, 120, 100, 90, 90, 100, 120]],
-	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_", [80, 80, 80, 80, 80, 80, 80, 80, 80, 80]],
+	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_", [65, 65, 65, 65, 65, 65, 65, 65, 65, 65]],
 }
 
 var _sprite: AnimatedSprite2D
@@ -28,7 +28,7 @@ func _ready() -> void:
 		var prefix: String = ANIMATIONS[anim][1]
 		var durations: Array = ANIMATIONS[anim][2]
 		frames.add_animation(anim)
-		# At 10 frames per second one duration unit is 100 ms, so 80 ms becomes 0.8.
+		# At 10 frames per second one duration unit is 100 ms, so 65 ms becomes 0.65.
 		frames.set_animation_speed(anim, 10.0)
 		frames.set_animation_loop_mode(anim, SpriteFrames.LOOP_LINEAR)
 		for i in durations.size():
