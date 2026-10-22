@@ -172,3 +172,19 @@ Pending review.
 Pending review.
 
 **Why:** User choice.
+
+**Idle-to-walk + grounded walk spec (Goku reference), October22:** Kvon supplied `design/references/walking/Goku walk.gif` (very wide sumo-like guard, knees splayed, feet barely lifting) and a pasted spec. Answers to my questions: keep the approved forearm ink instead of a background gap; start the transition from the battle_v12 idle.
+
+- **`walk_fwd_v18` (cycle, current):** extra crouch 0.12 m below the idle (grip sinks with it); stance along 0.68-1.04 m, lateral x1.2; knee splay .8; foot lift capped at 1 cm; 6 render px passing drop; pitch 3.5 deg on contacts to 0 on passing; 2 deg chest roll toward the weight foot; weapon +5 cm lag on passing / -3 cm on contacts; -8 deg drag; 12 deg elbow flare + forearm ink.
+  - Timing: 40 game frames [4,3,3,4,4,4,4,3,3,4,4].
+  - Root motion 65 px per cycle (6.5 / 4.875 px per drawing = 1.625 px/frame, 97.5 px/s).
+- **`walk_fwd_v18t` (transition):** 4 drawings x 3 game frames, smoothstep blend of crouch/stance/pitch/splay/roll/hands from the battle idle into walk drawing 1, in place.
+- **2D outputs:** `walk_fwd2d_v18_ink` (4x3 white sheet) and `walk_fwd2d_v18t_ink` (4x1 white sheet).
+- **Measured:** hands are 0.8 cm (R) and 2.2-3.3 cm (L) from the handle line, same as approved v12. Note the report's `grip_error_L_m` ignores the v18 hand offsets and is NOT valid for v18. Floor rows 470-471.
+- **Godot:** `sora_move_test.gd` now steps animation itself in `_physics_process` (60 ticks/s default, confirmed in docs), because `animation_finished` added a 2-frame hitch at the transition. New `walk_start_384` assets; walk_fwd_384 replaced.
+  - Verified: holds exact (3,3,3,3 then 4,3,3,4,4,4,4,3,3,4,4 repeating); planted feet within 1 px.
+- **Builder change:** the v13/v15-17 gap experiments are now limited to their own versions.
+
+Pending review. Offered the matching brake transition.
+
+**Why:** User spec and reference.

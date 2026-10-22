@@ -1,7 +1,12 @@
 extends Node2D
-## Movement test for Sora: battle idle by default; hold D or Right to step forward.
-## R resets his position. Run with `-- --walk-demo --capture=<png path>` to walk for a moment,
-## save a screenshot and quit (used for automated checks).
+## Movement test for Sora: battle idle by default; hold D or Right to step forward. Pressing
+## forward plays the idle-to-walk transition once, then loops the walk. R resets his position.
+## Run with `-- --walk-demo --capture=<png path>` to walk for a moment, save a screenshot and quit
+## (used for automated checks).
+##
+## Animation is stepped once per physics tick (60 per second, the project default), like a
+## fighting game: each drawing is held an exact number of game frames, and the transition hands
+## over to the walk on the very next frame.
 
 ## Floor surface of arena.tscn.
 const FLOOR_Y := 600.0
@@ -9,39 +14,37 @@ const FLOOR_Y := 600.0
 const FEET := Vector2(192, 354)
 ## Rightmost position he may walk to.
 const RIGHT_LIMIT := 1280.0 - 120.0
-## Animations run on 60 fps game frames: each drawing is held a whole number of game frames.
-const GAME_FPS := 60.0
-## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing]
+## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing, next]
+## `next` is the animation to continue with after the last drawing (itself = loop).
 ## Root motion is how far his body moves forward as each drawing starts, taken from the render
-## (metres x 180.5 px per metre), so planted feet stay exactly in place. Every walk drawing moves
-## him at a constant 2.25 px per game frame (9 px per 4-frame hold, 6.75 px per 3-frame hold),
-## so the loop has no pause: exactly 90 px per 40-frame cycle, 135 px/s.
+## (metres x 180.5 px per metre), so planted feet stay exactly in place. The walk moves him at a
+## constant 1.625 px per game frame (6.5 px per 4-frame hold, 4.875 px per 3-frame hold):
+## 65 px per 40-frame cycle, 97.5 px/s. The transition crouches in place.
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
-		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], []],
+		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], [], &"idle"],
+	&"walk_start": ["res://assets/sora/walk_start_384/", "sora_walk_start_",
+		[3, 3, 3, 3], [], &"walk_forward"],
 	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
 		[4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4],
-		[9.0, 6.75, 6.75, 9.0, 9.0, 9.0, 9.0, 6.75, 6.75, 9.0, 9.0]],
+		[6.5, 4.875, 4.875, 6.5, 6.5, 6.5, 6.5, 4.875, 4.875, 6.5, 6.5], &"walk_forward"],
 }
 
 var _sprite: AnimatedSprite2D
 var _start_x := 420.0
 var _demo_walk := false
+## Game frames the current drawing has been shown.
+var _hold := 0
 
 
 func _ready() -> void:
 	var frames := SpriteFrames.new()
 	for anim: StringName in ANIMATIONS:
+		frames.add_animation(anim)
 		var folder: String = ANIMATIONS[anim][0]
 		var prefix: String = ANIMATIONS[anim][1]
-		var durations: Array = ANIMATIONS[anim][2]
-		frames.add_animation(anim)
-		# At 60 fps one duration unit is one game frame.
-		frames.set_animation_speed(anim, GAME_FPS)
-		frames.set_animation_loop_mode(anim, SpriteFrames.LOOP_LINEAR)
-		for i in durations.size():
-			var texture: Texture2D = load(folder + prefix + "%02d.png" % i)
-			frames.add_frame(anim, texture, durations[i])
+		for i in ANIMATIONS[anim][2].size():
+			frames.add_frame(anim, load(folder + prefix + "%02d.png" % i) as Texture2D)
 
 	_sprite = AnimatedSprite2D.new()
 	_sprite.sprite_frames = frames
@@ -49,8 +52,7 @@ func _ready() -> void:
 	_sprite.offset = -FEET
 	_sprite.position = Vector2(_start_x, FLOOR_Y)
 	add_child(_sprite)
-	_sprite.frame_changed.connect(_on_frame_changed)
-	_sprite.play(&"idle")
+	_show(&"idle")
 
 	for arg in OS.get_cmdline_user_args():
 		if arg == "--walk-demo":
@@ -59,20 +61,32 @@ func _ready() -> void:
 			_capture(arg.trim_prefix("--capture="))
 
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var forward := _demo_walk or Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)
-	if forward:
-		if _sprite.animation != &"walk_forward":
-			_sprite.play(&"walk_forward")
-	elif _sprite.animation != &"idle":
-		_sprite.play(&"idle")
+	if forward and _sprite.animation == &"idle":
+		_show(&"walk_start")
+		return
+	if not forward and _sprite.animation != &"idle":
+		_show(&"idle")
+		return
+	# Advance one game frame; move to the next drawing when this one's hold is used up.
+	_hold += 1
+	var holds: Array = ANIMATIONS[_sprite.animation][2]
+	if _hold >= holds[_sprite.frame]:
+		if _sprite.frame + 1 < holds.size():
+			_show(_sprite.animation, _sprite.frame + 1)
+		else:
+			_show(ANIMATIONS[_sprite.animation][4])
 
 
-## Moves Sora by the current frame's root motion whenever a new frame starts.
-func _on_frame_changed() -> void:
-	var motion: Array = ANIMATIONS[_sprite.animation][3]
-	if _sprite.frame < motion.size():
-		_sprite.position.x = minf(_sprite.position.x + motion[_sprite.frame], RIGHT_LIMIT)
+## Shows a drawing and applies its root motion as it starts.
+func _show(anim: StringName, drawing: int = 0) -> void:
+	_sprite.animation = anim
+	_sprite.frame = drawing
+	_hold = 0
+	var motion: Array = ANIMATIONS[anim][3]
+	if drawing < motion.size():
+		_sprite.position.x = minf(_sprite.position.x + motion[drawing], RIGHT_LIMIT)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:

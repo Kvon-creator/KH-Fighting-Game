@@ -477,28 +477,53 @@ if LOOP:
                     LEAD_KNEE_IN = [.3, .5, .4, .2, 0, 0, 0, 0, 0, 0, .2]
                 DURATIONS_MS = [k[7] for k in STEP_KEYS]
                 V12 = not GAIT.endswith(('_v9', '_v10', '_v11'))
+                # v18+ (Kvon's idle-to-walk + grounded walk spec, Goku reference): deeper and wider crouch,
+                # splayed knees, low shuffle, 65 px per cycle, pitch/roll sway, weapon vertical lag.
+                # 'walk_fwd_v18t' is the 4-frame idle-to-walk transition into it.
+                V18 = V12 and not GAIT.endswith(tuple(f'_v{n_}' for n_ in range(12, 18)))
+                TRANSITION = V18 and GAIT.endswith('t')
                 if V12:
                     # v12+ (Kvon's walk spec): constant root velocity, exactly 90 game px per 40-frame cycle
                     # (2.25 px per game frame, 135 px/s); step length matched so planted feet stay exact.
                     RENDER_PX_PER_M = 385 / HEIGHT            # 512 px render: ortho_scale = HEIGHT*512/385
                     GAME_PX_PER_M = RENDER_PX_PER_M*384/512
-                    STEP_LEN = 90 / GAME_PX_PER_M
+                    STEP_LEN = (65 if V18 else 90) / GAME_PX_PER_M
                     k_scale = STEP_LEN / .50
+                    NARROW0 = .68 if V18 else .30      # v18: feet stay wide even when closest (legs still reach)
+                    LIFT_CAP = .01 if V18 else 1.0     # v18: stepping foot barely clears the floor
                     # Pelvis drops 6 render px on the passing poses (3, 9) and is at default on contacts.
                     PASSING = [0, .5, 1, .5, 0, 0, 0, .5, 1, .5, 0]
                     keys, cum = [], 0
                     for idx, (k, f) in enumerate(zip(STEP_KEYS, GAME_FRAMES)):
                         cum += f if idx else 0
-                        keys.append((.30 + (k[0] - .30)*k_scale, k[1], k[2]*k_scale, k[3], k[4],
-                                     .155 + STEP_LEN*cum/40, PASSING[idx], k[7]))
+                        keys.append((NARROW0 + (k[0] - .30)*k_scale, min(k[1], LIFT_CAP), k[2]*k_scale,
+                                     min(k[3], LIFT_CAP), k[4], .155 + STEP_LEN*cum/40, PASSING[idx], k[7]))
                     STEP_KEYS = keys
+                    NARROW = NARROW0
                     drop = 6 / RENDER_PX_PER_M
                     BREATH.update({'drop': drop, 'lean_deg': 0, 'hands_z': -drop, 'head_counter_deg': 0})
                     # Weapon drag: -8 deg about the vertical at the passing poses (grip follows the handle).
                     WEAPON_DRAG = [-8*w for w in PASSING]
                     # Front arm: abduct 12-15 deg about the shoulder-wrist line, keeping 10-12 px forearm gap.
                     FRONT_ARM_RANGE, FRONT_ARM_GAP = (12.0, 15.0), (10.0, 12.0)
+                    if V18:
+                        CROUCH_EXTRA, WIDTH_SCALE, KNEE_SPLAY = .12, 1.2, .8
+                        CONTACT = [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
+                        # 3.5 deg extra forward pitch on contacts, easing to 0 on passing frames.
+                        PITCH = [3.5*(1 - p_) for p_ in PASSING]
+                        # Weapon lags: +5 cm when the pelvis drops (passing), -3 cm when the body rises (contact).
+                        HANDS_EXTRA = [.05*p_ - .03*c_ for p_, c_ in zip(PASSING, CONTACT)]
+                        # Chest roll 2 deg toward the weight-bearing leg (F = trailing foot, L = leading foot).
+                        ROLL = [('F', .3), ('F', 1), ('F', 1), ('F', .5), ('L', .5), ('L', .8), ('L', 1),
+                                ('L', 1), ('L', 1), ('L', .5), ('F', .3)]
+                        if TRANSITION:
+                            # 4 drawings x 3 game frames easing from the battle idle into walk drawing 1.
+                            TRANS_T = [u_*u_*(3 - 2*u_) for u_ in (.2, .4, .6, .8)]
+                            GAME_FRAMES = [3, 3, 3, 3]
+                            DURATIONS_MS = [50.0]*4
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
+V18 = globals().get('V18', False)
+TRANSITION = globals().get('TRANSITION', False)
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
     bones[name].use_inherit_rotation = False   # feet stay flat while the legs bend
@@ -625,10 +650,19 @@ def solve_pose(breath=0.0, lag=None):
     ax_x, ax_y = (turn_m @ Vector((1, 0, 0)), turn_m @ Vector((0, 1, 0))) if turn else ('X', 'Y')
     if turn:
         rotate_world('Root', 'Z', turn)
-    set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'] - b['drop']*breath)) @ pose_world('center'))
+    set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'] - POSE.get('crouch_extra', 0)
+                                                 - b['drop']*breath)) @ pose_world('center'))
     if POSE.get('hunch_deg'):
         rotate_world('hara', ax_x, POSE['hunch_deg'])
-    rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath)
+    rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath + POSE.get('pitch_extra', 0))
+    if POSE.get('chest_roll'):
+        # v18+: roll the chest about the body's forward axis toward the weight-bearing foot.
+        roll_side, roll_deg = POSE['chest_roll']
+        fwd_ = (turn_m @ Vector((0, -1, 0))).normalized()
+        lat_ = fwd_.cross(Vector((0, 0, 1)))
+        foot_ = turn_m @ Vector((POSE[f'{roll_side}_foot'][0], POSE[f'{roll_side}_foot'][1], 0))
+        hip_ = pose_world('hara').translation.copy(); hip_.z = 0
+        rotate_world('mune', fwd_, roll_deg if (foot_ - hip_).dot(lat_) > 0 else -roll_deg)
     if POSE.get('chest_twist_deg'):
         # v14+ (Kvon): twist the upper spine/chest on its local Z so the front shoulder turns back.
         cols = pose_world('mune').to_3x3().normalized().col
@@ -648,6 +682,8 @@ def solve_pose(breath=0.0, lag=None):
         rotate_world('kubi', 'Z', POSE['look_deg'])  # eyes on the opponent
     r_hand = turn_m @ Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
     r_hand += Vector(POSE.get('grip_offset_world', (0, 0, 0)))  # v14+: grip moved off the stomach
+    # v18+: the grip sinks with the deeper crouch, plus the weapon's vertical lag.
+    r_hand += Vector((0, 0, POSE.get('hands_extra_z', 0) - POSE.get('crouch_extra', 0)))
     l_hand = r_hand + blade*POSE['L_hand_along_handle']
     toe_out = POSE.get('toe_out_deg', 0)
     for s, foot in (('R', POSE['R_foot']), ('L', POSE['L_foot'])):
@@ -655,6 +691,8 @@ def solve_pose(breath=0.0, lag=None):
         toe = POSE.get('toe_deg', {}).get(s, toe_out)
         # Knees track over turned-out toes.
         knee_hint = Vector((sign*(.3 + toe/50), -1, 0))
+        if POSE.get('knee_splay'):
+            knee_hint = knee_hint.lerp(Vector((sign*1.5, -.6, 0)), POSE['knee_splay'])  # v18+: knees wide
         knee_in = POSE.get('knee_in', {}).get(s, 0)
         if knee_in:
             # Swing the knee in toward the middle of the torso (walk v6+), then back out.
@@ -1091,8 +1129,8 @@ if LOOP:
         print("ARM_TRIAL", FRONT, GAP_TRIAL)
         ARM_SIGN = 1 if GAP_TRIAL[FRONT_ARM_RANGE[0]] > GAP_TRIAL[-FRONT_ARM_RANGE[0]] else -1
         KATA_LOG = TWIST_LOG = ALPHA_LOG = None
-        FLARE = not GAIT.endswith(('_v12', '_v13', '_v14', '_v15', '_v16'))
-        if not GAIT.endswith(('_v12', '_v13', '_v14')):
+        FLARE = GAIT.endswith('_v17')
+        if GAIT.endswith(('_v15', '_v16', '_v17')):
             # v15+ (Kvon's spec): chest twist 15-22 deg away from the camera on its local Z, no
             # collarbone change, no grip shift. Validated on rendered pixels: open background between
             # the front forearm and the jacket must be >= 10 px on every frame of the cycle.
@@ -1236,7 +1274,7 @@ if LOOP:
             TWIST_LOG = {'chest_twist_deg': twist, 'direction_sign': TWIST_SIGN, 'grip_forward_cm': shift_cm,
                          'gap_px_at_12deg': round(g_, 2), 'front_arm_extension': round(ext, 3)}
             print('TWIST_BEST', TWIST_LOG)
-        elif not GAIT.endswith('_v12'):
+        elif GAIT.endswith('_v13'):
             # v13+: search the front collarbone angle (+-20 deg turn, +-15 deg lift) with the elbow at
             # 12 deg; keep the one whose forearm gap lands nearest the 10-12 px band.
             best_k = None
@@ -1259,7 +1297,29 @@ if LOOP:
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
         lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
         if GAIT:
-            if STEPPED:
+            if V18:
+                if i == 0:
+                    WALK0 = STEP_KEYS[0]
+                follower_ = 'R' if leader == 'L' else 'L'
+                w_ = TRANS_T[i] if TRANSITION else 1.0
+                j_ = 0 if TRANSITION else i
+                POSE.update({'crouch_extra': CROUCH_EXTRA*w_, 'pitch_extra': PITCH[j_]*w_,
+                             'knee_splay': KNEE_SPLAY*w_, 'hands_extra_z': HANDS_EXTRA[j_]*w_,
+                             'chest_roll': (follower_ if ROLL[j_][0] == 'F' else leader, 2.0*ROLL[j_][1]*w_)})
+            if STEPPED and TRANSITION:
+                # Idle -> walk drawing 1: feet move from the idle stance to the wide walk stance.
+                lead_w, lead_h, back_w, back_h, heel, body_w, bob, _ = WALK0
+                breath = lag = 0.0
+                blade = BASE_BLADE.copy()
+                follower = 'R' if leader == 'L' else 'L'
+                POSE['foot_pitch'] = {}
+                POSE['knee_in'] = {leader: LEAD_KNEE_IN[0]*TRANS_T[i]}
+                for side, a in ((leader, lead_w), (follower, back_w)):
+                    walk_pos = perp[side]*WIDTH_SCALE + walk_dir*(centre + a - body_w - NARROW/2 + WALK0[0]/2)
+                    pos = STANCE[side].lerp(walk_pos, TRANS_T[i])
+                    POSE[f'{side}_foot'] = (pos.x, pos.y, 0.0)
+                ROOT_MOTION.append(0.0)
+            elif STEPPED:
                 lead_w, lead_h, back_w, back_h, heel, body_w, bob, _ = STEP_KEYS[i]
                 breath, lag = bob, STEP_KEYS[i - 1][6]  # hands/head trail the body by one frame
                 if V12:
@@ -1271,7 +1331,9 @@ if LOOP:
                 POSE['knee_in'] = {follower: BACK_KNEE_IN[i], leader: LEAD_KNEE_IN[i]}
                 for side, a, h in ((leader, lead_w, lead_h), (follower, back_w, back_h + TOE_DIST*math.sin(rad))):
                     tuck = FOOT_IN*BACK_KNEE_IN[i] if side == follower else 0
-                    pos = perp[side]*(1 - tuck) + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
+                    width_ = WIDTH_SCALE if V18 else 1.0
+                    pos = (perp[side]*width_*(1 - tuck)
+                           + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2))
                     POSE[f'{side}_foot'] = (pos.x, pos.y, h)
                 ROOT_MOTION.append(round(body_w - (STEP_KEYS[i - 1][5] - (STEP_LEN if i == 0 else 0)), 4))
             elif SHUFFLE:
