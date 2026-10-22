@@ -166,3 +166,12 @@ Pending review.
 - **Comparison image:** `Mirrored_Reference_vs_Sprite_v7_v8.png`.
 
 **Why:** User corrections to match the reference.
+
+**Both hands on the handle, October22:** Kvon said battle_v8 is almost perfect and asked to make both hands grab the Keyblade handle.
+
+- **`battle_v9` (current):** `auto_reach` moves the whole grip (right fist + Key) toward the left hand in up to 8 steps until the left fist lands on its handle spot.
+- **Result:** the left fist is 1.2-1.7 cm from its spot in every frame, and both fists are inside the guard.
+- **Measurement fix:** the per-frame grip metric had ignored `body_turn_deg` (it reported ~9-10 cm for v6-v8); fixed.
+- **Comparison images:** `Hands_v8_vs_v9.png` and `Mirrored_Reference_vs_Sprite_v8_v9.png`.
+
+**Why:** User request to finish the two-handed grip.

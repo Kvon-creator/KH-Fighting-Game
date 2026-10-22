@@ -258,6 +258,9 @@ if BATTLE:
         if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7'):
             # v8+ (user): legs a little closer together; left fist nearer the right one on the handle.
             POSE.update({'R_foot': (-.46, .02, None), 'L_foot': (.46, .00, None), 'L_hand_along_handle': .06})
+        if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7', 'battle_v8'):
+            # v9+ (user): both hands must grab the handle; shift the grip until the left fist reaches.
+            POSE['auto_reach'] = True
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
@@ -622,6 +625,19 @@ def pick_palm(side, target):
 
 
 solve_pose(0.0)
+REACH_REPORT = []
+if POSE.get('auto_reach'):
+    # Move the whole grip (right fist + Key) toward the left hand until the left fist lands on its
+    # handle spot; the right fist always sets the Key, so both then hold the handle.
+    turn_m = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z')
+    for _ in range(8):
+        target = turn_m @ Vector(POSE['R_hand']) + blade*POSE['L_hand_along_handle']
+        miss = target - hand_point('L')
+        REACH_REPORT.append(round(miss.length, 4))
+        if miss.length < .012:
+            break
+        POSE['R_hand'] = tuple(Vector(POSE['R_hand']) - turn_m.inverted() @ miss*.6)
+        solve_pose(0.0)
 if POSE.get('blade_toward'):
     # Tilt the blade so its tip lands tip_height above the soles along the chosen ground direction.
     ground_z = world_bounds(body)[0].z
@@ -778,7 +794,8 @@ if LOOP:
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
                        'grip_error_L_m': round((hand_point('L')
-                                                - (Vector(POSE['R_hand']) + Vector((0, 0, BREATH['hands_z']*lag))
+                                                - (Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z')
+                                                   @ Vector(POSE['R_hand']) + Vector((0, 0, BREATH['hands_z']*lag))
                                                    + blade*POSE['L_hand_along_handle'])).length, 4)})
     scene.frame_start, scene.frame_end = 1, n
     if REF_POSE:
@@ -809,7 +826,7 @@ if LOOP:
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
-        'hand_search': FINGER_REPORT, 'fist_wrap': WRAP_REPORT,
+        'hand_search': FINGER_REPORT, 'fist_wrap': WRAP_REPORT, 'reach_misses_m': REACH_REPORT,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}
                         for s, (a, g) in FINGERS.items()},
         'blend': blend.name,
