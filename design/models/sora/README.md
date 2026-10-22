@@ -11,4 +11,10 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 **Downloaded models (current direction):** Kvon downloaded models from The Models Resource into each character's `downloads/` folder and approved pushing them to GitHub. Sora's KH2 model `downloads/p_ex150.fbx` is rigged (49 bones, T-pose); `downloads/Kingdom Key/` holds the weapon. [inspect_downloaded_models.py](blender_workflow/inspect_downloaded_models.py) imports every OBJ/FBX read-only; results and front/side/back previews are in [../model_inspection_v1/](../model_inspection_v1/Inspection_Report.json).
 
+**Sprite pilot (October21):** [build_sprite_pilot.py](blender_workflow/build_sprite_pilot.py) turns the downloaded model into one sprite frame. It scales Sora to 1.6 m and welds the rip's split vertices. The Kingdom Key is re-centered on its grip with the loose keychain links removed, then attached to his `R_buki` weapon bone. Each pose uses analytic two-bone aiming toward hand/foot targets. Original textures get a two-tone cel ramp, a heavy outer Freestyle contour and faint interior lines. One fixed orthographic camera at yaw -40 is framed like the approved idle: 512px canvas, soles at y=470, plus a 128px export.
+
+- **Current:** [sprite_pilot_v4](sprite_pilot_v4/Approved_Idle_vs_Pilot.png).
+- **Earlier revisions (kept):** v1 used IK constraints (twisted legs) and drew every rip seam. v2 cleaned the lines but stood narrow and upright. v3 widened the stance but stayed too dark from dense interior outlines.
+- **Not done:** the pose is approximate and the left hand only roughly reaches the handle. No animation, no final approval.
+
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.

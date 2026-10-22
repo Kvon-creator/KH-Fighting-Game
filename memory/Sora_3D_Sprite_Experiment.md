@@ -4,6 +4,15 @@
 
 **Why:** User instructions; accurate game models instead of procedural approximation.
 
+**Sprite pilot, October21:** Kvon approved ("Let's do this") a Sora pilot covering normalize, cel style, Kingdom Key attachment, sprite camera and one idle-like test frame. `blender_workflow/build_sprite_pilot.py -- sprite_pilot_vN`; v4 is current (`design/models/sora/sprite_pilot_v4/`).
+
+- **Model facts:** KH2 bone names are L/R_kata (shoulder), ude1/ude2 (arm), te (hand), buki (weapon socket), momo/sune/ashi1 (leg), with center/hara/mune/kubi/atama for the spine and head. Sora faces -Y.
+- **Lessons:** IK pole constraints twisted the legs; use the analytic two-bone `aim` solver instead. Weld duplicate vertices before outlining. Freestyle silhouettes on the low-poly rip darken everything; use a heavy external contour plus faint interior lines.
+- **Key handling:** the Key OBJ is offset ~300 units from origin, and its loose chain links lie in a row and must be removed.
+- **Result:** soles land at y=470 like the approved idle. The pose is approximate and the image is not yet user-approved.
+
+**Why:** User approved the proposed Sora pipeline pilot.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.

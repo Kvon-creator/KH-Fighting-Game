@@ -1,0 +1,49 @@
+{
+  "version": "sprite_pilot_v2",
+  "blender": "5.2.2 LTS",
+  "source": "downloads/p_ex150.fbx + downloads/Kingdom Key/Kingdom Key.obj",
+  "height_m": 1.6,
+  "key_grip_to_tip_m": 0.92,
+  "camera_yaw_deg": -40,
+  "ortho_scale": 2.1278,
+  "light_dir": [
+    -0.78,
+    -0.14,
+    0.609
+  ],
+  "pose": {
+    "drop": 0.09,
+    "lean_deg": 8,
+    "R_hand": [
+      -0.03,
+      -0.19,
+      0.88
+    ],
+    "L_hand_along_handle": -0.075,
+    "R_foot": [
+      -0.25,
+      0.08,
+      null
+    ],
+    "L_foot": [
+      0.24,
+      -0.06,
+      null
+    ],
+    "blade_dir": [
+      -0.25,
+      0.7,
+      0.67
+    ]
+  },
+  "figure_rows_px": [
+    106,
+    471
+  ],
+  "outputs": [
+    "sora_sprite_pilot_512.png",
+    "sora_sprite_pilot_128.png",
+    "Approved_Idle_vs_Pilot.png",
+    "sora_sprite_pilot.blend"
+  ]
+}
