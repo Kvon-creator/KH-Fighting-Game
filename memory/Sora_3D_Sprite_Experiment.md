@@ -38,6 +38,15 @@
 
 **Why:** User supplied the reference and asked me to do the posing.
 
+**Posture correction, October21:** Kvon said part of the problem is Sora's posture and asked him to hunch over a little while bending his elbows to hold the Keyblade.
+
+- **v9:** adds lower-spine `hara` 7 deg + chest `mune` 9 deg lean, and a neck `kubi` -10 deg counter so he looks ahead. The grip moves in toward the body so the elbows bend, but it rose too high.
+- **`idle_loop_v10` (current):** same hunch with the grip lowered back to waist height.
+- **Check renders:** v10+ also renders `side_check_frame00.png` (profile), because forward lean is invisible from the front views.
+- **Known gap:** the left hand is ~5 cm from its handle spot.
+
+**Why:** User posture correction.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.

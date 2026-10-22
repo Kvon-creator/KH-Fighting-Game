@@ -193,6 +193,24 @@ if REF_POSE and version == 'idle_loop_v7':
         'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
         'blade_dir': (-.80, .30, .52), 'toe_out_deg': 25, 'head_tilt_deg': 5,
     }
+elif REF_POSE and version not in ('idle_loop_v8', 'idle_loop_v9'):
+    # v10: v9's hunch and bent elbows, grip lowered back to waist height like the reference.
+    POSE = {
+        'drop': .11, 'lean_deg': 9, 'hunch_deg': 7, 'neck_counter_deg': -10,
+        'R_hand': (-.11, -.18, .72), 'L_hand_along_handle': -.075,
+        'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
+        'blade_dir': (-.80, .30, .70), 'toe_out_deg': 25, 'head_tilt_deg': 5,
+    }
+elif REF_POSE and version == 'idle_loop_v9':
+    # v9 (user note): hunch over a little and bend the elbows to hold the Keyblade.
+    # Lower spine and chest lean forward, the neck counters so he still looks ahead, and the
+    # grip comes in toward the body so the arms no longer reach straight.
+    POSE = {
+        'drop': .11, 'lean_deg': 9, 'hunch_deg': 7, 'neck_counter_deg': -10,
+        'R_hand': (-.11, -.17, .78), 'L_hand_along_handle': -.075,
+        'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
+        'blade_dir': (-.80, .30, .70), 'toe_out_deg': 25, 'head_tilt_deg': 5,
+    }
 elif REF_POSE:
     # v8: grip shifted to his right side and the blade steepened to match the reference.
     POSE = {
@@ -293,7 +311,11 @@ def solve_pose(breath=0.0, lag=None):
     reset_pose()
     b = BREATH if LOOP else {'drop': 0, 'lean_deg': 0, 'hands_z': 0, 'head_counter_deg': 0}
     set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'] - b['drop']*breath)) @ pose_world('center'))
+    if POSE.get('hunch_deg'):
+        rotate_world('hara', 'X', POSE['hunch_deg'])
     rotate_world('mune', 'X', POSE['lean_deg'] + b['lean_deg']*breath)
+    if POSE.get('neck_counter_deg'):
+        rotate_world('kubi', 'X', POSE['neck_counter_deg'])
     if b['head_counter_deg']:
         rotate_world('kubi', 'X', b['head_counter_deg']*lag)
     r_hand = Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
@@ -466,12 +488,17 @@ if LOOP:
         ref_data = bpy.data.cameras.new('reference_angle_camera'); ref_data.type = 'ORTHO'
         ref_data.ortho_scale = cam_data.ortho_scale
         ref_cam = bpy.data.objects.new('reference_angle_camera', ref_data); scene.collection.objects.link(ref_cam)
-        ref_t = math.radians(-10)
-        ref_cam.location = Vector((0, 0, center_z)) + Vector((math.sin(ref_t), -math.cos(ref_t), 0))*6
-        ref_cam.rotation_euler = (math.radians(90), 0, ref_t)
-        scene.camera = ref_cam
-        scene.render.filepath = str(OUT / 'reference_angle_frame00.png')
-        bpy.ops.render.render(write_still=True)
+        # Near-front view, then (v10+) a right-side profile to judge the hunch.
+        views = [('reference_angle_frame00.png', -10)]
+        if version not in {f'idle_loop_v{n}' for n in range(7, 10)}:
+            views.append(('side_check_frame00.png', -90))
+        for filename, yaw in views:
+            ref_t = math.radians(yaw)
+            ref_cam.location = Vector((0, 0, center_z)) + Vector((math.sin(ref_t), -math.cos(ref_t), 0))*6
+            ref_cam.rotation_euler = (math.radians(90), 0, ref_t)
+            scene.camera = ref_cam
+            scene.render.filepath = str(OUT / filename)
+            bpy.ops.render.render(write_still=True)
         scene.camera = cam
     blend = OUT / 'sora_idle_loop.blend'
     bpy.ops.wm.save_as_mainfile(filepath=str(blend))
