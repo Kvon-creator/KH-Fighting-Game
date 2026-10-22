@@ -65,3 +65,7 @@ Pending review.
 Pending review.
 
 **Why:** User request.
+
+**Knee correction, October22:** Kvon said "He should have his knee move towards the middle of his torso and then back to its original position." `walk_fwd_v6` (current) blends the back leg's knee bend direction toward the body midline during its swing: per-frame amounts [0,0,0,0,.3,.7,1,.5,0], peaking at the arc, then back out by the landing. Timing, root motion and floor contact are unchanged. The Godot frames were replaced; feet still hold exactly. Pending review.
+
+**Why:** User correction.

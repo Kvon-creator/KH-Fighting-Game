@@ -411,6 +411,10 @@ if LOOP:
                 (.90, .00, .34, .00, 0, .620, .15, 70),   # settle (body = start + one step)
             ]
             DURATIONS_MS = [k[7] for k in STEP_KEYS]
+            # v6+ (Kvon): the back knee moves in toward the middle of the torso as the foot swings,
+            # peaking at the arc, then returns to its original outward position.
+            BACK_KNEE_IN = ([0]*9 if GAIT.endswith(('_v4', '_v5'))
+                            else [0, 0, 0, 0, .3, .7, 1.0, .5, 0])
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -553,7 +557,12 @@ def solve_pose(breath=0.0, lag=None):
         sign = -1 if s == 'R' else 1
         toe = POSE.get('toe_deg', {}).get(s, toe_out)
         # Knees track over turned-out toes.
-        knee = turn_m @ Vector((sign*(.3 + toe/50), -1, 0))
+        knee_hint = Vector((sign*(.3 + toe/50), -1, 0))
+        knee_in = POSE.get('knee_in', {}).get(s, 0)
+        if knee_in:
+            # Swing the knee in toward the middle of the torso (walk v6+), then back out.
+            knee_hint = knee_hint.lerp(Vector((-sign*.6, -1, 0)), knee_in)
+        knee = turn_m @ knee_hint
         lift = foot[2] or 0  # walk gait raises the swinging foot
         two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', turn_m @ Vector((foot[0], foot[1], ankle_z + lift)), knee)
         if toe or turn:
@@ -922,6 +931,7 @@ if LOOP:
                 follower = 'R' if leader == 'L' else 'L'
                 rad = math.radians(heel)
                 POSE['foot_pitch'] = {follower: heel}
+                POSE['knee_in'] = {follower: BACK_KNEE_IN[i]}
                 for side, a, h in ((leader, lead_w, lead_h), (follower, back_w, back_h + TOE_DIST*math.sin(rad))):
                     pos = perp[side] + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
                     POSE[f'{side}_foot'] = (pos.x, pos.y, h)
