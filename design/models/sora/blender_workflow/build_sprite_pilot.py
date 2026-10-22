@@ -426,6 +426,31 @@ if LOOP:
                 STEP_KEYS[5] = (.90, .00, .14, .09, 35, .480, .20, 50)
                 STEP_KEYS[6] = (.90, .00, .42, .18, 10, .530, -.40, 50)
                 STEP_KEYS[7] = (.90, .00, .37, .04, 15, .590, .00, 60)
+            LEAD_KNEE_IN = [0]*len(STEP_KEYS)
+            if not GAIT.endswith(('_v4', '_v5', '_v6', '_v7', '_v8')):
+                # v9+: from Kvon's walking video (design/references/walking/). Feet come nearly
+                # together under the hips (knees almost touching, legs straighter, body up), the front
+                # foot steps far out to a wide stance (knees bent, body down) and holds, then the back
+                # foot skims in low beside it with the knee travelling inward; holds at both ends.
+                NARROW, STEP_LEN, FOOT_IN = .30, .50, 0
+                BREATH['drop'] = .04  # bob -1 = up (narrow), +1 = down (wide)
+                STEP_KEYS = [
+                    (.30, .00, .00, .00, 0, .150, -1.0, 70),  # narrow hold, body up
+                    (.36, .02, .00, .00, 0, .180, -.60, 60),  # front foot starts out
+                    (.52, .03, .00, .00, 0, .250, -.10, 60),
+                    (.70, .02, .00, .00, 0, .330, .50, 60),
+                    (.80, .00, .00, .00, 0, .380, 1.0, 70),   # front foot lands wide, body down
+                    (.80, .00, .00, .00, 0, .420, 1.0, 80),   # wide hold
+                    (.80, .00, .00, .00, 15, .470, .80, 60),  # back heel lifts
+                    (.80, .00, .10, .02, 10, .520, .40, 60),  # back foot skims in, knee inward
+                    (.80, .00, .28, .03, 5, .580, -.20, 60),
+                    (.80, .00, .44, .02, 0, .620, -.70, 60),
+                    (.80, .00, .50, .00, 0, .650, -1.0, 70),  # back foot lands beside it, body up
+                    (.80, .00, .50, .00, 0, .650, -1.0, 60),  # narrow hold
+                ]
+                DURATIONS_MS = [k[7] for k in STEP_KEYS]
+                BACK_KNEE_IN = [0, 0, 0, 0, 0, 0, .3, .7, 1.0, .7, .3, .1]
+                LEAD_KNEE_IN = [.3, .5, .4, .2, 0, 0, 0, 0, 0, 0, 0, .2]
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -942,7 +967,7 @@ if LOOP:
                 follower = 'R' if leader == 'L' else 'L'
                 rad = math.radians(heel)
                 POSE['foot_pitch'] = {follower: heel}
-                POSE['knee_in'] = {follower: BACK_KNEE_IN[i]}
+                POSE['knee_in'] = {follower: BACK_KNEE_IN[i], leader: LEAD_KNEE_IN[i]}
                 for side, a, h in ((leader, lead_w, lead_h), (follower, back_w, back_h + TOE_DIST*math.sin(rad))):
                     tuck = FOOT_IN*BACK_KNEE_IN[i] if side == follower else 0
                     pos = perp[side]*(1 - tuck) + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)

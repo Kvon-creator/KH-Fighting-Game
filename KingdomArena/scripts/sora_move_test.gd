@@ -11,12 +11,13 @@ const FEET := Vector2(192, 354)
 const RIGHT_LIMIT := 1280.0 - 120.0
 ## name -> [folder, file prefix, frame durations in ms, root motion in px per frame]
 ## Root motion is how far his body moves forward as each frame starts, taken from the render
-## (metres x 180.5 px per metre), so planted feet stay exactly in place. The walk averages 112 px/s.
+## (metres x 180.5 px per metre), so planted feet stay exactly in place. The walk averages 117 px/s.
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
 		[100, 90, 90, 100, 120, 100, 90, 90, 100, 120], []],
 	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
-		[70, 55, 55, 70, 70, 50, 50, 60, 70], [0.0, 2.7, 3.6, 4.5, 16.2, 9.0, 9.0, 10.8, 5.4]],
+		[70, 60, 60, 60, 70, 80, 60, 60, 60, 60, 70, 60],
+		[0.0, 5.4, 12.6, 14.4, 9.0, 7.2, 9.0, 9.0, 10.8, 7.2, 5.4, 0.0]],
 }
 
 var _sprite: AnimatedSprite2D

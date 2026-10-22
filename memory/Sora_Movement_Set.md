@@ -80,3 +80,20 @@ Pending review.
 Pending review.
 
 **Why:** User correction.
+
+**Walking video reference, October22:** Kvon supplied `design/references/walking/Recording 2026-10-22 135407.mp4` (163 frames, 30 fps, 556x504; another fighting-game character's walk; the clip is paused from about frame 85) as the reference for how the legs should move.
+
+- **Reading the video:** Blender's VSE can export the frames (no ffmpeg/cv2 needed).
+- **What the reference shows:**
+  - Feet come nearly together under the hips, knees almost touching, legs straighter, body up.
+  - The front foot steps far out to a wide stance, knees bent, body down, and holds.
+  - The back foot skims in low beside it, with its knee travelling inward.
+  - There are holds at both the narrow and wide ends.
+- **`walk_fwd_v9` (current):** 12 keyed frames (770 ms), narrow 0.30 m / wide 0.80 m, step 0.50 m, low 2-3 cm foot skims, body bob +/-0.04 m (up narrow, down wide), knee-in on both legs.
+- **Root motion (384px):** [0, 5.4, 12.6, 14.4, 9.0, 7.2, 9.0, 9.0, 10.8, 7.2, 5.4, 0] px, ~117 px/s.
+- **Godot verified:** feet held exactly.
+- **Replaces** the v8 high tuck (the reference keeps the foot low).
+
+Pending review.
+
+**Why:** User reference.
