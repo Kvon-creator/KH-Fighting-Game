@@ -18,7 +18,10 @@ from mathutils import Euler, Matrix, Quaternion, Vector
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
 version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilot_v1'
-LOOP = version.startswith('idle_loop_v')  # refined pose + 10-frame breathing loop; sprite_pilot_v* = single frame
+# one_hand_v*: user's one-handed idle, right hand only, blade angled down toward his feet.
+ONE_HAND = version.startswith('one_hand_v')
+LOOP = version.startswith('idle_loop_v') or ONE_HAND  # 10-frame breathing loop; sprite_pilot_v* = single frame
+GRIP_SIDES = ('R',) if ONE_HAND else ('R', 'L')
 KEY_FACES_CAMERA = LOOP and version not in ('idle_loop_v2', 'idle_loop_v3')  # user grip correction
 CURL_FINGERS = KEY_FACES_CAMERA and version != 'idle_loop_v4'  # close the rip's open hands on the handle
 # v6+ (user request): twist each wrist so the palm faces the handle, and turn the teeth up.
@@ -192,7 +195,22 @@ for mat in {s.material for o in body + [key] for s in o.material_slots if s.mate
         links.new(emit.outputs[0], out.inputs['Surface'])
 
 # 4. Approximate approved-idle pose from hand/foot targets (world meters).
-if REF_POSE and version == 'idle_loop_v7':
+if ONE_HAND:
+    # Right hand low at his side, blade down and slightly forward toward his right foot;
+    # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
+    POSE = {
+        'drop': .12, 'lean_deg': 12, 'hunch_deg': 10, 'neck_counter_deg': -16,
+        'R_hand': (-.24, -.12, .80), 'L_relaxed_wrist': (.24, -.06, .80),
+        'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
+        'blade_dir': (-.18, -.30, -.94), 'toe_out_deg': 25, 'head_tilt_deg': 5,
+        'shoulder_reach': True, 'grip_shift': .05, 'L_hand_along_handle': 0,
+    }
+    if version != 'one_hand_v1':
+        # v2+: hand at the hip; blade tilt solved from the real grip so the tip angles out toward
+        # his right foot and stops just above the floor (v1 stood vertical and dipped below it).
+        POSE.update({'R_hand': (-.24, -.10, .74), 'blade_toward': (-.6, -.8),
+                     'tip_height': .05 if version == 'one_hand_v2' else .10})  # v3: teeth clear the floor
+elif REF_POSE and version == 'idle_loop_v7':
     # v7: Kvon's Smash idle reference (design/references/sora_smash_idle_pose_reference.png).
     # Wide stance with mild knee bend and toes out, upright torso, both hands low in front of the
     # waist, blade sweeping up and out past his right shoulder at a flat angle.
@@ -388,12 +406,15 @@ def solve_pose(breath=0.0, lag=None):
     if POSE.get('head_tilt_deg'):
         rotate_world('atama', 'Y', POSE['head_tilt_deg'])  # top of head toward his left, as referenced
     hand_on('R', r_hand, (-1, .4, -.3))
-    hand_on('L', l_hand, (1, .4, -.3))
+    if ONE_HAND:
+        two_bone('L_ude1', 'L_ude2', 'L_te', Vector(POSE['L_relaxed_wrist']), (1, .6, -.2))
+    else:
+        hand_on('L', l_hand, (1, .4, -.3))
     for side, degrees in TWIST.items():
         forearm = (pose_world(f'{side}_te').translation - pose_world(f'{side}_ude2').translation).normalized()
         rotate_world(f'{side}_te', forearm, degrees)
     if SQUARE_WRISTS:
-        for side in ('R', 'L'):
+        for side in GRIP_SIDES:
             m = pose_world(f'{side}_te'); head = m.translation.copy()
             f = (pose_world(f'{side}_yubiB').translation - head).normalized()
             across = f - blade*f.dot(blade)
@@ -513,7 +534,20 @@ def pick_palm(side, target):
 
 
 solve_pose(0.0)
-if PALM_ORIENT:
+if POSE.get('blade_toward'):
+    # Tilt the blade so its tip lands tip_height above the soles along the chosen ground direction.
+    ground_z = world_bounds(body)[0].z
+    length = KEY_REACH - POSE.get('grip_shift', 0)
+    dz = max(-length*.98, ground_z + POSE['tip_height'] - hand_point('R').z)
+    flat = Vector((*POSE['blade_toward'], 0)).normalized()*math.sqrt(length*length - dz*dz)
+    blade = (flat + Vector((0, 0, dz))).normalized()
+    POSE['blade_dir'] = tuple(round(c, 4) for c in blade)
+    solve_pose(0.0)
+if ONE_HAND:
+    # Only the right hand grips; its fingers curl toward the palm and wrap (squared wrist below).
+    pick_anatomical_curl('R')
+    FINGER_REPORT = {'grip_sides': list(GRIP_SIDES)}
+elif PALM_ORIENT:
     for side in ('R', 'L'):
         pick_anatomical_curl(side)
     FINGER_REPORT = {'R_palm_up_dot': pick_palm('R', Vector((0, 0, 1))),
@@ -566,7 +600,7 @@ def build_fist_wrap():
     origin, d = key.matrix_world.translation.copy(), blade
     dg = bpy.context.evaluated_depsgraph_get()
     targets = {}
-    for side in ('R', 'L'):
+    for side in GRIP_SIDES:
         for bone, part in ((f'{side}_yubiB', 'fingers'), (f'{side}_yubiA', 'thumb')):
             m = pose_world(bone); knuckle = m.translation.copy()
             along = (knuckle - origin).dot(d); centre = origin + d*along
@@ -607,7 +641,7 @@ def build_fist_wrap():
 
 
 if FIST_WRAP:
-    HAND_LOCAL.update({s: pose_world(f'{s}_te').inverted() @ hand_point(s) for s in ('R', 'L')})
+    HAND_LOCAL.update({s: pose_world(f'{s}_te').inverted() @ hand_point(s) for s in GRIP_SIDES})
     build_fist_wrap()
 if not LOOP:
     # Single frame: ride the weapon bone. The loop re-places the Key each frame instead, because

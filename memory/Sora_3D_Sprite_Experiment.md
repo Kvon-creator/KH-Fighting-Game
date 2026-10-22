@@ -105,3 +105,19 @@
 **Why:** User request; procedural modeling avoids new installs and the failed Hunyuan route.
 
 **Crown correction, October19:** Kvon said v3's crown was still not quite right compared with his reference. He did not specify an individual feature. `weapon_pipeline_v4/Review.html` is the new comparison candidate; use `kingdom_key_crown_v4_review.blend` and `kingdom_key_crown_v4.glb`. V4 reduces and smooths the round tips, adjusts the recesses and slanted outer ends, and reduces plate thickness from .045 to .018. The other23 meshes retain their geometry, root and grip/shaft axis. Old/new closeups use the same diagonal camera and light. Saved scenes were reopened; crown manifold/outward normals, transparent renders, whole-weapon fit and four-color GLB checks passed. All previous models/renders remain. These checks do not establish an exact reference match or user approval; landmarks are still estimates from the inline image, not calibrated image/mesh data. This replaces v3 as the current review candidate only. No character-generation retry, new installation or engine change.
+
+**One-handed pose, October22:** Kvon said "Nevermind" to finishing the two-handed v17 grip and asked for Sora holding the Keyblade with one hand, blade angled toward his feet. These defaults were chosen and reported, not specified by Kvon:
+
+- **Grip:** right hand (the sprite camera's front hand) at the hip.
+- **Left arm:** relaxed.
+- **Carried over:** the v11+ hunch and stance, the fist wrap and squared wrist on the right hand only, and the breathing loop.
+
+Run with `build_sprite_pilot.py -- one_hand_vN` (folder `design/models/sora/one_hand_vN`).
+
+- **v1:** the blade stood vertical and dipped below the floor.
+- **v2:** the blade tilt is solved from the real grip so the tip angles out toward his right foot.
+- **v3 (current):** the tip sits 10 cm up so the teeth clear the soles; lowest row 471.
+
+Pending review.
+
+**Why:** User's new pose request replacing the two-handed grip effort.
