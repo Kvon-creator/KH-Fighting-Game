@@ -220,3 +220,15 @@ Pending review.
 **sprite2d_v3 approved, October22:** Kvon said "I love the attempt. Save it and try other method as well." `sprite2d_v3` (2D illustration-style re-render of battle_v12) is approved and saved; don't change it unless asked. Next: the other attempt, a fully articulated 3D Sora built from scratch with the pose sheet as reference.
 
 **Why:** User approval and instruction.
+
+**From-scratch articulated Sora, October22:** This is the second requested attempt.
+
+- **Builder:** `build_character_blockout.py -- character_blockout_vN`. v6+ outputs go to `design/models/sora/character_blockout_vN` (experiments/ stays deleted).
+- **Rig:** 23 bones with KH2-style names (center, hara, mune, kubi, atama, L/R kata, ude1, ude2, te, momo, sune, ashi1), so the sprite pose tools can be reused. Every mesh has an Armature modifier before Subdivision.
+- **Weights:** head/hair/face parts are rigid to atama, hands to te, shoes to ashi1, pendant/shirt to mune. Everything else blends the two nearest bones (1/d^4) on its own side.
+- **Pose-sheet outfit changes:** black shoes with yellow tongue/collar and silver soles, silver shoulder pads, red inner shirt, yellow thigh straps, red left waist cloth.
+- **v6:** weights were computed before `view_layer.update()`, so scaled blob/ring pieces stretched when posed. Kept as a diagnostic.
+- **`character_blockout_v7` (current):** fixed. `Rig_Test_Board.png` shows rest and an articulation test (arms, chest, head, raised knee). The test pose is reset before the .blend is saved.
+- **Not done yet:** posing into the battle_v12 crouch, Keyblade, animation, user review.
+
+**Why:** User asked to try the other method after approving sprite2d_v3.

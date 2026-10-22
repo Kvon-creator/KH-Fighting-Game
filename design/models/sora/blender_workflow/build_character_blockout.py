@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 import bpy
 import numpy as np
-from mathutils import Vector
+from mathutils import Matrix, Vector
 from mathutils.bvhtree import BVHTree
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -19,7 +19,8 @@ version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'character_b
 assert version.startswith('character_blockout_v'), version
 V1 = version == 'character_blockout_v1'  # earlier versions stay reproducible
 VN = int(version.rsplit('_v', 1)[1])
-OUT = ROOT / 'design/models/sora/experiments' / version
+# v6+: experiments/ was deleted at Kvon's request; newer versions sit beside the other Sora work.
+OUT = ROOT / 'design/models/sora' / ('experiments' if VN < 6 else '') / version
 if OUT.exists():
     raise RuntimeError('Preserve existing blockout; choose a new version')
 assert bpy.app.version[:2] == (5, 2), bpy.app.version_string
@@ -98,12 +99,43 @@ scene.collection.objects.link(root)
 root['role'] = 'Procedural approximate KH2 Sora blockout; not extracted game data or approved model'
 root['pose'] = 'Neutral A-pose, facing -Y, ground at Z=0, units in meters'
 
+# v6+: fully articulated version. KH2-style bone names so the sprite pose tools can be reused.
+RIG = None
+if VN >= 6:
+    rig_data = bpy.data.armatures.new('Sora_Sheet_Rig')
+    RIG = bpy.data.objects.new('Sora_Sheet_Rig', rig_data)
+    scene.collection.objects.link(RIG)
+    bpy.context.view_layer.objects.active = RIG
+    bpy.ops.object.mode_set(mode='EDIT')
+    BONES = {'center': ((0, 0, .70), (0, 0, .80), None), 'hara': ((0, 0, .80), (0, 0, .93), 'center'),
+             'mune': ((0, 0, .93), (0, 0, 1.09), 'hara'), 'kubi': ((0, 0, 1.09), (0, 0, 1.19), 'mune'),
+             'atama': ((0, 0, 1.19), (0, 0, 1.47), 'kubi')}
+    for s in (-1, 1):
+        side = 'L' if s > 0 else 'R'
+        sh = Vector((s*.165, 0, 1.06)); dd = Vector((s*math.sin(math.radians(50)), 0, -math.cos(math.radians(50))))
+        el, wr = sh + dd*.23, sh + dd*.44
+        BONES.update({
+            f'{side}_kata': ((s*.05, 0, 1.06), tuple(sh), 'mune'), f'{side}_ude1': (tuple(sh), tuple(el), f'{side}_kata'),
+            f'{side}_ude2': (tuple(el), tuple(wr), f'{side}_ude1'), f'{side}_te': (tuple(wr), tuple(wr + dd*.115), f'{side}_ude2'),
+            f'{side}_momo': ((s*.10, 0, .72), (s*.10, -.01, .39), 'center'),
+            f'{side}_sune': ((s*.10, -.01, .39), (s*.10, 0, .12), f'{side}_momo'),
+            f'{side}_ashi1': ((s*.10, 0, .12), (s*.10, -.20, .05), f'{side}_sune')})
+    for name, (head, tail, parent) in BONES.items():
+        eb = rig_data.edit_bones.new(name); eb.head, eb.tail = head, tail
+        if parent:
+            eb.parent = rig_data.edit_bones[parent]
+            eb.use_connect = Vector(rig_data.edit_bones[parent].tail) == Vector(head)
+    bpy.ops.object.mode_set(mode='OBJECT')
+    RIG.data.display_type = 'STICK'; RIG.show_in_front = True
+
 
 def finish(obj, mat, subdiv=2):
     obj.parent = root
     obj.data.materials.append(mat)
     for poly in obj.data.polygons:
         poly.use_smooth = True
+    if RIG:  # deform before smoothing
+        obj.modifiers.new('rig', 'ARMATURE').object = RIG
     if subdiv:
         mod = obj.modifiers.new('smooth_subdivision', 'SUBSURF')
         mod.levels = mod.render_levels = subdiv
@@ -409,6 +441,60 @@ for s in (-1, 1):
     if VN >= 3:
         blob(f'shorts_pocket_{side}', (s*.205, -.01, .56), (.022, .075, .065), M['pocket'])
         blob(f'pocket_flap_{side}', (s*.21, -.01, .615), (.02, .078, .02), M['trim'])
+    if VN >= 6:
+        # Pose-sheet details: yellow thigh straps; black shoes with a yellow tongue.
+        ring(f'thigh_strap_{side}', (s*.10, -.005, .55), .115, .011, (1, 1, 1), M['yellow'], (0, math.radians(s*12), 0))
+        blob(f'shoe_tongue_{side}', (s*.10, -.02, .145), (.045, .06, .035), M['yellow'], (math.radians(-25), 0, 0))
+
+if VN >= 6:
+    # Pose-sheet colours: black shoe body, yellow ankle collars, silver soles and shoulder pads,
+    # no red heels; red inner shirt and a red waist cloth on his left hip.
+    for o in list(scene.objects):
+        if o.type != 'MESH':
+            continue
+        n = o.name
+        if n.startswith('shoe_heel_red'):
+            bpy.data.objects.remove(o, do_unlink=True); continue
+        swap = ('jacket' if n.startswith('shoe_') and not n.startswith(('shoe_collar', 'shoe_strap', 'shoe_tongue'))
+                else 'yellow' if n.startswith('shoe_collar') else 'silver' if n.startswith(('sole_', 'shoulder_pad')) else None)
+        if swap:
+            o.data.materials[0] = M[swap]
+    blob('inner_shirt_red', (0, -.098, .96), (.05, .02, .11), M['red'])
+    blob('waist_cloth_L', (.155, -.02, .71), (.05, .075, .095), M['red'], (0, math.radians(18), 0))
+
+    # Skin weights: rigid parts follow one bone; the rest blend the two nearest bones (1/d^4),
+    # never crossing to the opposite side.
+    import re
+    RIGID = [(('head', 'ear_', 'eye', 'iris_', 'pupil_', 'brow_', 'nose', 'mouth', 'hair_'), 'atama'),
+             (('hand_', 'fingers_', 'thumb_'), '{s}_te'), (('shoe', 'sole_'), '{s}_ashi1'),
+             (('crown_pendant', 'necklace_cord', 'inner_shirt'), 'mune')]
+    segs = {b.name: (RIG.matrix_world @ b.head_local, RIG.matrix_world @ b.tail_local) for b in RIG.data.bones}
+
+    def seg_dist(p, a, b):
+        ab = b - a; t = max(0, min(1, (p - a).dot(ab) / ab.length_squared))
+        return (p - (a + ab*t)).length
+
+    WEIGHTED = 0
+    if VN >= 7:
+        # v6 bug: blob/ring scale and rotation were not yet in matrix_world, so scaled pieces
+        # (waist cloth, pockets, flaps) were weighted at unit size and stretched when posed.
+        bpy.context.view_layer.update()
+    for o in [o for o in scene.objects if o.type == 'MESH']:
+        m = re.search(r'_(L|R)(_|$)', o.name); side = m.group(1) if m else None
+        rigid = next((bone.format(s=side) for prefixes, bone in RIGID if o.name.startswith(prefixes)
+                      and ('{s}' not in bone or side)), None)
+        names = [rigid] if rigid else [n for n in segs if not (side and n[:2] in ('L_', 'R_') and n[0] != side)
+                                       and not (not side and n[:2] in ('L_', 'R_') and n.endswith(('_te', '_ashi1')))]
+        groups = {n: o.vertex_groups.new(name=n) for n in names}
+        for v in o.data.vertices:
+            p = o.matrix_world @ v.co
+            if rigid:
+                groups[rigid].add([v.index], 1.0, 'REPLACE'); continue
+            near = sorted(((seg_dist(p, *segs[n]) + 1e-4, n) for n in names))[:2]
+            w = [1 / d**4 for d, _ in near]; total = sum(w)
+            for (d, n), wi in zip(near, w):
+                groups[n].add([v.index], wi / total, 'REPLACE')
+        WEIGHTED += len(o.data.vertices)
 
 # Review renders from fixed orthographic cameras.
 VIEWS = [('front', 0, 1.75, .80), ('sprite_three_quarter', -40, 1.75, .80), ('side', 90, 1.75, .80), ('back', 180, 1.75, .80)]
@@ -446,6 +532,27 @@ out_img = bpy.data.images.new('turnaround', w*len(renders), h, alpha=True)
 out_img.pixels.foreach_set(board.ravel())
 out_img.filepath_raw = str(OUT / 'Turnaround.png'); out_img.file_format = 'PNG'; out_img.save()
 
+if RIG:
+    # Articulation test: bend arms forward, lift a knee, turn head and chest; render, then reset.
+    def rotate_world(name, axis, degrees):
+        pb = RIG.pose.bones[name]
+        m = RIG.matrix_world @ pb.matrix; pivot = m.translation.copy()
+        r = Matrix.Translation(pivot) @ Matrix.Rotation(math.radians(degrees), 4, axis) @ Matrix.Translation(-pivot)
+        pb.matrix = RIG.matrix_world.inverted() @ r @ m
+        bpy.context.view_layer.update()
+    TEST = [('mune', 'Z', 12), ('atama', 'Z', 18), ('R_ude1', 'X', -55), ('R_ude2', 'X', -60),
+            ('L_ude1', 'X', -35), ('L_ude2', 'X', -75), ('L_momo', 'X', -55), ('L_sune', 'X', 75)]
+    for name, axis, degrees in TEST:
+        rotate_world(name, axis, degrees)
+    for view in ('front', 'sprite_three_quarter', 'side'):
+        scene.camera = bpy.data.objects[f'cam_{view}']
+        scene.render.filepath = str(OUT / f'pose_test_{view}.png')
+        bpy.ops.render.render(write_still=True)
+    for pb in RIG.pose.bones:
+        pb.matrix_basis = Matrix.Identity(4)
+    bpy.context.view_layer.update()
+    scene.camera = bpy.data.objects['cam_sprite_three_quarter']
+
 blend = OUT / 'sora_character_blockout.blend'
 bpy.ops.wm.save_as_mainfile(filepath=str(blend))
 meshes = [o for o in scene.objects if o.type == 'MESH']
@@ -459,7 +566,10 @@ report = {
     'height_m': round(max(zs) - min(zs), 4), 'min_z': round(min(zs), 4),
     'materials': sorted(m.name for m in bpy.data.materials if m.users),
     'renders': [p.name for p in renders + face_renders] + ['Turnaround.png'], 'blend': blend.name,
-    'not_included': ['rig', 'weights', 'animation', 'Keyblade attachment', 'GLB export', 'user approval'],
+    'not_included': (['rig', 'weights', 'animation', 'Keyblade attachment', 'GLB export', 'user approval'] if not RIG
+                     else ['animation', 'Keyblade attachment', 'GLB export', 'user approval']),
+    'rig': ({'bones': len(RIG.data.bones), 'weighted_vertices': WEIGHTED,
+             'pose_test': ['pose_test_front.png', 'pose_test_sprite_three_quarter.png', 'pose_test_side.png']} if RIG else None),
 }
 (OUT / 'Blockout_Report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
 print('BLOCKOUT_OK', json.dumps(report))

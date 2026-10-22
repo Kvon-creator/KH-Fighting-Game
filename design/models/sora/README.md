@@ -44,4 +44,6 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 **2D sprite attempt (October22, approved by Kvon):** [sprite2d_v3](sprite2d_v3/Reference_vs_3D_vs_2D.png) re-renders the approved battle_v12 loop as illustration-style sprites: a cooler, larger two-tone shadow and crisp dark ink. It has the same 10 frames and timing ([game size](sprite2d_v3/Game_Size_3D_vs_2D_x2.png)). Scripts: `render_2d_style.py` and `stylize_2d_frames.py`. Earlier tries: v1 (palette snapping washed out colours), v2 (glowing rim).
 
+**From-scratch articulated Sora (October22):** [character_blockout_v7](character_blockout_v7/Rig_Test_Board.png) is the procedural Sora (approved v2 proportions, v5 face/hair) with pose-sheet outfit details. It has a 23-bone KH2-named skeleton and skin weights, and the articulation test bends the arms, chest, head and knee. v6 had stretched cloth pieces from a weighting bug. It has not yet been posed into the battle crouch.
+
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.
