@@ -15,7 +15,7 @@
 - [Git Executable](Git_Executable.md): User-provided installation path for commits and periodic main pushes when Git is absent from PATH.
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
-- [Sora Frame Size](Sora_Frame_Size.md): Approved 128 x 128 for base movement, with larger canvas for extended attacks.
+- [Sora Frame Size](Sora_Frame_Size.md): October22 standard is now 384 x 384 in-game frames (Sora ~256 px tall); supersedes 128 x 128.
 - [Sora Idle Pose](Sora_Idle_Pose.md): Approved combat idle pose with Keyblade aligned behind body pointing away from opponent.
 - [Sora Double Jump](Sora_Double_Jump.md): Approved KH1 normal first jump linked into the requested KH2 second-jump animation.
 - [Sora Basic Attacks](Sora_Basic_Attacks.md): Approved nine basic attacks and Down + Heavy launcher.

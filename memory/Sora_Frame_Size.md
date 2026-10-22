@@ -1,5 +1,8 @@
 # Sora Sprite Frame Size
 
+**Current standard (October22, supersedes the 128 x 128 rule below):** Kvon said "This size is good" for the 384 x 384 test. Sora's in-game sprite frames are now 384 x 384 (3x the old 128 px set), made from the 512px renders with Lanczos. The floor anchor for the battle idle is (192,354); Sora is ~256 px tall on the 1280x720 screen. Use this size for all of Sora's movement animations. Larger sizes would need higher-resolution renders (sources are 512 px). Arena spawns and collision were designed for a ~96 px character and will need adjusting when gameplay is integrated.
+
+
 **Fact or rule:** Sora's base movement frames (idle, crouch, shimmies) use a 128 x 128 pixel canvas. A larger canvas (such as 160 x 160) will be adopted specifically for extended attack poses where weapon reach exceeds 128 pixels.
 
 **Why:** K'von chose to maintain 128 x 128 for grounded movement and only adopt a larger canvas for extended attack swings after the idle canvas fit analysis.
