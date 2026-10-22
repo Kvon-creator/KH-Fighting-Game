@@ -197,3 +197,12 @@ Pending review. Offered the matching brake transition.
 - **Known limit:** the brake starts from the feet-together contact pose, so releasing mid-stride (wide stance) snaps the feet. Contact-matched brake or finish-the-step options were offered.
 
 **Why:** User spec.
+
+**Contact-matched brakes, October22:** Kvon chose option 2.
+
+- **`walk_fwd_v18w`:** a second brake that blends from walk drawing 5 (index 4, the wide-stance contact) into the idle, with its knee-in/weapon-drag values eased out. 4 x 3 frames, 4x1 white sheet; floor/grip verified.
+- **Godot:** `walk_stop_wide_384`. On release, walk drawings [3,4,5,6,7] (0-based; feet >= 0.86 m apart) use walk_stop_wide; the others, and walk_start, use walk_stop.
+- **Verified:** releasing at tick 52 (feet together) gives a first-brake foot span of 213 px; at tick 32 (wide) 257 px. Holds exact.
+- **v18t/v18b unchanged:** the source-drawing generalisation is a no-op for drawing 0.
+
+**Why:** User choice.

@@ -32,7 +32,12 @@ const ANIMATIONS := {
 		[6.5, 4.875, 4.875, 6.5, 6.5, 6.5, 6.5, 4.875, 4.875, 6.5, 6.5], &"walk_forward"],
 	&"walk_stop": ["res://assets/sora/walk_stop_384/", "sora_walk_stop_",
 		[3, 3, 3, 3], [], &"idle"],
+	&"walk_stop_wide": ["res://assets/sora/walk_stop_wide_384/", "sora_walk_stop_wide_",
+		[3, 3, 3, 3], [], &"idle"],
 }
+## Walk drawings (0-based) where his feet are wide apart (0.86 m or more): releasing forward on
+## these brakes from the wide-stance contact; on the others, from the feet-together contact.
+const WIDE_DRAWINGS := [3, 4, 5, 6, 7]
 
 var _sprite: AnimatedSprite2D
 var _start_x := 420.0
@@ -77,9 +82,11 @@ func _physics_process(_delta: float) -> void:
 		_show(&"walk_start")
 		return
 	if not forward and _sprite.animation in [&"walk_start", &"walk_forward"]:
-		_show(&"walk_stop")  # brake back into the idle
+		# Brake back into the idle from whichever contact pose is closest to the current drawing.
+		var wide := _sprite.animation == &"walk_forward" and _sprite.frame in WIDE_DRAWINGS
+		_show(&"walk_stop_wide" if wide else &"walk_stop")
 		return
-	if forward and _sprite.animation == &"walk_stop":
+	if forward and _sprite.animation in [&"walk_stop", &"walk_stop_wide"]:
 		_show(&"walk_start")
 		return
 	# Advance one game frame; move to the next drawing when this one's hold is used up.

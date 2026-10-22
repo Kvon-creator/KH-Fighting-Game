@@ -482,7 +482,9 @@ if LOOP:
                 # 'walk_fwd_v18t' is the 4-frame idle-to-walk transition into it.
                 V18 = V12 and not GAIT.endswith(tuple(f'_v{n_}' for n_ in range(12, 18)))
                 # 'walk_fwd_v18b' is the matching 4-frame brake back into the idle (same blend, reversed).
-                BRAKE = V18 and GAIT.endswith('b')
+                # 'walk_fwd_v18w' brakes from the wide-stance contact (walk drawing 5) instead.
+                BRAKE_WIDE = V18 and GAIT.endswith('w')
+                BRAKE = V18 and (GAIT.endswith('b') or BRAKE_WIDE)
                 TRANSITION = V18 and (GAIT.endswith('t') or BRAKE)
                 if V12:
                     # v12+ (Kvon's walk spec): constant root velocity, exactly 90 game px per 40-frame cycle
@@ -1302,11 +1304,12 @@ if LOOP:
         lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
         if GAIT:
             if V18:
+                SRC = 4 if BRAKE_WIDE else 0  # walk drawing the transition blends to/from
                 if i == 0:
-                    WALK0 = STEP_KEYS[0]
+                    WALK0 = STEP_KEYS[SRC]
                 follower_ = 'R' if leader == 'L' else 'L'
                 w_ = TRANS_T[i] if TRANSITION else 1.0
-                j_ = 0 if TRANSITION else i
+                j_ = SRC if TRANSITION else i
                 POSE.update({'crouch_extra': CROUCH_EXTRA*w_, 'pitch_extra': PITCH[j_]*w_,
                              'knee_splay': KNEE_SPLAY*w_, 'hands_extra_z': HANDS_EXTRA[j_]*w_,
                              'chest_roll': (follower_ if ROLL[j_][0] == 'F' else leader, 2.0*ROLL[j_][1]*w_)})
@@ -1314,12 +1317,12 @@ if LOOP:
                 # Idle -> walk drawing 1: feet move from the idle stance to the wide walk stance.
                 lead_w, lead_h, back_w, back_h, heel, body_w, bob, _ = WALK0
                 breath = lag = 0.0
-                blade = BASE_BLADE.copy()
+                blade = (Matrix.Rotation(math.radians(WEAPON_DRAG[SRC]*TRANS_T[i]), 3, 'Z') @ BASE_BLADE).normalized()
                 follower = 'R' if leader == 'L' else 'L'
                 POSE['foot_pitch'] = {}
-                POSE['knee_in'] = {leader: LEAD_KNEE_IN[0]*TRANS_T[i]}
+                POSE['knee_in'] = {leader: LEAD_KNEE_IN[SRC]*TRANS_T[i], follower: BACK_KNEE_IN[SRC]*TRANS_T[i]}
                 for side, a in ((leader, lead_w), (follower, back_w)):
-                    walk_pos = perp[side]*WIDTH_SCALE + walk_dir*(centre + a - body_w - NARROW/2 + WALK0[0]/2)
+                    walk_pos = perp[side]*WIDTH_SCALE + walk_dir*(centre + a - body_w - NARROW/2 + STEP_KEYS[0][0]/2)
                     pos = STANCE[side].lerp(walk_pos, TRANS_T[i])
                     POSE[f'{side}_foot'] = (pos.x, pos.y, 0.0)
                 ROOT_MOTION.append(0.0)
