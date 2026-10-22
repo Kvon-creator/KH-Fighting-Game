@@ -261,6 +261,9 @@ if BATTLE:
         if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7', 'battle_v8'):
             # v9+ (user): both hands must grab the handle; shift the grip until the left fist reaches.
             POSE['auto_reach'] = True
+        if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7', 'battle_v8', 'battle_v9'):
+            # v10+ (user): turn the left wrist (the one not anchoring the Key) so its palm faces the screen.
+            POSE['L_palm_to_camera'] = True
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
@@ -505,7 +508,8 @@ def solve_pose(breath=0.0, lag=None):
         forearm = (pose_world(f'{side}_te').translation - pose_world(f'{side}_ude2').translation).normalized()
         rotate_world(f'{side}_te', forearm, degrees)
     if SQUARE_WRISTS:
-        for side in GRIP_SIDES:
+        # A palm turned to the camera (battle_v10+) must not be re-squared to the handle.
+        for side in [s for s in GRIP_SIDES if not (s == 'L' and POSE.get('L_palm_to_camera'))]:
             m = pose_world(f'{side}_te'); head = m.translation.copy()
             f = (pose_world(f'{side}_yubiB').translation - head).normalized()
             across = f - blade*f.dot(blade)
@@ -653,6 +657,8 @@ if ONE_HAND or TWO_HAND_BATTLE:
     for side in GRIP_SIDES:
         pick_anatomical_curl(side)
     FINGER_REPORT = {'grip_sides': list(GRIP_SIDES)}
+    if POSE.get('L_palm_to_camera'):
+        FINGER_REPORT['L_palm_to_camera_dot'] = pick_palm('L', to_cam)
 elif PALM_ORIENT:
     for side in ('R', 'L'):
         pick_anatomical_curl(side)

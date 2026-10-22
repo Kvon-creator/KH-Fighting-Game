@@ -175,3 +175,12 @@ Pending review.
 - **Comparison images:** `Hands_v8_vs_v9.png` and `Mirrored_Reference_vs_Sprite_v8_v9.png`.
 
 **Why:** User request to finish the two-handed grip.
+
+**Left palm to screen, October22:** Kvon asked if I can rotate the wrists (answered without changing anything), then asked to rotate the wrist not attached to the Keyblade so its palm faces the screen. The Key anchors to the right fist, so that wrist is the LEFT one.
+
+- **`battle_v10` (current):** twists the left wrist about the forearm (search result -160 degrees) toward the sprite camera, with a palm-to-camera score of 0.62 (about 50 degrees from square).
+- **Squaring skipped:** the left wrist is not squared to the handle, because squaring would undo the twist.
+- **Grip:** the left fist stays ~2.5 cm from its handle spot.
+- **Comparison image:** `Hands_v9_vs_v10.png`.
+
+**Why:** User request.
