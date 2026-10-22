@@ -467,6 +467,10 @@ if LOOP:
                         (.80, .00, .44, .02, 0, .615, -.70, 4),
                         (.80, .00, .50, .00, 0, .640, -1.0, 4),
                     ]
+                    if not GAIT.endswith('_v10'):
+                        # v11+ (Kvon, option A): slightly faster: the travelling drawings drop to 3 game
+                        # frames, holds stay at 4; 40 frames per cycle (0.67 s), ~135 px/s.
+                        STEP_KEYS = [(*k[:7], n) for k, n in zip(STEP_KEYS, [4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4])]
                     GAME_FRAMES = [k[7] for k in STEP_KEYS]
                     STEP_KEYS = [(*k[:7], round(k[7]*1000/60, 3)) for k in STEP_KEYS]
                     BACK_KNEE_IN = BACK_KNEE_IN[:11]

@@ -14,12 +14,12 @@ const GAME_FPS := 60.0
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing]
 ## Root motion is how far his body moves forward as each drawing starts, taken from the render
 ## (metres x 180.5 px per metre), so planted feet stay exactly in place. Every walk drawing moves
-## him, so the loop has no pause: 90 px per 46-frame cycle, about 117 px/s.
+## him, so the loop has no pause: 90 px per 40-frame cycle, about 135 px/s.
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
 		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], []],
 	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
-		[4, 4, 4, 4, 5, 5, 4, 4, 4, 4, 4],
+		[4, 3, 3, 4, 4, 4, 4, 3, 3, 4, 4],
 		[2.7, 6.3, 11.7, 13.5, 9.0, 8.1, 8.1, 9.0, 9.9, 7.2, 4.5]],
 }
 

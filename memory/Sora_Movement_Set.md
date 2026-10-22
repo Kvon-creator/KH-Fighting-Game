@@ -109,3 +109,13 @@ Pending review.
 Pending review.
 
 **Why:** User decisions.
+
+**Slightly faster walk, October22:** Kvon asked about making the frame rate slightly faster and chose option A.
+
+- **`walk_fwd_v11` (current):** same 11 drawings as v10 (pixel-identical), held [4,3,3,4,4,4,4,3,3,4,4] = 40 game frames (0.67 s), ~135 px/s. The root motion per drawing is unchanged.
+- **Godot:** frame counts updated; verified in a 60 fps capture.
+- **Packaging fix:** `package_idle_loop.py` now rounds GIF preview delays to the nearest 10 ms (Pillow truncated 66.7 ms to 60).
+
+Pending review.
+
+**Why:** User choice.

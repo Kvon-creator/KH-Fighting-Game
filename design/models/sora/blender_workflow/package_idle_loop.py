@@ -16,6 +16,8 @@ APPROVED = ROOT / 'design/sprites/smooth/sora/replacement_work/ready/standing_id
 report = json.loads((OUT / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
 frames = [Image.open(OUT / 'frames_512' / f['filename']).convert('RGBA') for f in report['frames']]
 durations = [f['duration_ms'] for f in report['frames']]
+# GIF delays are whole 10 ms units and Pillow truncates (66.7 ms -> 60); round them instead.
+durations = [int(round(d / 10)) * 10 for d in durations]
 BG = (46, 52, 64, 255)  # same opaque dark blue-gray preview ground as the approved idle
 
 
