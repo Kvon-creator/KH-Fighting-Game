@@ -17,6 +17,7 @@
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
 - [Sora Frame Size](Sora_Frame_Size.md): October22 standard is now 384 x 384 in-game frames (Sora ~256 px tall); supersedes 128 x 128.
 - [Sora Idle Pose](Sora_Idle_Pose.md): Approved combat idle pose with Keyblade aligned behind body pointing away from opponent.
+- [Sora Movement Set](Sora_Movement_Set.md): October22 movement list incl. back-dash (ground=air), forward air-dash, landing, rise/fall air poses; 384px sprite2d_v3 style; air pose references.
 - [Sora Double Jump](Sora_Double_Jump.md): Approved KH1 normal first jump linked into the requested KH2 second-jump animation.
 - [Sora Basic Attacks](Sora_Basic_Attacks.md): Approved nine basic attacks and Down + Heavy launcher.
 - [Sora Sprite Facing](Sora_Sprite_Facing.md): Approved one-direction artwork mirrored for the opposite facing.
