@@ -40,4 +40,8 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 **Battle-ready pose (October22):** [battle_v2](battle_v2/Stance_Reference_vs_Battle.png) shows the KH2 battle-stance reference, then front, side and sprite views. The stance is staggered with the body turned toward the opponent; the Keyblade is low in the right hand, angled down and back; the left hand is a bent guard; the loop is a 1000 ms combat bounce. v1's guard arm was straight.
 
+**Gemini animation request (October22):** refused by Gemini ("interests of third-party content providers"); the receipt is in `gemini_animation/attempt_01/`.
+
+**2D sprite attempt (October22):** [sprite2d_v3](sprite2d_v3/Reference_vs_3D_vs_2D.png) re-renders the approved battle_v12 loop as illustration-style sprites: a cooler, larger two-tone shadow and crisp dark ink. It has the same 10 frames and timing ([game size](sprite2d_v3/Game_Size_3D_vs_2D_x2.png)). Scripts: `render_2d_style.py` and `stylize_2d_frames.py`. Earlier tries: v1 (palette snapping washed out colours), v2 (glowing rim).
+
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.

@@ -29,7 +29,9 @@ function candidateDirectory() {
   if(!options.output)throw Error('Supply a separate candidate output directory.');
   const out=inside(options.output);
   const relative=path.relative(root,out).replaceAll('\\','/');
-  if(!/^design\/sprites\/smooth\/sora\/replacement_work\/ready\/(run_start|run_loop|run_stop)\/gemini_browser_trial\/attempt_\d+$/.test(relative))throw Error('Only a separate running candidate directory is allowed.');
+  // Running candidates, plus the 3D-model reference animation trials under design/models/sora.
+  if(!/^design\/sprites\/smooth\/sora\/replacement_work\/ready\/(run_start|run_loop|run_stop)\/gemini_browser_trial\/attempt_\d+$/.test(relative)
+     &&!/^design\/models\/sora\/gemini_animation\/attempt_\d+$/.test(relative))throw Error('Only a separate candidate directory is allowed.');
   fs.mkdirSync(out,{recursive:true});
   return out;
 }

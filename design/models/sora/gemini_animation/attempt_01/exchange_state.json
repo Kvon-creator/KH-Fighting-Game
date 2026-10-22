@@ -1,0 +1,31 @@
+{
+  "status": "provider_block",
+  "media": "image",
+  "tabId": "7EE1DA69611AD56975A47980E7697CAC",
+  "chatUrl": "https://gemini.google.com/app/e3e4ea273a444d54",
+  "referenceSet": "original",
+  "promptSha256": "702b9ee8e3279f4582a28fb545504db871a872872e14b668f185f105d54581fb",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\SORA_POSE_SHEET_IDLE_ANIMATION.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-22T14:13:32.588Z",
+  "baselineImages": [
+    "2df80dd3eb51e1056b0bd7a15c01b16304d50b6f8dcee25a8fd9b9705a446ad1"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\standing_idle\\sora_stand_idle_00.png",
+      "sha256": "baf8959c0e0d42b74bf7f6100a83ccf5c208a9decd5b98b95110f3129fbacdc7"
+    },
+    {
+      "file": "design\\sprites\\smooth\\sora\\replacement_work\\ready\\run_loop\\layers\\frame_00_review_v1\\sora_run_loop_00_review.png",
+      "sha256": "b171c554aef835fefe805b88c00431836d67f7b9f91e1f43f8f930257edea48e"
+    },
+    {
+      "file": "design\\references\\Sora_KHIV_Render.webp",
+      "sha256": "5dc59758a962e411e1b90f5f440f2d4cef0e42b07b1a91550d42455147f19a30"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "exactResponse": "I can't generate the image you requested right now due to interests of third-party content providers. Please edit your prompt and try again.\n\n\n\n\nPro\n\nGemini is AI and can make mistakes.\n\nCreating your image"
+}

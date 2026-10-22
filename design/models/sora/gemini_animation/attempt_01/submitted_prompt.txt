@@ -1,0 +1,9 @@
+Using the top-right pose from the Sora battle-pose sheet you generated in this conversation (the low, wide guard crouch: both hands gripping the Kingdom Key's handle low between his thighs, the blade held out nearly level to one side with the tip slightly raised, feet very wide with toes turned out, hunched forward, gritted teeth), create a full animation sequence of that pose as a looping battle-ready idle.
+
+Requirements:
+- One sprite sheet image: 8 frames in a 4 x 2 grid, read left to right, top row then bottom row. Equal-size cells, every figure completely inside its own cell with a small margin; no cropped hair, feet or Keyblade.
+- Exactly the same character, KH2 outfit, colors, art style, line work and camera angle as the top-right pose on the sheet. Same size and position in every cell; the feet stay planted on the same ground line in every frame.
+- Real movement between frames, not copies: a subtle combat bounce through the knees, shoulders and chest rising and falling with breath, slight follow-through in the hair, hood, waist cloth and the hanging keychain. Both hands stay closed around the handle in every frame.
+- The Kingdom Key keeps the same shape, length and proportions in every frame; it only moves slightly with the hands.
+- Frame 8 must flow smoothly back into frame 1 so the cycle loops.
+- Plain flat background, no text, numbers, labels, arrows or effects.

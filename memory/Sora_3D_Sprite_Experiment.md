@@ -196,3 +196,23 @@ Pending review.
 **battle_v12 approved for now, October22:** Kvon said "That is perfect for now." Treat `battle_v12` (mirrored pose-sheet guard crouch, both fists on the handle, left palm turned 45 degrees back from the camera, combat bounce) as Sora's current approved battle idle. "For now" means it may be revisited. Don't change it unless asked. Rebuild with `build_sprite_pilot.py -- battle_v12`; later pose work should use new version names. Not yet tested in Godot or integrated into gameplay.
 
 **Why:** User approval.
+
+**Gemini animation request refused, October22:** Kvon asked me to message Gemini in Brave, in his "Sora Battle Poses Character Sheet" conversation (the source of the pose sheet), and request a full animation of the reference pose.
+
+- **Setup:** the dedicated profile (`Start-BraveGemini.ps1`, port 9222) was launched. Kvon signed in himself and opened that chat (tab 7EE1DA69611AD56975A47980E7697CAC, `/app/e3e4ea273a444d54`). `gemini_cdp.mjs` now also allows `design/models/sora/gemini_animation/attempt_NN` output.
+- **Request:** one prompt (`SORA_POSE_SHEET_IDLE_ANIMATION.txt`) asked for an 8-frame 4x2 looping battle-idle sheet of the top-right pose.
+- **Result:** Gemini replied exactly "I can't generate the image you requested right now due to interests of third-party content providers. Please edit your prompt and try again." No image was returned. This is a provider content refusal (receipt status `provider_block`).
+- **No workaround:** no retry or rewording to evade it. Kvon may prompt Gemini himself.
+
+**Why:** The user requested it; the provider refused.
+
+**Next attempts chosen, October22:** Kvon offered two attempts: a new fully articulated 3D Sora from the pose sheet, or a 2D sprite with the same loop as the current 3D model. If he likes neither, we go back to the PS2-model workflow. He picked the 2D sprite version first.
+
+- **Scripts:** `render_2d_style.py -- battle_v12 sprite2dN` re-renders the approved battle_v12 `.blend` with a cooler, larger cel shadow and darker, thicker Freestyle ink; the source `.blend` is not modified. `stylize_2d_frames.py battle_v12 sprite2d_vN` adds a crisp outer ink rim and lifts saturation slightly. Then `package_idle_loop.py` runs.
+- **v1:** palette snap + median filter washed out colours and muddied the face.
+- **v2:** a thick glow-like rim.
+- **`sprite2d_v3` (current):** crisp dark ink at 2.2 + 1px rim. Same 10 frames, 1000 ms.
+- **Lesson:** Freestyle linestyle colours are LINEAR (v1's .07/.06/.11 displayed as grey-lavender ~75/69/95).
+- **Status:** pending Kvon's review. The new 3D-model attempt has not been started.
+
+**Why:** User choice.
