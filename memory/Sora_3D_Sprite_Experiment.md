@@ -138,3 +138,7 @@ Run with `build_sprite_pilot.py -- battle_vN` (`design/models/sora/battle_vN`). 
 Pending review.
 
 **Why:** User accepted the recommended battle-ready changes.
+
+**KH2 pose-sheet reference, October22:** Kvon supplied a four-pose KH2 Sora illustration sheet, saved as `design/references/sora_kh2_pose_sheet.png`, and asked to emulate the top-right pose. That pose is a low, wide guard crouch: facing nearly forward, hunched, Key in the right fist at the hip, blade swung out level to his right with teeth up, left arm hanging by the thigh. It is built as `battle_v3` (current) with the combat bounce. The facial expression (gritted teeth) is not possible because the rip has no face rig. A first battle_v3 build silently duplicated v2 because of a failed edit and was deleted and rebuilt.
+
+**Why:** User-supplied pose reference.

@@ -1,0 +1,163 @@
+{
+  "version": "battle_v3",
+  "blender": "5.2.2 LTS",
+  "animation": "standing_breathing_idle",
+  "source": "downloads/p_ex150.fbx + downloads/Kingdom Key/Kingdom Key.obj",
+  "loop": true,
+  "canvas_size": [
+    512,
+    512
+  ],
+  "ground_baseline_y": 470,
+  "body_anchor": [
+    256,
+    470
+  ],
+  "total_duration_ms": 1000,
+  "pose": {
+    "body_turn_deg": 10,
+    "drop": 0.22,
+    "lean_deg": 16,
+    "hunch_deg": 12,
+    "neck_counter_deg": -22,
+    "look_deg": 8,
+    "R_foot": [
+      -0.46,
+      0.04,
+      null
+    ],
+    "L_foot": [
+      0.46,
+      0.0,
+      null
+    ],
+    "toe_deg": {
+      "L": 30,
+      "R": 30
+    },
+    "R_hand": [
+      -0.14,
+      -0.2,
+      0.66
+    ],
+    "blade_dir": [
+      -0.95,
+      0.05,
+      0.25
+    ],
+    "grip_shift": 0.05,
+    "L_relaxed_wrist": [
+      0.3,
+      -0.14,
+      0.62
+    ],
+    "L_elbow_hint": [
+      1,
+      0.3,
+      0
+    ],
+    "shoulder_reach": true,
+    "L_hand_along_handle": 0
+  },
+  "breath": {
+    "drop": 0.025,
+    "lean_deg": 1.0,
+    "hands_z": -0.012,
+    "head_counter_deg": -0.5
+  },
+  "camera_yaw_deg": -40,
+  "ortho_scale": 2.1278,
+  "frames": [
+    {
+      "filename": "sora_idle3d_00.png",
+      "duration_ms": 100,
+      "breath": 0.0,
+      "lag": 0.1355,
+      "grip_error_L_m": 0.5168
+    },
+    {
+      "filename": "sora_idle3d_01.png",
+      "duration_ms": 90,
+      "breath": 0.0955,
+      "lag": 0.0039,
+      "grip_error_L_m": 0.5188
+    },
+    {
+      "filename": "sora_idle3d_02.png",
+      "duration_ms": 90,
+      "breath": 0.3455,
+      "lag": 0.0618,
+      "grip_error_L_m": 0.5228
+    },
+    {
+      "filename": "sora_idle3d_03.png",
+      "duration_ms": 100,
+      "breath": 0.6545,
+      "lag": 0.2871,
+      "grip_error_L_m": 0.5273
+    },
+    {
+      "filename": "sora_idle3d_04.png",
+      "duration_ms": 120,
+      "breath": 0.9045,
+      "lag": 0.5937,
+      "grip_error_L_m": 0.5214
+    },
+    {
+      "filename": "sora_idle3d_05.png",
+      "duration_ms": 100,
+      "breath": 1.0,
+      "lag": 0.8645,
+      "grip_error_L_m": 0.5168
+    },
+    {
+      "filename": "sora_idle3d_06.png",
+      "duration_ms": 90,
+      "breath": 0.9045,
+      "lag": 0.9961,
+      "grip_error_L_m": 0.5201
+    },
+    {
+      "filename": "sora_idle3d_07.png",
+      "duration_ms": 90,
+      "breath": 0.6545,
+      "lag": 0.9382,
+      "grip_error_L_m": 0.5254
+    },
+    {
+      "filename": "sora_idle3d_08.png",
+      "duration_ms": 100,
+      "breath": 0.3455,
+      "lag": 0.7129,
+      "grip_error_L_m": 0.5209
+    },
+    {
+      "filename": "sora_idle3d_09.png",
+      "duration_ms": 120,
+      "breath": 0.0955,
+      "lag": 0.4063,
+      "grip_error_L_m": 0.5176
+    }
+  ],
+  "key_faces_camera": true,
+  "key_teeth_up": true,
+  "wrist_twist_deg": {},
+  "hand_search": {
+    "grip_sides": [
+      "R"
+    ]
+  },
+  "fist_wrap": {
+    "R_fingers_radius_m": 0.061,
+    "R_thumb_radius_m": 0.0469,
+    "vertices_wrapped": 15
+  },
+  "finger_curl": {
+    "R": {
+      "axis": "z",
+      "sign": -1,
+      "mean_dist_to_handle_m": null
+    }
+  },
+  "blend": "sora_idle_loop.blend"
+}

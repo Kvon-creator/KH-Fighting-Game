@@ -214,6 +214,18 @@ if BATTLE:
     if version != 'battle_v1':
         # v2+: v1's guard arm reached out nearly straight; bend the elbow and hold it nearer the chest.
         POSE.update({'L_relaxed_wrist': (.10, -.20, 1.00), 'L_elbow_hint': (1, .2, -1)})
+    if version not in ('battle_v1', 'battle_v2'):
+        # v3+: Kvon's reference (design/references/sora_kh2_pose_sheet.png, top right): a low, wide
+        # guard crouch facing nearly forward, hunched, Key in the right fist at the hip with the blade
+        # swung out level to his right side (tip slightly up), left arm hanging by the thigh.
+        POSE = {
+            'body_turn_deg': 10, 'drop': .22, 'lean_deg': 16, 'hunch_deg': 12, 'neck_counter_deg': -22,
+            'look_deg': 8,
+            'R_foot': (-.46, .04, None), 'L_foot': (.46, .00, None), 'toe_deg': {'L': 30, 'R': 30},
+            'R_hand': (-.14, -.20, .66), 'blade_dir': (-.95, .05, .25), 'grip_shift': .05,
+            'L_relaxed_wrist': (.30, -.14, .62), 'L_elbow_hint': (1, .3, 0),
+            'shoulder_reach': True, 'L_hand_along_handle': 0,
+        }
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
