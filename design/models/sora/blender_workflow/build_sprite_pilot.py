@@ -250,6 +250,14 @@ if BATTLE:
             # turning the body -25 degrees faces him nearly at the camera, turned slightly toward
             # screen right, as drawn. The blade turns with the body.
             POSE.update({'body_turn_deg': -25, 'turn_blade': True})
+        if version not in ('battle_v4', 'battle_v5', 'battle_v6'):
+            # v7+ (user): match the drawing's Keyblade angle as seen by the sprite camera. Measured
+            # from the drawing: blade rises ~20 degrees on screen and looks 0.57 of his height
+            # (v6: 0.71), so it is foreshortened ~37 degrees toward the viewer.
+            POSE.update({'turn_blade': False, 'screen_blade': (20, 37)})
+        if version not in ('battle_v4', 'battle_v5', 'battle_v6', 'battle_v7'):
+            # v8+ (user): legs a little closer together; left fist nearer the right one on the handle.
+            POSE.update({'R_foot': (-.46, .02, None), 'L_foot': (.46, .00, None), 'L_hand_along_handle': .06})
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
@@ -439,6 +447,15 @@ ankle_z = pose_world('L_ashi1').translation.z
 blade = Vector(POSE['blade_dir']).normalized()
 if POSE.get('turn_blade'):  # blade_dir given in the body frame (battle_v6+)
     blade = (Matrix.Rotation(math.radians(POSE['body_turn_deg']), 3, 'Z') @ blade).normalized()
+if POSE.get('screen_blade'):
+    # Blade from its screen-space rise and its tilt toward the sprite camera (battle_v7+).
+    rise, toward_cam = (math.radians(a) for a in POSE['screen_blade'])
+    cam_t = math.radians(CAM_YAW)
+    screen_right = Vector((math.cos(cam_t), math.sin(cam_t), 0))
+    toward = Vector((math.sin(cam_t), -math.cos(cam_t), 0))
+    blade = (math.cos(toward_cam)*(math.cos(rise)*screen_right + math.sin(rise)*Vector((0, 0, 1)))
+             + math.sin(toward_cam)*toward).normalized()
+    POSE['blade_dir'] = tuple(round(c, 4) for c in blade)
 
 
 def solve_pose(breath=0.0, lag=None):

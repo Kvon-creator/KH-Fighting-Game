@@ -157,3 +157,12 @@ Pending review.
 **Standing angle, October22:** Kvon asked to change the angle Sora stands at to match the reference. Interpreted as his body orientation in the sprite view; the three-quarter camera (yaw -40) is unchanged. `battle_v6` (current) turns the whole body -25 degrees (blade and hand targets turn with it) so he faces nearly at the camera, turned slightly toward screen right, as in the mirrored drawing. Comparison image: `Mirrored_Reference_vs_Sprite_v5_v6.png`.
 
 **Why:** User correction of the stance angle.
+
+**Keyblade angle and leg spacing, October22:** Kvon asked to change the Keyblade's angle too, then (mid-task) to bring his legs a little closer together.
+
+- **`battle_v7`:** sets the blade from screen-space measurements of the mirrored drawing (`screen_blade`: a 20-degree on-screen rise, tilted 37 degrees toward the sprite camera), so its apparent length matches the drawing (~0.57 of body height vs v6's 0.71).
+- **`battle_v8` (current):** feet at +/-.46 m (were .56), and the left fist slightly nearer the right on the handle.
+- **Known gap:** the left fist is ~10 cm from its exact handle target.
+- **Comparison image:** `Mirrored_Reference_vs_Sprite_v7_v8.png`.
+
+**Why:** User corrections to match the reference.
