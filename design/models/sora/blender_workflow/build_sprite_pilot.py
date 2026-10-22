@@ -627,6 +627,9 @@ def solve_pose(breath=0.0, lag=None):
     if POSE.get('hunch_deg'):
         rotate_world('hara', ax_x, POSE['hunch_deg'])
     rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath)
+    if POSE.get('chest_twist_deg'):
+        # v14+ (Kvon): twist the upper spine/chest on its local Z so the front shoulder turns back.
+        rotate_world('mune', pose_world('mune').to_3x3().col[2].normalized(), POSE['chest_twist_deg'])
     if POSE.get('neck_counter_deg'):
         rotate_world('kubi', ax_x, POSE['neck_counter_deg'])
     if b['head_counter_deg']:
@@ -634,6 +637,7 @@ def solve_pose(breath=0.0, lag=None):
     if POSE.get('look_deg'):
         rotate_world('kubi', 'Z', POSE['look_deg'])  # eyes on the opponent
     r_hand = turn_m @ Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
+    r_hand += Vector(POSE.get('grip_offset_world', (0, 0, 0)))  # v14+: grip moved off the stomach
     l_hand = r_hand + blade*POSE['L_hand_along_handle']
     toe_out = POSE.get('toe_out_deg', 0)
     for s, foot in (('R', POSE['R_foot']), ('L', POSE['L_foot'])):
@@ -1071,8 +1075,44 @@ if LOOP:
         GAP_TRIAL = {d_: round(gap_at(d_), 2) for d_ in (0.0, FRONT_ARM_RANGE[0], -FRONT_ARM_RANGE[0], 15.0, -15.0)}
         print("ARM_TRIAL", FRONT, GAP_TRIAL)
         ARM_SIGN = 1 if GAP_TRIAL[FRONT_ARM_RANGE[0]] > GAP_TRIAL[-FRONT_ARM_RANGE[0]] else -1
-        KATA_LOG = None
-        if not GAIT.endswith('_v12'):
+        KATA_LOG = TWIST_LOG = None
+        if not GAIT.endswith(('_v12', '_v13')):
+            # v14+ (Kvon): no collarbone change. Twist the chest 6-10 deg away from the camera and, if
+            # the front elbow would hyper-extend, move the grip forward off the stomach by up to 3 cm.
+            def front_shoulder_depth():
+                return pose_world(f'{FRONT}_ude1').translation.dot(to_cam)
+
+            def extension():
+                sh_ = pose_world(f'{FRONT}_ude1').translation
+                el_ = pose_world(f'{FRONT}_ude2').translation
+                wr_ = pose_world(f'{FRONT}_te').translation
+                return (wr_ - sh_).length / ((el_ - sh_).length + (wr_ - el_).length)
+
+            POSE.pop('chest_twist_deg', None); solve_pose(0.0); base_depth = front_shoulder_depth()
+            POSE['chest_twist_deg'] = 8; solve_pose(0.0)
+            TWIST_SIGN = 1 if front_shoulder_depth() < base_depth else -1  # away from the camera
+            stomach = pose_world('hara').translation
+            fwd = hand_point('R') - stomach; fwd.z = 0; fwd.normalize()
+            best_t = None
+            for twist in range(6, 11):
+                for shift_cm in (0, 1, 2, 3):
+                    for sign in (1, -1):
+                        POSE.update({'chest_twist_deg': TWIST_SIGN*twist,
+                                     'grip_offset_world': tuple(fwd*shift_cm/100)})
+                        g_ = gap_at(sign*FRONT_ARM_RANGE[0])
+                        ext = extension()
+                        lo, hi = FRONT_ARM_GAP
+                        miss = (0 if lo <= g_ <= hi else min(abs(g_ - lo), abs(g_ - hi))) + (5 if ext > .985 else 0)
+                        # Prefer the smallest twist and shift that reach the band.
+                        score = (round(miss, 2), twist, shift_cm)
+                        if best_t is None or score < best_t[0]:
+                            best_t = (score, twist, shift_cm, sign, g_, ext)
+            _, twist, shift_cm, ARM_SIGN, g_, ext = best_t
+            POSE.update({'chest_twist_deg': TWIST_SIGN*twist, 'grip_offset_world': tuple(fwd*shift_cm/100)})
+            TWIST_LOG = {'chest_twist_deg': twist, 'direction_sign': TWIST_SIGN, 'grip_forward_cm': shift_cm,
+                         'gap_px_at_12deg': round(g_, 2), 'front_arm_extension': round(ext, 3)}
+            print('TWIST_BEST', TWIST_LOG)
+        elif not GAIT.endswith('_v12'):
             # v13+: search the front collarbone angle (+-20 deg turn, +-15 deg lift) with the elbow at
             # 12 deg; keep the one whose forearm gap lands nearest the 10-12 px band.
             best_k = None
@@ -1190,6 +1230,7 @@ if LOOP:
         'root_motion_m': ROOT_MOTION if GAIT else None,
         'game_frames_60fps': globals().get('GAME_FRAMES'),
         'v12_spec': ({'front_arm_side': FRONT, 'per_frame': ARM_LOG, 'front_shoulder': KATA_LOG,
+                      'chest_twist': TWIST_LOG,
                       'root_px_per_drawing_384': [round(m*GAME_PX_PER_M, 3) for m in ROOT_MOTION]}
                      if V12 else None),
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,

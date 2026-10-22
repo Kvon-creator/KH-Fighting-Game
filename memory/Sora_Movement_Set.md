@@ -136,3 +136,11 @@ Pending review.
 - **Result:** the best was yaw 5 / lift -5 with a gap of only ~0.7 px. The short collarbone moves the shoulder joint only 2-3 cm, while ~5 cm of screen-sideways room is needed.
 - **Not adopted:** v13 is an experiment. It was not exported to Godot; v12 stays in the game test.
 - **Remaining ways to get the 10-12 px gap:** move the grip forward (option 1), turn the chest so the front shoulder rotates back, or relax the gap target. Asked Kvon.
+
+**Chest-twist attempt, October22:** Kvon said to revert the collarbone change and get the 10-12 px gap by twisting the upper spine/chest 6-10 deg away from the camera on its local Z, moving the grip forward at most 2-3 cm if needed.
+
+- **`walk_fwd_v14`:** built from v12 with no collarbone change. The search picked a 10 deg twist (direction moves the front shoulder away from the camera) + 2 cm grip forward; arm extension 0.876, not hyper-extended.
+- **Result: the gap is still not reached.**
+- **Lesson:** the vertex-weight gap metric is unreliable. Its 'torso' set (mune/hara > .5) is mostly the inner shirt; the jacket side panels beside the elbow are weighted to the shoulder/arm bones (see `walk_fwd_v14/Gap_Measurement_Points.png`). Use rendered-alpha negative space instead.
+- **Alpha measurement:** background between the front arm and jacket is essentially none in both v12 and v14 (max 4-8 px in 1-2 rows near the hem).
+- **Status:** v14 is an experiment; Godot stays on v12. Asked Kvon whether to exceed the limits.
