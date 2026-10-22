@@ -1,0 +1,139 @@
+[
+  {
+    "character": "xigbar",
+    "source": "xigbar/downloads/Xigbar.smd",
+    "up_axis": "Y",
+    "operator_result": [
+      "FINISHED"
+    ],
+    "armatures": 1,
+    "bones": 331,
+    "placeholder_bones": 15,
+    "root_bones": 16,
+    "mesh_objects": 1,
+    "vertices": 3653,
+    "faces": 5882,
+    "skinned_meshes": 1,
+    "weighted_vertices": 3653,
+    "materials": [
+      "texture000.png",
+      "texture001.png",
+      "texture002.png",
+      "texture003.png",
+      "texture004.png",
+      "texture005.png",
+      "texture006.png",
+      "texture007.png"
+    ],
+    "missing_textures": [],
+    "renders": [
+      "xigbar_front.png",
+      "xigbar_side.png",
+      "xigbar_back.png"
+    ],
+    "bbox_size": [
+      205.355,
+      229.7477,
+      253.4608
+    ],
+    "texture_paths": [
+      "//downloads\\texture000.png",
+      "//downloads\\texture001.png",
+      "//downloads\\texture002.png",
+      "//downloads\\texture003.png",
+      "//downloads\\texture004.png",
+      "//downloads\\texture005.png",
+      "//downloads\\texture006.png",
+      "//downloads\\texture007.png"
+    ],
+    "blend": "xigbar/xigbar_rigged_smd_import_v1.blend"
+  },
+  {
+    "character": "riku",
+    "source": "riku/downloads/Riku_KH2/Riku_2.smd",
+    "up_axis": "Z",
+    "operator_result": [
+      "FINISHED"
+    ],
+    "armatures": 1,
+    "bones": 213,
+    "placeholder_bones": 4,
+    "root_bones": 5,
+    "mesh_objects": 1,
+    "vertices": 1802,
+    "faces": 3110,
+    "skinned_meshes": 1,
+    "weighted_vertices": 1802,
+    "materials": [
+      "texture000.png",
+      "texture001.png",
+      "texture002.png",
+      "texture003.png"
+    ],
+    "missing_textures": [],
+    "renders": [
+      "riku_front.png",
+      "riku_side.png",
+      "riku_back.png"
+    ],
+    "bbox_size": [
+      179.1904,
+      57.1911,
+      185.2922
+    ],
+    "texture_paths": [
+      "//downloads\\Riku_KH2\\texture000.png",
+      "//downloads\\Riku_KH2\\texture001.png",
+      "//downloads\\Riku_KH2\\texture002.png",
+      "//downloads\\Riku_KH2\\texture003.png"
+    ],
+    "blend": "riku/riku_rigged_smd_import_v1.blend"
+  },
+  {
+    "character": "kairi",
+    "source": "kairi/downloads/Kairi_KH2/Kairi_KH2.smd",
+    "up_axis": "Z",
+    "operator_result": [
+      "FINISHED"
+    ],
+    "armatures": 1,
+    "bones": 265,
+    "placeholder_bones": 10,
+    "root_bones": 11,
+    "mesh_objects": 1,
+    "vertices": 2077,
+    "faces": 3356,
+    "skinned_meshes": 1,
+    "weighted_vertices": 2077,
+    "materials": [
+      "texture000.png",
+      "texture001.png",
+      "texture002.png",
+      "texture003.png",
+      "texture004.png",
+      "texture005.png",
+      "texture006.png"
+    ],
+    "missing_textures": [],
+    "renders": [
+      "kairi_front.png",
+      "kairi_side.png",
+      "kairi_back.png"
+    ],
+    "bbox_size": [
+      147.1855,
+      38.4084,
+      154.5658
+    ],
+    "texture_paths": [
+      "//downloads\\Kairi_KH2\\texture000.png",
+      "//downloads\\Kairi_KH2\\texture001.png",
+      "//downloads\\Kairi_KH2\\texture002.png",
+      "//downloads\\Kairi_KH2\\texture003.png",
+      "//downloads\\Kairi_KH2\\texture004.png",
+      "//downloads\\Kairi_KH2\\texture005.png",
+      "//downloads\\Kairi_KH2\\texture006.png"
+    ],
+    "blend": "kairi/kairi_rigged_smd_import_v1.blend"
+  }
+]
