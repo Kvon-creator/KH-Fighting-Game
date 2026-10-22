@@ -27,6 +27,8 @@ KEY_TEETH_UP = WRIST_TWIST
 # v7+: pose from Kvon's Smash idle reference image instead of the approved 2D idle.
 REF_POSE = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 7)}
 MESH_GRIP = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 12)}  # v12+: grip at visible hand
+# v14+ (user note): front (right) palm up, left wrist turned the opposite way, hands slid up toward the hilt.
+PALM_ORIENT = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 14)}
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -204,7 +206,7 @@ elif REF_POSE and version not in ('idle_loop_v7', 'idle_loop_v8', 'idle_loop_v9'
         'shoulder_reach': True,
     }
     if version not in ('idle_loop_v11', 'idle_loop_v12'):
-        POSE['grip_shift'] = .05  # v13+
+        POSE['grip_shift'] = .11 if PALM_ORIENT else .05  # v13: .05; v14+ slides hands further up
 elif REF_POSE and version == 'idle_loop_v10':
     # v10: v9's hunch and bent elbows, grip lowered back to waist height like the reference.
     POSE = {
@@ -451,8 +453,52 @@ def pick_hand(side):
     return round(best[0], 4)
 
 
+REST_PALM = Vector((0, 0, -1))  # T-pose palms face down (thumb bones point forward)
+
+
+def palm_normal(side):
+    pb = arm.pose.bones[f'{side}_te']
+    posed = (arm.matrix_world @ pb.matrix).to_3x3().normalized()
+    rest = (arm.matrix_world @ arm.data.bones[f'{side}_te'].matrix_local).to_3x3().normalized()
+    return (posed @ rest.inverted() @ REST_PALM).normalized()
+
+
+def pick_anatomical_curl(side):
+    # In the rest pose, keep the curl that moves the fingertips toward the palm side.
+    reset_pose()
+    rest_tip = pose_world(f'{side}_yubiB').to_translation() + (
+        pose_world(f'{side}_yubiB').to_3x3() @ Vector((0, arm.data.bones[f'{side}_yubiB'].length, 0)))
+    best = None
+    for curl in (('x', 1), ('x', -1), ('z', 1), ('z', -1)):
+        set_curl(side, *curl)
+        m = pose_world(f'{side}_yubiB')
+        tip = m.to_translation() + m.to_3x3() @ Vector((0, arm.data.bones[f'{side}_yubiB'].length, 0))
+        score = (tip - rest_tip).dot(REST_PALM)
+        if best is None or score > best[0]:
+            best = (score, curl)
+    FINGERS[side] = best[1]
+
+
+def pick_palm(side, target):
+    # Twist the wrist about the forearm (10-degree steps) until the palm faces `target`.
+    best = None
+    for degrees in range(-180, 180, 10):
+        TWIST[side] = degrees
+        solve_pose(0.0)
+        score = palm_normal(side).dot(target)
+        if best is None or score > best[0]:
+            best = (score, degrees)
+    TWIST[side] = best[1]
+    return round(best[0], 3)
+
+
 solve_pose(0.0)
-if WRIST_TWIST:
+if PALM_ORIENT:
+    for side in ('R', 'L'):
+        pick_anatomical_curl(side)
+    FINGER_REPORT = {'R_palm_up_dot': pick_palm('R', Vector((0, 0, 1))),
+                     'L_palm_down_dot': pick_palm('L', Vector((0, 0, -1)))}
+elif WRIST_TWIST:
     FINGER_REPORT = {side: pick_hand(side) for side in ('R', 'L')}
 else:
     FINGER_REPORT = {side: pick_curl(side) for side in ('R', 'L')} if CURL_FINGERS else {}
@@ -555,6 +601,7 @@ if LOOP:
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
+        'hand_search': FINGER_REPORT,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}
                         for s, (a, g) in FINGERS.items()},
         'blend': blend.name,

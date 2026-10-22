@@ -57,6 +57,17 @@
 
 **Why:** User requested the stronger hunch and a correct grip.
 
+**Palm-up grip suggestion, October22:** Kvon suggested rotating the front wrist so its palm faces up and the other wrist the opposite way, then sliding both hands up toward the hilt. Implemented as `idle_loop_v14`, pending review.
+
+- **Front hand = right hand,** the one nearer the three-quarter camera.
+- **Palm tracking:** rest-pose (T-pose) palms face -Z with the thumb bones pointing forward. The palm direction is tracked through the te bone.
+- **Fingers:** curl toward the palm.
+- **Wrist search** (10-degree steps): R twist 110 (palm-up score .65), L 80 (palm-down .52).
+- **Hand slide:** `grip_shift` .11 slides the hands higher on the handle.
+- **Review image:** `Hands_v13_vs_v14.png`.
+
+**Why:** User's own grip suggestion.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.
