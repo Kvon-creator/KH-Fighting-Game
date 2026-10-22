@@ -476,6 +476,28 @@ if LOOP:
                     BACK_KNEE_IN = BACK_KNEE_IN[:11]
                     LEAD_KNEE_IN = [.3, .5, .4, .2, 0, 0, 0, 0, 0, 0, .2]
                 DURATIONS_MS = [k[7] for k in STEP_KEYS]
+                V12 = not GAIT.endswith(('_v9', '_v10', '_v11'))
+                if V12:
+                    # v12+ (Kvon's walk spec): constant root velocity, exactly 90 game px per 40-frame cycle
+                    # (2.25 px per game frame, 135 px/s); step length matched so planted feet stay exact.
+                    RENDER_PX_PER_M = 385 / HEIGHT            # 512 px render: ortho_scale = HEIGHT*512/385
+                    GAME_PX_PER_M = RENDER_PX_PER_M*384/512
+                    STEP_LEN = 90 / GAME_PX_PER_M
+                    k_scale = STEP_LEN / .50
+                    # Pelvis drops 6 render px on the passing poses (3, 9) and is at default on contacts.
+                    PASSING = [0, .5, 1, .5, 0, 0, 0, .5, 1, .5, 0]
+                    keys, cum = [], 0
+                    for idx, (k, f) in enumerate(zip(STEP_KEYS, GAME_FRAMES)):
+                        cum += f if idx else 0
+                        keys.append((.30 + (k[0] - .30)*k_scale, k[1], k[2]*k_scale, k[3], k[4],
+                                     .155 + STEP_LEN*cum/40, PASSING[idx], k[7]))
+                    STEP_KEYS = keys
+                    drop = 6 / RENDER_PX_PER_M
+                    BREATH.update({'drop': drop, 'lean_deg': 0, 'hands_z': -drop, 'head_counter_deg': 0})
+                    # Weapon drag: -8 deg about the vertical at the passing poses (grip follows the handle).
+                    WEAPON_DRAG = [-8*w for w in PASSING]
+                    # Front arm: abduct 12-15 deg about the shoulder-wrist line, keeping 10-12 px forearm gap.
+                    FRONT_ARM_RANGE, FRONT_ARM_GAP = (12.0, 15.0), (10.0, 12.0)
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -642,6 +664,12 @@ def solve_pose(breath=0.0, lag=None):
         two_bone('L_ude1', 'L_ude2', 'L_te', turn_m @ Vector(POSE['L_relaxed_wrist']), guard_hint)
     else:
         hand_on('L', l_hand, (1, .4, -.3))
+    if POSE.get('front_arm_deg'):
+        # Swing the front elbow outward about the shoulder-wrist line; the hand stays on the handle.
+        side = POSE['front_arm_side']
+        shoulder = pose_world(f'{side}_ude1').translation
+        wrist = pose_world(f'{side}_te').translation
+        rotate_world(f'{side}_ude1', (wrist - shoulder).normalized(), POSE['front_arm_deg'])
     for side, degrees in TWIST.items():
         forearm = (pose_world(f'{side}_te').translation - pose_world(f'{side}_ude2').translation).normalized()
         rotate_world(f'{side}_te', forearm, degrees)
@@ -981,6 +1009,61 @@ if LOOP:
                 u = phase / SWING; u = u*u*(3 - 2*u)
                 return -STRIDE + 2*STRIDE*u, LIFT*math.sin(math.pi*phase/SWING)
             return STRIDE - 2*STRIDE*(phase - SWING)/(1 - SWING), 0.0  # stance: planted, slides back
+    V12 = GAIT and globals().get('V12')
+    if V12:
+        BASE_BLADE = blade.copy()
+        cam_right = Vector((math.cos(t), math.sin(t), 0))
+        PX = 512 / cam_data.ortho_scale
+        FRONT = max(('R', 'L'), key=lambda sd: pose_world(f'{sd}_ude2').translation.dot(to_cam))
+
+        def arm_gap_px(side):
+            # Screen-space gap between the elbow half of the front forearm and the torso (mune/hara)
+            # points, sampled at vertices and along edges, in 512 px render pixels. The wrist half
+            # crosses in front of the waist to reach the handle, so it always overlaps the jacket.
+            dg = bpy.context.evaluated_depsgraph_get()
+            elbow = pose_world(f'{side}_ude2').translation; wrist = pose_world(f'{side}_te').translation
+            fore = wrist - elbow
+            arm_pts, torso_pts = [], []
+            for o in body:
+                gi = {g.name: g.index for g in o.vertex_groups}
+                fa, tor = gi.get(f'{side}_ude2'), [gi[nm] for nm in ('mune', 'hara') if nm in gi]
+                if fa is None and not tor:
+                    continue
+                ev, mw = o.evaluated_get(dg).data, o.matrix_world
+                kind = {}
+                for v in o.data.vertices:
+                    w = {e.group: e.weight for e in v.groups}
+                    kind[v.index] = 'a' if fa is not None and w.get(fa, 0) > .5 else (
+                        't' if any(w.get(g_, 0) > .5 for g_ in tor) else None)
+                pt = lambda i_: mw @ ev.vertices[i_].co
+                for e in o.data.edges:
+                    a_, b_ = e.vertices
+                    if kind[a_] and kind[a_] == kind[b_]:
+                        pa, pb = pt(a_), pt(b_)
+                        for u in (0, .25, .5, .75, 1):
+                            q = pa.lerp(pb, u)
+                            if kind[a_] == 'a' and (q - elbow).dot(fore) / fore.length_squared > .5:
+                                continue
+                            (arm_pts if kind[a_] == 'a' else torso_pts).append((q.dot(cam_right)*PX, q.z*PX))
+            A, B = np.array(arm_pts), np.array(torso_pts)
+            return float(np.sqrt(((A[:, None] - B[None]) ** 2).sum(2)).min())
+
+        # Outward = the swing direction that carries the elbow away from his body on screen.
+        def elbow_out(deg):
+            POSE.update({'front_arm_side': FRONT, 'front_arm_deg': deg})
+            solve_pose(0.0)
+            e = pose_world(f'{FRONT}_ude2').translation - pose_world('hara').translation
+            return abs(e.dot(cam_right))
+        # With the hand fixed on the handle the elbow is already at its outermost screen point, so both
+        # directions tie on elbow position; pick the one that actually opens the forearm gap.
+        def gap_at(deg):
+            POSE.update({'front_arm_side': FRONT, 'front_arm_deg': deg})
+            solve_pose(0.0)
+            return arm_gap_px(FRONT)
+        GAP_TRIAL = {d_: round(gap_at(d_), 2) for d_ in (0.0, FRONT_ARM_RANGE[0], -FRONT_ARM_RANGE[0], 15.0, -15.0)}
+        print("ARM_TRIAL", FRONT, GAP_TRIAL)
+        ARM_SIGN = 1 if GAP_TRIAL[FRONT_ARM_RANGE[0]] > GAP_TRIAL[-FRONT_ARM_RANGE[0]] else -1
+        ARM_LOG = []
     for i in range(n):
         breath = (1 - math.cos(2*math.pi*i/n)) / 2
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
@@ -989,6 +1072,9 @@ if LOOP:
             if STEPPED:
                 lead_w, lead_h, back_w, back_h, heel, body_w, bob, _ = STEP_KEYS[i]
                 breath, lag = bob, STEP_KEYS[i - 1][6]  # hands/head trail the body by one frame
+                if V12:
+                    lag = bob  # hands drop with the pelvis on the same frame (grip intact)
+                    blade = (Matrix.Rotation(math.radians(WEAPON_DRAG[i]), 3, 'Z') @ BASE_BLADE).normalized()
                 follower = 'R' if leader == 'L' else 'L'
                 rad = math.radians(heel)
                 POSE['foot_pitch'] = {follower: heel}
@@ -1013,6 +1099,21 @@ if LOOP:
                     offset, lift = foot_at(side, i/n)
                     pos = STANCE[side] + walk_dir*offset
                     POSE[f'{side}_foot'] = (pos.x, pos.y, lift)
+        if V12:
+            # Pick the abduction in 12-15 deg whose forearm gap lands closest to the 10-12 px band.
+            best = None
+            for step in range(7):
+                deg = FRONT_ARM_RANGE[0] + step*.5
+                POSE.update({'front_arm_side': FRONT, 'front_arm_deg': ARM_SIGN*deg})
+                solve_pose(breath, lag)
+                gap = arm_gap_px(FRONT)
+                lo, hi = FRONT_ARM_GAP
+                miss = 0 if lo <= gap <= hi else min(abs(gap - lo), abs(gap - hi))
+                if best is None or miss < best[0]:
+                    best = (miss, deg, gap)
+            POSE['front_arm_deg'] = ARM_SIGN*best[1]
+            ARM_LOG.append({'abduction_deg': best[1], 'forearm_gap_px': round(best[2], 1),
+                            'weapon_drag_deg': WEAPON_DRAG[i], 'pelvis_drop_px': round(6*bob, 2)})
         solve_pose(breath, lag)
         place_key()
         for pb in arm.pose.bones:
@@ -1062,6 +1163,9 @@ if LOOP:
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'root_motion_m': ROOT_MOTION if GAIT else None,
         'game_frames_60fps': globals().get('GAME_FRAMES'),
+        'v12_spec': ({'front_arm_side': FRONT, 'per_frame': ARM_LOG,
+                      'root_px_per_drawing_384': [round(m*GAME_PX_PER_M, 3) for m in ROOT_MOTION]}
+                     if V12 else None),
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
         'hand_search': FINGER_REPORT, 'fist_wrap': WRAP_REPORT, 'reach_misses_m': REACH_REPORT,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}

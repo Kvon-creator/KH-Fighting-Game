@@ -119,3 +119,14 @@ Pending review.
 Pending review.
 
 **Why:** User choice.
+
+**Pasted walk spec, October22:** Kvon pasted a detailed spec for an 11-pose, 40-frame, 60 fps walk, implemented as `walk_fwd_v12` (current, pending review).
+
+- **Root motion:** constant 2.25 game px per frame, i.e. 9.0 px per 4-frame drawing and 6.75 px per 3-frame drawing = 90 px per cycle, 135 px/s. The step length was rescaled to 0.4987 m so planted feet stay exact. Sprites stay in place and Godot applies the root motion.
+- **Pelvis drop:** 6 render px on the passing poses (drawings 3 and 9), 3 px on the neighbours, 0 on the contacts; hands follow. Verified: head top rows 137 -> 143.
+- **Weapon drag:** -8 deg about the vertical at the passing poses (half on the neighbours); the left hand follows the handle. There is no torso twist in the walk, so the sign is as written.
+- **Front arm (R, nearer the camera):** abduction 12-15 deg about the shoulder-wrist line, with the forearm-jacket gap measured in screen space. **The 10-12 px gap is NOT achievable with the two-handed grip:** the elbow is already at its outermost screen position and every swing moves it inward; the best is ~0.5-4.5 px depending on frame. Reported to Kvon with options.
+- **Feet:** planted. In Godot they hold within 1 px; that pixel is rounding from the 6.75 px moves.
+- **Output:** `compose_white_sheet.py` builds `walk_fwd2d_v12_sheet_white_4x3.png` (2048x1536: 11 frames at 512, white, last cell blank, no text/grid), in the approved 2D style.
+
+**Why:** User spec.
