@@ -1,0 +1,23 @@
+{
+  "sora_idle3d_preview.gif": {
+    "frames": 11,
+    "durations_match": false,
+    "loop": 0
+  },
+  "sora_idle3d_128_x2.gif": {
+    "frames": 11,
+    "durations_match": false,
+    "loop": 0
+  },
+  "Approved_vs_3D_idle.gif": {
+    "frames": 20,
+    "durations_match": false,
+    "loop": 0
+  },
+  "frames_512": {
+    "count": 11,
+    "sizes_ok": true,
+    "lowest_opaque_row": 473,
+    "distinct": 11
+  }
+}

@@ -97,3 +97,15 @@ Pending review.
 Pending review.
 
 **Why:** User reference.
+
+**60 fps game frames and seamless loop, October22:** Kvon asked what frame rate the walk is. Answer: variable holds of 60-80 ms, ~15.6 drawings/s average. He then said "Yes" to whole 60 fps game frames and "I want there to be no delay between cycles."
+
+- **Rule now:** every Sora animation drawing is held a whole number of 60 fps game frames.
+- **`walk_fwd_v10` (current):** 11 drawings, [4,4,4,4,5,5,4,4,4,4,4] = 46 frames (0.767 s). The duplicate closing hold is removed and every drawing has root motion [2.7,6.3,11.7,13.5,9.0,8.1,8.1,9.0,9.9,7.2,4.5] px (90 px per cycle, ~117 px/s), so the loop has no pause.
+- **Idle in game frames:** [6,5,5,6,7,6,5,5,6,7] = 58 frames (was 1000 ms).
+- **Godot:** `sora_move_test.gd` uses animation speed 60 with per-drawing game-frame counts. Verified with a 60 fps movie: drawings change on exactly those frame counts, and nothing holds longer than 5 frames.
+- **Stale file:** `walk_fwd_384/sora_walk_fwd_11.png` (+ .import) from v9 is no longer loaded. Asked before deleting.
+
+Pending review.
+
+**Why:** User decisions.

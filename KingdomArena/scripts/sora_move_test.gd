@@ -9,15 +9,18 @@ const FLOOR_Y := 600.0
 const FEET := Vector2(192, 354)
 ## Rightmost position he may walk to.
 const RIGHT_LIMIT := 1280.0 - 120.0
-## name -> [folder, file prefix, frame durations in ms, root motion in px per frame]
-## Root motion is how far his body moves forward as each frame starts, taken from the render
-## (metres x 180.5 px per metre), so planted feet stay exactly in place. The walk averages 117 px/s.
+## Animations run on 60 fps game frames: each drawing is held a whole number of game frames.
+const GAME_FPS := 60.0
+## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing]
+## Root motion is how far his body moves forward as each drawing starts, taken from the render
+## (metres x 180.5 px per metre), so planted feet stay exactly in place. Every walk drawing moves
+## him, so the loop has no pause: 90 px per 46-frame cycle, about 117 px/s.
 const ANIMATIONS := {
 	&"idle": ["res://assets/sora/idle_battle_384/", "sora_idle_",
-		[100, 90, 90, 100, 120, 100, 90, 90, 100, 120], []],
+		[6, 5, 5, 6, 7, 6, 5, 5, 6, 7], []],
 	&"walk_forward": ["res://assets/sora/walk_fwd_384/", "sora_walk_fwd_",
-		[70, 60, 60, 60, 70, 80, 60, 60, 60, 60, 70, 60],
-		[0.0, 5.4, 12.6, 14.4, 9.0, 7.2, 9.0, 9.0, 10.8, 7.2, 5.4, 0.0]],
+		[4, 4, 4, 4, 5, 5, 4, 4, 4, 4, 4],
+		[2.7, 6.3, 11.7, 13.5, 9.0, 8.1, 8.1, 9.0, 9.9, 7.2, 4.5]],
 }
 
 var _sprite: AnimatedSprite2D
@@ -32,12 +35,12 @@ func _ready() -> void:
 		var prefix: String = ANIMATIONS[anim][1]
 		var durations: Array = ANIMATIONS[anim][2]
 		frames.add_animation(anim)
-		# At 10 frames per second one duration unit is 100 ms, so 55 ms becomes 0.55.
-		frames.set_animation_speed(anim, 10.0)
+		# At 60 fps one duration unit is one game frame.
+		frames.set_animation_speed(anim, GAME_FPS)
 		frames.set_animation_loop_mode(anim, SpriteFrames.LOOP_LINEAR)
 		for i in durations.size():
 			var texture: Texture2D = load(folder + prefix + "%02d.png" % i)
-			frames.add_frame(anim, texture, durations[i] / 100.0)
+			frames.add_frame(anim, texture, durations[i])
 
 	_sprite = AnimatedSprite2D.new()
 	_sprite.sprite_frames = frames

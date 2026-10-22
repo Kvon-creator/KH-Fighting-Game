@@ -448,9 +448,30 @@ if LOOP:
                     (.80, .00, .50, .00, 0, .650, -1.0, 70),  # back foot lands beside it, body up
                     (.80, .00, .50, .00, 0, .650, -1.0, 60),  # narrow hold
                 ]
-                DURATIONS_MS = [k[7] for k in STEP_KEYS]
                 BACK_KNEE_IN = [0, 0, 0, 0, 0, 0, .3, .7, 1.0, .7, .3, .1]
                 LEAD_KNEE_IN = [.3, .5, .4, .2, 0, 0, 0, 0, 0, 0, 0, .2]
+                if not GAIT.endswith('_v9'):
+                    # v10+ (Kvon): no pause between cycles: the duplicate closing hold is dropped and the
+                    # body keeps moving through the feet-together pose. Frames are held for whole 60 fps
+                    # game frames (last field), 46 per cycle.
+                    STEP_KEYS = [
+                        (.30, .00, .00, .00, 0, .155, -1.0, 4),
+                        (.36, .02, .00, .00, 0, .190, -.60, 4),
+                        (.52, .03, .00, .00, 0, .255, -.10, 4),
+                        (.70, .02, .00, .00, 0, .330, .50, 4),
+                        (.80, .00, .00, .00, 0, .380, 1.0, 5),
+                        (.80, .00, .00, .00, 0, .425, 1.0, 5),
+                        (.80, .00, .00, .00, 15, .470, .80, 4),
+                        (.80, .00, .10, .02, 10, .520, .40, 4),
+                        (.80, .00, .28, .03, 5, .575, -.20, 4),
+                        (.80, .00, .44, .02, 0, .615, -.70, 4),
+                        (.80, .00, .50, .00, 0, .640, -1.0, 4),
+                    ]
+                    GAME_FRAMES = [k[7] for k in STEP_KEYS]
+                    STEP_KEYS = [(*k[:7], round(k[7]*1000/60, 3)) for k in STEP_KEYS]
+                    BACK_KNEE_IN = BACK_KNEE_IN[:11]
+                    LEAD_KNEE_IN = [.3, .5, .4, .2, 0, 0, 0, 0, 0, 0, .2]
+                DURATIONS_MS = [k[7] for k in STEP_KEYS]
         STRIDE, LIFT, SWING = .12, .06, .4  # half step length (m), foot lift (m), swing share of cycle
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
@@ -1036,6 +1057,7 @@ if LOOP:
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'root_motion_m': ROOT_MOTION if GAIT else None,
+        'game_frames_60fps': globals().get('GAME_FRAMES'),
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,
         'hand_search': FINGER_REPORT, 'fist_wrap': WRAP_REPORT, 'reach_misses_m': REACH_REPORT,
         'finger_curl': {s: {'axis': a, 'sign': g, 'mean_dist_to_handle_m': FINGER_REPORT.get(s)}
