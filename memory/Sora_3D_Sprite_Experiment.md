@@ -121,3 +121,20 @@ Run with `build_sprite_pilot.py -- one_hand_vN` (folder `design/models/sora/one_
 Pending review.
 
 **Why:** User's new pose request replacing the two-handed grip effort.
+
+**Battle-ready one-handed pose, October22:** Kvon asked for suggestions to make the one-handed pose battle-ready and then said "Build it the way you've recommended". All five suggestions are built, using `design/references/Sora_battle_stance.gif` as the stance guide:
+
+1. **Staggered stance:** left foot leading, right foot back and turned out, deeper knees.
+2. **Body turn:** about 30 degrees toward the opponent, chin down, eyes toward the opponent.
+3. **Keyblade:** low in the right hand, angled down and back, away from the opponent (the original idle rule).
+4. **Guard hand:** the left hand up at chest height.
+5. **Combat bounce:** a 1000 ms, 10-frame knee bob.
+
+Run with `build_sprite_pilot.py -- battle_vN` (`design/models/sora/battle_vN`). POSE targets are in the turned body frame; feet need the turn added explicitly because `ashi1` doesn't inherit rotation.
+
+- **v1:** the guard arm stuck out straight.
+- **`battle_v2` (current):** bent guard elbow nearer the chest.
+
+Pending review.
+
+**Why:** User accepted the recommended battle-ready changes.

@@ -19,7 +19,10 @@ ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
 version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilot_v1'
 # one_hand_v*: user's one-handed idle, right hand only, blade angled down toward his feet.
-ONE_HAND = version.startswith('one_hand_v')
+# battle_v*: battle-ready one-handed stance (staggered feet, body turned to the opponent, blade
+# low and back, guard hand up, combat bounce), following design/references/Sora_battle_stance.gif.
+BATTLE = version.startswith('battle_v')
+ONE_HAND = version.startswith('one_hand_v') or BATTLE
 LOOP = version.startswith('idle_loop_v') or ONE_HAND  # 10-frame breathing loop; sprite_pilot_v* = single frame
 GRIP_SIDES = ('R',) if ONE_HAND else ('R', 'L')
 KEY_FACES_CAMERA = LOOP and version not in ('idle_loop_v2', 'idle_loop_v3')  # user grip correction
@@ -195,7 +198,23 @@ for mat in {s.material for o in body + [key] for s in o.material_slots if s.mate
         links.new(emit.outputs[0], out.inputs['Surface'])
 
 # 4. Approximate approved-idle pose from hand/foot targets (world meters).
-if ONE_HAND:
+if BATTLE:
+    # Targets are in the body frame turned 30 degrees toward the opponent (screen right).
+    # Left foot leads, right foot back and turned out; deeper knees; Key low at the right hip
+    # angled down and back (away from the opponent); left hand up as a guard.
+    POSE = {
+        'body_turn_deg': 30, 'drop': .17, 'lean_deg': 14, 'hunch_deg': 10, 'neck_counter_deg': -18,
+        'look_deg': 12,
+        'R_foot': (-.22, .24, None), 'L_foot': (.16, -.30, None), 'toe_deg': {'L': 10, 'R': 50},
+        'R_hand': (-.24, .02, .74), 'blade_dir': (-.25, .75, -.62),
+        'blade_toward': (-.30, .95), 'tip_height': .20, 'grip_shift': .05,
+        'L_relaxed_wrist': (.06, -.30, .98), 'L_elbow_hint': (1, .3, -.6),
+        'shoulder_reach': True, 'L_hand_along_handle': 0,
+    }
+    if version != 'battle_v1':
+        # v2+: v1's guard arm reached out nearly straight; bend the elbow and hold it nearer the chest.
+        POSE.update({'L_relaxed_wrist': (.10, -.20, 1.00), 'L_elbow_hint': (1, .2, -1)})
+elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
     POSE = {
@@ -278,6 +297,10 @@ if LOOP:
     BREATH = {'drop': .012, 'lean_deg': 1.5, 'hands_z': -.008, 'head_counter_deg': -.8}
     DURATIONS_MS = [150, 130, 130, 150, 180, 150, 130, 130, 150, 180]  # approved idle timing
     BREATH_LAG = 0 if version == 'idle_loop_v2' else .12  # fraction of a cycle
+    if BATTLE:
+        # Combat bounce: a quicker, deeper bob through the knees instead of a slow breath.
+        BREATH = {'drop': .025, 'lean_deg': 1.0, 'hands_z': -.012, 'head_counter_deg': -.5}
+        DURATIONS_MS = [100, 90, 90, 100, 120, 100, 90, 90, 100, 120]
 bones = arm.data.bones
 for name in ('L_ashi1', 'R_ashi1'):
     bones[name].use_inherit_rotation = False   # feet stay flat while the legs bend
@@ -385,29 +408,39 @@ def solve_pose(breath=0.0, lag=None):
     lag = breath if lag is None else lag
     reset_pose()
     b = BREATH if LOOP else {'drop': 0, 'lean_deg': 0, 'hands_z': 0, 'head_counter_deg': 0}
+    # battle_v*: the whole body turns toward the opponent; POSE targets are in that turned frame.
+    turn = POSE.get('body_turn_deg', 0)
+    turn_m = Matrix.Rotation(math.radians(turn), 3, 'Z')
+    ax_x, ax_y = (turn_m @ Vector((1, 0, 0)), turn_m @ Vector((0, 1, 0))) if turn else ('X', 'Y')
+    if turn:
+        rotate_world('Root', 'Z', turn)
     set_pose_world('center', Matrix.Translation((0, 0, -POSE['drop'] - b['drop']*breath)) @ pose_world('center'))
     if POSE.get('hunch_deg'):
-        rotate_world('hara', 'X', POSE['hunch_deg'])
-    rotate_world('mune', 'X', POSE['lean_deg'] + b['lean_deg']*breath)
+        rotate_world('hara', ax_x, POSE['hunch_deg'])
+    rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath)
     if POSE.get('neck_counter_deg'):
-        rotate_world('kubi', 'X', POSE['neck_counter_deg'])
+        rotate_world('kubi', ax_x, POSE['neck_counter_deg'])
     if b['head_counter_deg']:
-        rotate_world('kubi', 'X', b['head_counter_deg']*lag)
-    r_hand = Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
+        rotate_world('kubi', ax_x, b['head_counter_deg']*lag)
+    if POSE.get('look_deg'):
+        rotate_world('kubi', 'Z', POSE['look_deg'])  # eyes on the opponent
+    r_hand = turn_m @ Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
     l_hand = r_hand + blade*POSE['L_hand_along_handle']
     toe_out = POSE.get('toe_out_deg', 0)
     for s, foot in (('R', POSE['R_foot']), ('L', POSE['L_foot'])):
         sign = -1 if s == 'R' else 1
+        toe = POSE.get('toe_deg', {}).get(s, toe_out)
         # Knees track over turned-out toes.
-        knee = (sign*(.3 + toe_out/50), -1, 0)
-        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', (foot[0], foot[1], ankle_z), knee)
-        if toe_out:
-            rotate_world(f'{s}_ashi1', 'Z', sign*toe_out)
+        knee = turn_m @ Vector((sign*(.3 + toe/50), -1, 0))
+        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', turn_m @ Vector((foot[0], foot[1], ankle_z)), knee)
+        if toe or turn:
+            rotate_world(f'{s}_ashi1', 'Z', sign*toe + turn)  # feet don't inherit the body turn
     if POSE.get('head_tilt_deg'):
-        rotate_world('atama', 'Y', POSE['head_tilt_deg'])  # top of head toward his left, as referenced
+        rotate_world('atama', ax_y, POSE['head_tilt_deg'])  # top of head toward his left, as referenced
     hand_on('R', r_hand, (-1, .4, -.3))
     if ONE_HAND:
-        two_bone('L_ude1', 'L_ude2', 'L_te', Vector(POSE['L_relaxed_wrist']), (1, .6, -.2))
+        guard_hint = turn_m @ Vector(POSE.get('L_elbow_hint', (1, .6, -.2)))
+        two_bone('L_ude1', 'L_ude2', 'L_te', turn_m @ Vector(POSE['L_relaxed_wrist']), guard_hint)
     else:
         hand_on('L', l_hand, (1, .4, -.3))
     for side, degrees in TWIST.items():
@@ -539,7 +572,8 @@ if POSE.get('blade_toward'):
     ground_z = world_bounds(body)[0].z
     length = KEY_REACH - POSE.get('grip_shift', 0)
     dz = max(-length*.98, ground_z + POSE['tip_height'] - hand_point('R').z)
-    flat = Vector((*POSE['blade_toward'], 0)).normalized()*math.sqrt(length*length - dz*dz)
+    toward = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z') @ Vector((*POSE['blade_toward'], 0))
+    flat = toward.normalized()*math.sqrt(length*length - dz*dz)
     blade = (flat + Vector((0, 0, dz))).normalized()
     POSE['blade_dir'] = tuple(round(c, 4) for c in blade)
     solve_pose(0.0)

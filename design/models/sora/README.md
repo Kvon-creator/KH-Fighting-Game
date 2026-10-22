@@ -34,4 +34,6 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 **One-handed pose (October22):** [one_hand_v3](one_hand_v3/Pose_Views.png) (front, side, sprite views). The right hand holds the Key at the hip, wrapped by the fist shape key; the blade angles down toward his right foot and stops just above the floor; the left arm is relaxed. The breathing loop and packaging are the same as the idle. Earlier tries: v1 (vertical blade, below the floor), v2 (teeth 2px below the floor).
 
+**Battle-ready pose (October22):** [battle_v2](battle_v2/Stance_Reference_vs_Battle.png) shows the KH2 battle-stance reference, then front, side and sprite views. The stance is staggered with the body turned toward the opponent; the Keyblade is low in the right hand, angled down and back; the left hand is a bent guard; the loop is a 1000 ms combat bounce. v1's guard arm was straight.
+
 Requirements carried forward: KH2 outfit, smooth cel style and rigid far-hand same-shoulder Kingdom Key carry behind the head, with slight foreground tip. Render run-start, loop and stop from one fixed orthographic camera; review against approved idle/run-start and match the joins before aerial movement.
