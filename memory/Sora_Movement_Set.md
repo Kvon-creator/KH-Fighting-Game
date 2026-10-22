@@ -16,3 +16,10 @@
 **Air transition rule:** Pose 1 (rising) -> Pose 2 (brief tuck) -> the air option. This applies to back-dash, forward-dash and any other air movement that needs an extra player input.
 
 **Why:** User additions to the movement list.
+
+**Keyblade during movement (October22):** Kvon said "One-handed, but he holds up high when he's falling."
+
+- **Default (steps, crouch, run, rise, tuck, dashes, landing):** right hand only, held low and behind him, pointing away from the opponent; the left arm is free to move like the references.
+- **Falling (ref_03 pose):** the Keyblade is raised up high in that hand.
+
+**Why:** User decision.
