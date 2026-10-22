@@ -658,6 +658,14 @@ def solve_pose(breath=0.0, lag=None):
             rotate_world(f'{side}_ashi1', fwd.cross(Vector((0, 0, 1))).normalized(), -deg)
     if POSE.get('head_tilt_deg'):
         rotate_world('atama', ax_y, POSE['head_tilt_deg'])  # top of head toward his left, as referenced
+    if POSE.get('front_kata'):
+        # v13+ (Kvon, option 2): pull the front shoulder back and out before the arm is solved,
+        # so the hands stay on the handle while the arm silhouette widens.
+        side_k, (yaw_k, lift_k) = POSE['front_kata']
+        rotate_world(f'{side_k}_kata', 'Z', yaw_k)
+        head = pose_world(f'{side_k}_kata').translation
+        kdir = pose_world(f'{side_k}_ude1').translation - head
+        rotate_world(f'{side_k}_kata', kdir.cross(Vector((0, 0, 1))).normalized(), lift_k)
     hand_on('R', r_hand, (-1, .4, -.3))
     if ONE_HAND:
         guard_hint = turn_m @ Vector(POSE.get('L_elbow_hint', (1, .6, -.2)))
@@ -1063,6 +1071,24 @@ if LOOP:
         GAP_TRIAL = {d_: round(gap_at(d_), 2) for d_ in (0.0, FRONT_ARM_RANGE[0], -FRONT_ARM_RANGE[0], 15.0, -15.0)}
         print("ARM_TRIAL", FRONT, GAP_TRIAL)
         ARM_SIGN = 1 if GAP_TRIAL[FRONT_ARM_RANGE[0]] > GAP_TRIAL[-FRONT_ARM_RANGE[0]] else -1
+        KATA_LOG = None
+        if not GAIT.endswith('_v12'):
+            # v13+: search the front collarbone angle (+-20 deg turn, +-15 deg lift) with the elbow at
+            # 12 deg; keep the one whose forearm gap lands nearest the 10-12 px band.
+            best_k = None
+            for yaw_k in range(-20, 21, 5):
+                for lift_k in range(-15, 16, 5):
+                    POSE['front_kata'] = (FRONT, (yaw_k, lift_k))
+                    for sign in (1, -1):
+                        g_ = gap_at(sign*FRONT_ARM_RANGE[0])
+                        lo, hi = FRONT_ARM_GAP
+                        miss = 0 if lo <= g_ <= hi else min(abs(g_ - lo), abs(g_ - hi))
+                        if best_k is None or miss < best_k[0]:
+                            best_k = (miss, yaw_k, lift_k, sign, g_)
+            POSE['front_kata'] = (FRONT, (best_k[1], best_k[2]))
+            ARM_SIGN = best_k[3]
+            KATA_LOG = {'yaw_deg': best_k[1], 'lift_deg': best_k[2], 'gap_px_at_12deg': round(best_k[4], 2)}
+            print('KATA_BEST', KATA_LOG)
         ARM_LOG = []
     for i in range(n):
         breath = (1 - math.cos(2*math.pi*i/n)) / 2
@@ -1163,7 +1189,7 @@ if LOOP:
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'root_motion_m': ROOT_MOTION if GAIT else None,
         'game_frames_60fps': globals().get('GAME_FRAMES'),
-        'v12_spec': ({'front_arm_side': FRONT, 'per_frame': ARM_LOG,
+        'v12_spec': ({'front_arm_side': FRONT, 'per_frame': ARM_LOG, 'front_shoulder': KATA_LOG,
                       'root_px_per_drawing_384': [round(m*GAME_PX_PER_M, 3) for m in ROOT_MOTION]}
                      if V12 else None),
         'key_faces_camera': KEY_FACES_CAMERA, 'key_teeth_up': KEY_TEETH_UP, 'wrist_twist_deg': TWIST,

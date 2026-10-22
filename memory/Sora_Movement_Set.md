@@ -130,3 +130,9 @@ Pending review.
 - **Output:** `compose_white_sheet.py` builds `walk_fwd2d_v12_sheet_white_4x3.png` (2048x1536: 11 frames at 512, white, last cell blank, no text/grid), in the approved 2D style.
 
 **Why:** User spec.
+
+**Front-arm gap option 2 tried, October22:** Kvon chose option 2 (pull the front shoulder back and out, keep the grip). `walk_fwd_v13` searches the R_kata collarbone angle (yaw +-20, lift +-15 in 5-deg steps) before the arm solve.
+
+- **Result:** the best was yaw 5 / lift -5 with a gap of only ~0.7 px. The short collarbone moves the shoulder joint only 2-3 cm, while ~5 cm of screen-sideways room is needed.
+- **Not adopted:** v13 is an experiment. It was not exported to Godot; v12 stays in the game test.
+- **Remaining ways to get the 10-12 px gap:** move the grip forward (option 1), turn the chest so the front shoulder rotates back, or relax the gap target. Asked Kvon.
