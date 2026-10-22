@@ -47,6 +47,16 @@
 
 **Why:** User posture correction.
 
+**Stronger hunch and proper grip, October21:** Kvon asked for a little stronger hunch, then whatever arm changes are needed for Sora to properly hold the Keyblade.
+
+- **Hunch:** v11 raises it to hara 10, mune 12, neck counter -16 degrees. If a hand still misses the grip after wrist correction, the shoulder (`kata`) swings toward it, capped at 20 degrees per step.
+- **Grip point:** v12 measures the grip at the visible hand, the centroid of vertices on the `te` and `yubiB` bones. The te/buki midpoint had left both fists below the handle.
+- **`idle_loop_v13` (current):** slides the Key 5 cm (`grip_shift`) so the fists wrap the handle inside the guard.
+- **Remaining offset:** the left hand is ~2.3 cm from its target.
+- **Status:** pending user review.
+
+**Why:** User requested the stronger hunch and a correct grip.
+
 **Fact or rule:** On October19 Kvon requested experimenting with3D models instead of continuing the flat sprite batch. He selected "Animate it and render2D sprites". Use Blender for character cleanup/modeling, rigging, animation and transparent sprite renders; this is not a decision to switch gameplay to3D. Preserve all existing sprite work and keep the approved KH2 outfit, smooth cel style, far-hand same-shoulder carry and fixed connected Kingdom Key.
 
 **Why:** The user explicitly chose the3D-to-2D route. No additional reason was provided.

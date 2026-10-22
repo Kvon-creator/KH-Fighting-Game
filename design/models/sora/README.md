@@ -21,7 +21,8 @@ Run e.g. `blender --background --factory-startup --python blender_workflow/build
 
 - **Loop:** 10 frames with the approved idle's timing (1480 ms). The body sinks and leans with the breath; hands, Key and head trail by 12% of a cycle.
 - **Key placement:** placed rigidly at the grip every frame, because a bone-parented Key wobbled as the re-solved hand twisted.
-- **Current:** [idle_loop_v10](idle_loop_v10/Reference_vs_3D_pose.png). Per Kvon, Sora hunches over a little and bends his elbows around the grip; a side-profile check render shows the lean. v9 was the first hunch pass, with the grip too high.
+- **Current:** [idle_loop_v13](idle_loop_v13/Reference_vs_3D_pose.png): a stronger hunch, with shoulders that reach forward when an arm falls short. The grip is measured at the visible hand mesh, and the Key slides so both fists wrap the handle inside the guard. v11 was the stronger hunch alone; v12 added mesh-measured hands, but the fists sat near the pommel.
+- **v10:** Per Kvon, Sora hunches over a little and bends his elbows around the grip; a side-profile check render shows the lean. v9 was the first hunch pass, with the grip too high.
 - **v8:** posed from Kvon's Smash idle reference (`design/references/sora_smash_idle_pose_reference.png`) with the same breathing. v7 was the first pass: grip centered, flatter blade.
 - **v6:** Per Kvon, the Keyblade teeth face up, and each wrist is twisted about its forearm so the palm wraps the handle; twist and finger curl are searched per hand.
 - **v5:** After Kvon said the Keyblade was held the wrong way, v4 turns the guard face toward the camera with the teeth down and puts the fist inside the guard. v5 adds an automatic finger curl (partial; the palms still need a wrist roll).

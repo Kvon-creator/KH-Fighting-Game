@@ -13,7 +13,7 @@ from pathlib import Path
 import bmesh
 import bpy
 import numpy as np
-from mathutils import Euler, Matrix, Vector
+from mathutils import Euler, Matrix, Quaternion, Vector
 
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
@@ -26,6 +26,7 @@ WRIST_TWIST = CURL_FINGERS and version != 'idle_loop_v5'
 KEY_TEETH_UP = WRIST_TWIST
 # v7+: pose from Kvon's Smash idle reference image instead of the approved 2D idle.
 REF_POSE = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 7)}
+MESH_GRIP = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 12)}  # v12+: grip at visible hand
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version
 if OUT.exists():
@@ -193,7 +194,18 @@ if REF_POSE and version == 'idle_loop_v7':
         'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
         'blade_dir': (-.80, .30, .52), 'toe_out_deg': 25, 'head_tilt_deg': 5,
     }
-elif REF_POSE and version not in ('idle_loop_v8', 'idle_loop_v9'):
+elif REF_POSE and version not in ('idle_loop_v7', 'idle_loop_v8', 'idle_loop_v9', 'idle_loop_v10'):
+    # v11+ (user note): a little stronger hunch; shoulders reach forward so both hands hold the handle.
+    POSE = {
+        'drop': .12, 'lean_deg': 12, 'hunch_deg': 10, 'neck_counter_deg': -16,
+        'R_hand': (-.11, -.20, .71), 'L_hand_along_handle': -.075,
+        'R_foot': (-.40, .02, None), 'L_foot': (.40, .02, None),
+        'blade_dir': (-.80, .30, .70), 'toe_out_deg': 25, 'head_tilt_deg': 5,
+        'shoulder_reach': True,
+    }
+    if version not in ('idle_loop_v11', 'idle_loop_v12'):
+        POSE['grip_shift'] = .05  # v13+
+elif REF_POSE and version == 'idle_loop_v10':
     # v10: v9's hunch and bent elbows, grip lowered back to waist height like the reference.
     POSE = {
         'drop': .11, 'lean_deg': 9, 'hunch_deg': 7, 'neck_counter_deg': -10,
@@ -288,15 +300,47 @@ def reset_pose():
 
 def hand_on(side, grip, bend_hint):
     # Place the hand so its weapon socket (buki), or the palm from v4, lands on the grip point.
-    wrist = Vector(grip)
-    for _ in range(3 if LOOP else 1):
-        two_bone(f'{side}_ude1', f'{side}_ude2', f'{side}_te', wrist, bend_hint)
-        if not LOOP:
+    def place_wrist(passes):
+        wrist = Vector(grip)
+        for _ in range(passes):
+            two_bone(f'{side}_ude1', f'{side}_ude2', f'{side}_te', wrist, bend_hint)
+            if not LOOP:
+                return
+            wrist += Vector(grip) - hand_point(side)
+
+    place_wrist(3 if LOOP else 1)
+    for _ in range(4 if POSE.get('shoulder_reach') else 0):
+        miss = Vector(grip) - hand_point(side)
+        if miss.length <= .01:
             break
-        wrist += Vector(grip) - hand_point(side)
+        # Still out of the arm's reach: swing the shoulder (kata) toward the grip, max 20 deg a step.
+        head = pose_world(f'{side}_kata').translation
+        arm_root = pose_world(f'{side}_ude1').translation
+        turn = (arm_root - head).rotation_difference(arm_root + miss - head)
+        if turn.angle > math.radians(20):
+            turn = Quaternion(turn.axis, math.radians(20))
+        set_pose_world(f'{side}_kata', Matrix.Translation(head) @ turn.to_matrix().to_4x4()
+                       @ Matrix.Translation(-head) @ pose_world(f'{side}_kata'))
+        place_wrist(3)
+
+
+HAND_VERTS = {}
 
 
 def hand_point(side):
+    if MESH_GRIP:
+        # v12+: centre of the visible hand (vertices on te + finger bones). The te/buki midpoint
+        # sat below the handle, leaving the fists under the guard.
+        if side not in HAND_VERTS:
+            HAND_VERTS[side] = []
+            for o in body:
+                groups = {o.vertex_groups[n].index for n in (f'{side}_te', f'{side}_yubiB') if n in o.vertex_groups}
+                HAND_VERTS[side] += [(o, v.index) for v in o.data.vertices
+                                     if any(e.group in groups and e.weight > .3 for e in v.groups)]
+        dg = bpy.context.evaluated_depsgraph_get()
+        meshes = {o: o.evaluated_get(dg).data for o, _ in HAND_VERTS[side]}
+        pts = [o.matrix_world @ meshes[o].vertices[i].co for o, i in HAND_VERTS[side]]
+        return sum(pts, Vector()) / len(pts)
     socket = pose_world(f'{side}_buki').translation
     return (pose_world(f'{side}_te').translation + socket) / 2 if KEY_FACES_CAMERA else socket
 
@@ -420,7 +464,8 @@ def place_key():
     if KEY_FACES_CAMERA:
         # v4+ (user correction): guard face toward the camera, teeth (local +X) pointing down,
         # grip in the palm between wrist and weapon socket so the fist sits inside the guard.
-        grip_world = (pose_world('R_te').translation + pose_world('R_buki').translation) / 2
+        # grip_shift slides the Key so the fist wraps the handle's middle rather than its pommel end.
+        grip_world = hand_point('R') - blade*POSE.get('grip_shift', 0)
         facing = (to_cam - blade*to_cam.dot(blade)).normalized()
         x_axis = facing.cross(blade).normalized()
         if (x_axis.z > 0) != KEY_TEETH_UP:
