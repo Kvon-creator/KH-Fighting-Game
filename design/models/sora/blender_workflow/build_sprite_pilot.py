@@ -22,8 +22,10 @@ version = sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'sprite_pilo
 # battle_v*: battle-ready one-handed stance (staggered feet, body turned to the opponent, blade
 # low and back, guard hand up, combat bounce), following design/references/Sora_battle_stance.gif.
 BATTLE = version.startswith('battle_v')
-ONE_HAND = version.startswith('one_hand_v') or BATTLE
-LOOP = version.startswith('idle_loop_v') or ONE_HAND  # 10-frame breathing loop; sprite_pilot_v* = single frame
+# battle_v4+: the mirrored pose-sheet crouch is two-handed (both fists on the handle).
+TWO_HAND_BATTLE = BATTLE and version not in ('battle_v1', 'battle_v2', 'battle_v3')
+ONE_HAND = (version.startswith('one_hand_v') or BATTLE) and not TWO_HAND_BATTLE
+LOOP = version.startswith('idle_loop_v') or ONE_HAND or BATTLE  # 10-frame loop; sprite_pilot_v* = single frame
 GRIP_SIDES = ('R',) if ONE_HAND else ('R', 'L')
 KEY_FACES_CAMERA = LOOP and version not in ('idle_loop_v2', 'idle_loop_v3')  # user grip correction
 CURL_FINGERS = KEY_FACES_CAMERA and version != 'idle_loop_v4'  # close the rip's open hands on the handle
@@ -226,6 +228,23 @@ if BATTLE:
             'L_relaxed_wrist': (.30, -.14, .62), 'L_elbow_hint': (1, .3, 0),
             'shoulder_reach': True, 'L_hand_along_handle': 0,
         }
+    if TWO_HAND_BATTLE:
+        # v4+: the same reference pose MIRRORED, copied closely. Both fists sit on the handle low
+        # between the thighs, slightly to his left; the blade runs level out to his left (tip a
+        # little up); very wide deep squat, toes out; hunched, head down and turned to his left.
+        # The right fist is the pommel-side hand; the left fist sits beside it toward the guard.
+        POSE = {
+            'body_turn_deg': 0, 'drop': .26, 'lean_deg': 16, 'hunch_deg': 12, 'neck_counter_deg': -10,
+            'look_deg': 18, 'head_tilt_deg': -4,
+            'R_foot': (-.50, .02, None), 'L_foot': (.50, .00, None), 'toe_deg': {'L': 35, 'R': 35},
+            'R_hand': (.03, -.22, .60), 'L_hand_along_handle': .075, 'grip_shift': 0,
+            'blade_dir': (.95, -.05, .22), 'shoulder_reach': True,
+        }
+        if version != 'battle_v4':
+            # v5+: side-by-side with the mirrored drawing: hips higher, feet a bit wider,
+            # blade rising a little more.
+            POSE.update({'drop': .19, 'R_foot': (-.56, .02, None), 'L_foot': (.56, .00, None),
+                         'R_hand': (.03, -.22, .66), 'blade_dir': (.93, -.05, .30)})
 elif ONE_HAND:
     # Right hand low at his side, blade down and slightly forward toward his right foot;
     # left arm relaxed. Stance and hunch carried over from idle_loop_v11+.
@@ -589,9 +608,10 @@ if POSE.get('blade_toward'):
     blade = (flat + Vector((0, 0, dz))).normalized()
     POSE['blade_dir'] = tuple(round(c, 4) for c in blade)
     solve_pose(0.0)
-if ONE_HAND:
-    # Only the right hand grips; its fingers curl toward the palm and wrap (squared wrist below).
-    pick_anatomical_curl('R')
+if ONE_HAND or TWO_HAND_BATTLE:
+    # Gripping hands curl toward the palm and wrap (squared wrists); no palm-up/down search.
+    for side in GRIP_SIDES:
+        pick_anatomical_curl(side)
     FINGER_REPORT = {'grip_sides': list(GRIP_SIDES)}
 elif PALM_ORIENT:
     for side in ('R', 'L'):

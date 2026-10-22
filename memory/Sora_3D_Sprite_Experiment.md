@@ -142,3 +142,14 @@ Pending review.
 **KH2 pose-sheet reference, October22:** Kvon supplied a four-pose KH2 Sora illustration sheet, saved as `design/references/sora_kh2_pose_sheet.png`, and asked to emulate the top-right pose. That pose is a low, wide guard crouch: facing nearly forward, hunched, Key in the right fist at the hip, blade swung out level to his right with teeth up, left arm hanging by the thigh. It is built as `battle_v3` (current) with the combat bounce. The facial expression (gritted teeth) is not possible because the rip has no face rig. A first battle_v3 build silently duplicated v2 because of a failed edit and was deleted and rebuilt.
 
 **Why:** User-supplied pose reference.
+
+**Mirrored pose-sheet copy, October22:** Kvon asked me to look again closely at the top-right pose, mirror it, and copy it exactly. On close inspection that pose is two-handed (both fists on the handle low between the thighs), not one-handed as battle_v3 assumed.
+
+- **The mirrored pose:** blade level out to his LEFT, tip a little up, grip slightly left of centre, very wide toes-out squat, hunched, head down and turned to his left (toward the opponent at screen right).
+- **Build:** `battle_v4+` uses `TWO_HAND_BATTLE`. The right fist is on the pommel side and the left fist sits beside it toward the guard (`L_hand_along_handle` +.075). Fist wrap is on both hands.
+- **Bug fix:** v4 first ran as a single-frame pilot because LOOP didn't include two-handed battle versions; fixed and rebuilt.
+- **`battle_v5` (current):** hips higher (drop .19), feet ±.56, blade rising more.
+- **Comparison image:** `Mirrored_Reference_vs_3D_pose.png`.
+- **Not reproducible:** the gritted-teeth face and the hanging chain with the Mickey token.
+
+**Why:** User instruction to mirror and copy the reference exactly.
