@@ -153,3 +153,11 @@ Pending review.
 - **Result (v15 local Z; v16 spine axis, no front reach):** the front shoulder moves only ~0.5 px on screen across 15-22 deg, and the probe gap stays [0,4,7,12,10,11,10,0,0,0,0] px for every twist.
 - **Why it can't work:** in this sprite view Sora faces nearly toward the camera, so the shoulders sit across the screen and a twist about the spine moves the front shoulder mostly in depth. That is invisible from the sprite camera.
 - **Conclusion:** the twist cannot create the gap. v15/v16 are experiments; Godot stays on v12. Asked Kvon which constraint to relax.
+
+**Front-arm flare (option 1) result, October22:** Kvon chose option 1, elbow flare in the screen plane. `walk_fwd_v17` tilted the front collarbone about the camera view axis (0-40 deg, front shoulder-reach off).
+
+- **Result:** the shoulder moves UP (~11 px) and under 2 px sideways; the gap is unchanged up to 25 deg and closes completely past 30 deg.
+- **The real cause:** in the three-quarter sprite view the front arm lies IN FRONT of the jacket, and the jacket's silhouette extends past the arm on both sides. White background can only appear if the elbow clears the whole jacket outline, ~20-30 px further out. That is impossible with the hand fixed on the handle.
+- **Bug fixed:** the v17 report crashed because a Vector was stored in POSE; now a tuple. The fix was not re-run.
+- **Output removed:** the incomplete walk_fwd_v17 folder (my own output) was deleted.
+- **Status:** Godot stays on v12. Asked Kvon to choose between grip changes or a different readability goal (skin-vs-jacket contrast/ink line).
