@@ -1,0 +1,18 @@
+New topic in this same project: Sora's RUN for my 2D Kingdom Hearts fighting game (Godot, 60 fps, every drawing held a whole number of game frames, 384x384 sprites, Sora faces screen right toward the opponent).
+
+How the sprites are made: a rigged 3D KH2 Sora model is posed by a script (bone targets for hips, feet, hands, chest/neck angles, Keyblade direction), rendered with an orthographic three-quarter camera, then flattened into the 2D cel style you see in the attached images. Planted feet are kept exact by per-drawing root motion in the game.
+
+Attached:
+1. The approved battle idle (two hands on the Keyblade).
+2. The approved forward walk: an "idle shuffle" (upper body locked, feet slide), 64.5 px per step in 20 game frames (~193 px/s).
+3. New crouch-down (7 drawings, 12 game frames). The Keyblade switches to ONE hand: the left hand lets go and becomes a guard fist, the right hand swings the Key round behind him to point low toward screen left.
+4. The crouch hold loop.
+
+Fixed rules for the run: Keyblade in the RIGHT hand only, held low and behind him, pointing away from the opponent; the left arm is free to swing. It needs a run start (from the battle idle, which is two-handed), a run loop, and a run stop back into the idle.
+
+Please give me a concrete, numbers-based spec I can turn into bone targets:
+- How many drawings and game frames for start, loop and stop, and the run speed in px/s (it should feel clearly faster than the 193 px/s walk).
+- For each loop drawing: contact/down/passing/up/flight, foot positions relative to the hips (metres), foot lift, hip height change, torso forward lean, chest twist, free-arm swing, and how the Keyblade moves.
+- How the start should release the left hand and get the Key into the low-behind carry, and how the stop gets both hands back on the handle.
+- Anything that commonly looks wrong in fighting-game runs made this way.
+Text answer only, please, no images.
