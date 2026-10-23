@@ -325,3 +325,27 @@ Pending review. Offered the matching brake transition.
 - **Verified:** trace holds exact; planted shoe within 1 px contact->down (toe shifts ~4-5 px at 384 on heel-up); protected files unchanged.
 - **Previews:** `run_loop2d_v8/Idle_Run_Stop.gif`, `Run_Moving.gif`.
 - **Still open from round 08:** mirrored right-foot brake (removes the up-to-20-frame release wait) and locking the toe on the heel-up drawing. Not started; Kvon hasn't chosen.
+
+**Run rebuilt for a natural sprint, October22 (current; pending Kvon's review):** Kvon said the v8 run "doesn't match the poses Gemini generated at all" and asked what would make it natural.
+- **Lesson:** Gemini's earlier "Matches" (round 12) was wrong, and I had accepted it without comparing the pictures myself. From now on, judge by side-by-side boards (`Reference_vs_vN.png`) and by measured on-screen angles, not by Gemini's approval or the rotation numbers.
+- **Round 14 (strict) causes:**
+  - body turned too far toward the camera, hiding the legs;
+  - no forward knee drive;
+  - crouched too low;
+  - weight behind the front foot.
+- **v11-v15:**
+  - turn +48 (+50 = exact profile on this camera; Gemini's +60-70 would show his back);
+  - hips high (.09 / .12 / .04 / .02);
+  - knee drive; heel kick-back in flight;
+  - head lifted so the face profile shows (turning it toward the camera looked like "checking a blind spot").
+- **Round 16:** the jacket and shorts swallow the lean, so a 42 deg rig lean measures only 22-26 deg on screen. The builder now logs `screen_back_deg` (tailbone -> neck base, projected).
+- **`run_loop_v17` (current loop):**
+  - hunch +19 / pitch +23 / neck -54 extra; measured back angle 45-49 deg on screen (Gemini's poses ~45-50).
+  - Passing knee cheated forward through the shorts: foot +0.10, lift 0.28, toes down 45.
+  - Flight scissor: trail -0.38 lifted 0.21, reach +0.36 (+0.40 was out of reach and locked the leg).
+  - Contact hips 0.12, trail -0.35; blade +18 deg (continues the back leg's line); guard fist forward.
+  - Root per half .12 / .12 / .18 / .13 (~594 px/s). Planted shoes exact contact -> down.
+- **Gemini round 17:** "Matches". By my own eye it is much closer; its poses still lift the passing knee and the back foot a bit higher.
+- **Start/brake:** `run_start_v18` (roots spread .06 / .11 / .15 / rest, no 48 px jump) and `run_stop_v18` (right-foot plant clamped to -0.36 m so the leg doesn't lock).
+- **Godot:** start v18 / loop v17 / brake v18 exported; trace holds exact. Preview `run_loop2d_v17/Idle_Run_Stop.gif`.
+- **Test folders:** run_loop_v12_look-20 / look20 (head-turn sign test) and run_loop_v15_m / v16_m (angle measurements).

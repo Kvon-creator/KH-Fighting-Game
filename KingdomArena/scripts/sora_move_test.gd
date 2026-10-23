@@ -42,11 +42,12 @@ const ANIMATIONS := {
 		[6, 5, 5, 7, 6, 5, 5, 7], []],
 	&"crouch_up": ["res://assets/sora/crouch_down_384/", "sora_crouch_down_",
 		[3, 2, 2, 1, 1, 1, 2], [], [6, 5, 4, 3, 2, 1, 0]],
-	# Run (matched to Gemini's generated running poses): ~594 px/s, 198.5 px per 20-frame cycle.
+	# Run (matched to Gemini's generated running poses, Gemini rounds 14-17): ~594 px/s, 198.5 px per
+	# 20-frame cycle.
 	&"run_start": ["res://assets/sora/run_start_384/", "sora_run_start_",
-		[2, 2, 3, 3], [5.42, 12.64, 21.66, 26.05]],
+		[2, 2, 3, 3], [10.83, 19.86, 27.07, 29.66]],
 	&"run_loop": ["res://assets/sora/run_loop_384/", "sora_run_loop_",
-		[2, 3, 2, 3, 2, 3, 2, 3], [23.46, 23.46, 30.69, 21.66, 23.46, 23.46, 30.69, 21.66]],
+		[2, 3, 2, 3, 2, 3, 2, 3], [21.66, 21.66, 32.49, 23.46, 21.66, 21.66, 32.49, 23.46]],
 	&"run_stop": ["res://assets/sora/run_stop_384/", "sora_run_stop_",
 		[2, 3, 3, 3, 3], [27.07, 14.44, 7.22, 1.8, 0.0]],
 }

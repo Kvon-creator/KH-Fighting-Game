@@ -1,0 +1,8 @@
+v15 attached (board: your poses on top, mine below; plus the travelling GIF). Applied all five round-15 fixes: passing foot under the hips (-0.03 m, lift 0.25), flight reach extended (to +0.36 m; +0.40 was beyond his leg length and locked it straight), head faces the run direction with the chin up so the face profile shows, torso +3 deg on down / -3 deg on flight, Keyblade lags the bounce (+/-0.05 m).
+
+My own honest read of the pictures, please confirm or correct:
+- On screen his torso still looks almost upright - much more upright than your poses, even though the numbers say ~42 deg. In yours the head is clearly ahead of the hips.
+- The passing drawings (3, 7) look like he is standing on one leg; the knee drive is hidden by the baggy shorts.
+- The strides in yours look wider and more scissored than mine.
+
+Strictly comparing the pictures: what are the remaining differences (max 5, most important first) and the exact changes? For the torso, tell me what you see as the on-screen angle of his back in your poses versus mine, so I can measure it. Text only.

@@ -1262,6 +1262,10 @@ if LOOP:
                       hand=Matrix.Rotation(math.radians(POSE['body_turn_deg']), 3, 'Z') @ Vector(POSE['R_hand']),
                       release=0.0, arm=0.0, blade_s=0.0, hz=0.0)
         RUN_TURN = 30.0
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
+            # v11+ (Gemini round 14, after Kvon said v8 didn't match its poses at all): turn him nearly side-on
+            # (+50 deg is exact profile on this camera) so the legs' silhouette and stride show.
+            RUN_TURN = 48.0
         # Run blade: back toward screen left, angled out toward the camera so it breaks his silhouette, -10 deg.
         hb = (-U_*.9 + V_*.35).normalized()
         RUN_BLADE = (hb*math.cos(math.radians(-10)) + Vector((0, 0, math.sin(math.radians(-10))))).normalized()
@@ -1384,12 +1388,79 @@ if LOOP:
             CR_DYAW = max(cands, key=lambda d_: Vector((math.cos(CR_YAW0 + d_/2), math.sin(CR_YAW0 + d_/2), 0)).dot(-V_))
             CR_EL1 = math.asin(RUN_BLADE.z)
 
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
+            # v11+: a sprint, not a crouched sneak. Hips high (lowest 0.12 m on the down drawing), legs nearly
+            # straight on contact, the swing knee drives high and FORWARD on passing (foot ahead of the hips,
+            # toes down), the push-off leg kicks up behind through flight. Lean ~42 deg, guard fist loose at
+            # the waist. Planted foot fixed: roots .12/.18 while planted, .13/.12 through flight (594 px/s).
+            RUN_HUNCH, RUN_PITCH, RUN_NECK = 6.0, 8.0, -20.0
+            HALF = [((.30, 0, 0), (-.32, .12, 20), .09, 1.0, 1.0, .12),
+                    ((.18, 0, 0), (-.36, .22, 30), .12, .6, .5, .12),
+                    ((0.0, 0, 10), (.12, .25, 25), .04, 0.0, -.3, .18),
+                    ((-.26, .14, 30), (.28, .08, 0), .02, -.5, -.8, .13)]
+            ARM_FWD = Matrix.Rotation(math.radians(RUN_TURN), 3, 'Z') @ Vector((.12, -.24, .82))
+            RUN_HAND = U_*-.18 + V_*.22 + Vector((0, 0, .82))
+
+        RUN_LOOK = 0.0
+        RUN_LOOK_DEG = float(ARGS[2]) if len(ARGS) > 2 else -20.0  # head turn toward the camera (sign checked by render)
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 12))):
+            # v12+: v11 tipped the head down and away (top of the hair showed, not the face): lift the head
+            # to look ahead and turn it a little toward the camera, as in Gemini's poses.
+            RUN_NECK, RUN_LOOK = -34.0, RUN_LOOK_DEG
+
+        PITCH_J, HZ_J = [0, 0, 0, 0], [0, 0, 0, 0]
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 13))):
+            # v13+ (Gemini round 15): passing foot under the hips (no marching kick-out), flight foot
+            # reaches the full stride, head faces the run direction, the torso compresses on landing and
+            # stretches in the air, the Key lags the body's bounce. Contact refit to the longer reach.
+            RUN_LOOK = 0.0
+            HALF = [((.28, 0, 0), (-.32, .12, 20), .09, 1.0, 1.0, .12),
+                    ((.16, 0, 0), (-.36, .22, 30), .12, .6, .5, .12),
+                    ((-.02, 0, 10), (-.03, .25, 25), .04, 0.0, -.3, .18),
+                    ((-.26, .14, 30), (.40, .08, 0), .02, -.5, -.8, .13)]
+            PITCH_J, HZ_J = [0, 3, 0, -3], [0, .05, 0, -.05]
+
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 14))):
+            # v14+: in v13 the collar and hair hid the face (Gemini's poses show the face in profile, chin up)
+            # and the reaching flight leg locked straight (0.692 of 0.693 m): chin up, a slight turn toward
+            # the camera (half v12's), hips a little lower in flight.
+            RUN_NECK, RUN_LOOK = -44.0, RUN_LOOK_DEG/2
+            HALF[3] = (HALF[3][0], HALF[3][1], .05, *HALF[3][3:])
+
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 15))):
+            # v15+: the +0.40 flight reach was beyond the leg (IK clamped it straight); +0.36, contact refit.
+            HALF[0] = ((.26, 0, 0), *HALF[0][1:])
+            HALF[1] = ((.14, 0, 0), *HALF[1][1:])
+            HALF[2] = ((-.04, 0, 10), *HALF[2][1:])
+            HALF[3] = (HALF[3][0], (.36, .08, 0), *HALF[3][2:])
+
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 16))):
+            # v16+ (Gemini round 16): the jacket and shorts swallow the lean and the knee, so over-rotate.
+            # Spine pitched until the measured on-screen back angle reaches Gemini's 45-50 deg; the passing
+            # knee cheated forward through the shorts; wider scissor at contact and flight; blade tip up.
+            RUN_HUNCH, RUN_PITCH, RUN_NECK = 16.0, 19.0, -48.0
+            HALF = [((.26, 0, 0), (-.35, .12, 20), .12, 1.0, 1.0, .12),
+                    ((.14, 0, 0), (-.38, .22, 30), .14, .6, .5, .12),
+                    ((-.04, 0, 10), (.10, .28, 45), .06, 0.0, -.3, .18),
+                    ((-.38, .21, 30), (.36, .08, 0), .05, -.5, -.8, .13)]
+            ARM_FWD = Matrix.Rotation(math.radians(RUN_TURN), 3, 'Z') @ Vector((.12, -.34, .84))
+            RUN_BLADE = (hb*math.cos(math.radians(18)) + Vector((0, 0, math.sin(math.radians(18))))).normalized()
+            yaw1 = math.atan2(RUN_BLADE.y, RUN_BLADE.x)
+            cands = [yaw1 - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)]
+            cands = [d_ for d_ in cands if abs(d_) < 2*math.pi]
+            CR_DYAW = max(cands, key=lambda d_: Vector((math.cos(CR_YAW0 + d_/2), math.sin(CR_YAW0 + d_/2), 0)).dot(-V_))
+            CR_EL1 = math.asin(RUN_BLADE.z)
+
+        if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 17))):
+            # v17+: v16 measured 39-43 deg on screen; a few more degrees to reach Gemini's 45-50.
+            RUN_HUNCH, RUN_PITCH, RUN_NECK = 19.0, 23.0, -54.0
+
         def loop_key(j):
             plant, swing = ('L', 'R') if j < 4 else ('R', 'L')
             sign = 1 if j < 4 else -1
             pl, sw, drop_, tw, armb, root = HALF[j % 4]
             feet = {plant: (pl[0], LAT[plant], pl[1], pl[2]), swing: (sw[0], LAT[swing], sw[1], sw[2])}
-            return dict(turn=RUN_TURN, ce=drop_ - POSE['drop'], hunch=RUN_HUNCH, pitch=RUN_PITCH, neck=RUN_NECK, look=0.0,
+            return dict(turn=RUN_TURN, ce=drop_ - POSE['drop'], hunch=RUN_HUNCH, pitch=RUN_PITCH + PITCH_J[j % 4], neck=RUN_NECK, look=RUN_LOOK,
                         tilt=0.0, toe=8.0, twist=TWIST_AMP*tw*sign, feet=feet, hand=RUN_HAND.copy(), release=1.0,
                         arm=armb*sign if ARM_STATIC is None else ARM_STATIC, blade_s=1.0, hz=0.0, root=root)
 
@@ -1407,13 +1478,15 @@ if LOOP:
             RUN_KEYS = [loop_key(j) for j in range(8)]
             ce_ = [k_['ce'] for k_ in RUN_KEYS]
             for j, k_ in enumerate(RUN_KEYS):
-                k_['hz'] = .6*(ce_[j] - ce_[j - 1])  # the Key lags the body's bounce by a drawing
+                k_['hz'] = .6*(ce_[j] - ce_[j - 1]) + HZ_J[j % 4]  # the Key lags the body's bounce
         elif part == 'run_start' and not RUN.endswith('_v1'):
             # v2+ (Gemini round 07): the left foot (the idle's front foot) stays planted while the body turns,
             # dips and accelerates; the right foot lifts and drives up. Drawing 4 is the loop's passing pose
             # (loop drawing 3), so the game continues with loop drawing 4. Root motion ramps up toward run speed.
             end = loop_key(2)
             roots = [.03, .07, .12]
+            if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 18))):
+                roots = [.06, .11, .15]  # v18+: v17's passing pose sits further back; spread the distance
             roots.append(IDLE_R['feet']['L'][0] - end['feet']['L'][0] - sum(roots))
             body_s = 0.0
             for j, w in enumerate([.25, .5, .75, 1.0]):
@@ -1459,6 +1532,8 @@ if LOOP:
                          toe=20.0, twist=0.0, arm=-.5, hz=.04, root=roots[0])
             l_end = IDLE_R['feet']['L'][0]
             r_plant = last['feet']['R'][0] - roots[0]
+            if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 18))):
+                r_plant = max(r_plant, -.36)  # v18+: the v17 flight kick sits far back; plant within reach
             plant['feet'] = {'L': (l_end + .01, LAT['L'], 0.0, 0.0), 'R': (r_plant, LAT['R'], 0.0, 20.0)}
             RUN_KEYS.append(plant)
             body_s = 0.0
@@ -1925,7 +2000,11 @@ if LOOP:
         if RUN:
             reach = {sd: round((pose_world(f'{sd}_ashi1').translation - pose_world(f'{sd}_momo').translation).length, 3)
                      for sd in ('L', 'R')}
-            RUN_LOG.append({'feet_world_s_lat_lift_pitch': {sd: [round(v_, 3) for v_ in f_] for sd, f_ in RUN_KEYS[i]['feet'].items()},
+            # On-screen back angle (tailbone -> neck base, degrees off vertical; + = leaning toward screen right).
+            cam_r = Vector((math.cos(t), math.sin(t), 0))
+            hip_, neck_ = pose_world('hara').translation, pose_world('kubi').translation
+            back_deg = math.degrees(math.atan2((neck_ - hip_).dot(cam_r), (neck_ - hip_).z))
+            RUN_LOG.append({'screen_back_deg': round(back_deg, 1), 'feet_world_s_lat_lift_pitch': {sd: [round(v_, 3) for v_ in f_] for sd, f_ in RUN_KEYS[i]['feet'].items()},
                             'hip_to_ankle_m': reach, 'turn_deg': round(RUN_KEYS[i]['turn'], 1),
                             'left_release': round(RUN_KEYS[i]['release'], 2)})
         if CROUCH or RUN:

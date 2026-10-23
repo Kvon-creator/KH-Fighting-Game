@@ -99,7 +99,16 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'run-natural-v8': [
+const referenceSets = {'run-natural-v17': [
+  'design/models/sora/gemini_walk_review/round_17/Reference_vs_v17.png',
+  'design/models/sora/run_loop2d_v17/Run_Moving.gif'
+], 'run-natural-v15': [
+  'design/models/sora/gemini_walk_review/round_16/Reference_vs_v15.png',
+  'design/models/sora/run_loop2d_v15/Run_Moving.gif'
+], 'run-natural-v12': [
+  'design/models/sora/gemini_walk_review/round_15/Reference_vs_v12.png',
+  'design/models/sora/run_loop2d_v12/Run_Moving.gif'
+], 'run-natural-v8': [
   // Kvon: the run doesn't match Gemini's generated poses at all; ask what would make it natural.
   'design/models/sora/gemini_walk_review/round_14/Reference_vs_v8.png',
   'design/models/sora/run_loop2d_v8/Run_Moving.gif'

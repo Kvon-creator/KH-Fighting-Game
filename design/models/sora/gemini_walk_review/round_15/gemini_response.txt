@@ -1,0 +1,44 @@
+The mechanical improvements—specifically the +48 degree body turn and the corrected hip heights—successfully eliminate the "lunging sneak" look. It is much closer to a natural sprint, but it does not perfectly match yet. The leg extension timing is skewed, and the upper body lacks inertia, creating a slightly robotic "marching" effect rather than an explosive run.
+
+Here are the remaining visual problems, ranked by importance:
+
+The "Marching Band" Swing Foot (Drawings 3 & 7)
+
+The Problem: Driving the swing foot to +0.12m ahead of the hips on the passing phase is physically incorrect. The knee should drive forward, but the foot must trail directly under the center of mass. Moving the foot forward this early forces the lower leg to kick out stiffly, making him look like he is marching.
+
+The Fix: Keep the 0.25m lift, but pull the X-axis translation of the swing foot back to 0.0m to -0.05m (tucked directly under or slightly behind the hips).
+
+Flight Phase Under-Extension (Drawings 4 & 8)
+
+The Problem: The Flight phase should display the absolute maximum stride split before the foot snaps down. If the foot only reaches +0.28m in flight but lands further ahead on contact, the leg will visually teleport or snap forward at the last millisecond, losing the feeling of driving power.
+
+The Fix: Extend the reaching lead foot on the Flight frames to +0.38m to +0.40m so it visually prepares to strike the ground.
+
+Broken Neck Silhouette (All Drawings)
+
+The Problem: Turning the body to a near-profile (+48°) but twisting the head back toward the camera to show the face creates an unnatural, broken-neck silhouette. It makes Sora look like he is checking his blind spot rather than sprinting at an opponent.
+
+The Fix: Rotate the kubi and atama yaw back toward the travel direction (screen right) so the profile of the face leads the charge.
+
+Rigid Torso (Drawings 2, 6 vs 4, 8)
+
+The Problem: A mathematically locked 42-degree lean across all 8 frames looks robotic. The torso must compress slightly when absorbing impact and stretch out when airborne.
+
+The Fix: Increase the mune pitch by +3° on the Down phases (Drawings 2 & 6) to absorb the landing, and decrease it by -3° on the Flight phases (Drawings 4 & 8) to stretch the body.
+
+Weapon Weightlessness (Drawings 2, 6 vs 4, 8)
+
+The Problem: If the Keyblade arm is perfectly locked to the hip while the hips bounce up and down by 0.10m, the heavy weapon will look weightless and stiff.
+
+The Fix: Introduce vertical drag. Translate the R_te IK target UP +0.05m (in local space) on the Down phases (Drawings 2 & 6) and DOWN -0.05m on the Flight phases (Drawings 4 & 8) to give the weapon trailing inertia.
+
+With the body now turned to +48 degrees for the sprint, is the transition back to the -25 degree Idle stance during the brake causing a jarring visual snap, or do your 5 brake drawings smooth out that 73-degree rotation sufficiently?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Identifying sprint animation concerns
