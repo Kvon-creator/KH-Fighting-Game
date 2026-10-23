@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'run-natural-v17': [
+const referenceSets = {'glide-concept': [
+  // Kvon: replace the run with a low ground glide; Gemini concept art first.
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
+  'design/models/sora/run_loop2d_v17/run_loop2d_v17_sheet_white_4x2.png'
+], 'run-natural-v17': [
   'design/models/sora/gemini_walk_review/round_17/Reference_vs_v17.png',
   'design/models/sora/run_loop2d_v17/Run_Moving.gif'
 ], 'run-natural-v15': [

@@ -1,0 +1,12 @@
+Here is the concept sheet adapting Sora into that low ground glide sequence. It maintains the 2D cel-shaded style and proportions from the base idle, charting the progression from the push-off, into the horizontal one-handed skim with a speed trail, and finally braking back into the two-handed guard.
+
+Take a look at the stretched silhouette during the hovering phase (poses 3-6) and let me know if this captures the hover-dash momentum your director is looking for, or if you need the trailing leg arcs adjusted before we lock in the bone targets for the rig.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Displaying the visual example

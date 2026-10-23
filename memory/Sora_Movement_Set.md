@@ -349,3 +349,9 @@ Pending review. Offered the matching brake transition.
 - **Start/brake:** `run_start_v18` (roots spread .06 / .11 / .15 / rest, no 48 px jump) and `run_stop_v18` (right-foot plant clamped to -0.36 m so the leg doesn't lock).
 - **Godot:** start v18 / loop v17 / brake v18 exported; trace holds exact. Preview `run_loop2d_v17/Idle_Run_Stop.gif`.
 - **Test folders:** run_loop_v12_look-20 / look20 (head-turn sign test) and run_loop_v15_m / v16_m (angle measurements).
+
+**Glide instead of run, October23:** Kvon said "Instead of running, I want sora to glide across the screen low to the ground. Have Gemini create art of this first and show it to me."
+- The double-tap forward move becomes a low ground glide. The v17/v18 run stays on disk but is superseded.
+- **First step:** Gemini concept art, shown to Kvon before any 3D build (`gemini_walk_review/round_18`).
+
+**Why:** User decision.
