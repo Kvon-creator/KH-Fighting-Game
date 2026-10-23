@@ -248,3 +248,13 @@ Pending review. Offered the matching brake transition.
   - Foot lift 4.5-5 cm so it steps instead of skating.
   - Hip dip 9-10 cm; knee poles 3-4 cm further out on the widest drawings.
   - Upper body stays locked.
+
+**Shuffle speed, October22:** Kvon said "Do the ones that make him faster and nothing else" (Gemini's speed suggestions only).
+
+- **v4 test** (75 px per 18-frame step, 250 px/s) needed a 16 cm hip dip for leg reach (11 and 14 cm left the legs straight), so the head bobbed 38 px. Preview kept in `shuffle2d_fwd_v4_dip16`; not adopted.
+- **Kvon then asked for a middle point between v3 and v4: `shuffle_fwd_v5` / `shuffle_back_v5` (current in Godot).**
+  - 64.5 px per step, holds [3,3,2,4,2,3,3] = 20 frames, ~193 px/s; hip dip 11 cm (smallest keeping the knees bent, leg extension 0.684/0.693).
+  - Root px [1.61, 8.07, 14.51, 9.67, 9.67, 14.51, 6.44]; head rows 137-163.
+  - Feet lift and knees unchanged.
+  - Verified in Godot: exact holds, planted feet pixel-exact, clean stop both ways.
+- **Builder:** optional 3rd CLI argument = shuffle v4+ hip dip (m), e.g. `-- shuffle_fwd_v5 shuffle_fwd_v5 .11`.

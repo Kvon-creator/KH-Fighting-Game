@@ -29,6 +29,7 @@ GAIT = version if version.startswith(('walk_fwd_v', 'walk_back_v', 'shuffle_fwd_
 # shuffle_*_v*: Kvon's "idle shuffle": the approved battle idle's upper body unchanged, only the feet
 # slide (front foot out, back foot follows); drawing 1 is the idle stance, so no transitions are needed.
 IDLE_SHUFFLE = bool(GAIT) and GAIT.startswith('shuffle_')
+SH_DIP_V4 = float(ARGS[2]) if len(ARGS) > 2 else .11  # shuffle v4 hip dip (m); optional 3rd argument
 if GAIT:
     # v1: one-handed battle_v2 stance. v2+ (Kvon): keep both hands on the Keyblade, so the walk
     # starts from the approved two-handed battle idle (battle_v12) with no grip change.
@@ -586,6 +587,15 @@ if LOOP:
                 # the legs still reach, and quicker 3-frame holds (4 on the landing): 22 frames per cycle.
                 SH_STEP, SH_DIP = .30, .075  # .06 left both legs fully straight at the widest point
                 SH_KEYS = [(*k[:4], f) for k, f in zip(SH_KEYS, [3, 3, 3, 4, 3, 3, 3])]
+            if not GAIT.endswith(('_v1', '_v2', '_v3')):
+                # v4+ (Gemini's speed suggestions only, per Kvon): ~75 px per step (75 / 180.5 px per m) in
+                # 18 game frames; the hip dip grows only as far as the longer step needs to keep the knees bent.
+                SH_STEP, SH_DIP = 75 / 180.5, SH_DIP_V4
+                SH_KEYS = [(*k[:4], f) for k, f in zip(SH_KEYS, [3, 2, 2, 4, 2, 2, 3])]
+            if not GAIT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                # v5+ (Kvon: a middle point between v3 and v4): ~64.5 px per step in 20 game frames.
+                SH_STEP = 64.5 / 180.5
+                SH_KEYS = [(*k[:4], f) for k, f in zip(SH_KEYS, [3, 3, 2, 4, 2, 3, 3])]
                 # Same breathing settings as the battle idle, frozen at its first frame, so drawing 1
                 # matches the idle exactly.
                 BREATH = {'drop': .025, 'lean_deg': 1.0, 'hands_z': -.012, 'head_counter_deg': -.5}
