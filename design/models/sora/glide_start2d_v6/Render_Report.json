@@ -1,0 +1,11 @@
+{
+  "source": "glide_start_v6/sora_idle_loop.blend",
+  "version": "glide_start2d_v6",
+  "frames": [
+    "sora_idle3d_00.png",
+    "sora_idle3d_01.png",
+    "sora_idle3d_02.png",
+    "sora_idle3d_03.png"
+  ],
+  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
+}

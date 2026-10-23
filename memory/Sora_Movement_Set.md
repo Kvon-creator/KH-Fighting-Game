@@ -356,3 +356,14 @@ Pending review. Offered the matching brake transition.
 
 **Why:** User decision.
 - **Round 18 art:** 7 poses: push-off, a full-plank horizontal glide skimming the floor with dust, a skid landing into a two-handed guard. Kvon: the rule breaks (Key pointing forward on one glide pose and in front on landing; 7 poses instead of 8) "are fine for now". He asked Gemini for another pose with a more relaxed glide posture instead of a full plank (round 19).
+- **Round 19 art chosen:** Kvon: "Use this relaxed pose for the glide loop, keeping the push-off and skid landing from the first sheet."
+- **Glide built (October23; pending Kvon's review):** `build_sprite_pilot.py -- glide_start_vN / glide_loop_vN / glide_stop_vN` (current **v6**). GLIDE maps onto the run machinery as run v18, with its own poses.
+  - **Loop:** 6 drawings x 3 frames, gentle hover bob, constant 30 px per drawing (600 px/s), no planted feet.
+    - Three-quarter turn +20 deg; on-screen back angle 42-45 deg; hips 0.17 m.
+    - Near (right) leg trails at -0.44 m, 0.05 m up; far knee tucked at -0.08 m, 0.20 m up.
+    - Left hand loose out behind; Key low at the right hip angled forward-down, as drawn (Kvon accepted the rule break for now).
+  - **Push-off:** [2,2,3,3]: dip, the back foot pushes off on its toe with the front knee up, tips into the glide; root ramps 3.6 -> 28.9 px.
+  - **Skid landing:** [2,3,3,3,3]: feet down wide (+0.40 / -0.42), hips 0.30, skids with the feet sliding (root 30 / 18 / 9 / 3.6 / 0), both hands regrip, rises into the idle.
+- **Gemini round 20:** critique of v4. Not taken: "left hand forward" and "blade backward", which contradict its own drawing. Its claim that the trailing leg was locked straight was false (0.56 of 0.69 m measured).
+- **Godot:** the glide replaces the run on double-tap forward (`glide_*_384`, `--glide-demo-ticks=N`). It enters loop drawing 1 after the push-off and lands after any loop drawing on release. Trace verified.
+- **Preview:** `glide_loop2d_v6/Idle_Glide_Stop.gif`; boards `gemini_walk_review/round_20/Relaxed_Glide_vs_v4/v5/v6.png`.

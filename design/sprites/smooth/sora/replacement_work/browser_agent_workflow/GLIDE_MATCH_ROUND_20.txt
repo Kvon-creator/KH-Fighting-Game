@@ -1,0 +1,5 @@
+My director chose your relaxed glide pose for the glide loop (with the push-off and skid landing from your first sheet). I built it on the 3D rig. Attached: (1) a board with your relaxed pose on the left and my rendered pose on the right; (2) my 6-drawing hover loop (a gentle bob, 3 game frames per drawing, moving at ~600 px/s).
+
+Rig quantities I can change: body turn (now 20 deg from facing the camera toward screen right, three-quarter like yours), hip height (hips 0.18 m below standing), torso pitch (on-screen back angle measures ~38 deg), neck/head pitch, each foot's position relative to the hips along the glide direction plus height off the floor and toe pitch (now: far leg's knee tucked, foot +0.02 m, 0.18 m up; near leg trailing at -0.46 m, 0.06 m up), left hand position (now out behind for balance), right fist position and blade direction (now low at the right hip, blade angled forward-down like yours).
+
+Be strict and compare the pictures, not my numbers: what differs most from your pose? Give at most 5 fixes, most important first, each as an exact change to those quantities. Only say it matches if a viewer would agree side by side. Text only.

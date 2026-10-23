@@ -42,6 +42,12 @@ if CROUCH:
 # Keyblade in the right hand, low behind the hip pointing back (screen left); left arm swings free.
 # The body turns from the idle's -25 deg (facing the camera) to +30 deg (three-quarter toward screen right).
 RUN = version if version.startswith(('run_start_v', 'run_loop_v', 'run_stop_v')) else None
+# glide_start_v* / glide_loop_v* / glide_stop_v*: Kvon replaced the run with a low ground glide (October 23),
+# from Gemini's concept art: push-off and skid landing from gemini_walk_review/round_18, the relaxed glide
+# pose from round_19 for the loop. Built on the run machinery (as the v18 run), with its own poses.
+GLIDE = version if version.startswith(('glide_start_v', 'glide_loop_v', 'glide_stop_v')) else None
+if GLIDE:
+    RUN = GLIDE.replace('glide_', 'run_').rsplit('_v', 1)[0] + '_v18'
 if RUN:
     version = 'battle_v12'
 if GAIT:
@@ -619,6 +625,8 @@ if RUN:
     # Holds per drawing (60 fps game frames), Gemini round 05.
     GAME_FRAMES = {'run_start': [2, 2, 3, 3], 'run_loop': [2, 3, 2, 3]*2,
                    'run_stop': [2, 3, 3, 3, 3]}[RUN.rsplit('_v', 1)[0]]
+    if GLIDE and RUN.startswith('run_loop'):
+        GAME_FRAMES = [3]*6  # smooth hover loop: 6 drawings x 3 game frames
     DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
 if CROUCH:
     # Full-crouch targets; drawings blend toward them by CR_T (0 = battle idle, 1 = crouched).
@@ -1472,9 +1480,92 @@ if LOOP:
                            for sd in ('L', 'R')}
             return out
 
+        if GLIDE:
+            # Relaxed glide (round 19): body tilted forward at an easy diagonal, hovering low; knees soft, one
+            # leg trailing low behind, the other tucked; left arm loose out behind; Keyblade in the right hand
+            # low in front, blade angled down toward screen right (as drawn); constant ~600 px/s.
+            G_SPEED = 600/180.5/60*3  # metres per 3-frame drawing
+            G_HAND = U_*.06 + V_*.24 + Vector((0, 0, .72))
+            G_ARM = Matrix.Rotation(math.radians(RUN_TURN), 3, 'Z') @ Vector((.32, .24, .88))
+            hb_g = (U_*.8 + V_*.6).normalized()
+            G_BLADE = (hb_g*math.cos(math.radians(-30)) + Vector((0, 0, math.sin(math.radians(-30))))).normalized()
+            yaw_g = math.atan2(G_BLADE.y, G_BLADE.x)
+            CR_DYAW = min([yaw_g - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)], key=abs)  # shortest turn
+            CR_EL1 = math.asin(G_BLADE.z)
+            ARM_BACK = G_ARM
+
+            # v2+: v1's legs bunched under him (read as a crouched hop): lean further and stretch the trailing
+            # leg back and low, the other knee softly tucked, as in the drawing.
+            G_LEGS = ((-.30, .09, 20.0), (-.10, .22, 35.0), .14, 12.0, 14.0) if GLIDE.endswith('_v1') else                 ((-.42, .07, 25.0), (-.20, .20, 40.0), .10, 16.0, 20.0)
+            G_TURN = RUN_TURN
+            if not GLIDE.endswith(('_v1', '_v2')):
+                # v3+: the drawing is three-quarter (chest toward the camera) with the legs split wide: trailing
+                # leg far back and low, the other knee tucked forward under the hips; hips a little lower so the
+                # long trailing leg still reaches.
+                G_TURN = 20.0
+                G_LEGS = ((-.46, .06, 20.0), (.02, .18, 35.0), .18, 16.0, 20.0)
+            if not GLIDE.endswith(('_v1', '_v2', '_v3')):
+                # v4+: in the drawing the NEAR leg (his right, toward the camera) trails far back and low and the far
+                # knee is tucked; the Key hand sits low at the hip instead of covering the chest.
+                G_LEGS = ((.02, .18, 35.0), (-.46, .06, 20.0), .18, 16.0, 20.0)
+                G_HAND = U_*.14 + V_*.26 + Vector((0, 0, .58))
+            G_NECK = -40.0
+            if not GLIDE.endswith(('_v1', '_v2', '_v3', '_v4')):
+                # v5+ (Gemini round 20, the parts that agree with its drawing): softer trailing knee (-0.30 m), the
+                # tucked knee under/behind the hips (-0.12 m) instead of leading, ~45 deg on-screen lean, face ahead.
+                # Not taken: its "left hand forward" and "blade backward" contradict its own relaxed-glide drawing.
+                G_LEGS = ((-.12, .18, 35.0), (-.30, .06, 20.0), .16, 19.0, 24.0)
+                G_NECK = -48.0
+            if not GLIDE.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                # v6+: v5 looked compact next to the drawing's wide spread. The -0.46 m trail was not locked
+                # (0.56 of the 0.69 m leg, measured), so the long trailing leg comes back; tucked knee under the hips.
+                G_LEGS = ((-.08, .20, 35.0), (-.44, .05, 20.0), .17, 19.0, 24.0)
+
+            def loop_key(j):
+                ph = 2*math.pi*j/6
+                bob = .015*math.sin(ph)
+                (ls, ll, lp), (rs, rl, rp), g_drop, g_hunch, g_pitch = G_LEGS
+                feet = {'L': (ls + .02*math.sin(ph), LAT['L'], ll + bob, lp),
+                        'R': (rs - .02*math.sin(ph), LAT['R'], rl + bob, rp)}
+                return dict(turn=G_TURN, ce=g_drop - bob - POSE['drop'], hunch=g_hunch, pitch=g_pitch + 2*math.sin(ph),
+                            neck=G_NECK, look=0.0, tilt=0.0, toe=8.0, twist=0.0, feet=feet, hand=G_HAND.copy(),
+                            release=1.0, arm=1.0, blade_s=1.0, hz=.02*math.sin(ph - 1.0), root=G_SPEED)
+
         part = RUN.rsplit('_v', 1)[0]
         RUN_KEYS = []
-        if part == 'run_loop':
+        if GLIDE and part == 'run_loop':
+            RUN_KEYS = [loop_key(j) for j in range(6)]
+        elif GLIDE and part == 'run_start':
+            # Push-off (round 18, poses 1-2): dip, the back (right) foot pushes off on its toe while the front
+            # knee comes up, then he tips forward into the glide. Root ramps up to glide speed.
+            end = loop_key(0)
+            roots = [.02, .06, .12, .16]
+            body_s = 0.0
+            for j, w in enumerate([.2, .45, .75, 1.0]):
+                k_ = mix(IDLE_R, end, w)
+                body_s += roots[j]
+                if j < 2:
+                    k_['feet']['R'] = (IDLE_R['feet']['R'][0] - body_s, k_['feet']['R'][1], 0.0, [10.0, 35.0][j])
+                if j == 1:
+                    k_['feet']['L'] = (k_['feet']['L'][0] + .08, k_['feet']['L'][1], .16, 0.0)
+                k_['ce'] += [.06, .03, 0, 0][j]
+                k_['release'] = min(1.0, max(0.0, (w - .1)/.4))
+                k_['root'] = roots[j]
+                RUN_KEYS.append(k_)
+        elif GLIDE:
+            # Skid landing (round 18, poses 6-7): the feet touch down wide and low, he skids (feet slide with
+            # him) and takes the Key in both hands again, then rises into the battle idle.
+            last = loop_key(5)
+            plant = dict(last, turn=20.0, ce=.30 - POSE['drop'], hunch=0.0, pitch=-6.0, neck=-8.0, look=6.0,
+                         toe=20.0, hz=0.0, root=G_SPEED)
+            plant['feet'] = {'L': (.40, LAT['L'], 0.0, 0.0), 'R': (-.42, LAT['R'], 0.0, 15.0)}
+            RUN_KEYS.append(plant)
+            for j, (w, root) in enumerate(zip([.25, .5, .8, .97], [.10, .05, .02, 0.0])):
+                k_ = mix(plant, IDLE_R, w)
+                k_['release'] = 1 - min(1.0, max(0.0, (w - .1)/.35))
+                k_['root'] = root
+                RUN_KEYS.append(k_)
+        elif part == 'run_loop':
             RUN_KEYS = [loop_key(j) for j in range(8)]
             ce_ = [k_['ce'] for k_ in RUN_KEYS]
             for j, k_ in enumerate(RUN_KEYS):

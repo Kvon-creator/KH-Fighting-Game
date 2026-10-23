@@ -1,0 +1,44 @@
+The rendered pose does not match the reference. While you captured the general idea of a hover, the mechanics in your render look stiff and unbalanced, missing the effortless, wind-swept aerodynamics of the generated concept.
+
+Here are the 5 biggest visual differences and the exact changes needed to fix them, in order of importance:
+
+Left Hand Position (Balance vs. Drag)
+
+The Visual Difference: You placed the left hand "out behind" the body. In the reference, the left arm reaches forward and slightly out to the side. Putting both the Keyblade and the free arm behind him ruins his center of balance and makes him look like a dart rather than a surfer.
+
+The Change: Move the left hand forward of the chest and slightly out to the side (Z-height roughly level with the lower ribs) to counter-balance the trailing Keyblade.
+
+Keyblade Direction (Snagging the Ground)
+
+The Visual Difference: Your blade is angled "forward-down." At 600 px/s, pointing the heavy end of the Keyblade forward toward the ground looks like he is about to snag it and pole-vault. The reference trails it casually backward.
+
+The Change: Rotate the blade direction so it points backward (toward screen left) with a slight downward pitch (roughly -20 to -30 degrees).
+
+Near Leg Stiffness (Over-Extended)
+
+The Visual Difference: Your near foot is trailing at -0.46 m, which means the leg is locked entirely straight. The reference has softly bent knees for a relaxed coast.
+
+The Change: Bring the near leg's foot forward to -0.25 m to -0.30 m, maintaining the 0.06 m lift, to introduce a relaxed bend in the trailing knee.
+
+Far Leg Position (Breaking the Wind Line)
+
+The Visual Difference: Your tucked far foot is at +0.02 m, putting it in front of the hips. At this speed, wind resistance would push both legs backward. Having one knee jutting forward breaks the aerodynamic silhouette.
+
+The Change: Shift the far foot's position backward to -0.10 m to -0.15 m, keeping the 0.18 m lift. The knee should be tucked under/behind his center of mass, not leading it.
+
+Torso Pitch (Slightly Too Upright)
+
+The Visual Difference: Your 38-degree on-screen back angle is slightly too upright, making him look like he is hanging from a harness rather than leaning into the momentum.
+
+The Change: Deepen the torso pitch to hit a 45-degree on-screen back angle. Adjust the neck pitch backward slightly to ensure the face stays looking dead ahead.
+
+Once you apply these fixes to establish the baseline pose, do you want to keep the 6-drawing loop as a simple vertical bob (moving the center bone up and down), or do you want to add a subtle overlapping flutter to the trailing legs and Keyblade to sell the wind resistance?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Determining the character's pose accuracy

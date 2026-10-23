@@ -99,7 +99,10 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'glide-relaxed': [
+const referenceSets = {'glide-v4': [
+  'design/models/sora/gemini_walk_review/round_20/Relaxed_Glide_vs_v4.png',
+  'design/models/sora/glide_loop2d_v4/glide_loop2d_v4_sheet_white_3x2.png'
+], 'glide-relaxed': [
   'design/models/sora/gemini_walk_review/round_18/gemini_original_preview.jpg',
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
 ], 'glide-concept': [
