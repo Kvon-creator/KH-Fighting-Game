@@ -30,6 +30,14 @@ GAIT = version if version.startswith(('walk_fwd_v', 'walk_back_v', 'shuffle_fwd_
 # slide (front foot out, back foot follows); drawing 1 is the idle stance, so no transitions are needed.
 IDLE_SHUFFLE = bool(GAIT) and GAIT.startswith('shuffle_')
 SH_DIP_V4 = float(ARGS[2]) if len(ARGS) > 2 else .11  # shuffle v4 hip dip (m); optional 3rd argument
+# crouch_down_v* / crouch_hold_v*: from the approved battle idle, Sora sinks into a deep crouch with the
+# Keyblade in the right hand only (Kvon: "One hand"): the left hand lets go of the handle and comes up
+# as a guard fist, and the Key swings round behind him to point low toward screen left, away from the
+# opponent. crouch_down eases idle -> crouch; crouch_hold is the crouched bounce loop. Standing up is
+# crouch_down played backwards.
+CROUCH = version if version.startswith(('crouch_down_v', 'crouch_hold_v')) else None
+if CROUCH:
+    version = 'battle_v12'
 if GAIT:
     # v1: one-handed battle_v2 stance. v2+ (Kvon): keep both hands on the Keyblade, so the walk
     # starts from the approved two-handed battle idle (battle_v12) with no grip change.
@@ -601,6 +609,30 @@ if LOOP:
                 BREATH = {'drop': .025, 'lean_deg': 1.0, 'hands_z': -.012, 'head_counter_deg': -.5}
             GAME_FRAMES = [k[4] for k in SH_KEYS]
             DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
+if CROUCH:
+    # Full-crouch targets; drawings blend toward them by CR_T (0 = battle idle, 1 = crouched).
+    CR = {'crouch_extra': .22, 'hunch_extra': 6, 'pitch_extra': 8, 'neck_extra': -8, 'knee_splay': .4,
+          'R_hand': (-.26, .06, .62), 'L_guard': (.10, -.30, .98), 'blade_down_tip_m': .10}
+    if not CROUCH.endswith('_v1'):
+        # v2+: v1's head dropped only ~30 render px; sink much lower and hunch more.
+        CR.update({'crouch_extra': .32, 'hunch_extra': 9, 'pitch_extra': 10, 'neck_extra': -12, 'knee_splay': .6})
+    CR_BEHIND = .45
+    if not CROUCH.endswith(('_v1', '_v2')):
+        # v3+: v2's fist sat at knee height behind the right thigh and the tip nearly left the frame:
+        # fist higher and outside the hip, blade angled further behind him (foreshortened).
+        CR.update({'R_hand': (-.36, .10, .82), 'blade_down_tip_m': .14})
+        CR_BEHIND = .85
+    if not CROUCH.endswith(('_v1', '_v2', '_v3')):
+        # v4+: in the v3 hold loop the tip reached the frame's left edge; turn it further behind him.
+        CR_BEHIND = 1.4
+    if CROUCH.startswith('crouch_down'):
+        # 7 drawings (Kvon's 7-12 drawing transitions), 12 game frames: quick out of the idle, settling in.
+        CR_T = [u_*u_*(3 - 2*u_) for u_ in [(i_ + 1)/8 for i_ in range(7)]]
+        GAME_FRAMES = [2, 1, 1, 1, 2, 2, 3]
+    else:
+        CR_T = [1.0]*8
+        GAME_FRAMES = [6, 5, 5, 7, 6, 5, 5, 7]
+    DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
 V18 = globals().get('V18', False)
 TRANSITION = globals().get('TRANSITION', False)
 bones = arm.data.bones
@@ -821,6 +853,11 @@ def solve_pose(breath=0.0, lag=None):
     if ONE_HAND:
         guard_hint = turn_m @ Vector(POSE.get('L_elbow_hint', (1, .6, -.2)))
         two_bone('L_ude1', 'L_ude2', 'L_te', turn_m @ Vector(POSE['L_relaxed_wrist']), guard_hint)
+    elif POSE.get('L_free'):
+        # Crouch: the left hand slides off the handle toward its free guard spot.
+        l_target, l_w = POSE['L_free']
+        hand_on('L', l_hand.lerp(Vector(l_target) - Vector((0, 0, POSE.get('crouch_extra', 0))), l_w),
+                (1, .4, -.3))
     else:
         hand_on('L', l_hand, (1, .4, -.3))
     if POSE.get('front_arm_deg'):
@@ -842,6 +879,24 @@ def solve_pose(breath=0.0, lag=None):
                 turn = f.rotation_difference(across.normalized())
                 set_pose_world(f'{side}_te', Matrix.Translation(head) @ turn.to_matrix().to_4x4()
                                @ Matrix.Translation(-head) @ m)
+    if POSE.get('r_hand_rot'):
+        # Crouch: the right fist keeps the idle grip on the Key and turns with it as one piece; the
+        # forearm takes half of the roll so the wrist doesn't candy-wrap.
+        rot = Matrix(POSE['r_hand_rot'])
+        for pass_ in range(4):
+            if pass_ == 0:
+                elbow = pose_world('R_ude2').translation; wrist = pose_world('R_te').translation
+                fore = (wrist - elbow).normalized()
+                delta = (rot @ pose_world('R_te').to_3x3().inverted()).to_quaternion()
+                twist = math.degrees(2*math.atan2(Vector(delta[1:]).dot(fore), delta[0]))
+                rotate_world('R_ude2', fore, ((twist + 180) % 360 - 180)/2)
+            set_pose_world('R_te', Matrix.Translation(pose_world('R_te').translation) @ rot.to_4x4())
+            # Turning the fist moves its centre off the grip point: move the wrist back onto it.
+            miss = r_hand - hand_point('R')
+            if miss.length < .003:
+                break
+            two_bone('R_ude1', 'R_ude2', 'R_te', pose_world('R_te').translation + miss, (-1, .4, -.3))
+        set_pose_world('R_te', Matrix.Translation(pose_world('R_te').translation) @ rot.to_4x4())
     for side, (curl_axis, curl_sign) in FINGERS.items():
         set_curl(side, curl_axis, curl_sign)
     update()
@@ -1168,6 +1223,36 @@ if LOOP:
                 u = phase / SWING; u = u*u*(3 - 2*u)
                 return -STRIDE + 2*STRIDE*u, LIFT*math.sin(math.pi*phase/SWING)
             return STRIDE - 2*STRIDE*(phase - SWING)/(1 - SWING), 0.0  # stance: planted, slides back
+    if CROUCH:
+        turn_c = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z')
+        solve_pose(0.0, (1 - math.cos(2*math.pi*(0 - .12))) / 2)
+        place_key()
+        CR_TE0 = pose_world('R_te').to_3x3()
+        CR_KEY_IN_TE = pose_world('R_te').inverted() @ key.matrix_world  # Key rigid in the fist
+        CR_BLADE0 = blade.copy()
+        CR_HAND0 = turn_c @ Vector(POSE['R_hand'])
+        CR_HAND1 = turn_c @ Vector(CR['R_hand'])
+        CR_GUARD = turn_c @ Vector(CR['L_guard'])
+        CR_YAW0 = math.atan2(CR_BLADE0.y, CR_BLADE0.x)
+        CR_EL0 = math.asin(max(-1, min(1, CR_BLADE0.z)))
+        # Crouched blade: toward screen left and a little behind him; tilt so the tip stops just above the floor.
+        behind = -to_cam
+        h1 = (-Vector((math.cos(t), math.sin(t), 0))*.8 + behind*CR_BEHIND).normalized()
+        yaw1 = math.atan2(h1.y, h1.x)
+        # Turn the way that passes behind him (the swing's midpoint faces away from the camera).
+        cands = [yaw1 - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)]
+        cands = [d_ for d_ in cands if abs(d_) < 2*math.pi]
+        CR_DYAW = max(cands, key=lambda d_: Vector((math.cos(CR_YAW0 + d_/2), math.sin(CR_YAW0 + d_/2), 0)).dot(behind))
+        POSE.update({k_: CR[k_] for k_ in ('crouch_extra', 'hunch_extra', 'pitch_extra', 'neck_extra', 'knee_splay')})
+        POSE['grip_offset_world'] = tuple(CR_HAND1 - CR_HAND0)
+        solve_pose(0.0)
+        hz = hand_point('R').z
+        ground_c = world_bounds(body)[0].z
+        drop_ = min(.95, max(0.0, hz - ground_c - CR['blade_down_tip_m']) / KEY_REACH)
+        CR_EL1 = -math.asin(drop_)
+        for k_ in ('crouch_extra', 'hunch_extra', 'pitch_extra', 'neck_extra', 'knee_splay', 'grip_offset_world'):
+            POSE.pop(k_, None)
+        CR_LOG = []
     V12 = GAIT and globals().get('V12')
     if V12:
         BASE_BLADE = blade.copy()
@@ -1402,7 +1487,29 @@ if LOOP:
         breath = (1 - math.cos(2*math.pi*i/n)) / 2
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
         lag = (1 - math.cos(2*math.pi*(i/n - BREATH_LAG))) / 2
-        if GAIT and IDLE_SHUFFLE:
+        if CROUCH:
+            w_ = CR_T[i]
+            if CROUCH.startswith('crouch_down'):
+                breath = 0.0
+                lag = (1 - math.cos(2*math.pi*(0 - .12))) / 2  # idle frame 1, as the shuffle starts
+            POSE.update({k_: CR[k_]*w_ for k_ in ('crouch_extra', 'hunch_extra', 'pitch_extra', 'neck_extra', 'knee_splay')})
+            # Blade: yaw round behind him (away from the camera) and tilt down, s = blade progress.
+            s_ = w_
+            yaw_ = CR_YAW0 + CR_DYAW*s_
+            dir_ = Vector((math.cos(yaw_), math.sin(yaw_), 0))
+            el_ = CR_EL0 + (CR_EL1 - CR_EL0)*s_
+            blade = (dir_*math.cos(el_) + Vector((0, 0, math.sin(el_)))).normalized()
+            yawed = Matrix.Rotation(CR_DYAW*s_, 3, 'Z') @ CR_BLADE0
+            q_ = yawed.rotation_difference(blade).to_matrix() @ Matrix.Rotation(CR_DYAW*s_, 3, 'Z')
+            POSE['r_hand_rot'] = [list(r_) for r_ in (q_ @ CR_TE0)]
+            # Right fist slides from the idle grip to his right hip (body frame, before the crouch sink).
+            POSE['grip_offset_world'] = tuple((CR_HAND1 - CR_HAND0)*w_)
+            # Left hand: on the handle for the first part of the move, then off to the guard.
+            l_w = min(1.0, max(0.0, (w_ - .1)/.6)); l_w = l_w*l_w*(3 - 2*l_w)
+            POSE['L_free'] = (tuple(CR_GUARD), l_w)
+            CR_LOG.append({'t': round(w_, 3), 'left_release': round(l_w, 3),
+                           'blade_yaw_deg': round(math.degrees(yaw_), 1), 'blade_el_deg': round(math.degrees(el_), 1)})
+        elif GAIT and IDLE_SHUFFLE:
             # Feet in world terms along the walk; the body sits midway between them, so planted feet stay put.
             lf, lh, bf, bh, _ = SH_KEYS[i]
             follower = 'R' if leader == 'L' else 'L'
@@ -1503,7 +1610,11 @@ if LOOP:
             ARM_LOG.append({'abduction_deg': best[1], 'forearm_gap_px': round(best[2], 1),
                             'weapon_drag_deg': WEAPON_DRAG[i], 'pelvis_drop_px': round(6*bob, 2)})
         solve_pose(breath, lag)
-        place_key()
+        if CROUCH:
+            key.matrix_world = pose_world('R_te') @ CR_KEY_IN_TE
+            update()
+        else:
+            place_key()
         for pb in arm.pose.bones:
             for path in ('location', 'rotation_quaternion', 'rotation_euler', 'scale'):
                 pb.keyframe_insert(path, frame=i + 1)
@@ -1551,6 +1662,7 @@ if LOOP:
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'root_motion_m': ROOT_MOTION if GAIT else None,
         'game_frames_60fps': globals().get('GAME_FRAMES'),
+        'crouch': {'recipe': CROUCH, 'targets': CR, 'per_frame': CR_LOG} if CROUCH else None,
         'v12_spec': ({'front_arm_side': FRONT, 'per_frame': ARM_LOG, 'front_shoulder': KATA_LOG,
                       'chest_twist': TWIST_LOG, 'silhouette_gap': ALPHA_LOG,
                       'root_px_per_drawing_384': [round(m*GAME_PX_PER_M, 3) for m in ROOT_MOTION]}

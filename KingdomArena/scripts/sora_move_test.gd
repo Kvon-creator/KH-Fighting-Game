@@ -2,9 +2,11 @@ extends Node2D
 ## Movement test for Sora: battle idle by default. Hold D or Right to shuffle forward, A or Left
 ## to shuffle back. The shuffle's first drawing is the idle stance, so it starts straight from the
 ## idle; when the key is released he finishes the current step (back to the idle stance) and
-## stands. R resets his position.
+## stands. Hold S or Down to crouch (Keyblade in one hand); release to stand back up. Crouching
+## wins over walking; during a step he crouches once the step finishes. R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
-## holds back; `--capture=<png path>` saves a screenshot after 1.5 s and quits.
+## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`, default 1); `--capture=<png path>` saves a screenshot
+## after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
 ## fighting game: each drawing is held an exact number of game frames.
@@ -16,7 +18,8 @@ const FEET := Vector2(192, 354)
 ## How far he may walk toward either screen edge.
 const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
-## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing]
+## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing,
+## optional file numbers in play order (crouch_up is crouch_down backwards)]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
 ## 180.5 px per metre), so planted feet stay exactly in place: 64.5 px per 20-frame cycle, ~193 px/s.
 const ANIMATIONS := {
@@ -26,13 +29,21 @@ const ANIMATIONS := {
 		[3, 3, 2, 4, 2, 3, 3], [1.61, 8.07, 14.51, 9.67, 9.67, 14.51, 6.44]],
 	&"shuffle_back": ["res://assets/sora/shuffle_back_384/", "sora_shuffle_back_",
 		[3, 3, 2, 4, 2, 3, 3], [-1.61, -8.07, -14.51, -9.67, -9.67, -14.51, -6.44]],
+	&"crouch_down": ["res://assets/sora/crouch_down_384/", "sora_crouch_down_",
+		[2, 1, 1, 1, 2, 2, 3], []],
+	&"crouch_hold": ["res://assets/sora/crouch_hold_384/", "sora_crouch_hold_",
+		[6, 5, 5, 7, 6, 5, 5, 7], []],
+	&"crouch_up": ["res://assets/sora/crouch_down_384/", "sora_crouch_down_",
+		[3, 2, 2, 1, 1, 1, 2], [], [6, 5, 4, 3, 2, 1, 0]],
 }
 
 var _sprite: AnimatedSprite2D
 var _start_x := 420.0
-## Game frames to hold forward / back in the timed demos (-1 = not used).
+## Game frames to hold forward / back / crouch in the timed demos (-1 = not used).
 var _demo_forward_ticks := -1
 var _demo_back_ticks := -1
+var _demo_crouch_ticks := -1
+var _demo_crouch_from := 1
 var _tick := 0
 ## Game frames the current drawing has been shown.
 var _hold := 0
@@ -44,7 +55,9 @@ func _ready() -> void:
 		frames.add_animation(anim)
 		var folder: String = ANIMATIONS[anim][0]
 		var prefix: String = ANIMATIONS[anim][1]
-		for i in ANIMATIONS[anim][2].size():
+		var order: Array = ANIMATIONS[anim][4] if ANIMATIONS[anim].size() > 4 \
+			else range(ANIMATIONS[anim][2].size())
+		for i: int in order:
 			frames.add_frame(anim, load(folder + prefix + "%02d.png" % i) as Texture2D)
 
 	_sprite = AnimatedSprite2D.new()
@@ -60,6 +73,10 @@ func _ready() -> void:
 			_demo_forward_ticks = int(arg.trim_prefix("--walk-demo-ticks="))
 		elif arg.begins_with("--back-demo-ticks="):
 			_demo_back_ticks = int(arg.trim_prefix("--back-demo-ticks="))
+		elif arg.begins_with("--crouch-demo-ticks="):
+			_demo_crouch_ticks = int(arg.trim_prefix("--crouch-demo-ticks="))
+		elif arg.begins_with("--crouch-demo-from="):
+			_demo_crouch_from = int(arg.trim_prefix("--crouch-demo-from="))
 		elif arg.begins_with("--capture="):
 			_capture(arg.trim_prefix("--capture="))
 
@@ -70,22 +87,40 @@ func _physics_process(_delta: float) -> void:
 		or Input.is_physical_key_pressed(KEY_RIGHT)
 	var back := _tick <= _demo_back_ticks or Input.is_physical_key_pressed(KEY_A) \
 		or Input.is_physical_key_pressed(KEY_LEFT)
-	var wanted: StringName = &"shuffle_forward" if forward and not back else (
-		&"shuffle_back" if back and not forward else &"idle")
-	if _sprite.animation == &"idle" and wanted != &"idle":
-		_show(wanted)  # drawing 1 of the shuffle is the idle stance
+	var crouch := (_demo_crouch_from <= _tick and _tick <= _demo_crouch_ticks) or Input.is_physical_key_pressed(KEY_S) \
+		or Input.is_physical_key_pressed(KEY_DOWN)
+	var wanted: StringName = &"crouch_down" if crouch else (
+		&"shuffle_forward" if forward and not back else (
+		&"shuffle_back" if back and not forward else &"idle"))
+	var anim := _sprite.animation
+	if anim == &"idle" and wanted != &"idle":
+		_show(wanted)  # drawing 1 of the shuffle is the idle stance; the crouch starts from it too
+		return
+	# Changing your mind halfway: crouch_up drawing k is crouch_down drawing 6 - k, so turn around
+	# from the matching drawing instead of starting over.
+	var last: int = ANIMATIONS[&"crouch_down"][2].size() - 1
+	if anim == &"crouch_down" and not crouch:
+		_show(&"crouch_up", last - _sprite.frame)
+		return
+	if anim == &"crouch_up" and crouch:
+		_show(&"crouch_down", last - _sprite.frame)
+		return
+	if anim == &"crouch_hold" and not crouch:
+		_show(&"crouch_up")
 		return
 	# Advance one game frame; move to the next drawing when this one's hold is used up.
 	_hold += 1
-	var holds: Array = ANIMATIONS[_sprite.animation][2]
+	var holds: Array = ANIMATIONS[anim][2]
 	if _hold >= holds[_sprite.frame]:
 		if _sprite.frame + 1 < holds.size():
-			_show(_sprite.animation, _sprite.frame + 1)
-		elif _sprite.animation == &"idle":
+			_show(anim, _sprite.frame + 1)
+		elif anim == &"idle":
 			_show(&"idle")
+		elif anim == &"crouch_down" or anim == &"crouch_hold":
+			_show(&"crouch_hold")
 		else:
-			# End of a step cycle: the feet are back in the idle stance, so he can stand, switch
-			# direction or keep going without any pop.
+			# End of a step cycle or of standing up: the feet are in the idle stance, so he can
+			# stand, crouch, switch direction or keep going without any pop.
 			_show(wanted)
 
 

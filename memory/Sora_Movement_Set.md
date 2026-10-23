@@ -258,3 +258,18 @@ Pending review. Offered the matching brake transition.
   - Feet lift and knees unchanged.
   - Verified in Godot: exact holds, planted feet pixel-exact, clean stop both ways.
 - **Builder:** optional 3rd CLI argument = shuffle v4+ hip dip (m), e.g. `-- shuffle_fwd_v5 shuffle_fwd_v5 .11`.
+- **Kvon approved v5:** "I like this. Continue with the other animations".
+
+**Crouch grip, October22:** asked whether the crouch should be two-handed like the idle/walk or follow the one-hand movement rule; Kvon chose **"One hand"**. The left hand lets go of the handle as he crouches (free guard fist) and grabs it again as he stands; the Key goes low and behind him in the right hand, pointing away from the opponent (screen left).
+
+**Why:** User decision.
+
+**Crouch built, October22 (pending review):** `build_sprite_pilot.py -- crouch_down_vN` / `crouch_hold_vN` (current **v4**), from the battle_v12 idle with the idle breath frozen at frame 1 (like the shuffle), feet planted, no root motion.
+- **Pose:** hips 32 cm lower than the idle, +9 hunch / +10 lean / -12 neck, knee splay .6. Head top 140 -> ~221 at 512 (about 76% of standing height).
+- **Grip:** the right fist keeps the idle grip and turns rigidly with the Key (the forearm takes half the roll); the Key yaws round BEHIND him to point low toward screen left with the tip ~14 cm off the floor. The left hand stays on the handle for the first part, then lets go to a guard fist at the chest.
+- **History:** v1 was too shallow (head down ~55 px); v2 hid the fist at knee height behind the thigh; v3's hold loop put the tip at the frame's left edge. v4 angles the blade further behind (CR_BEHIND 1.4).
+- **Timing:** crouch_down has 7 drawings [2,1,1,1,2,2,3] = 12 game frames; crouch_hold is an 8-drawing bounce loop [6,5,5,7,6,5,5,7]; crouch_up is crouch_down backwards [3,2,2,1,1,1,2].
+- **2D:** `crouch_down2d_v4` / `crouch_hold2d_v4`, with white sheets, `Idle_Crouch_Idle.gif` and `Crouch_Hold_Loop.gif`.
+- **Godot:** `crouch_down_384` / `crouch_hold_384`, S/Down in `sora_move_test.gd`. Crouch wins over walking; mid-step he finishes the step first. Releasing or re-pressing mid-transition turns around from the matching drawing. New test flag `--crouch-demo-from=M`.
+- **Verified (60 fps movie):** exact holds for all transitions.
+- **Known:** the last crouch_down drawing is at 96% of the blend, so the tip settles ~27 px into the hold.
