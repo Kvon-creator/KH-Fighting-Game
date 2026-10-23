@@ -1337,14 +1337,61 @@ if LOOP:
             CR_DYAW = max(cands, key=lambda d_: Vector((math.cos(CR_YAW0 + d_/2), math.sin(CR_YAW0 + d_/2), 0)).dot(-V_))
             CR_EL1 = math.asin(RUN_BLADE.z)
 
+        RUN_NECK, ARM_STATIC, TWIST_AMP = -10.0, None, 8.0
+        if not RUN.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+            # v6+ (Kvon: match the running poses Gemini generated, round 09/10): steeper aerodynamic lean,
+            # static arms (left fist forward as a chest guard, right fist behind the hip) with the blade
+            # pointing BACK AND UP, the swing heel kicked up behind on passing, a smaller hip bounce.
+            RUN_HUNCH, RUN_PITCH, RUN_NECK, TWIST_AMP = 6.0, 14.0, -25.0, 0.0
+            ARM_STATIC = -1.0  # -1 = the forward guard position for the whole loop
+            HALF = [((.35, 0, 0), (-.15, 0, 30), .14, 1.0, 1.0, .09),
+                    ((.23, 0, 0), (-.30, .10, 30), .16, .6, .5, .12),
+                    ((.07, 0, 15), (-.15, .25, 0), .12, 0.0, -.3, .16),
+                    ((-.06, .03, 30), (.22, .12, 0), .10, -.5, -.8, .13)]
+            RUN_HAND = U_*-.20 + V_*.22 + Vector((0, 0, .80))
+            hb = (-U_*.62 + V_*.78).normalized()
+            RUN_BLADE = (hb*math.cos(math.radians(12)) + Vector((0, 0, math.sin(math.radians(12))))).normalized()
+            yaw1 = math.atan2(RUN_BLADE.y, RUN_BLADE.x)
+            cands = [yaw1 - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)]
+            cands = [d_ for d_ in cands if abs(d_) < 2*math.pi]
+            CR_DYAW = max(cands, key=lambda d_: Vector((math.cos(CR_YAW0 + d_/2), math.sin(CR_YAW0 + d_/2), 0)).dot(-V_))
+            CR_EL1 = math.asin(RUN_BLADE.z)
+
+        if not RUN.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+            # v7+: v6 still ran tall and upright next to Gemini's poses: much deeper lean and lower hips, a
+            # longer reach, and the push-off leg leaves the ground at flight and stays kicked up and back
+            # until it swings through (no planted trailing toe). ~594 px/s (0.55 m per step).
+            RUN_HUNCH, RUN_PITCH, RUN_NECK = 20.0, 20.0, -30.0
+            HALF = [((.40, 0, 0), (-.30, .15, 0), .20, 1.0, 1.0, .13),
+                    ((.27, 0, 0), (-.32, .22, 0), .24, .6, .5, .13),
+                    ((.10, 0, 15), (-.12, .25, 0), .16, 0.0, -.3, .17),
+                    ((-.22, .08, 20), (.25, .12, 0), .14, -.5, -.8, .12)]
+
+        if not RUN.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+            # v8+ (v9 changes only the start/stop blade timing) (Gemini round 11: v7 overshot): lean about 56 deg total, hips higher, a longer recovery arc
+            # with the passing foot nearer under the hips, the blade nearly level (still a touch up, like
+            # Gemini's picture) and the guard fist lower, at the ribs.
+            RUN_HUNCH, RUN_PITCH, RUN_NECK = 14.0, 14.0, -30.0
+            HALF = [((.38, 0, 0), (-.30, .14, 0), .16, 1.0, 1.0, .13),
+                    ((.25, 0, 0), (-.30, .20, 0), .20, .6, .5, .13),
+                    ((.08, 0, 15), (-.06, .20, 0), .12, 0.0, -.3, .17),
+                    ((-.20, .08, 20), (.25, .10, 0), .10, -.5, -.8, .12)]
+            ARM_FWD = Matrix.Rotation(math.radians(RUN_TURN), 3, 'Z') @ Vector((.10, -.30, .90))
+            RUN_BLADE = (hb*math.cos(math.radians(6)) + Vector((0, 0, math.sin(math.radians(6))))).normalized()
+            yaw1 = math.atan2(RUN_BLADE.y, RUN_BLADE.x)
+            cands = [yaw1 - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)]
+            cands = [d_ for d_ in cands if abs(d_) < 2*math.pi]
+            CR_DYAW = max(cands, key=lambda d_: Vector((math.cos(CR_YAW0 + d_/2), math.sin(CR_YAW0 + d_/2), 0)).dot(-V_))
+            CR_EL1 = math.asin(RUN_BLADE.z)
+
         def loop_key(j):
             plant, swing = ('L', 'R') if j < 4 else ('R', 'L')
             sign = 1 if j < 4 else -1
             pl, sw, drop_, tw, armb, root = HALF[j % 4]
             feet = {plant: (pl[0], LAT[plant], pl[1], pl[2]), swing: (sw[0], LAT[swing], sw[1], sw[2])}
-            return dict(turn=RUN_TURN, ce=drop_ - POSE['drop'], hunch=RUN_HUNCH, pitch=RUN_PITCH, neck=-10.0, look=0.0,
-                        tilt=0.0, toe=8.0, twist=8.0*tw*sign, feet=feet, hand=RUN_HAND.copy(), release=1.0,
-                        arm=armb*sign, blade_s=1.0, hz=0.0, root=root)
+            return dict(turn=RUN_TURN, ce=drop_ - POSE['drop'], hunch=RUN_HUNCH, pitch=RUN_PITCH, neck=RUN_NECK, look=0.0,
+                        tilt=0.0, toe=8.0, twist=TWIST_AMP*tw*sign, feet=feet, hand=RUN_HAND.copy(), release=1.0,
+                        arm=armb*sign if ARM_STATIC is None else ARM_STATIC, blade_s=1.0, hz=0.0, root=root)
 
         def mix(a, b, w):
             out = {k_: a[k_] + (b[k_] - a[k_])*w for k_ in ('turn', 'ce', 'hunch', 'pitch', 'neck', 'look', 'tilt',
@@ -1377,6 +1424,10 @@ if LOOP:
                 k_['ce'] += [.05, .03, .01, 0][j]  # anticipation dip
                 k_['release'] = min(1.0, max(0.0, (w - .1)/.5))
                 k_['root'] = roots[j]
+                if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))):
+                    # v9+: v8's drawing 3 pointed the blade straight back past the frame edge mid-swing;
+                    # the blade reaches its carry angle (turned toward the camera) sooner.
+                    k_['blade_s'] = min(1.0, w*1.25)
                 RUN_KEYS.append(k_)
         elif part == 'run_start':
             # Idle -> loop contact. The left foot stays planted (it is the idle's front foot); the right foot
@@ -1403,7 +1454,8 @@ if LOOP:
             # ends exactly on the idle's front-foot spot; the right foot stays planted, then steps back into place.
             last = loop_key(7)
             roots = [.15, .08, .04, .01, 0.0]
-            plant = dict(last, turn=15.0, ce=.26 - POSE['drop'], hunch=-8.0, pitch=-16.0, neck=-2.0, look=8.0,
+            brake_drop = .26 if RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 10))) else .20  # v10+: Gemini round 13
+            plant = dict(last, turn=15.0, ce=brake_drop - POSE['drop'], hunch=-8.0, pitch=-16.0, neck=-2.0, look=8.0,
                          toe=20.0, twist=0.0, arm=-.5, hz=.04, root=roots[0])
             l_end = IDLE_R['feet']['L'][0]
             r_plant = last['feet']['R'][0] - roots[0]
@@ -1420,6 +1472,8 @@ if LOOP:
                                    20.0*(1 - w))
                 k_['release'] = 1 - min(1.0, max(0.0, (w - .2)/.45))
                 k_['root'] = roots[j + 1]
+                # (Tried in run_stop_v9: holding the blade toward the camera longer put the tip past the
+                # frame edge on drawing 2, so the brake keeps v8's blade timing.)
                 RUN_KEYS.append(k_)
         else:
             # Brake from the loop's last drawing (right foot planted, left foot reaching): the left foot plants

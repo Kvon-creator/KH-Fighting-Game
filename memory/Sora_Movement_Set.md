@@ -304,3 +304,24 @@ Pending review. Offered the matching brake transition.
   - Verified by trace: exact holds through start -> loop -> stop -> idle. Planted shoes are pixel-exact contact-to-down; on the heel-up passing drawing the toe tip shifts ~4-5 px at 384.
 - **Clone note:** the flash-drive clone needs `core.autocrlf=false` (set locally). Godot writes LF, and CRLF checkouts made every `.import` and `project.godot` look modified; their contents were identical to HEAD.
 - **Previews:** `run_loop2d_v5/Idle_Run_Stop.gif`, `Run_Moving.gif`, `Run_Cycle.gif`; `blender_workflow/make_motion_gif.py`.
+
+**Run matched to Gemini's generated poses, October22 (current; pending Kvon's review):** Kvon had Gemini generate an 11-pose running sheet (saved as `gemini_walk_review/round_09/gemini_original_preview.jpg`) and asked me to use it as the reference, going back and forth with Gemini.
+- **Round 08:** suggestions on the v5 run. Gemini's start->loop velocity claim was wrong (it ignored the frame counts).
+- **Round 10:** Gemini turned its poses into numbers: static arms, blade back and up, steeper lean, heel kick, less bounce.
+- **v6/v7:** v7 overshot (lean 68 deg, hips too low).
+- **Round 11:** Gemini's corrections; met part way, since its numbers understate its own picture.
+- **Round 12:** Gemini said **"Matches"** for loop v8.
+- **Round 13:** start/brake approved except the brake hip drop.
+
+**Current set:**
+- **Loop** `run_loop_v8`:
+  - hara 26 / mune 30 / neck -40 total; hip drop .16/.20/.12/.10.
+  - Contact +.38, passing swing -.06 lifted .20; the push-off leg leaves the ground at flight and stays kicked back (-.30, lift .14-.20).
+  - Static arms: guard fist at the ribs; right fist behind the hip; blade back, toward the camera, +6 deg.
+  - ~594 px/s (root per half .13/.13/.17/.12).
+- **Start** `run_start_v9`: the blade reaches its carry angle sooner (`blade_s = w*1.25`) so the tip stays in the frame.
+- **Brake** `run_stop_v10`: hip drop .20 (was .26). Holding the blade toward the camera longer (run_stop_v9) pushed the tip out of the frame, so it was not used.
+- **Godot:** run_start_384 / run_loop_384 / run_stop_384 replaced.
+- **Verified:** trace holds exact; planted shoe within 1 px contact->down (toe shifts ~4-5 px at 384 on heel-up); protected files unchanged.
+- **Previews:** `run_loop2d_v8/Idle_Run_Stop.gif`, `Run_Moving.gif`.
+- **Still open from round 08:** mirrored right-foot brake (removes the up-to-20-frame release wait) and locking the toe on the heel-up drawing. Not started; Kvon hasn't chosen.

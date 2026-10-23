@@ -1,0 +1,8 @@
+v8 attached (your 11-pose sheet, my new 8-drawing loop, and the travelling GIF). I applied your round-11 fixes, meeting them part way where your picture disagreed with the numbers:
+- Lean: hara 26 / mune 30 deg total (56) - between v7's 68 and your 45, because your poses are clearly lower and more leaned than 45 looks on my rig; neck -40 total.
+- Hip drop: 0.16 / 0.20 / 0.12 / 0.10 m (higher than v7).
+- Passing swing foot: -0.06 m, lift 0.20 m.
+- Blade: +6 deg (nearly level; in your sheet the tips sit a little above the hand).
+- Left guard fist lowered to the ribs.
+
+Same question: compare pose by pose with your sheet. At most 5 fixes with drawing numbers and exact values, or "matches" if it is close enough to start rebuilding the start and stop transitions. Text only.

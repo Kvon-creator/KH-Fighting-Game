@@ -1,0 +1,19 @@
+Brake Hip Collapse (Too Deep): You brought the 0.26 m hip drop back for the brake. Dropping 0.26 m is too extreme—especially since the v8 loop only drops to 0.20 m at its lowest down-phase. A 0.26 m drop will look like a collapsing squat rather than a braced skid.
+
+Change: On Brake Drawings 1 and 2, reduce the center Z-axis drop from 0.26 m to 0.18 m (or 0.20 m max).
+
+Otherwise, the root acceleration curving from the Start into the Loop, the Keyblade carry angle cheat to avoid clipping the frame, and the regrip timing are all mechanically excellent.
+
+Once you adjust that brake hip height, are you ready to move on to generating the mirrored right-foot-forward brake, or do you want to start blocking in the jump and fall animations next?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Reviewing the run cycle animation
+Save
+Sketch
+Text

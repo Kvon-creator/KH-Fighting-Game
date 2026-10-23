@@ -1,0 +1,68 @@
+To match the mechanics of the generated visual reference, you must abandon the dynamic arm pumping and low-slung, tip-down Keyblade drag. The generated sprint relies on a rigid, horizontal rear weapon carry with the tip pointing up, a static left-arm forward guard, a much steeper aerodynamic torso hunch, and a high heel-to-butt kick on the passing feet.   
+JPG
++ 1
+
+Drawing	Reference Match	Hip Drop	Hara / Mune	Neck	Lead/Planted Foot (X, Z lift, Toe)	Trail/Swing Foot (X, Z lift, Toe)	L Fist (X, Z)	R Fist (X, Z)	Blade Pitch
+1 (Contact L)	
+
+Pose 8 
+JPG
+
+	0.14 m	15° / 25°	-35°	Lead: +0.35m, 0.0m, +20°	Trail: -0.25m, 0.0m, 0°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+2 (Down L)	
+
+Pose 9 
+JPG
+
+	0.16 m	15° / 25°	-35°	Plant: +0.15m, 0.0m, 0°	Swing: -0.35m, +0.10m, -45°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+3 (Passing L)	
+
+Pose 10 
+JPG
+
+	0.12 m	15° / 25°	-35°	Plant: 0.0m, 0.0m, 0°	Swing: -0.15m, +0.25m, -30°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+4 (Flight L)	
+
+Pose 11 
+JPG
+
+	0.10 m	15° / 25°	-35°	Lead: +0.25m, +0.05m, +15°	Trail: -0.15m, +0.20m, -10°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+5 (Contact R)	
+
+Pose 4 
+JPG
+
+	0.14 m	15° / 25°	-35°	Lead: +0.35m, 0.0m, +20°	Trail: -0.25m, 0.0m, 0°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+6 (Down R)	
+
+Pose 5 
+JPG
+
+	0.16 m	15° / 25°	-35°	Plant: +0.15m, 0.0m, 0°	Swing: -0.35m, +0.10m, -45°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+7 (Passing R)	
+
+Pose 6 
+JPG
+
+	0.12 m	15° / 25°	-35°	Plant: 0.0m, 0.0m, 0°	Swing: -0.15m, +0.25m, -30°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+8 (Flight R)	
+
+Pose 7 
+JPG
+
+	0.10 m	15° / 25°	-35°	Lead: +0.25m, +0.05m, +15°	Trail: -0.15m, +0.20m, -10°	+0.25m, +0.20m	-0.35m, +0.15m	+15° (Up)
+
+Because this generated style locks both arms completely static to silhouette the weapon, do you want to test this rigid upper body first, or retain your current opposing arm swing to keep the animation feeling athletic?   
+JPG
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Translating animation coordinates to a table
+Save
+Sketch
+Text

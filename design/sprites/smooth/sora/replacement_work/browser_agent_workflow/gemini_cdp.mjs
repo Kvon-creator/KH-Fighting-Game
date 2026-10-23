@@ -99,7 +99,24 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'run-package-v5': [
+const referenceSets = {'run-package-v8': [
+  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/run_start2d_v9/run_start2d_v9_sheet_white_5x1.png',
+  'design/models/sora/run_stop2d_v8/run_stop2d_v8_sheet_white_5x1.png',
+  'design/models/sora/run_loop2d_v8/Idle_Run_Stop.gif'
+], 'run-ref-vs-v8': [
+  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/run_loop2d_v8/run_loop2d_v8_sheet_white_4x2.png',
+  'design/models/sora/run_loop2d_v8/Run_Moving.gif'
+], 'run-ref-vs-v7': [
+  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/run_loop2d_v7/run_loop2d_v7_sheet_white_4x2.png',
+  'design/models/sora/run_loop2d_v7/Run_Moving.gif'
+], 'run-ref-vs-v5': [
+  // Kvon: match the run to the running poses Gemini generated (round 09 download).
+  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/run_loop2d_v5/run_loop2d_v5_sheet_white_4x2.png'
+], 'run-package-v5': [
   // Kvon: send the finished run (start, loop, brake) to Gemini for suggestions.
   'design/models/sora/run_start2d_v5/run_start2d_v5_sheet_white_5x1.png',
   'design/models/sora/run_loop2d_v5/run_loop2d_v5_sheet_white_4x2.png',
