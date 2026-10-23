@@ -1,0 +1,7 @@
+The full run is now built and running in the game. Attached: the start sheet (4 drawings), the loop sheet (8 drawings), the brake sheet (5 drawings), and a GIF of the whole sequence travelling: idle -> start -> loop -> brake -> idle, with the real game-frame holds.
+
+How it is wired in the game: double-tap forward and hold to run. The start ends on the loop's passing pose and hands over to loop drawing 4. On release he finishes the stride and brakes only from the left-foot-forward point (so up to ~20 frames of wait). Planted feet are pixel-exact from contact to down; on the heel-up passing drawing the planted toe tip shifts ~4-5 px.
+
+Changes from your round-07 tables: Sora's idle stance is wider than you assumed (feet about +/-0.44 m along the run direction, not +/-0.27), so in the start the left foot stays planted at its idle spot while the body accelerates (root [0.03, 0.07, 0.12, 0.15] m), and in the brake the left foot plants on the idle's front-foot spot and skids 1 cm while the body slides [0.15, 0.08, 0.04, 0.01, 0] m; brake hip drop 0.26 m with the torso leaning back.
+
+Please give suggestions to improve it, most important first, each with the drawing number(s) and the exact numeric change. Cover the start, loop, brake, the hand-off points, and the release delay (should I add a mirrored right-foot brake?). Text answer only, no images.

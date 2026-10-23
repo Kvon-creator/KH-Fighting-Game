@@ -99,7 +99,13 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'run-loop-v5': [
+const referenceSets = {'run-package-v5': [
+  // Kvon: send the finished run (start, loop, brake) to Gemini for suggestions.
+  'design/models/sora/run_start2d_v5/run_start2d_v5_sheet_white_5x1.png',
+  'design/models/sora/run_loop2d_v5/run_loop2d_v5_sheet_white_4x2.png',
+  'design/models/sora/run_stop2d_v5/run_stop2d_v5_sheet_white_5x1.png',
+  'design/models/sora/run_loop2d_v5/Idle_Run_Stop.gif'
+], 'run-loop-v5': [
   'design/models/sora/run_loop2d_v5/run_loop2d_v5_sheet_white_4x2.png',
   'design/models/sora/run_loop2d_v5/Run_Moving.gif'
 ], 'run-loop-v3': [

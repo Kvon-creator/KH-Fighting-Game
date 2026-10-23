@@ -1,0 +1,42 @@
+Here is the animation lead critique, ranked by priority. The foundation is solid, but the engine logic and extreme brake values are causing mechanical friction.
+
+1. Release Delay (The Mirrored Brake)
+
+The Problem: Waiting up to 20 game frames (1/3 of a second) to finish a stride before braking is unacceptable in a fighting game. It creates massive input lag.
+
+The Fix: You must build and implement the mirrored Right-Foot-Forward brake. If the player releases the input during Loop Drawings 5–8, instantly trigger the mirrored brake (Right foot plants forward at +0.44m, Left trails at -0.44m).
+
+2. Brake Transition: The 0.26m Hip Collapse
+
+The Problem: Dropping the hips 0.26m (over 10 inches) during the brake is far too extreme, especially since the run loop only drops 0.16m. It will look like his suspension broke and he is collapsing into a deep squat rather than bracing against momentum.
+
+The Fix: On Brake Drawings 1 and 2, reduce the maximum center Z-axis drop to 0.18 m.
+
+3. Loop: Planted Toe Sliding
+
+The Problem: The 4-5px toe shift on the heel-up passing drawings breaks the illusion of ground contact. In 2D games, if the anchor foot moves, the character looks like they are floating.
+
+The Fix: On Loop Drawings 3 and 7, push the planted foot's IK target forward by exactly +0.02 m to +0.03 m (or however much maps to your 4-5px shift) to mathematically lock the toe tip to the exact pixel coordinates it occupied in Drawings 2 and 6.
+
+4. Hand-off Velocity (Start to Loop)
+
+The Problem: You are handing off from Start Drawing 4 (root +0.15m) into Loop Drawing 4 (root +0.13m). Decelerating from 0.15m to 0.13m right as he enters the flight phase will cause a micro-stutter in his momentum.
+
+The Fix: On Loop Drawings 4 and 8, increase the root motion from 0.13 m to 0.15 m to perfectly catch and inherit the exit velocity from Start Drawing 4.
+
+5. Brake Friction & Lean
+
+The Problem: Skidding 1cm on Brake Drawing 1 is good, but the deceleration curve [0.15, 0.08, 0.04, 0.01, 0] is slightly too smooth for a hard fighting game stop.
+
+The Fix: Concentrate the stopping power. On Brake Drawing 1, pitch mune backward to -15° to sell the backward weight shift. On Brake Drawing 2, drop the root motion from 0.08m to 0.05m so the character visually "bites" into the ground faster.
+
+With the stance width confirmed at +/-0.44m, do you want to adjust the start transition's arm swing timing so the Keyblade doesn't clip through that wider rear leg as it rotates into the rear-carry position?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Analyzing animation timing problems
