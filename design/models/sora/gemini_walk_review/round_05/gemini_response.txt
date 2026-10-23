@@ -1,0 +1,86 @@
+Timing, Speed, and Cycle Structure
+
+To visually distinguish the run from the 193 px/s walk, target a minimum speed of 540 px/second. Mapping this to 60 fps requires a fast, 8-drawing loop covering two steps.
+
+Run Speed: 540 px/s (180 pixels per 20-frame cycle).
+
+Run Loop: 8 drawings held over 20 game frames. Sequence of holds: [2, 3, 2, 3, 2, 3, 2, 3].
+
+Start Transition: 4 drawings held over 10 game frames [2, 2, 3, 3].
+
+Stop Transition (Brake): 5 drawings held over 14 game frames [2, 3, 3, 3, 3].
+
+Run Loop Mechanics (8 Drawings)
+
+A high-speed fighting game run relies on heavy forward lean and dynamic vertical bouncing.
+
+Global Torso Constraints (Applies to all 8 loop drawings):
+
+Hunch: Pitch hara forward 8° and mune forward 18-20° for an aggressive aerodynamic lean.
+
+Twist: Yaw mune 10-15° toward the leading leg (alternating left/right) to drive the shoulders into the stride.
+
+Head: Counter-pitch kubi and atama backward by 20° so the face stays locked on the opponent despite the heavy torso hunch.
+
+Leg and Center Sequencing:
+
+Drawings 1 & 5 (Contact): center drops to -0.06m. The leading foot plants at +0.35m (forward), while the trailing foot is at -0.25m (backward). Foot lift is 0.0m.
+
+Drawings 2 & 6 (Down): The weight-bearing phase. center hits its lowest point at -0.12m. The planted foot slides to +0.10m. The trailing foot begins liftoff at -0.45m.
+
+Drawings 3 & 7 (Passing): The explosive push. center rises to -0.02m. The planted foot passes through 0.0m. The lifting foot crosses forward at 0.0m, reaching its maximum Z-axis lift of +0.18m to +0.22m (a high, sharp knee drive).
+
+Drawings 4 & 8 (Up/Flight): The airborne phase. center hits its highest point at +0.03m. The driving foot reaches +0.25m before snapping down to the next contact.
+
+Arm and Weapon Constraints:
+
+Left Arm (Free Swing): Swings in perfect opposition to the left leg. Reaches maximum forward extension (elbow bent 90°) on Drawing 5 (Left leg back), and maximum rear extension on Drawing 1 (Left leg forward).
+
+Right Arm (Weapon Carry): The Right hand (R_te) is positioned directly behind the hip (local X/Y offset -0.25m). The Keyblade points dead backward (screen-left) with a slight downward angle (-10° pitch).
+
+Weapon Overlap: Do not glue the Keyblade to the hip. Apply a 2-frame vertical delay: when center hits its lowest point (Drawings 2/6), the weapon IK target bounces up by +0.08m. When center peaks (Drawings 4/8), the weapon drags down by -0.05m.
+
+Start Transition (4 Drawings, 10 Game Frames)
+
+This sequence must cleanly detach the left hand and shift the center of gravity forward before the first step.
+
+Drawing 1 (Anticipation): center drops -0.08m. mune pitches forward 10°. L_te detaches from the handle, drifting 5cm away.
+
+Drawing 2 (Release): L_te closes into a guard fist and pulls toward the chest. R_te drops to the thigh, rotating the Keyblade blade 90° downward.
+
+Drawing 3 (Sweep): center shifts forward 0.15m to initiate root motion. R_te sweeps the Keyblade past the knee, blade rotating backward.
+
+Drawing 4 (Launch): center rises slightly. Torso locks into the 20° run hunch. R_te locks into the rear-carry position. The left leg drives up into the Passing pose to feed seamlessly into Frame 1 of the Run Loop.
+
+Stop Transition / Brake (5 Drawings, 14 Game Frames)
+
+A fighting game brake requires a wide, skidding stance to arrest the 540 px/s momentum before returning to the idle.
+
+Drawing 1 (Plant): Snap to a wide stance (front foot +0.4m, rear foot -0.3m). center drops sharply to -0.15m to absorb the speed.
+
+Drawing 2 (Brake Lean): Pitch mune backward to -10° to fight the forward momentum. R_te sweeps the Keyblade forward from behind the hip, rotating the blade up.
+
+Drawing 3 (Regrip): center rises to -0.08m. L_te reaches forward and successfully re-establishes the IK grip on the Keyblade handle.
+
+Drawing 4 (Settle): Stance narrows to the base idle width. Torso returns to 0° pitch.
+
+Drawing 5 (Resolve): center returns to 0.0m. All bone targets match the base battle idle perfectly.
+
+Common Pipeline Pitfalls
+
+IK Leg Popping: If the center bone does not dip low enough during the Down phases (Drawings 2/6), the IK solvers will snap the knees totally straight as the character stretches for the 0.45m backstep. This creates a visually jarring "stiff leg" pop. Force the hips down.
+
+Floaty Passing Poses: If the foot does not drop quickly enough between the Up phase (Drawing 4) and the Contact phase (Drawing 1), the run will look like low-gravity moonwalking. The Z-axis drop curve must be aggressively skewed so the foot slams down into the contact frame.
+
+Static Silhouette Merging: With the Keyblade held behind him in a 3/4 orthographic view, the dark handle and his dark jacket/shorts will overlap. Ensure the Keyblade is rotated outward on the Y-axis just enough so the blade and guard break his body's silhouette.
+
+To handle the transition logic in Godot, do you want to calculate a specific "Brake from Left Foot" and "Brake from Right Foot" variant, or will you force the engine to delay the brake trigger until he completes the current stride cycle?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Determining animation parameters

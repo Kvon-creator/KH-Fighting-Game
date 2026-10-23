@@ -1,0 +1,10 @@
+Here is the first run loop built from your spec (attached: the 8 drawings as a sheet, left to right then the second row, and a GIF of him travelling at 540 px/s with the real game-frame holds [2,3,2,3,2,3,2,3]).
+
+What I did, versus your numbers:
+- Body turned from the idle's camera-facing angle to a three-quarter view toward screen right (the run direction).
+- Contact: lead foot +0.30 m, trail -0.20 m. Down: hips lowest (total hip drop 0.23 m). Passing: the swing foot tucks up behind under the hips (0.26 m lift) instead of passing straight under, because straight under looked like one foot stacked on the other. Flight: hips highest, swing foot reaching +0.22 m.
+- Root motion per drawing [0.10, 0.12, 0.15, 0.13] m per half cycle, chosen so the planted foot stays exactly still on screen.
+- Torso: hara +18, mune +32 deg total forward, neck counter so the face stays forward; chest twist 8 deg alternating; left arm swings in opposition.
+- Keyblade: right fist behind the hip; I angled the blade down 32 deg and out toward the camera because pointing straight back made it stick far out past the frame edge.
+
+Please review it like an animation lead. Tell me the most important problems first (max 5), each with the exact numeric change you would make (which drawing, which value). Then say whether the loop is ready for me to build the start and stop transitions. Text answer only, no images.

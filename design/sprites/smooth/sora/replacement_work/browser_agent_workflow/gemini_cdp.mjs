@@ -99,7 +99,13 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'run-plan': [
+const referenceSets = {'run-loop-v5': [
+  'design/models/sora/run_loop2d_v5/run_loop2d_v5_sheet_white_4x2.png',
+  'design/models/sora/run_loop2d_v5/Run_Moving.gif'
+], 'run-loop-v3': [
+  'design/models/sora/run_loop2d_v3/run_loop2d_v3_sheet_white_4x2.png',
+  'design/models/sora/run_loop2d_v3/Run_Moving.gif'
+], 'run-plan': [
   // Kvon: continue the movement set with Gemini's support; current approved shuffle and the new crouch.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/shuffle2d_fwd_v5/shuffle2d_fwd_v5_sheet_white_4x2.png',

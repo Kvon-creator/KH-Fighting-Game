@@ -273,3 +273,34 @@ Pending review. Offered the matching brake transition.
 - **Godot:** `crouch_down_384` / `crouch_hold_384`, S/Down in `sora_move_test.gd`. Crouch wins over walking; mid-step he finishes the step first. Releasing or re-pressing mid-transition turns around from the matching drawing. New test flag `--crouch-demo-from=M`.
 - **Verified (60 fps movie):** exact holds for all transitions.
 - **Known:** the last crouch_down drawing is at 96% of the blend, so the tip settles ~27 px into the hold.
+
+**Run plan with Gemini, October22:** after the old D: drive failed, the project was re-cloned from GitHub to the new Kingston flash drive at the same path, `D:\KH Fighting Game`. The system Node v24.14.0 now runs `gemini_cdp.mjs`; the old project-local `.local/` Node and browser profile were lost, and Kvon signed in again on a fresh profile.
+- **Gemini round 05** (`gemini_walk_review/round_05`): run spec.
+  - Speed ~540 px/s (180 px per 20-frame cycle).
+  - Loop: 8 drawings [2,3,2,3,2,3,2,3] (contact/down/passing/flight per leg).
+  - Start: 4 drawings [2,2,3,3]. Stop: 5 drawings [2,3,3,3,3] (wide plant, lean back, Key swept forward, regrip, settle).
+  - Hunch ~8/20, alternating chest twist, free left arm in opposition, Key behind the hip pointing back at -10 deg with a lagged bounce.
+- **Run control:** Kvon chose **double-tap forward** (tap D/Right twice and hold to run; a single press still walks).
+
+**Why:** User decision; Gemini support requested by Kvon.
+
+**Run built with Gemini, October22 (pending Kvon's review):** `build_sprite_pilot.py -- run_start_vN / run_loop_vN / run_stop_vN` (current **v5**).
+- **Body and grip:** turns from the idle's -25 deg to +30 deg (three-quarter toward screen right). The right fist keeps the idle grip rigidly, with the Key low behind him (~30 deg out toward the camera, -27 deg pitch). The left hand is a free swinging fist.
+- **Loop:** 8 drawings [2,3,2,3,...], 180 px per 20 frames (~540 px/s).
+  - Contact +0.35 / -0.15 m; down; passing with the swing foot at -0.06 m lifted 0.20 (at 0.0 the shoes stacked on screen); flight reach +0.25.
+  - Hip drop from standing 0.14 / 0.16 / 0.08 / 0.04 m.
+  - Lean hara 12 / mune 24 total (Gemini's 8/20 read upright from this camera).
+  - Root per half [0.09, 0.12, 0.16, 0.13] m.
+- **Gemini rounds:**
+  - 06 critiqued v3: too much lean/bounce, butt-kick, short stride, blade.
+  - 07 approved v5 and gave the start/stop tables. Its numbers assumed a ±0.27 m idle stance (Sora's is ±0.44), so the foot positions were refit.
+- **Start:** 4 drawings [2,2,3,3]. The left foot stays planted while he turns, dips, releases the left hand, sweeps the Key behind him and drives the right knee up. It ends on loop drawing 3 (passing) and hands over to loop index 3.
+- **Stop:** 5 drawings [2,3,3,3,3], triggered only at the end of the loop (left foot about to plant), so release waits up to ~20 frames.
+  - The left foot plants wide and skids 1 cm onto the idle spot; hips 0.26, lean back; the right foot stays planted then steps back.
+  - Key swept forward, left hand regrips by w=.65; root [.15, .08, .04, .01, 0].
+- **Godot:** `run_start_384` / `run_loop_384` / `run_stop_384`.
+  - Double-tap D/Right within 15 game frames and hold. A tap that has started a shuffle snaps into run_start.
+  - New flags `--run-demo-ticks=N` and `--trace` (prints every drawing change).
+  - Verified by trace: exact holds through start -> loop -> stop -> idle. Planted shoes are pixel-exact contact-to-down; on the heel-up passing drawing the toe tip shifts ~4-5 px at 384.
+- **Clone note:** the flash-drive clone needs `core.autocrlf=false` (set locally). Godot writes LF, and CRLF checkouts made every `.import` and `project.godot` look modified; their contents were identical to HEAD.
+- **Previews:** `run_loop2d_v5/Idle_Run_Stop.gif`, `Run_Moving.gif`, `Run_Cycle.gif`; `blender_workflow/make_motion_gif.py`.

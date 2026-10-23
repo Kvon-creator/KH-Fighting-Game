@@ -1,0 +1,37 @@
+The loop is approved. Your adjustments for the orthographic camera constraints—specifically the 12/24 degree lean, the -0.06 m passing offset to fix the shoe overlap, and the 30-degree Keyblade flare to fit the 512px frame—are perfect technical solves.
+
+Here are the concrete bone targets for the Start and Stop transitions to bridge the Battle Idle and the new Run Loop.
+
+Start Transition (4 Drawings, 10 Game Frames)
+
+Sequence [2, 2, 3, 3]. This sequence accelerates from 0 to 540 px/s, transitioning from the -25° two-handed idle to the +30° one-handed sprint. The Right Foot drives up to become the lead contact foot for Run Frame 1.
+
+Drawing	Body Turn	Hip Drop	Lean (hara+mune)	L Foot (Planted)	R Foot (Driving)	Left Hand (L_te)	Keyblade Angle	Root Motion
+1	-10°	0.12 m	10°	X: +0.27m, Z: 0.0m	X: -0.33m, Z: 0.0m	Detaches 5cm out	Drops 45°	+0.03 m
+2	+10°	0.14 m	20°	X: +0.20m, Z: 0.0m	X: -0.32m, Z: 0.05m	Fists near chest	Sweeps past knee	+0.07 m
+3	+20°	0.12 m	28°	X: +0.10m, Z: 0.0m	X: -0.15m, Z: 0.15m	Swings forward	30° out, -15° pitch	+0.10 m
+4	+30°	0.08 m	36°	X: -0.02m, Z: 0.0m	X: +0.15m, Z: 0.20m	Full forward guard	30° out, -27° pitch	+0.12 m
+
+(Note: Drawing 4 feeds perfectly into Run Frame 1, where the R Foot reaches +0.35m contact and L Foot slides to -0.25m).
+
+Stop Transition / Brake (5 Drawings, 14 Game Frames)
+
+Sequence [2, 3, 3, 3, 3]. Assuming this brake triggers when the Left Foot is the forward contact. This arrests momentum with a heavy skid, absorbing the speed through the hips before standing back into the idle.
+
+Drawing	Body Turn	Hip Drop	Lean (hara+mune)	L Foot (Braking)	R Foot (Trailing)	Left Hand (L_te)	Keyblade Angle	Root Motion
+1	+15°	0.16 m	10° (leaning back)	X: +0.40m, Z: 0.0m	X: -0.35m, Z: 0.0m	Reaches across	Swings forward/up	+0.15 m
+2	0°	0.18 m	0°	X: +0.32m, Z: 0.0m	X: -0.35m, Z: 0.0m	Nears the handle	Lowers to hip level	+0.08 m
+3	-15°	0.14 m	0°	X: +0.28m, Z: 0.0m	X: -0.32m, Z: 0.0m	Regrips the handle	Base idle angle	+0.04 m
+4	-25°	0.11 m	0°	X: +0.27m, Z: 0.0m	X: -0.28m, Z: 0.0m	Locked to grip	Base idle angle	+0.01 m
+5	-25°	0.10 m	0°	X: +0.27m, Z: 0.0m	X: -0.27m, Z: 0.0m	Locked to grip	Base idle angle	+0.00 m
+
+For the brake animation, will your Godot script automatically trigger this specific Left-Foot-Forward transition, or do you need a mirrored target table for when the player releases the stick on a Right-Foot-Forward frame?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Generating a transition sequence for the user

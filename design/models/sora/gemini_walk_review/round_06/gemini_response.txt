@@ -1,0 +1,48 @@
+Based on your numeric breakdown, here is the animation lead critique.
+
+The biggest issue is that combining a massive 0.23 m hip drop with a 50-degree total forward lean (hara +18, mune +32) will turn this into a heavy, bounding "Naruto run" rather than a driving, athletic sprint.
+
+Here are the top 5 problems to fix, with precise numeric targets:
+
+Extreme Torso Lean (Falling Over)
+
+The Problem: 50 degrees of total forward pitch pushes his center of mass way too far past his lead knee.
+
+The Fix: On all drawings (1-8), reduce the hara pitch to 8° and the mune pitch to 18-20° (total lean ~28°).
+
+Excessive Hip Drop (Too Bouncy)
+
+The Problem: A 0.23 m hip drop on the Down phase is huge. It wastes forward momentum on vertical bounding and forces severe IK knee buckling.
+
+The Fix: On the Down phases (Drawings 2 & 6), restrict the center bone's maximum Z-axis drop to exactly -0.12 m from the base idle height.
+
+Swing Foot "Butt-Kick" (Prancing)
+
+The Problem: Tucking the swing foot behind the hips with a massive 0.26 m lift on the Passing phase creates a jogging/prancing silhouette, killing the illusion of driving speed.
+
+The Fix: On the Passing phases (Drawings 3 & 7), reduce the Z-axis foot lift to 0.18 m and push the X-axis translation forward to 0.0 m (directly under the center, rather than tucked behind).
+
+Shortened Stride Reach
+
+The Problem: Capping the contact at +0.30 m and flight reach at +0.22 m doesn't match the aggressive 540 px/s velocity.
+
+The Fix: On the Contact phases (Drawings 1 & 5), push the lead foot IK out to +0.35 m. On the Flight phases (Drawings 4 & 8), extend the reaching foot to +0.25 m.
+
+Keyblade Foreshortening
+
+The Problem: Angling the Keyblade out toward the camera by 32° causes extreme visual foreshortening in a 2D orthographic render, making the weapon look tiny or warped.
+
+The Fix: On all drawings (1-8), reduce the outward Y-axis rotation (toward the camera) to a maximum of 10° to 15°—just barely enough to break the dark jacket silhouette—and pull the downward pitch up to -15°.
+
+Is it ready for transitions?No. Do not build the start and stop transitions yet. Because you need to heavily alter the center drop and torso pitch, any start or stop transition you build right now will have to be completely redone to match the new poses. Apply these 5 fixes to the loop, confirm it looks like a driving sprint, and then generate the transitions.
+
+Once you plug these numeric fixes in, does the Passing phase foot (at 0.18 m lift and 0.0 m translation) still awkwardly overlap with the planted foot on screen, or does the 3/4 camera angle provide enough visual separation?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Identifying animation errors

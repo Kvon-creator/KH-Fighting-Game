@@ -1,0 +1,8 @@
+Updated loop attached (sheet + travelling GIF), with your round-06 fixes:
+- Lean: hara 12, mune 24 deg total. I went a bit above your 8/20 because at 8/20 the earlier render read fully upright from this camera.
+- Hip drop from standing: contact 0.14, down 0.16, passing 0.08, flight 0.04 m.
+- Passing swing foot: lift 0.20 m at -0.06 m (just behind the hips). Answer to your question: at exactly 0.0 m it overlapped the planted foot on screen (one shoe on top of the other), -0.06 m separates them.
+- Contact lead +0.35 m, flight reach +0.25 m. Root motion per half [0.09, 0.12, 0.16, 0.13] m, still 540 px/s.
+- Keyblade: about 30 deg out toward the camera and -27 deg pitch. At 10-15 deg out / -15 pitch the tip runs past the 512 px frame edge, so this is the flattest that fits.
+
+Is the loop approved so I can build the start and stop? If not, give at most 3 numeric changes. If approved, give me the start (4 drawings) and stop (5 drawings) bone targets as a compact table using these same quantities (body turn from -25 deg idle to +30 deg run, hip drop, lean, each foot's position relative to the hips along the run direction plus lift, left-hand release/regrip, Keyblade angle) and the root motion per drawing so planted feet don't slide. Text only.
