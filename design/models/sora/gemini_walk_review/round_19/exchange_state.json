@@ -1,0 +1,36 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "2B2519BC91499A34B37F36AA57EB453A",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "glide-relaxed",
+  "promptSha256": "20b1049521a2ae8e5ce10a5233f192d53355b05854d41c48c78999fa1d54cbf8",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\GLIDE_RELAXED_ROUND_19.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-23T16:57:12.916Z",
+  "baselineImages": [
+    "2222e02512c3ab8c23a85bac0fa3ca6da0325c1b7ad2840a1a6922e644343c47",
+    "66eea176e1e6da2acfc6ea0523229bcc75dfffbd9ea45dfe22405345fde93d97"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\gemini_walk_review\\round_18\\gemini_original_preview.jpg",
+      "sha256": "5a68849f1268f36dad5d8703ce54f20d72b3b01173d437427358af038b8a2029"
+    },
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-23T16:58:18.301Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_19\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_19\\Gemini_Generated_Image_l5wdbyl5wdbyl5wd.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}

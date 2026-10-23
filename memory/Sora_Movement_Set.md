@@ -355,3 +355,4 @@ Pending review. Offered the matching brake transition.
 - **First step:** Gemini concept art, shown to Kvon before any 3D build (`gemini_walk_review/round_18`).
 
 **Why:** User decision.
+- **Round 18 art:** 7 poses: push-off, a full-plank horizontal glide skimming the floor with dust, a skid landing into a two-handed guard. Kvon: the rule breaks (Key pointing forward on one glide pose and in front on landing; 7 poses instead of 8) "are fine for now". He asked Gemini for another pose with a more relaxed glide posture instead of a full plank (round 19).
