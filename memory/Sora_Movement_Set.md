@@ -397,3 +397,18 @@ Pending review. Offered the matching brake transition.
 - **Cleanup pending:** glide v6-v8 folders are obsolete once Kvon approves (see Obsolete_Animation_Cleanup.md).
 
 **Why:** User decisions.
+
+**Glide consensus with Gemini, October23:** Kvon: "Communicate back and forth until you both come up with consistent instructions."
+- **Process:** round 22 (strict) still misread my render; round 23 used large per-part boards plus my literal description and a draft list (AGREE/CHANGE per item); round 24 was **CONFIRMED**.
+- **Agreed list** (`gemini_walk_review/round_24/submitted_prompt.txt`):
+  - **L1.** Loop three-quarter, chest toward the viewer (~+20 deg), NOT pure profile. This reverses round 21 and Kvon's "Pure side profile" choice, which was based on Gemini's round-21 advice.
+  - **L2.** Key low at the right hip, blade forward-down.
+  - **L3.** Left arm trailing behind, elbow almost straight.
+  - **L4.** Soft knees, feet behind/below, a few cm up.
+  - **L5.** Back 40-45 deg off vertical.
+  - **P1.** Push-off: drawing 1 dip; drawings 2-3 deep lunge, back leg pushing off.
+  - **P2.** Key raised behind the shoulder on drawings 2-3 (Gemini's pose 2), swung to forward-down on drawing 4.
+  - **S1.** Landing drawings 1-2: wide low stance, torso nearly upright (drop the v7-v9 lean-back).
+  - **S2.** Both hands on the Key from landing drawing 1, low in front, blade forward-down.
+  - **F1.** Face toward screen right throughout (seen in three-quarter with the body).
+- Not built yet; reported to Kvon.

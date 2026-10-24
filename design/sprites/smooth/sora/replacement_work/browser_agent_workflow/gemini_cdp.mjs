@@ -99,7 +99,14 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'glide-v9-compare': [
+const referenceSets = {'glide-consensus-text': [
+  'design/models/sora/gemini_walk_review/round_19/gemini_original_preview.jpg'
+], 'glide-consensus-v9': [
+  // Kvon: go back and forth with Gemini until we agree on consistent glide instructions.
+  'design/models/sora/gemini_walk_review/round_23/Loop_Reference_vs_v9.png',
+  'design/models/sora/gemini_walk_review/round_23/PushOff_Reference_vs_v9.png',
+  'design/models/sora/gemini_walk_review/round_23/Landing_Reference_vs_v9.png'
+], 'glide-v9-compare': [
   'design/models/sora/gemini_walk_review/round_22/Relaxed_Reference_vs_Glide_Loop_v9.png',
   'design/models/sora/gemini_walk_review/round_22/Concept_Sheet_vs_PushOff_and_Landing_v9.png',
   'design/models/sora/glide_loop2d_v9/Idle_Glide_Stop.gif'

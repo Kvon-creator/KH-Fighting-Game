@@ -1,0 +1,14 @@
+CONFIRMED.
+
+To answer your double-check question: yes, with the body turned to +20 degrees, aiming the head toward screen right naturally results in the face being rendered in a three-quarter view. This perfectly matches the relaxed glide reference drawing, where you can see the angle of his face rather than a flat, pure side profile. The merged list is fully consistent and ready for the rig.
+
+Now that the bone targets and perspectives are strictly locked in, will you map these exact poses to the 600 px/s root motion immediately, or do you need to calculate the per-frame interpolation for the push-off and landing sequences first?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Verifying animation steps' consistency
