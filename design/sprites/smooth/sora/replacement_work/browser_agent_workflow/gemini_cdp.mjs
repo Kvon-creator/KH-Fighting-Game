@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'glide-v6-compare': [
+const referenceSets = {'glide-v9-compare': [
+  'design/models/sora/gemini_walk_review/round_22/Relaxed_Reference_vs_Glide_Loop_v9.png',
+  'design/models/sora/gemini_walk_review/round_22/Concept_Sheet_vs_PushOff_and_Landing_v9.png',
+  'design/models/sora/glide_loop2d_v9/Idle_Glide_Stop.gif'
+], 'glide-v6-compare': [
   // Kvon: compare the current glide with Gemini's reference art and get suggestions to match it closer.
   'design/models/sora/gemini_walk_review/round_21/Relaxed_Reference_vs_Glide_Loop_v6.png',
   'design/models/sora/gemini_walk_review/round_21/Concept_Sheet_vs_PushOff_and_Landing_v6.png',

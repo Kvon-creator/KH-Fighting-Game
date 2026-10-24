@@ -1,0 +1,52 @@
+Literal Description of MY Relaxed Glide Drawing (Concept Art)
+
+Torso and Face: The torso is tilted forward at a relaxed diagonal. The body is turned in a three-quarter view facing the camera, exposing his chest and the front of his jacket. The face looks forward toward screen right.
+
+Arms and Hands: The left arm is trailing casually behind his torso. The right hand is held low near the right hip.
+
+Keyblade: The blade points forward and downward, extending out in front of his body/legs.
+
+Legs and Feet: The knees are softly bent, with the feet trailing slightly behind and below the hips.
+
+Height: He is hovering just a few centimeters above the dust trail on the floor.
+
+Literal Description of YOUR v9 Loop Drawings
+
+Torso and Face: The torso is pitched forward, but the body is turned in a pure side profile (hiding the chest/front of the jacket). The face looks screen right.
+
+Arms and Hands: The left arm has a bent elbow (due to my previous incorrect instructions). The right hand is at the hip.
+
+Keyblade: The blade is tucked flat and pointing backward behind him (due to my previous incorrect instructions).
+
+Legs and Feet: The legs are spread wider and skimming lower, viewed from a flat 2D side angle, making them look strictly scissored.
+
+Height: Hovering low to the ground.
+
+Visible Differences (Ranked by Severity)
+
+Keyblade Direction (Loop): Your v9 render points the blade flat and backward. The concept art points it forward and downward in front of him.
+
+Body Turn (Loop): Your v9 render is a pure side profile. The concept art is a three-quarter turn that shows his chest.
+
+Left Arm Position (Loop): Your v9 render has the left elbow bent (likely pushed forward). The concept art has the left arm trailing entirely behind him.
+
+Push-off and Landing Strips vs. First Sheet: I cannot visually judge the exact limb overlaps, stretch frames, or bracing angles in your push-off and landing strips against the first concept sheet from the picture.
+
+Strict Instructions to Fix Each Difference
+
+Loop (Body Turn): Revert the root yaw from the pure profile (+50/+60 deg) back to +20 degrees so the chest faces the camera in a three-quarter view.
+
+Loop (Keyblade & Right Arm): Revert the Keyblade pitch. Rotate it so the blade points forward and downward (roughly +30 to +45 degrees pitch, angled slightly outward toward the camera so it doesn't clip the legs). Ensure the right fist is positioned so the weapon leads in front of his body.
+
+Loop (Left Arm): Move the left hand IK target back behind the torso. Remove the forced bent elbow and let the arm trail casually for balance.
+
+Push-off (Drawings 1-4) and Landing (Drawings 1-5): Because I cannot physically see the push-off and landing strips to compare them against the first concept sheet, I cannot give you exact numerical corrections or bone targets for them. Do not apply my previous arbitrary "launch stretch" or "lean back" numbers if they break the 3/4 perspective established in the art.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Reconciling artistic direction
