@@ -425,3 +425,19 @@ Pending review. Offered the matching brake transition.
 - **Always check:** confirm uploads in the chat screenshot (thumbnails on my message) or with `inspect` (new 'reference' images) before trusting a visual critique. Gemini downsizes uploads to 1024 px wide, so keep boards no wider than about 2:1.
 
 **Why:** Root cause found when Gemini said the images were missing (rounds 25-26).
+
+**Glide angle and arm attempts, October23 (attempts 1-25 = glide_loop v11-v35; Kvon picked attempt 24 = v34):** Kvon asked for a new glide changing only the facing angle in small steps, showing each result before the next. Steps:
+- **Body turn:** v10's +20 went to +10, 0, then -10 (attempt 3, kept). Head turned back +10 relative to the body (attempt 4).
+- **Keyblade arm:**
+  - extended behind him (attempt 5); the blade aim is camera-relative so it stays in frame;
+  - straight wrist (attempt 6): the hand rolls only about the forearm (`wrist_roll`, search keeps the Key in frame on every drawing);
+  - wrist rolled 20 deg so the teeth show (attempt 7);
+  - elbow straighter, hand 4 cm further back (attempt 8). The hand bob is off, so the Key doesn't flicker.
+- **Left arm:**
+  - forward into view (attempt 9); fist lowered twice (attempts 10-11);
+  - arm rotated down at the shoulder (attempts 12-13); hand in front of the raised leg (14); elbow straighter (15); elbow tucked toward the torso (16); arm behind the raised leg (17);
+  - shoulder raised (18); forearm across the front of the torso (19); elbow pointed forward (20); forearm lowered (21); hand away from the torso (22, mostly toward the camera); shoulder lowered (23: +4, then 24: -4 deg).
+  - Attempt 25 (forearm extended along its own line) only foreshortened it toward the camera; Kvon chose to keep 24.
+- **Builder bug fixed:** block order - v27's arm block ran after v28's, so attempt 18's 5 cm hand raise never applied.
+- **Builder features:** `L_shrug_deg` (left collarbone), `L_elbow_hint_world` (elbow direction), per-drawing `wrist_roll`.
+- Push-off/landing not yet rebuilt for this pose; Godot still has glide v10.

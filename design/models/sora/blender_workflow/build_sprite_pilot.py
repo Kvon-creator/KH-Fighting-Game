@@ -848,6 +848,11 @@ def solve_pose(breath=0.0, lag=None):
             rotate_world(f'{side}_ashi1', fwd.cross(Vector((0, 0, 1))).normalized(), -deg)
     if POSE.get('head_yaw_cancel') and POSE.get('chest_twist_deg'):
         rotate_world('kubi', 'Z', -POSE['chest_twist_deg'])  # v19+: face stays on the opponent
+    if POSE.get('L_shrug_deg'):
+        # Glide v28+: raise only the left shoulder (collarbone up) before the arm is solved.
+        kh_ = pose_world('L_kata').translation
+        kd_ = pose_world('L_ude1').translation - kh_
+        rotate_world('L_kata', kd_.cross(Vector((0, 0, 1))).normalized(), POSE['L_shrug_deg'])
     if POSE.get('shrug_deg'):
         for sd_ in ('R', 'L'):
             kh = pose_world(f'{sd_}_kata').translation
@@ -876,7 +881,7 @@ def solve_pose(breath=0.0, lag=None):
         # Crouch: the left hand slides off the handle toward its free guard spot.
         l_target, l_w = POSE['L_free']
         hand_on('L', l_hand.lerp(Vector(l_target) - Vector((0, 0, POSE.get('crouch_extra', 0))), l_w),
-                (1, .4, -.3))
+                POSE.get('L_elbow_hint_world', (1, .4, -.3)))  # glide v22+: elbow hint can point lower
     else:
         hand_on('L', l_hand, (1, .4, -.3))
     if POSE.get('front_arm_deg'):
@@ -890,7 +895,8 @@ def solve_pose(breath=0.0, lag=None):
         rotate_world(f'{side}_te', forearm, degrees)
     if SQUARE_WRISTS:
         # A palm turned to the camera (battle_v10+) must not be re-squared to the handle.
-        for side in [s for s in GRIP_SIDES if not (s == 'L' and POSE.get('L_palm_to_camera'))]:
+        for side in [s for s in GRIP_SIDES if not (s == 'L' and POSE.get('L_palm_to_camera'))
+                     and not (s == 'R' and POSE.get('wrist_roll') is not None)]:
             m = pose_world(f'{side}_te'); head = m.translation.copy()
             f = (pose_world(f'{side}_yubiB').translation - head).normalized()
             across = f - blade*f.dot(blade)
@@ -898,6 +904,11 @@ def solve_pose(breath=0.0, lag=None):
                 turn = f.rotation_difference(across.normalized())
                 set_pose_world(f'{side}_te', Matrix.Translation(head) @ turn.to_matrix().to_4x4()
                                @ Matrix.Translation(-head) @ m)
+    if POSE.get('wrist_roll') is not None:
+        # Glide v16+: a straight wrist - the hand keeps the forearm's direction and only rolls about it; the Key
+        # then sits wherever that straight grip puts it.
+        fore_w = (pose_world('R_te').translation - pose_world('R_ude2').translation).normalized()
+        rotate_world('R_te', fore_w, POSE['wrist_roll'])
     if POSE.get('r_hand_rot'):
         # Crouch: the right fist keeps the idle grip on the Key and turns with it as one piece; the
         # forearm takes half of the roll so the wrist doesn't candy-wrap.
@@ -1567,6 +1578,110 @@ if LOOP:
                 yaw_g = math.atan2(G_BLADE.y, G_BLADE.x)
                 CR_DYAW = min([yaw_g - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)], key=abs)
                 CR_EL1 = math.asin(G_BLADE.z)
+            # v11+ (Kvon: "changes nothing but the angle at which Sora is facing the screen by small amounts"):
+            # the same v10 glide with only the loop's body turn changed; each version is one small step.
+            G_TURN_STEPS = {'_v11': 10.0, '_v12': 0.0, '_v13': -10.0, '_v14': -10.0, '_v15': -10.0, '_v16': -10.0, '_v17': -10.0, '_v18': -10.0, '_v19': -10.0, '_v20': -10.0, '_v21': -10.0, '_v22': -10.0, '_v23': -10.0, '_v24': -10.0, '_v25': -10.0, '_v26': -10.0, '_v27': -10.0, '_v28': -10.0, '_v29': -10.0, '_v30': -10.0, '_v31': -10.0, '_v32': -10.0, '_v33': -10.0, '_v34': -10.0, '_v35': -10.0}
+            G_SPIN = Matrix.Identity(3)  # turns the whole v10 figure (feet, hand, blade, arm) with the body
+            # v14 (Kvon: keep attempt 3's body but turn the head back to attempt 2's angle): body -10, head +10
+            # relative to it, so the head faces the same way as in v12 (body 0, head 0).
+            G_LOOK = 10.0 if GLIDE.endswith(('_v14', '_v15', '_v16', '_v17', '_v18', '_v19', '_v20', '_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')) else 0.0
+            for suf_, turn_ in G_TURN_STEPS.items():
+                if GLIDE.endswith(suf_):
+                    G_SPIN = Matrix.Rotation(math.radians(turn_ - G_TURN), 3, 'Z')
+                    G_TURN = turn_
+                    G_HAND, G_ARM = G_SPIN @ G_HAND, G_SPIN @ G_ARM
+                    ARM_BACK = G_ARM
+                    G_BLADE = (G_SPIN @ G_BLADE).normalized()
+                    yaw_g = math.atan2(G_BLADE.y, G_BLADE.x)
+                    CR_DYAW = min([yaw_g - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)], key=abs)
+                    CR_EL1 = math.asin(G_BLADE.z)
+
+            G_BACK_DIR = None
+            G_L_HINT = (1, .4, -.3)
+            if GLIDE.endswith(('_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                # v30 (Kvon: orient the shoulder so the elbow points out forward a little more): same fist position,
+                # the elbow direction swings toward his front.
+                G_L_HINT = tuple((Vector((1, .4, -.3)).normalized() + Matrix.Rotation(math.radians(-10.0), 3, 'Z') @ Vector((0, -1, 0))*.8).normalized())
+            if GLIDE.endswith(('_v26', '_v27', '_v28')):
+                # v26 (Kvon: reorient the shoulder to bring the elbow closer to the torso): same fist position,
+                # the arm turns about the shoulder so the elbow points back toward his side instead of outward.
+                G_L_HINT = tuple(Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.15, .9, -.4)))
+            if GLIDE.endswith(('_v15', '_v16', '_v17', '_v18', '_v19', '_v20', '_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                # v15 (Kvon: v14 with only the Keyblade arm changed - "extends the keyblade behind himself"): the right
+                # arm reaches back past the hip and the blade trails out behind him, angled toward the camera
+                # (so the tip stays in the frame) and a little down.
+                G_HAND = G_SPIN @ (U_*-.30 + V_*.24 + Vector((0, 0, .74)))
+                if GLIDE.endswith(('_v16', '_v17', '_v18', '_v19', '_v20', '_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v16: with a straight wrist the nearly locked arm let the hover bob swing the forearm (and the
+                    # Key) between drawings; a slightly shorter reach keeps the elbow stable.
+                    G_HAND = G_SPIN @ (U_*-.24 + V_*.24 + Vector((0, 0, .76)))
+                if GLIDE.endswith('_v19'):
+                    # v19 (Kvon: "bring the other arm forward into view"): the left hand comes forward in front of
+                    # his chest, slightly out to his left, elbow softly bent, so the camera sees the whole arm.
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.20, -.36, .92))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith('_v20'):
+                    # v20 (Kvon: lower the fist a little by bending the elbow): fist ~8 cm lower and pulled 6 cm in.
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.18, -.30, .84))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v21 (Kvon: "Lower it more"): fist another ~8 cm lower with the elbow bent a bit more.
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.17, -.26, .76))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v22 (Kvon: rotate the arm from its shoulder to lower the elbow): the whole arm swings down about
+                    # the shoulder (~20 deg), so the elbow drops and the forearm and fist come down with it.
+                    # (Swinging only the elbow round the shoulder-fist line flipped it out sideways - not used.)
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.16, -.20, .66))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v23 (Kvon: "Lower a little more"): the arm swings down a little further at the shoulder.
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.16, -.15, .60))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v24 (Kvon: bring the hand out in front of the raised leg): keep the low arm, the hand comes
+                    # forward (screen right) and toward the camera so it sits in front of the tucked knee.
+                    G_ARM = G_ARM + U_*.08 + V_*.14 + Vector((0, 0, .03))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v27', '_v28', '_v29')):
+                    # v27 (Kvon: straighten the elbow more and put the arm behind the raised leg): from v23's low arm,
+                    # the hand reaches further down and forward (straighter elbow) on the FAR side of the tucked knee
+                    # (away from the camera), so the leg covers the forearm.
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.16, -.15, .60))                         + U_*.10 - V_*.08 + Vector((0, 0, -.12))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith('_v28'):
+                    # v28 (Kvon: raise the shoulder; the arm looked a little too long): left collarbone shrugged up and
+                    # the hand raised ~5 cm, so the straight arm behind the raised leg reads shorter.
+                    G_ARM = G_ARM + Vector((0, 0, .05))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v29 (Kvon: hold the forearm in front of the torso): the left hand comes across in front of his
+                    # belly toward his right side, elbow out to his left - the forearm lies across the body.
+                    G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((-.06, -.30, .86))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v31 (Kvon: now lower the forearm): elbow still forward, the fist ~8 cm lower.
+                    G_ARM = G_ARM + Vector((0, 0, -.08))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v32', '_v33', '_v34', '_v35')):
+                    # v32 (Kvon: move the hand away from the torso): the fist moves ~10 cm out in front of his body.
+                    G_ARM = G_ARM + Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((0, -.10, 0))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith('_v35'):
+                    # v35 (Kvon: extend the forearm by straightening the elbow a little): the fist moves ~6 cm further
+                    # out along the forearm's line (forward and across), so the elbow opens up.
+                    G_ARM = G_ARM + Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((-.04, -.04, -.01))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v25', '_v26')):
+                    # v25 (Kvon: straighten the elbow out some): the hand reaches ~7 cm further along the arm's line.
+                    G_ARM = G_ARM + U_*.03 + V_*.04 + Vector((0, 0, -.05))
+                    ARM_BACK = G_ARM
+                if GLIDE.endswith(('_v18', '_v19', '_v20', '_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')):
+                    # v18 (Kvon: straighten the elbow a little, the wrist following): the hand reaches 4 cm further back,
+                    # the wrist stays straight with v17's roll, so the hand and Key follow the forearm.
+                    G_HAND = G_SPIN @ (U_*-.28 + V_*.24 + Vector((0, 0, .76)))
+                hb_b = (-U_*.38 + V_*.92).normalized()
+                G_BACK_DIR = (hb_b*math.cos(math.radians(-18)) + Vector((0, 0, math.sin(math.radians(-18))))).normalized()  # set against the camera (not spun) so it stays in the frame
 
             def loop_key(j):
                 ph = 2*math.pi*j/6
@@ -1574,9 +1689,16 @@ if LOOP:
                 (ls, ll, lp), (rs, rl, rp), g_drop, g_hunch, g_pitch = G_LEGS
                 feet = {'L': (ls + .02*math.sin(ph), LAT['L'], ll + bob, lp),
                         'R': (rs - .02*math.sin(ph), LAT['R'], rl + bob, rp)}
+                if globals().get('G_SPIN') is not None and G_SPIN != Matrix.Identity(3):
+                    for sd_, (fs_, fl_, *rest_) in list(feet.items()):
+                        wv_ = G_SPIN @ (U_*fs_ + V_*fl_)
+                        feet[sd_] = (wv_.dot(U_), wv_.dot(V_), *rest_)
                 return dict(turn=G_TURN, ce=g_drop - bob - POSE['drop'], hunch=g_hunch, pitch=g_pitch + 2*math.sin(ph),
-                            neck=G_NECK, look=0.0, tilt=0.0, toe=8.0, twist=0.0, feet=feet, hand=G_HAND.copy(),
-                            release=1.0, arm=1.0, blade_s=1.0, hz=.02*math.sin(ph - 1.0), root=G_SPEED)
+                            neck=G_NECK, look=G_LOOK, tilt=0.0, toe=8.0, twist=0.0, feet=feet, hand=G_HAND.copy(),
+                            release=1.0, arm=1.0, blade_s=1.0,
+                            hz=0.0 if GLIDE.endswith(('_v16', '_v17', '_v18', '_v19', '_v20', '_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')) else .02*math.sin(ph - 1.0), root=G_SPEED,
+                            l_elbow_hint=G_L_HINT, l_shrug=-4.0 if GLIDE.endswith(('_v34', '_v35')) else 4.0 if GLIDE.endswith('_v33') else (12.0 if GLIDE.endswith(('_v28', '_v29', '_v30', '_v31', '_v32')) else 0.0),
+                            blade_dir=G_BACK_DIR, wrist_roll=20.0 if GLIDE.endswith(('_v18', '_v19', '_v20', '_v21', '_v22', '_v23', '_v24', '_v25', '_v26', '_v27', '_v28', '_v29', '_v30', '_v31', '_v32', '_v33', '_v34', '_v35')) else (0.0 if GLIDE.endswith(('_v16', '_v17')) else None))
 
         part = RUN.rsplit('_v', 1)[0]
         RUN_KEYS = []
@@ -1755,6 +1877,9 @@ if LOOP:
 
         def apply_run(k_):
             global blade
+            POSE['wrist_roll'] = k_.get('wrist_roll')
+            POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
+            POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
             POSE.update({'body_turn_deg': k_['turn'], 'crouch_extra': k_['ce'], 'hunch_extra': k_['hunch'],
                          'pitch_extra': k_['pitch'], 'neck_extra': k_['neck'], 'look_deg': k_['look'],
                          'head_tilt_deg': k_['tilt'], 'toe_deg': {'L': k_['toe'], 'R': k_['toe']},
@@ -1769,6 +1894,9 @@ if LOOP:
                 POSE['foot_pitch'][sd] = pitch_
             arm_w = (k_['arm'] + 1)/2
             POSE['L_free'] = (tuple(ARM_FWD.lerp(ARM_BACK, arm_w)), k_['release'])
+            if k_.get('wrist_roll') is not None:
+                POSE['r_hand_rot'] = None
+                return
             if k_.get('blade_dir') is not None:
                 blade = Vector(k_['blade_dir']).normalized()
                 yaw_t = math.atan2(blade.y, blade.x)
@@ -1789,6 +1917,44 @@ if LOOP:
             q_ = yawed.rotation_difference(blade).to_matrix() @ Matrix.Rotation(CR_DYAW*b_s, 3, 'Z')
             POSE['r_hand_rot'] = [list(r_) for r_ in (q_ @ CR_TE0)]
 
+        if GLIDE and GLIDE.endswith(('_v16', '_v17')) and part == 'run_loop':
+            # v16 (Kvon: straighten the wrist holding the Keyblade in relation to his arm): keep v15's arm, leave the
+            # wrist straight and pick the roll about the forearm whose Key points most like v15's backward blade
+            # while the tip stays in the frame and above the floor.
+            TW_SIGN = 1  # (set properly below; the glide has no chest twist)
+            ground_w = world_bounds(body)[0].z
+            best_roll = None
+            for roll_ in range(0, 360, 10):
+                ok_, bd0_ = True, None
+                for kk_ in RUN_KEYS:  # every drawing must keep the whole Key in the frame and above the floor
+                    apply_run(dict(kk_, wrist_roll=float(roll_))); solve_pose(0.0, LAG0)
+                    km_ = pose_world('R_te') @ CR_KEY_IN_TE
+                    bd_ = km_.to_3x3().normalized().col[2]
+                    tip_ = km_.translation + bd_*(KEY_REACH + .08)
+                    hip_ = pose_world('hara').translation
+                    ok_ = ok_ and (tip_ - hip_).dot(U_) > -.92 and tip_.z > ground_w + .04  # backward blades reach far
+                    bd0_ = bd0_ or bd_
+                bd_ = bd0_
+                score_ = bd_.dot(G_BACK_DIR) - (0 if ok_ else 10)
+                if best_roll is None or score_ > best_roll[0]:
+                    best_roll = (score_, roll_, tuple(round(c_, 3) for c_ in bd_))
+            print('WRIST_ROLL', best_roll)
+            roll_final = float(best_roll[1])
+            if GLIDE.endswith('_v17'):
+                # v17 (Kvon: rotate the wrist "only a little bit" so the Keyblade's teeth show): 20 deg more roll,
+                # in whichever direction turns the Key's flat face (local Y) further toward the camera.
+                faces_ = {}
+                for d_ in (20.0, -20.0):
+                    apply_run(dict(RUN_KEYS[0], wrist_roll=roll_final + d_)); solve_pose(0.0, LAG0)
+                    km_ = pose_world('R_te') @ CR_KEY_IN_TE
+                    faces_[d_] = abs(km_.to_3x3().normalized().col[1].dot(to_cam))
+                apply_run(dict(RUN_KEYS[0], wrist_roll=roll_final)); solve_pose(0.0, LAG0)
+                face0_ = abs((pose_world('R_te') @ CR_KEY_IN_TE).to_3x3().normalized().col[1].dot(to_cam))
+                d_best = max(faces_, key=faces_.get)
+                print('WRIST_TEETH', {'face_to_camera_before': round(face0_, 3), 'options': {k: round(v, 3) for k, v in faces_.items()}, 'chosen': d_best})
+                roll_final += d_best
+            for k_ in RUN_KEYS:
+                k_['wrist_roll'] = roll_final
         # Twist sign: at the left-foot contact the right (opposite) shoulder should be forward.
         TW_SIGN = 1
         apply_run(dict(loop_key(0), twist=0.0)); solve_pose(0.0, LAG0)
