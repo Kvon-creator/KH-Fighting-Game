@@ -1733,6 +1733,11 @@ if LOOP:
                               look=0.0, release=1.0, arm=1.0)
                     k_['hand'] = U_*-.16 + V_*.18 + Vector((0, 0, 1.12 - .02*j))
                     k_['blade_dir'] = (-U_*.72 + V_*.38 + Vector((0, 0, .58))).normalized()
+                if GLIDE.endswith('_v34') and j == 3:
+                    # v34 (approved pose): the last push-off drawing hands over to the loop with the loop's own arm
+                    # setup (straight Keyblade wrist, forward left elbow, lowered shoulder), not v10's blend.
+                    for key_ in ('wrist_roll', 'blade_dir', 'l_elbow_hint', 'l_shrug'):
+                        k_[key_] = end.get(key_)
                 if G_V7 and not G_V10 and j == 3:
                     # v7+: launch stretch - the push-off foot stays planted far back and the torso drives forward,
                     # a straight line from heel to head, before he settles into the relaxed hover.
@@ -1752,7 +1757,8 @@ if LOOP:
                 # Keyblade from drawing 1, low in front, blade forward-down; he skids, then rises into the idle.
                 land_dir = (U_*.82 + V_*.45 + Vector((0, 0, -.36))).normalized()
                 plant.update(turn=0.0, ce=.30 - POSE['drop'], hunch=-6.0, pitch=-8.0, neck=-6.0, look=10.0,
-                             release=0.0, blade_dir=land_dir, hand=IDLE_R['hand'] + U_*.04)
+                             release=0.0, blade_dir=land_dir, hand=IDLE_R['hand'] + U_*.04,
+                             wrist_roll=None, l_elbow_hint=(1, .4, -.3), l_shrug=0.0)  # both hands regrip the Key
             elif G_V7:
                 # v7+: a braced skid - the torso leans back against the momentum (hara + mune about -18 deg
                 # total) and the hips sink to 0.16 m, on drawings 1 and 2.
