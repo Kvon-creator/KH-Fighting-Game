@@ -1,0 +1,34 @@
+{
+  "status": "text_reply_received",
+  "media": "text",
+  "tabId": "D9BF71173B55C86186D1F313768EC241",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "glide-v10-check",
+  "promptSha256": "fa5820aada1d4008683b24027dc0bb3d119119042013aef9d17d21b538fbda11",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\GLIDE_CHECK_ROUND_27.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-24T01:27:26.509Z",
+  "baselineImages": [
+    "a9723dd21114cb01cb2b6323478a6c2b93032c564a1f55186f4cb20bb2792668",
+    "2e61442a522b7d3c2ed245f20bd87eaa141cbe75ecf51381a9c1b91a55170c9c"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\gemini_walk_review\\round_25\\Loop_Reference_vs_v10.png",
+      "sha256": "033811263530c3ff6bc5dbbaa98d427d83510e913e4d712f5f10ea48b4b7d4c2"
+    },
+    {
+      "file": "design\\models\\sora\\gemini_walk_review\\round_25\\PushOff_Reference_vs_v10.png",
+      "sha256": "9f7ea0436d4c27ec4c55ba3adb670206df44a2a4743ca0603e214f4fde74426e"
+    },
+    {
+      "file": "design\\models\\sora\\gemini_walk_review\\round_25\\Landing_Reference_vs_v10.png",
+      "sha256": "74e15b22bf24893181627c56402383a394fcf80e8db20612af277817af480e81"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "lastReply": "L1 MET\nL2 MET\nL3 MET\nL4 MET\nL5 MET\nP1 MET\nP2 MET\nS1 MET\nS2 MET\nF1 MET\n\n\n\n\nPro\n\nGemini is AI and can make mistakes.\n\nEvaluating render against constraints",
+  "completedAt": "2026-10-24T01:27:44.830Z",
+  "newImages": 0
+}

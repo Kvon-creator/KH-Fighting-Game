@@ -412,3 +412,16 @@ Pending review. Offered the matching brake transition.
   - **S2.** Both hands on the Key from landing drawing 1, low in front, blade forward-down.
   - **F1.** Face toward screen right throughout (seen in three-quarter with the body).
 - Not built yet; reported to Kvon.
+
+**Glide v10 built from the agreed list (October23; current, pending Kvon's approval):**
+- **Loop:** v6's three-quarter pose (+20), the left arm trailing behind with a straighter elbow, face toward screen right.
+- **Push-off drawings 2-3:** deep lunge (back foot planted on its toe at -0.45 m, front knee bent) with the Key raised BEHIND the shoulder; it swings to forward-down on drawing 4. `apply_run` now accepts a per-drawing `blade_dir`; big turns go round behind him.
+- **Landing:** an upright, wide, low skid with BOTH hands on the Key from drawing 1, blade forward-down, rising into the idle.
+- **Godot:** glide_*_384 replaced; push-off root [3.61, 14.44, 18.05, 28.88]; trace verified. Preview `glide_loop2d_v10/Idle_Glide_Stop.gif`.
+- **Gemini round 27** (images actually attached): all ten agreed items MET.
+
+**Lesson - Gemini never saw my images in rounds 05-26:** `gemini_cdp.mjs exchange` only uploaded a `--reference-set` when `--attach-references true` was also passed, and I never passed it. Every "comparison", "matches" and misdescription of my renders from those rounds (run v5-v17, glide v4-v9) was Gemini working from my text alone.
+- **Fixed:** a named reference set now uploads by default (opt out with `--attach-references false`).
+- **Always check:** confirm uploads in the chat screenshot (thumbnails on my message) or with `inspect` (new 'reference' images) before trusting a visual critique. Gemini downsizes uploads to 1024 px wide, so keep boards no wider than about 2:1.
+
+**Why:** Root cause found when Gemini said the images were missing (rounds 25-26).

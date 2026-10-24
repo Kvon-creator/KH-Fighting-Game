@@ -45,7 +45,7 @@ const ANIMATIONS := {
 	# Low ground glide (replaces the run; from Gemini's concept art): push-off, a hovering loop at
 	# 600 px/s (no planted feet, so it can stop after any drawing), skid landing into the idle.
 	&"glide_start": ["res://assets/sora/glide_start_384/", "sora_glide_start_",
-		[2, 2, 3, 3], [3.61, 10.83, 21.66, 28.88]],
+		[2, 2, 3, 3], [3.61, 14.44, 18.05, 28.88]],
 	&"glide_loop": ["res://assets/sora/glide_loop_384/", "sora_glide_loop_",
 		[3, 3, 3, 3, 3, 3], [30.0, 30.0, 30.0, 30.0, 30.0, 30.0]],
 	&"glide_stop": ["res://assets/sora/glide_stop_384/", "sora_glide_stop_",

@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'glide-consensus-text': [
+const referenceSets = {'glide-v10-check': [
+  'design/models/sora/gemini_walk_review/round_25/Loop_Reference_vs_v10.png',
+  'design/models/sora/gemini_walk_review/round_25/PushOff_Reference_vs_v10.png',
+  'design/models/sora/gemini_walk_review/round_25/Landing_Reference_vs_v10.png'
+], 'glide-consensus-text': [
   'design/models/sora/gemini_walk_review/round_19/gemini_original_preview.jpg'
 ], 'glide-consensus-v9': [
   // Kvon: go back and forth with Gemini until we agree on consistent glide instructions.
@@ -318,7 +322,9 @@ async function exchange() {
     const current=await evaluate(`queryOne(${JSON.stringify(composer)}).innerText`);
     if(current.trim())throw Error('Composer contains text; do not overwrite it.');
     const refs=[...referenceFiles];
-    if(options['attach-references']==='true') {
+    // A named reference set is uploaded unless --attach-references false is given: rounds 05-26 of the
+    // walk/run/glide reviews named sets without the flag, so Gemini never saw those images.
+    if(options['attach-references']==='true'||(options['reference-set']&&options['attach-references']!=='false')) {
       refs.forEach(f=>{if(!fs.statSync(f).isFile())throw Error(`Missing art reference: ${f}`);});
       await evaluate(`queryOne('button[aria-label="Upload & tools"]').click()`);await paint();
       const input=await evaluate(`queryOne('input[type="file"][accept^="image"]')`,false);

@@ -1550,6 +1550,23 @@ if LOOP:
 
             if not GLIDE.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))):
                 G_HAND = U_*.02 + V_*.26 + Vector((0, 0, .67))  # v9+: v8's blade tip dipped below the floor line
+            G_V10 = not GLIDE.endswith(tuple(f'_v{n_}' for n_ in range(1, 10)))
+            if G_V10:
+                # v10+ (instructions agreed with Gemini, rounds 23-24, built at Kvon's "Yes"): loop three-quarter
+                # with the chest toward the viewer (+20), Key low at the right hip with the blade forward-down,
+                # left arm trailing behind with the elbow almost straight, soft knees with the feet behind/below a
+                # few cm up, back 40-45 deg, face toward screen right. (Loop = v6's pose with a straighter left arm.)
+                G_TURN = 20.0
+                G_LEGS = ((-.08, .20, 35.0), (-.44, .05, 20.0), .17, 19.0, 24.0)
+                G_HAND = U_*.14 + V_*.26 + Vector((0, 0, .58))
+                G_NECK = -48.0
+                G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.30, .42, .84))
+                ARM_BACK = G_ARM
+                hb_g = (U_*.8 + V_*.6).normalized()
+                G_BLADE = (hb_g*math.cos(math.radians(-30)) + Vector((0, 0, math.sin(math.radians(-30))))).normalized()
+                yaw_g = math.atan2(G_BLADE.y, G_BLADE.x)
+                CR_DYAW = min([yaw_g - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)], key=abs)
+                CR_EL1 = math.asin(G_BLADE.z)
 
             def loop_key(j):
                 ph = 2*math.pi*j/6
@@ -1570,6 +1587,8 @@ if LOOP:
             # knee comes up, then he tips forward into the glide. Root ramps up to glide speed.
             end = loop_key(0)
             roots = [.02, .06, .12, .16]
+            if G_V10:
+                roots = [.02, .08, .10, .16]
             body_s = 0.0
             for j, w in enumerate([.2, .45, .75, 1.0]):
                 k_ = mix(IDLE_R, end, w)
@@ -1581,7 +1600,18 @@ if LOOP:
                 k_['ce'] += [.06, .03, 0, 0][j]
                 k_['release'] = min(1.0, max(0.0, (w - .1)/.4))
                 k_['root'] = roots[j]
-                if G_V7 and j == 3:
+                if G_V10 and j in (1, 2):
+                    # v10+ (P1/P2): a deep forward lunge like Gemini's pose 2 - front knee bent over the planted front
+                    # foot, the back leg stretched far behind pushing off the floor on its toe - with the Keyblade
+                    # raised up BEHIND the shoulder; it swings down to the glide's forward-down carry on drawing 4.
+                    r_back = -.45 - (roots[2] if j == 2 else 0.0)  # the back foot stays planted while he moves
+                    k_['feet'] = {'L': (.26 - (roots[2] if j == 2 else 0.0), LAT['L'], 0.0, 0.0),
+                                  'R': (r_back, LAT['R'], 0.0, 35.0)}
+                    k_.update(turn=8.0 + 8.0*j, ce=.30 - POSE['drop'], hunch=12.0 + 2*j, pitch=16.0 + 3*j, neck=-34.0,
+                              look=0.0, release=1.0, arm=1.0)
+                    k_['hand'] = U_*-.16 + V_*.18 + Vector((0, 0, 1.12 - .02*j))
+                    k_['blade_dir'] = (-U_*.72 + V_*.38 + Vector((0, 0, .58))).normalized()
+                if G_V7 and not G_V10 and j == 3:
                     # v7+: launch stretch - the push-off foot stays planted far back and the torso drives forward,
                     # a straight line from heel to head, before he settles into the relaxed hover.
                     k_['feet']['R'] = (-.45, k_['feet']['R'][1], 0.0, 30.0)
@@ -1595,13 +1625,29 @@ if LOOP:
             plant = dict(last, turn=20.0, ce=.30 - POSE['drop'], hunch=0.0, pitch=-6.0, neck=-8.0, look=6.0,
                          toe=20.0, hz=0.0, root=G_SPEED)
             plant['feet'] = {'L': (.40, LAT['L'], 0.0, 0.0), 'R': (-.42, LAT['R'], 0.0, 15.0)}
-            if G_V7:
+            if G_V10:
+                # v10+ (S1/S2): wide low stance with the torso nearly upright (no lean-back), both hands on the
+                # Keyblade from drawing 1, low in front, blade forward-down; he skids, then rises into the idle.
+                land_dir = (U_*.82 + V_*.45 + Vector((0, 0, -.36))).normalized()
+                plant.update(turn=0.0, ce=.30 - POSE['drop'], hunch=-6.0, pitch=-8.0, neck=-6.0, look=10.0,
+                             release=0.0, blade_dir=land_dir, hand=IDLE_R['hand'] + U_*.04)
+            elif G_V7:
                 # v7+: a braced skid - the torso leans back against the momentum (hara + mune about -18 deg
                 # total) and the hips sink to 0.16 m, on drawings 1 and 2.
                 plant.update(turn=G_TURN, ce=.16 - POSE['drop'], hunch=-14.0, pitch=-32.0)
             RUN_KEYS.append(plant)
             for j, (w, root) in enumerate(zip([.25, .5, .8, .97], [.10, .05, .02, 0.0])):
                 k_ = mix(plant, IDLE_R, w)
+                if G_V10:
+                    k_['release'] = 0.0
+                    k_['blade_dir'] = land_dir.lerp(CR_BLADE0, w).normalized() if j else land_dir
+                    if j == 0:
+                        k_.update(hunch=plant['hunch'], pitch=plant['pitch'], ce=plant['ce'], turn=plant['turn'],
+                                  hand=plant['hand'].copy())
+                        k_['feet'] = {sd: tuple(f_) for sd, f_ in plant['feet'].items()}  # still skidding wide
+                    k_['root'] = root
+                    RUN_KEYS.append(k_)
+                    continue
                 if G_V7 and j == 0:
                     k_.update(hunch=plant['hunch'], pitch=plant['pitch'], ce=plant['ce'])  # still braced
                 k_['release'] = 1 - min(1.0, max(0.0, (w - .1)/.35))
@@ -1723,6 +1769,18 @@ if LOOP:
                 POSE['foot_pitch'][sd] = pitch_
             arm_w = (k_['arm'] + 1)/2
             POSE['L_free'] = (tuple(ARM_FWD.lerp(ARM_BACK, arm_w)), k_['release'])
+            if k_.get('blade_dir') is not None:
+                blade = Vector(k_['blade_dir']).normalized()
+                yaw_t = math.atan2(blade.y, blade.x)
+                d_c = [yaw_t - CR_YAW0 + m_*2*math.pi for m_ in (-1, 0, 1)]
+                d_ = min(d_c, key=abs)
+                if abs(d_) > math.radians(120):  # big turns go round behind him, as in the run
+                    d_ = max([c_ for c_ in d_c if abs(c_) < 2*math.pi],
+                             key=lambda c_: Vector((math.cos(CR_YAW0 + c_/2), math.sin(CR_YAW0 + c_/2), 0)).dot(-V_))
+                yawed = Matrix.Rotation(d_, 3, 'Z') @ CR_BLADE0
+                q_ = yawed.rotation_difference(blade).to_matrix() @ Matrix.Rotation(d_, 3, 'Z')
+                POSE['r_hand_rot'] = [list(r_) for r_ in (q_ @ CR_TE0)]
+                return
             b_s = k_['blade_s']
             yaw_ = CR_YAW0 + CR_DYAW*b_s
             el_ = CR_EL0 + (CR_EL1 - CR_EL0)*b_s
