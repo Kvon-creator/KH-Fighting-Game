@@ -1,0 +1,8 @@
+A question from my director before we go further. The sprites come from a rigged 3D model of Sora (the KH2 model: an FBX file with a 49-bone skeleton, plus OBJ/DAE versions and its PNG textures, and the Kingdom Key as an OBJ). Every pose is set by a script that places the bones, then the model is rendered with an orthographic three-quarter camera.
+
+If I upload his 3D model to you in a prompt, could you generate the perfect pose for Sora from it? Please be specific and honest:
+1. Which of these file types can you actually open and read here: FBX, OBJ, DAE, PNG textures? Can you see the mesh and the skeleton's bone names and rest pose, or only treat the file as text?
+2. Could you pose the model yourself and show me the result (render an image of the posed 3D model), or would you only be able to give me bone rotations/positions for my script to apply?
+3. If you can only give numbers, how would you make sure they are correct for THIS rig (bone axes, rest pose, the Y-up armature) rather than a guess?
+4. Is there a better way for you to help get the poses right, for example if I send you renders of the model from several angles, or a list of the bones with their rest positions and axes?
+Text only.

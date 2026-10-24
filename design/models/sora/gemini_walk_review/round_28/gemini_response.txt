@@ -1,0 +1,18 @@
+File Capabilities: I can process PNG textures natively as 2D images. I can read OBJ and DAE files, but strictly as raw text data (parsing vertex coordinates or XML tags). I cannot read binary FBX files. I do not have a 3D viewport, meaning I cannot visually "see" the 3D mesh volume or the skeleton from those files—I can only analyze their underlying code structure and coordinate data.
+
+Posing & Rendering: I cannot pose the model myself or render a new image of your 3D file. I can only provide the numeric bone targets (rotations and translations) or write the GDScript or Python code for your engine to apply, similar to the Blender Python generation scripts we used previously for character blockouts.
+
+Mathematical Accuracy: To ensure the numbers are correct for this specific Y-up armature without guessing, I rely on the raw data. If you provide a text dump of the rig (like a JSON file or the DAE XML), I can read the exact bone hierarchy, parent-child relationships, local rotation axes, and bone lengths to calculate the kinematics. However, because I cannot simulate your exact IK solvers or see the mesh skin weights, my vector math will always require your in-engine renders to verify the final deformation.
+
+The Ideal Workflow: The best method combines your engine's visual output with the rig's raw data. Providing a text list or JSON dump of the bones with their rest transforms and local axes gives me the strict mathematical baseline. Pairing that with orthographic renders (Front, Side, Top) of the rest pose allows me to map the math to the visual proportions before we start dialing in specific animations.
+
+Would you like to export a JSON dump of the bone hierarchy and rest transforms from Godot so I can lock in the exact local axes for the next animation phase?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Generating 3D model guidance
