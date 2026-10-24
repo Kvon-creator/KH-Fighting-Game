@@ -441,3 +441,11 @@ Pending review. Offered the matching brake transition.
 - **Builder bug fixed:** block order - v27's arm block ran after v28's, so attempt 18's 5 cm hand raise never applied.
 - **Builder features:** `L_shrug_deg` (left collarbone), `L_elbow_hint_world` (elbow direction), per-drawing `wrist_roll`.
 - Push-off/landing not yet rebuilt for this pose; Godot still has glide v10.
+
+**Final glide approved, October23:** Kvon answered "Yes" to attempt 24 as the final glide.
+- **Final set:** glide_start_v34 / glide_loop_v34 / glide_stop_v34, plus their 2D versions.
+  - The push-off's last drawing uses the loop's arm setup (straight Keyblade wrist, forward left elbow, lowered shoulder) so it hands over without a pop.
+  - The landing regrips with both hands (wrist_roll cleared).
+- **Godot:** glide_*_384 exported; holds and root unchanged; trace verified. Preview `glide_loop2d_v34/Idle_Glide_Stop.gif`.
+- **Known:** the Key jumps from behind him (loop) to low in front (landing drawing 1) as both hands regrip; the earlier glide versions had the same jump.
+- **Cleanup** (per Obsolete_Animation_Cleanup.md): deleted 78 obsolete glide folders (v6-v33, v35, start/stop v6-v10). Recovery commits 3cb2859 (attempts) and df38942 (final).
