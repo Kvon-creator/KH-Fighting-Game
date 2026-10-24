@@ -367,3 +367,17 @@ Pending review. Offered the matching brake transition.
 - **Gemini round 20:** critique of v4. Not taken: "left hand forward" and "blade backward", which contradict its own drawing. Its claim that the trailing leg was locked straight was false (0.56 of 0.69 m measured).
 - **Godot:** the glide replaces the run on double-tap forward (`glide_*_384`, `--glide-demo-ticks=N`). It enters loop drawing 1 after the push-off and lands after any loop drawing on release. Trace verified.
 - **Preview:** `glide_loop2d_v6/Idle_Glide_Stop.gif`; boards `gemini_walk_review/round_20/Relaxed_Glide_vs_v4/v5/v6.png`.
+
+**Obsolete animation folders deleted, October23:** Kvon: "delete the folders housing obsolete animations"; then "Approved, but don't remove the .import files".
+- **Kept in `design/models/sora/` (current finals):**
+  - battle_v12 + sprite2d_v3 (idle)
+  - shuffle_fwd/back_v5 + 2D v5
+  - crouch_down/hold_v4 + 2D v4
+  - glide_start/loop/stop_v6 + 2D v6
+  - plus blender_workflow, downloads, gemini_walk_review, gemini_animation, pose_edit, character_blockout_v6-v9, README.md.
+- **Deleted (177 folders + Alignment_Review_v18.json):** older battle / idle_loop / one_hand / sprite_pilot / sprite2d v1-v2 / sheet2d / sheet_battle versions; every walk_* and run_* folder; shuffle v1-v4; crouch v1-v3; glide v1-v5.
+- **Godot `assets/sora`:** images deleted from idle_battle, idle_battle_192/256/320, walk_fwd/start/stop/stop_wide_384 and run_start/loop/stop_384. Their `.import` files were KEPT, as Kvon instructed, so those folders now hold only orphan .import files.
+- **Recovery:** everything deleted is recoverable from git commit f429bfd. Version notes above that name deleted folders refer to that history.
+- **Not touched:** the old hand-drawn pipeline in `design/sprites/smooth/sora/replacement_work/` (still used as reference images); ask before cleaning it.
+
+**Why:** User request.
