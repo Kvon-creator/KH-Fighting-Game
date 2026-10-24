@@ -1733,6 +1733,11 @@ if LOOP:
                               look=0.0, release=1.0, arm=1.0)
                     k_['hand'] = U_*-.16 + V_*.18 + Vector((0, 0, 1.12 - .02*j))
                     k_['blade_dir'] = (-U_*.72 + V_*.38 + Vector((0, 0, .58))).normalized()
+                if GLIDE.endswith('_v34') and OUT_NAME.endswith(('_v34b', '_v34c', '_v34d')) and j in (1, 2):
+                    # v34b (Kvon: the transition flashed the Keyblade up in the air behind him): no raised Key on the
+                    # lunge drawings - the hand and blade ease straight from the idle grip toward the glide's carry.
+                    k_['hand'] = IDLE_R['hand'].lerp(end['hand'], w)
+                    k_['blade_ease'] = w  # blade direction filled in once the loop's Key direction is measured
                 if GLIDE.endswith('_v34') and j == 3:
                     # v34 (approved pose): the last push-off drawing hands over to the loop with the loop's own arm
                     # setup (straight Keyblade wrist, forward left elbow, lowered shoulder), not v10's blend.
@@ -1961,6 +1966,14 @@ if LOOP:
                 roll_final += d_best
             for k_ in RUN_KEYS:
                 k_['wrist_roll'] = roll_final
+        if GLIDE and GLIDE.endswith('_v34') and part == 'run_start' and OUT_NAME.endswith(('_v34b', '_v34c', '_v34d')):
+            # Measure the glide loop's actual Key direction (straight wrist), then ease the lunge drawings toward it.
+            TW_SIGN = 1
+            apply_run(dict(loop_key(0))); solve_pose(0.0, LAG0)
+            loop_dir_ = (pose_world('R_te') @ CR_KEY_IN_TE).to_3x3().normalized().col[2]
+            for k_ in RUN_KEYS:
+                if k_.get('blade_ease') is not None:
+                    k_['blade_dir'] = tuple(CR_BLADE0.lerp(loop_dir_, k_['blade_ease']).normalized())
         # Twist sign: at the left-foot contact the right (opposite) shoulder should be forward.
         TW_SIGN = 1
         apply_run(dict(loop_key(0), twist=0.0)); solve_pose(0.0, LAG0)

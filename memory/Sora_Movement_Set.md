@@ -449,3 +449,7 @@ Pending review. Offered the matching brake transition.
 - **Godot:** glide_*_384 exported; holds and root unchanged; trace verified. Preview `glide_loop2d_v34/Idle_Glide_Stop.gif`.
 - **Known:** the Key jumps from behind him (loop) to low in front (landing drawing 1) as both hands regrip; the earlier glide versions had the same jump.
 - **Cleanup** (per Obsolete_Animation_Cleanup.md): deleted 78 obsolete glide folders (v6-v33, v35, start/stop v6-v10). Recovery commits 3cb2859 (attempts) and df38942 (final).
+- **Push-off fix, October23:** Kvon said the idle-to-glide transition wasn't smooth ("a frame or two where Sora is holding the Keyblade up in the air behind him"). Those were push-off drawings 2-3, raised behind the shoulder per agreed item P2.
+  - **Fix:** `glide_start_v34d` (builder: `-- glide_start_v34 glide_start_v34d`). The lunge legs are kept; the hand and blade ease from the idle grip toward the loop's measured straight-wrist Key direction, with no raise.
+  - Exported to Godot `glide_start_384`; trace verified. Preview GIF regenerated.
+  - Leftover failed output folders: glide_start_v34b and v34c (a safety check blocked my rm). Delete them in the next cleanup.
