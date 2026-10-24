@@ -381,3 +381,19 @@ Pending review. Offered the matching brake transition.
 - **Not touched:** the old hand-drawn pipeline in `design/sprites/smooth/sora/replacement_work/` (still used as reference images); ask before cleaning it.
 
 **Why:** User request.
+
+**Glide v9 (October23; current, pending Kvon's approval):**
+- **Round 21:** Gemini compared v6 with its art and made six suggestions. Kvon: "Apply all of them" and said v6 showed only the side profile. Asked to choose, he picked **"Pure side profile"** (not chest toward the camera).
+- **v7:** all six fixes applied:
+  - turn +55;
+  - landing drawings 1-2 lean back (hara+mune about -18 deg total, measured -22 on screen) with hips 0.16;
+  - push-off drawing 4 is a full stretch (back foot planted at -0.45, torso about 56 deg on screen);
+  - loop legs near -0.35 / 3 cm up and far -0.15 / 12 cm up;
+  - blade -30 deg tucked flat to his side (5 deg flare); left elbow bent.
+- **v8:** +55 showed his back, so +50 = exact profile. The tucked blade ran to the frame edge, so the hand moved back and the blade went to -36.
+- **v9:** the hand raised so the blade tip stays above the floor line.
+- **Exported to Godot** `glide_*_384` (same holds and root motion); trace verified.
+- **Preview:** `glide_loop2d_v9/Idle_Glide_Stop.gif`, board `gemini_walk_review/round_21/Relaxed_Glide_vs_v9.png`.
+- **Cleanup pending:** glide v6-v8 folders are obsolete once Kvon approves (see Obsolete_Animation_Cleanup.md).
+
+**Why:** User decisions.

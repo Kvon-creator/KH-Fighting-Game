@@ -1520,6 +1520,36 @@ if LOOP:
                 # v6+: v5 looked compact next to the drawing's wide spread. The -0.46 m trail was not locked
                 # (0.56 of the 0.69 m leg, measured), so the long trailing leg comes back; tucked knee under the hips.
                 G_LEGS = ((-.08, .20, 35.0), (-.44, .05, 20.0), .17, 19.0, 24.0)
+            G_V7 = not GLIDE.endswith(tuple(f'_v{n_}' for n_ in range(1, 7)))
+            if G_V7:
+                # v7+ (Gemini round 21, all six applied at Kvon's request; he chose a pure side profile):
+                # full side profile; legs staggered and skimming lower (near -0.35 m / 3 cm up, far -0.15 m /
+                # 12 cm up); blade -30 deg tucked flat to his side (5 deg flare); left elbow softly bent.
+                # The landing leans back and the push-off ends in a full stretch (below).
+                G_TURN = 55.0
+                G_LEGS = ((-.15, .12, 30.0), (-.35, .03, 20.0), .17, 19.0, 24.0)
+                G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.22, .14, .88))
+                ARM_BACK = G_ARM
+                hb_g = (U_*math.cos(math.radians(5)) + V_*math.sin(math.radians(5))).normalized()
+                G_BLADE = (hb_g*math.cos(math.radians(-30)) + Vector((0, 0, math.sin(math.radians(-30))))).normalized()
+                yaw_g = math.atan2(G_BLADE.y, G_BLADE.x)
+                CR_DYAW = min([yaw_g - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)], key=abs)
+                CR_EL1 = math.asin(G_BLADE.z)
+
+            if not GLIDE.endswith(tuple(f'_v{n_}' for n_ in range(1, 8))):
+                # v8+: +55 turned past profile (his back and the back of his head showed) - +50 is exact profile on
+                # this camera; the in-plane blade ran to the frame's right edge: hand a little back, blade -36 deg.
+                G_TURN = 50.0
+                G_ARM = Matrix.Rotation(math.radians(G_TURN), 3, 'Z') @ Vector((.22, .14, .88))
+                ARM_BACK = G_ARM
+                G_HAND = U_*.02 + V_*.26 + Vector((0, 0, .60))
+                G_BLADE = (hb_g*math.cos(math.radians(-36)) + Vector((0, 0, math.sin(math.radians(-36))))).normalized()
+                yaw_g = math.atan2(G_BLADE.y, G_BLADE.x)
+                CR_DYAW = min([yaw_g - CR_YAW0 + k_*2*math.pi for k_ in (-1, 0, 1)], key=abs)
+                CR_EL1 = math.asin(G_BLADE.z)
+
+            if not GLIDE.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))):
+                G_HAND = U_*.02 + V_*.26 + Vector((0, 0, .67))  # v9+: v8's blade tip dipped below the floor line
 
             def loop_key(j):
                 ph = 2*math.pi*j/6
@@ -1551,6 +1581,12 @@ if LOOP:
                 k_['ce'] += [.06, .03, 0, 0][j]
                 k_['release'] = min(1.0, max(0.0, (w - .1)/.4))
                 k_['root'] = roots[j]
+                if G_V7 and j == 3:
+                    # v7+: launch stretch - the push-off foot stays planted far back and the torso drives forward,
+                    # a straight line from heel to head, before he settles into the relaxed hover.
+                    k_['feet']['R'] = (-.45, k_['feet']['R'][1], 0.0, 30.0)
+                    k_['hunch'] += 4.0
+                    k_['pitch'] += 6.0
                 RUN_KEYS.append(k_)
         elif GLIDE:
             # Skid landing (round 18, poses 6-7): the feet touch down wide and low, he skids (feet slide with
@@ -1559,9 +1595,15 @@ if LOOP:
             plant = dict(last, turn=20.0, ce=.30 - POSE['drop'], hunch=0.0, pitch=-6.0, neck=-8.0, look=6.0,
                          toe=20.0, hz=0.0, root=G_SPEED)
             plant['feet'] = {'L': (.40, LAT['L'], 0.0, 0.0), 'R': (-.42, LAT['R'], 0.0, 15.0)}
+            if G_V7:
+                # v7+: a braced skid - the torso leans back against the momentum (hara + mune about -18 deg
+                # total) and the hips sink to 0.16 m, on drawings 1 and 2.
+                plant.update(turn=G_TURN, ce=.16 - POSE['drop'], hunch=-14.0, pitch=-32.0)
             RUN_KEYS.append(plant)
             for j, (w, root) in enumerate(zip([.25, .5, .8, .97], [.10, .05, .02, 0.0])):
                 k_ = mix(plant, IDLE_R, w)
+                if G_V7 and j == 0:
+                    k_.update(hunch=plant['hunch'], pitch=plant['pitch'], ce=plant['ce'])  # still braced
                 k_['release'] = 1 - min(1.0, max(0.0, (w - .1)/.35))
                 k_['root'] = root
                 RUN_KEYS.append(k_)
