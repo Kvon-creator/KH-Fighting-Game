@@ -1,0 +1,10 @@
+Here is the current glide animation built from your art. Please compare it with the reference images you generated.
+
+Attached:
+1. Board: your relaxed glide pose (left) next to three drawings of my 6-drawing glide loop (right).
+2. Board: your first concept sheet on top; below it my push-off (4 drawings, top strip) and my skid landing (5 drawings, bottom strip).
+3. GIF of the whole sequence at game speed: idle -> push-off -> glide loop -> skid landing -> idle.
+
+First, compare honestly: where does my animation match your images, and where does it look different (body angle and turn toward the camera, how stretched or compact he looks, leg spread and knee bends, height above the floor, left arm, Keyblade hand and blade, head and face, and the push-off and landing poses)? Look at the pictures, not at numbers.
+
+Then give suggestions to make the animation match your images more closely, most important first (at most 6). For each, say which part (push-off drawing N, loop, or landing drawing N) and what exactly to change. Text only, no images.

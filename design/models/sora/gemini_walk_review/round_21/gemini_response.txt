@@ -1,0 +1,60 @@
+Here is the honest visual comparison between your 3D render and the 2D concept art.
+
+1. Visual Comparison (Render vs. Concept)
+
+Where it Matches:
+
+The Keyblade is finally trailing correctly, and the left hand is successfully placed forward/out for balance.
+
+The overall 45-degree diagonal tilt of the torso in the loop captures the "relaxed coasting" vibe.
+
+The head and face are successfully locked on the forward path.
+
+Where it Differs:
+
+Body Angle/Turn: Your render is still turned too far toward the camera (3/4 view). The concept art is almost a pure profile. The 3/4 turn makes Sora's shoulders and chest look boxed-in and wide, losing the streamlined, wind-swept silhouette.
+
+Push-off: In the concept art, the push-off has an explosive, fully stretched "squash and stretch" frame before settling into the glide. Your push-off looks like he simply leans forward and picks his feet up.
+
+Landing: The concept art shows a heavy, braced skid where the upper body leans backward against the momentum. Your landing looks too upright, as if he simply put his feet down on a treadmill.
+
+Leg Spread (Loop): Your trailing legs look a bit parallel and cramped. The concept art shows a clear separation and a soft, effortless stagger between the near and far legs.
+
+Keyblade Alignment: The concept art shows the Keyblade forming a perfectly parallel line with his trailing leg. Yours looks slightly misaligned, breaking the aerodynamic flow.
+
+2. Fixes to Match the Concept (Ranked by Importance)
+
+1. Glide Loop - Body Turn (Silhouette)
+
+The Fix: Turn the root yaw from the current +20 degrees to +50 or +60 degrees (near pure profile). This immediately slims the silhouette, exposes the leg stagger, and makes him look aerodynamic.
+
+2. Landing (Drawings 1 & 2) - Braking Lean
+
+The Fix: To sell the heavy skid, you must pitch the torso backward against the 600 px/s momentum. Pitch hara and mune to a combined -15 to -20 degrees (leaning back). Drop the center bone to 0.16m so he sinks into the friction.
+
+3. Push-off (Drawing 4) - The Launch Stretch
+
+The Fix: The final frame before the loop must show maximum physical extension. Push the trailing push-off foot back to -0.45m (Z-lift 0.0m, fully planted) and pitch the torso to 50 degrees. This creates a straight diagonal line from the heel to the top of the head before he tucks into the relaxed hover.
+
+4. Glide Loop - Leg Separation & Skim Height
+
+The Fix: To get the effortless coasting look, stagger the legs more visibly and drop them closer to the floor. Set the near leg to -0.35m (Z-lift 0.03m) and the far leg to -0.15m (Z-lift 0.12m).
+
+5. Glide Loop - Keyblade Alignment
+
+The Fix: The weapon must parallel the trailing leg. Pitch the blade to exactly -30 degrees, and rotate it so it sits flat against the side of his leg (reducing the outward Y-axis flare to 0 to 5 degrees).
+
+6. Glide Loop - Left Arm Polish
+
+The Fix: The left arm reaching out is good, but if it is too straight it looks like a T-pose. Bend the elbow slightly: pull the X-axis translation back slightly toward the chest, but keep the Z-height level with the ribs.
+
+With the body turned closer to a pure profile (+50 to +60 degrees), does the right hand holding the Keyblade clip into his right thigh, or does the rig's shoulder width naturally clear it?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Extrapolating animation fixes
