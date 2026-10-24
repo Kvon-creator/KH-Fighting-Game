@@ -453,3 +453,5 @@ Pending review. Offered the matching brake transition.
   - **Fix:** `glide_start_v34d` (builder: `-- glide_start_v34 glide_start_v34d`). The lunge legs are kept; the hand and blade ease from the idle grip toward the loop's measured straight-wrist Key direction, with no raise.
   - Exported to Godot `glide_start_384`; trace verified. Preview GIF regenerated.
   - Leftover failed output folders: glide_start_v34b and v34c (a safety check blocked my rm). Delete them in the next cleanup.
+- **Kvon approved the smooth push-off ("Yes"), October23.** Cleanup: deleted glide_start_v34 / glide_start2d_v34 (old raised-Key push-off) and the failed glide_start_v34b / v34c.
+- **Final glide set:** glide_start_v34d, glide_loop_v34, glide_stop_v34, plus 2D versions. Recovery commit 71b2e6e.
