@@ -536,3 +536,4 @@ Pending review. Offered the matching brake transition.
   - With option 1's hand, the blade over his head put the guard over his face (k10-k12), so the hand was raised ~10 cm and moved 4 cm back.
   - Options k13 (level), k14 (angled up), k15 (steeper; 2D in `jump_fall2d_v3_k15b` after an interrupted run left a partial `jump_fall2d_v3_k15`).
   - Sheet `jump_fall2d_v3/Falling1_Blade_Over_Head.png`. Awaiting Kvon's pick.
+- **Falling 1 kept as is, October26:** Kvon: "For simplicity, we'll stick with the image on the left" (option 1, the original jump_fall_v3 Key raised up and back). Current fall = **jump_fall_v3**; the k1-k15 option folders are obsolete at the jump cleanup.
