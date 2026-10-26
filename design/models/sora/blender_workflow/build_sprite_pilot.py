@@ -1817,6 +1817,10 @@ if LOOP:
                     # the player with the bent wrist, tipped a little further down.
                     RUN_KEYS[1]['wrist_roll'] = None
                     RUN_KEYS[1]['blade_dir'] = tuple((Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
+                    # v11 (Kvon: twist the Keyblade while keeping it in the same position): rising 2's Key rolls about its
+                    # own shaft; the hand turns with it.
+                    RUN_KEYS[1]['blade_twist'] = float(OUT_NAME.rsplit('_t', 1)[1]) if '_t' in OUT_NAME.rsplit('_v', 1)[-1] else 45.0
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
@@ -2087,6 +2091,9 @@ if LOOP:
                              key=lambda c_: Vector((math.cos(CR_YAW0 + c_/2), math.sin(CR_YAW0 + c_/2), 0)).dot(-V_))
                 yawed = Matrix.Rotation(d_, 3, 'Z') @ CR_BLADE0
                 q_ = yawed.rotation_difference(blade).to_matrix() @ Matrix.Rotation(d_, 3, 'Z')
+                if k_.get('blade_twist'):
+                    # Jump rising v11+: twist the Key about its own shaft (same direction, different face showing).
+                    q_ = Matrix.Rotation(math.radians(k_['blade_twist']), 3, blade) @ q_
                 POSE['r_hand_rot'] = [list(r_) for r_ in (q_ @ CR_TE0)]
                 return
             b_s = k_['blade_s']
