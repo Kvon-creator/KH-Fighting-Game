@@ -1891,6 +1891,14 @@ if LOOP:
                         7: (U_*-.18 + V_*.24 + Z_*1.18, (-U_*.5 + V_*.4 - Z_*.75).normalized()),# behind the head, tip down the back
                         8: (U_*-.20 + V_*.28 + Z_*1.34, (-U_*.6 + Z_*.75 + V_*.3).normalized()),# arm up and back, diagonal
                         9: (U_*-.16 + V_*.22 + Z_*.80, Vector(back_low)),                       # low behind (as rising)
+                        # Kvon: option 1's hand, the blade rotated so it lies above his head (pointing forward/up).
+                        10: (hi, (U_*.65 + Z_*.40 + V_*.45).normalized()),
+                        11: (hi, (U_*.45 + Z_*.65 + V_*.45).normalized()),
+                        12: (hi, (U_*.75 + Z_*.20 + V_*.55).normalized()),
+                        # 13-15: same blades, hand raised ~10 cm and a touch back so the guard clears his face.
+                        13: (hi + Z_*.10 - U_*.04, (U_*.75 + Z_*.20 + V_*.55).normalized()),
+                        14: (hi + Z_*.10 - U_*.04, (U_*.65 + Z_*.40 + V_*.45).normalized()),
+                        15: (hi + Z_*.10 - U_*.04, (U_*.45 + Z_*.65 + V_*.55).normalized()),
                     }
                     h_k, b_k = KOPT[int(m_k.group(1))]
                     RUN_KEYS[0]['hand'] = h_k; RUN_KEYS[0]['blade_dir'] = tuple(b_k)

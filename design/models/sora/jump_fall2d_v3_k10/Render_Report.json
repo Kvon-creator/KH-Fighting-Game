@@ -1,0 +1,9 @@
+{
+  "source": "jump_fall_v3_k10/sora_idle_loop.blend",
+  "version": "jump_fall2d_v3_k10",
+  "frames": [
+    "sora_idle3d_00.png",
+    "sora_idle3d_01.png"
+  ],
+  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
+}
