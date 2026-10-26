@@ -883,7 +883,7 @@ def solve_pose(breath=0.0, lag=None):
         head = pose_world(f'{side_k}_kata').translation
         kdir = pose_world(f'{side_k}_ude1').translation - head
         rotate_world(f'{side_k}_kata', kdir.cross(Vector((0, 0, 1))).normalized(), lift_k)
-    hand_on('R', r_hand, (-1, .4, -.3))
+    hand_on('R', r_hand, POSE.get('R_elbow_hint_world') or (-1, .4, -.3))  # jump land v3+: elbow can point out
     if ONE_HAND:
         guard_hint = turn_m @ Vector(POSE.get('L_elbow_hint', (1, .6, -.2)))
         two_bone('L_ude1', 'L_ude2', 'L_te', turn_m @ Vector(POSE['L_relaxed_wrist']), guard_hint)
@@ -1290,6 +1290,12 @@ if LOOP:
                             'R': (*to_w(POSE['body_turn_deg'], POSE['R_foot']), 0.0, 0.0)},
                       hand=Matrix.Rotation(math.radians(POSE['body_turn_deg']), 3, 'Z') @ Vector(POSE['R_hand']),
                       release=0.0, arm=0.0, blade_s=0.0, hz=0.0)
+        if JUMP:
+            # Jump (Kvon: the Key elbow bent too far inward on landing): the real idle's fist ends up a little off its
+            # aim point after the wrist is squared, and this machinery aims at the unsettled point - the rebuilt idle
+            # grip sat further across his body. Use the real idle's measured fist position instead.
+            solve_pose(0.0, LAG0)
+            IDLE_R['hand'] = hand_point('R') - Vector((0, 0, BREATH['hands_z']*LAG0))
         RUN_TURN = 30.0
         if not RUN.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
             # v11+ (Gemini round 14, after Kvon said v8 didn't match its poses at all): turn him nearly side-on
@@ -1780,6 +1786,32 @@ if LOOP:
                 mid = mix(land, IDLE_R, .5); mid['root'] = 0.0
                 end_ = mix(land, IDLE_R, .85); end_['root'] = 0.0
                 RUN_KEYS = [land, mid, end_]
+                if not JUMP.endswith(('_v1', '_v2')):
+                    # v3 (Kvon: the Key-holding elbow bent too far inward on landing): the right elbow points out to his
+                    # right side and a little down, as in the idle, instead of folding in across his stomach.
+                    out_ = Matrix.Rotation(math.radians(IDLE_R['turn']), 3, 'Z') @ Vector((-1, .15, 0))
+                    hint_ = tuple((out_.normalized() + Vector((0, 0, -.35))).normalized())
+                    if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                        # v4: the hint barely moved the elbow. The real cause: the landing crouch sank and tipped the grip
+                        # across his body. Keep the chest upright and the grip at the idle spot (only 3 cm lower), so the
+                        # Keyblade arm keeps the idle's shape while the legs absorb the landing.
+                        hint_ = None
+                        for k_ in RUN_KEYS:
+                            k_['hz'] = k_['ce'] - .03*(k_['ce'] / .10)
+                            k_['hunch'], k_['pitch'] = 0.0, 0.0
+                    J_VAR = OUT_NAME.rsplit('_', 1)[-1] if OUT_NAME.startswith('jump_land_v3_') else ''
+                    if J_VAR == 'down':
+                        hint_ = tuple((out_.normalized()*.4 + Vector((0, 0, -1))).normalized())
+                    elif J_VAR == 'cam':
+                        hint_ = tuple((out_.normalized() + to_cam*.8).normalized())
+                    elif J_VAR == 'back':
+                        hint_ = tuple((out_.normalized() - to_cam*.8).normalized())
+                    for k_ in RUN_KEYS:
+                        k_['r_elbow_hint'] = hint_
+            if OUT_NAME.endswith('_idlecheck'):
+                # Diagnostic: the battle idle rebuilt through the run machinery, to compare with the real idle frame.
+                RUN_KEYS = [mix(IDLE_R, IDLE_R, 0.0)]
+                RUN_KEYS[0]['root'] = 0.0
             for k_ in RUN_KEYS:
                 k_.setdefault('root', 0.0)
         elif GLIDE and part == 'run_loop':
@@ -1971,6 +2003,7 @@ if LOOP:
             POSE['wrist_roll'] = k_.get('wrist_roll')
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
+            POSE['R_elbow_hint_world'] = k_.get('r_elbow_hint')
             POSE.update({'body_turn_deg': k_['turn'], 'crouch_extra': k_['ce'], 'hunch_extra': k_['hunch'],
                          'pitch_extra': k_['pitch'], 'neck_extra': k_['neck'], 'look_deg': k_['look'],
                          'head_tilt_deg': k_['tilt'], 'toe_deg': {'L': k_['toe'], 'R': k_['toe']},

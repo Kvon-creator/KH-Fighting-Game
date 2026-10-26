@@ -486,3 +486,11 @@ Pending review. Offered the matching brake transition.
   - **fall** [4,4]: legs reaching down, Key raised high and angled toward the camera so it fits the frame (v1/v2 clipped the top).
   - **land** [3,3,4]: wide crouch, both hands on the Key, rising to the idle.
   - Review sheet: `jump_fall2d_v3/Jump_All_Drawings.png`. Not in Godot yet.
+- **Landing elbow fix, October26:** Kvon said "The elbow holding the keyblade is bent too far inward in the landing poses."
+  - Elbow-hint variants (land v3 out/down/cam/back) barely changed anything.
+  - **Root cause (found with an idle-check render through the run machinery):** IDLE_R['hand'] was the idle's AIM point. The real idle's fist settles elsewhere after the wrists are squared, so every RUN-machinery blend from the idle put the grip further across his body.
+  - **Fix (JUMP only):** IDLE_R['hand'] = the real idle's measured hand_point. The rebuilt idle now differs from battle_v12 frame 0 by 1.7k pixels (was 8.2k).
+  - **land v5** (also upright chest, hands only 3 cm lower than the crouch) and **start v4** rebuilt.
+  - The glide/run blends have the same old offset (approved, not rebuilt).
+  - Test folders: jump_land_v3_down/cam/back, jump_idlecheck, jump_idlecheck2 (apex by mistake), jump_b_idlecheck.
+  - Current set: start v4, rise v2, apex v3, fall v3, land v5. Sheet `jump_land2d_v5/Jump_All_Drawings.png`.

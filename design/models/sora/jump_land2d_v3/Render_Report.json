@@ -1,0 +1,10 @@
+{
+  "source": "jump_land_v3/sora_idle_loop.blend",
+  "version": "jump_land2d_v3",
+  "frames": [
+    "sora_idle3d_00.png",
+    "sora_idle3d_01.png",
+    "sora_idle3d_02.png"
+  ],
+  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
+}
