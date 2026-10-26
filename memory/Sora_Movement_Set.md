@@ -631,3 +631,9 @@ Pending review. Offered the matching brake transition.
   - **Glide:** root motion x1.5: loop 45 px per 3-frame drawing (900 px/s, was 600); push-off [5.42, 21.66, 27.07, 43.32]; skid [45, 27.07, 13.54, 5.42, 0]. Drawings unchanged.
   - **Air steering:** while airborne (not during a dash or spin), holding D/Right or A/Left eases vx toward +/-4 px/frame (accel 0.5/frame). Dash momentum above that fades by the 0.9 drag first; no input = drag. About 140 px of drift over a full jump.
   - Traced: glide, jump holding forward, jump holding back.
+- **Instant cancels and jump carry, October26:** Kvon: "I want every animation cancel to feel instant... move further both forward and backward when maneuvering in the air... jump a decent distance and angle while walking, then that angle and distance magnified when jumping out of a ground dash."
+  - **Cancels:** jump, back-dash and glide now cancel any ground move at once (GROUND_CANCEL = idle, shuffles, crouch down/hold/up, glide start/loop/stop, jump_land, plus a running back-dash). Crouch cancels a shuffle, landing or glide skid at once; walking out of a landing is instant.
+  - **Takeoff:** [1,1,1] = 3 frames from standing; 2 when already moving (skips the crouch drawing).
+  - **Jump carry:** takeoff vx = walk +/-5, glide +12, back-dash -9 px/frame. Holding the same way keeps a faster carry; no input coasts at 0.98/frame; dash momentum still fades at 0.9.
+  - **Steering:** up to +/-6 px/frame, accel 0.6.
+  - **Traced:** standing jump (no drift), walk jump (~190 px forward), glide jump (~430 px), back-dash jump (backwards), walk->crouch, glide->back-dash.

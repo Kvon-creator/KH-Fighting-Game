@@ -59,8 +59,19 @@ const AIR_DASH_CARRY := 7.0
 const AIR_DRAG := 0.9
 ## Air steering (Kvon: move left and right in the air without dashing): holding D/Right or A/Left eases
 ## his sideways speed toward this many px per game frame (240 px/s).
-const AIR_STEER_SPEED := 4.0
-const AIR_STEER_ACCEL := 0.5
+const AIR_STEER_SPEED := 6.0
+const AIR_STEER_ACCEL := 0.6
+## Jump carry (Kvon: a decent distance and angle out of a walk, magnified out of a ground dash): the
+## sideways speed a jump keeps, px per game frame. Holding the same way keeps it; letting go slows it a
+## little (AIR_COAST); holding the other way turns him around.
+const WALK_JUMP_VX := 5.0
+const GLIDE_JUMP_VX := 12.0
+const BACK_DASH_JUMP_VX := 9.0
+const AIR_COAST := 0.98
+## Ground moves any of which a jump, back-dash or glide may cancel at once.
+const GROUND_CANCEL := [&"idle", &"shuffle_forward", &"shuffle_back", &"crouch_down", &"crouch_hold",
+	&"crouch_up", &"glide_start", &"glide_loop", &"glide_stop", &"jump_land"]
+const GLIDE_ANIMS := [&"glide_start", &"glide_loop", &"glide_stop"]
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing,
 ## optional file numbers in play order (crouch_up is crouch_down backwards)]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
@@ -88,7 +99,8 @@ const ANIMATIONS := {
 		[2, 3, 3, 3, 3], [45.0, 27.07, 13.54, 5.42, 0.0]],
 	# Jump: takeoff on the ground, then one "air" animation whose drawing is picked from his vertical
 	# speed each game frame (rising 1, rising 2, apex, swing up, falling 1, falling 2), then the landing.
-	&"jump_start": ["res://assets/sora/jump_start_384/", "sora_jump_start_", [2, 2, 2], []],
+	# Takeoff (Kvon: instant cancels): 3 game frames from standing, 2 when already moving.
+	&"jump_start": ["res://assets/sora/jump_start_384/", "sora_jump_start_", [1, 1, 1], []],
 	&"jump_air": ["res://assets/sora/jump_rise_384/", "sora_jump_rise_", [1, 1, 1, 1, 1, 1], [],
 		[0, 1, 0, 0, 1, 2], ["sora_jump_rise_", "sora_jump_rise_", "sora_jump_apex_", "sora_jump_fall_",
 		"sora_jump_fall_", "sora_jump_fall_"], ["res://assets/sora/jump_rise_384/",
@@ -128,6 +140,8 @@ var _dash_back := false
 var _vx := 0.0
 ## Held left/right in the air this frame (-1, 0 or 1).
 var _air_input := 0.0
+## Sideways speed the next jump leaves the floor with.
+var _takeoff_vx := 0.0
 var _bd_tick := -1
 var _back_was := false
 var _last_back_press := -1000
@@ -246,18 +260,34 @@ func _physics_process(_delta: float) -> void:
 			_after_dash = false
 		_air_step()
 		return
-	if _bd_tick >= 0:
+	# Instant cancels (Kvon): any ground move - standing, walking, crouching, gliding, back-dashing or
+	# landing - can be cancelled straight into a jump, a back-dash or a glide. A jump keeps the ground
+	# speed he had: a decent arc from a walk, a much longer one out of a glide or back-dash.
+	var back_dashing := _bd_tick >= 0
+	if jump_pressed and (back_dashing or anim in GROUND_CANCEL):
+		_takeoff_vx = _ground_speed(anim, forward, back)
+		var moving := absf(_takeoff_vx) > 0.0
+		_bd_tick = -1
+		_sprite.position.y = FLOOR_Y
+		_show(&"jump_start", 1 if moving else 0)  # already moving: skip the crouch drawing
+		return
+	if back_tap and not back_dashing and anim in GROUND_CANCEL:
+		_bd_tick = 0
 		_back_dash_step()
 		return
-	if jump_pressed and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
-		_show(&"jump_start")  # from the idle stance (a step just begun snaps back to it)
+	if glide_wanted and (back_dashing or (anim in GROUND_CANCEL and not (anim in GLIDE_ANIMS))):
+		_bd_tick = -1
+		_sprite.position.y = FLOOR_Y
+		_show(&"glide_start")
 		return
-	if back_tap and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
-		_bd_tick = 0  # back-dash from the idle stance (a step just begun snaps back to it)
+	if back_dashing:
 		_back_dash_step()
 		return
-	if glide_wanted and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
-		_show(&"glide_start")  # from the idle stance (a step just begun snaps back to it)
+	if crouch and anim in [&"shuffle_forward", &"shuffle_back", &"jump_land", &"glide_stop"]:
+		_show(&"crouch_down")  # crouch at once instead of finishing the step or landing
+		return
+	if anim == &"jump_land" and wanted != &"idle":
+		_show(wanted)  # walk out of a landing at once
 		return
 	if anim == &"idle" and wanted != &"idle":
 		_show(wanted)  # drawing 1 of the shuffle is the idle stance; the crouch starts from it too
@@ -287,7 +317,8 @@ func _physics_process(_delta: float) -> void:
 			_dash_used = false
 			_dash_tick = -1
 			_after_dash = false
-			_vx = 0.0
+			_dash_back = false
+			_vx = _takeoff_vx
 			_air_step()
 		elif anim == &"glide_start" and at_end:
 			_show(&"glide_loop", GLIDE_ENTRY_DRAWING)
@@ -334,14 +365,16 @@ func _air_step() -> void:
 		_vx = -AIR_DASH_CARRY if _dash_back else AIR_DASH_CARRY
 		_after_dash = not _dash_back  # the forward brake already raised the Keyblade
 	if _air_input != 0.0:
-		# Steering: ease toward the held direction's speed (dash momentum above it fades out first).
+		# Steering: ease toward the held direction's speed; holding the same way as a faster carry keeps it.
 		var target := _air_input * AIR_STEER_SPEED
 		if absf(_vx) > AIR_STEER_SPEED and signf(_vx) == signf(target):
-			_vx *= AIR_DRAG
+			pass
 		else:
 			_vx = move_toward(_vx, target, AIR_STEER_ACCEL)
+	elif _after_dash or _dash_back:
+		_vx *= AIR_DRAG  # dash momentum fades quickly when not steering
 	else:
-		_vx *= AIR_DRAG
+		_vx *= AIR_COAST
 	_sprite.position.x = clampf(_sprite.position.x + _vx, LEFT_LIMIT, RIGHT_LIMIT)
 	_sprite.position.y += _vy
 	_vy += JUMP_GRAVITY
@@ -376,6 +409,19 @@ func _air_step() -> void:
 		drawing = maxi(drawing, 4)  # the brake already raised the Keyblade: straight into falling 1
 	if _sprite.animation != &"jump_air" or _sprite.frame != drawing:
 		_show(&"jump_air", drawing)
+
+
+## Sideways speed (px per game frame) a jump starts with, from what he was doing on the ground.
+func _ground_speed(anim: StringName, forward: bool, back: bool) -> float:
+	if _bd_tick >= 0:
+		return -BACK_DASH_JUMP_VX
+	if anim in GLIDE_ANIMS:
+		return GLIDE_JUMP_VX
+	if anim == &"shuffle_forward" or (forward and not back):
+		return WALK_JUMP_VX
+	if anim == &"shuffle_back" or (back and not forward):
+		return -WALK_JUMP_VX
+	return 0.0
 
 
 ## Which step of a timed move a game frame falls in (the step count once it is over).
