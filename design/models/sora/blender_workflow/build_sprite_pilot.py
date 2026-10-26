@@ -1753,6 +1753,11 @@ if LOOP:
                     # v5 (Kvon: straighten the Keyblade elbow a bit in takeoff 3): the fist reaches ~6 cm further down and
                     # back along the arm.
                     leave['hand'] = U_*-.20 + V_*.23 + Vector((0, 0, .76))
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                    # v6 (Kvon: add a few more degrees to the Keyblade elbow bend in takeoff 1 and 2): the grip comes ~5 cm
+                    # up toward the shoulders, so both elbows bend a little more.
+                    crouch['hz'] = crouch.get('hz', 0.0) + .05
+                    push['hz'] = push.get('hz', 0.0) + .05
             elif jpart == 'jump_rise':
                 # Rising (sheet pose 2 / ref_01): front knee driven up, the other leg trailing down, body upright.
                 RUN_KEYS = [jk({'L': (.10, LAT['L'], .34, 10.0), 'R': (-.08, LAT['R'], .10, 45.0)}, ce=-.02, pitch=-4.0,
