@@ -1,0 +1,12 @@
+Next move for Sora: the FORWARD AIR-DASH. While in the air, he dashes quickly forward (toward screen right) in a straight horizontal line, then drops back into his normal falling pose.
+
+Attached: (1) Sora's approved jump in our sprite style (takeoff, rising, apex, falling, landing), (2) his approved ground glide pose (the same move on the ground: body leaning forward, Keyblade held back behind him in his right hand).
+
+My director's rule for air moves: rising -> a brief tuck -> then the air move.
+
+Please generate an image: a clean concept sheet of Sora doing the forward air-dash, facing screen right, plain white background, the same 2D cel style, KH2 outfit and Kingdom Key as the attached sprites, the same size in every pose, no text or labels. Show 6 poses in order:
+1. The brief tuck in the air (like the attached apex pose).
+2. Bursting forward: body stretching out horizontally toward screen right.
+3-4. The dash itself: body leaning far forward and nearly level, legs trailing behind, Keyblade in his RIGHT hand held back behind him (like the glide pose), left arm forward or tucked; a short speed trail behind him is fine.
+5. Slowing down: body coming back upright, legs swinging under him.
+6. Back into the falling pose (Keyblade raised high behind his head, like the attached falling poses).

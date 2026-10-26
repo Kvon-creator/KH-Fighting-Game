@@ -1,0 +1,17 @@
+Here is the concept sheet mapping out Sora's forward air-dash sequence.
+
+The sequence starts with the brief tuck from the jump apex, bursts into the stretched horizontal skim with the trailing Keyblade, and finally breaks out of the momentum back into the upright falling pose.
+
+With the horizontal momentum established in the 2D concept, do you need me to break down the exact torso pitch angles required to get the rig from the upright tuck to that flat skimming posture?
+
+Images
+
+
+
+
+Pro
+Aspect ratio
+
+Gemini is AI and can make mistakes.
+
+Creating your image

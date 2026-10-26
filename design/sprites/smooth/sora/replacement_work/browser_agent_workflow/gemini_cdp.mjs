@@ -99,7 +99,10 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'second-jump-spin': [
+const referenceSets = {'airdash-concept': [
+  'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png',
+  'design/models/sora/glide_loop2d_v34/frames_512/sora_idle3d_00.png'
+], 'second-jump-spin': [
   'design/models/sora/gemini_walk_review/round_32/gemini_original_preview.jpg',
   'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png'
 ], 'second-jump-concept': [

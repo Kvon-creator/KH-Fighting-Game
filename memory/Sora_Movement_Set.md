@@ -581,3 +581,15 @@ Pending review. Offered the matching brake transition.
   - Flag `--jump2-demo-at=M`; traced and recorded.
   - An old heredoc patch had collapsed a line continuation in the `jump` input line; fixed.
 - **Spin cleanup:** deleted jump_spin_v1-v3 (recovery commit 9c37cdf); kept jump_spin_v4 and jump_spin2d_v4.
+
+**Forward air-dash next, October26:** Kvon chose it. Control: **double-tap forward in the air** (same as the ground glide). Reference: **Gemini concept art first** (round 34), following the air transition rule (rise -> brief tuck -> dash).
+
+**Why:** User decisions.
+- **Round 34 air-dash concept:** Gemini made 6 poses (`gemini_walk_review/round_34/gemini_original_preview.jpg`):
+  1. tuck;
+  2. burst forward, left arm reaching forward, Key back;
+  3. nearly horizontal "superman" dash, Key straight back, legs trailing;
+  4. still dashing, more crouched;
+  5. braking upright;
+  6. falling with the Key raised.
+  - Speed lines and dust are drawn effects; pose 1 holds the Key two-handed (rule says one hand). Image mode needed re-selecting again. Shown to Kvon.

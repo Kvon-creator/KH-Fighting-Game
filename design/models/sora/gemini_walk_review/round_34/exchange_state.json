@@ -1,0 +1,38 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "AD18C76E10050413A326994D4F09F2E3",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "airdash-concept",
+  "promptSha256": "3c7c6baf0726b2f3ffbaf147a6aab660056de25e235e23281e62f3d9118cc6e7",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\AIRDASH_CONCEPT_ROUND_34.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-26T18:39:20.315Z",
+  "baselineImages": [
+    "65677ffe3c547ed74354034bafb0bcd6b1799e962ff40beac4afe38c6db7a032",
+    "f0f9e8ecba7b64e562f2d58acafdccbb505beee9a1fa0822264c2e8295254eea",
+    "f9dd9212cde25815f4a6edee9fb1ba4971c0250eb8dd47b9e65fb1198fefc572",
+    "c6b3e7102a65c3f4688f2d95d822aadcfebfff01841f32756c2bc4b804033b00"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\jump_land2d_v5\\Jump_All_Sprites_Current.png",
+      "sha256": "cc78e6ea9b12a1fedab39c36c7afdad8a62e7c76c9dfec67b8b48645a1624314"
+    },
+    {
+      "file": "design\\models\\sora\\glide_loop2d_v34\\frames_512\\sora_idle3d_00.png",
+      "sha256": "b57a8a4f6a2edf11a99aacaee2284d35b5cae0a8f9ff65303da1c0ff2bf70f56"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-26T18:40:39.540Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_34\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_34\\Gemini_Generated_Image_xkvt4cxkvt4cxkvt.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}
