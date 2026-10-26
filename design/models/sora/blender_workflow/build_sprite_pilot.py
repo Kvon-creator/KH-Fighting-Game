@@ -1740,6 +1740,11 @@ if LOOP:
                 up_high = (-U_*.45 + V_*.85 + Vector((0, 0, .45))).normalized()
             ARM_BACK = CHEST
             jpart = JUMP.rsplit('_v', 1)[0]
+
+            def toward_cam(b_, deg_):
+                # Kvon: rotate the wrist so the Keyblade points toward the player (the camera) by deg_.
+                b_ = Vector(b_).normalized(); c_ = to_cam - b_*to_cam.dot(b_)
+                return tuple((b_*math.cos(math.radians(deg_)) + c_.normalized()*math.sin(math.radians(deg_))).normalized())
             if jpart == 'jump_start':
                 # Takeoff (sheet pose 1): crouch, push through the toes, leave the floor; the left hand lets go.
                 crouch = mix(IDLE_R, IDLE_R, 0.0); crouch.update(ce=.10, root=0.0)
@@ -1763,6 +1768,9 @@ if LOOP:
                     # takeoff 2 (below its v5 height) and ~4 cm more in takeoff 3, so those elbows straighten a little.
                     push['hz'] = -.05
                     leave['hz'] = leave.get('hz', 0.0) - .04
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+                    # v8: takeoff 3's Keyblade turned 20 deg toward the player (rising continues at 40 and 60).
+                    leave['blade_dir'] = toward_cam(back_low, 20.0)
             elif jpart == 'jump_rise':
                 # Rising (sheet pose 2 / ref_01): front knee driven up, the other leg trailing down, body upright.
                 RUN_KEYS = [jk({'L': (.10, LAT['L'], .34, 10.0), 'R': (-.08, LAT['R'], .10, 45.0)}, ce=-.02, pitch=-4.0,
@@ -1775,6 +1783,10 @@ if LOOP:
                                    blade=back_low),
                                 jk({'L': (.16, LAT['L'], .54, 0.0), 'R': (-.08, LAT['R'], .12, 50.0)}, ce=-.12, pitch=-5.0,
                                    blade=back_low)]
+                if not JUMP.endswith(('_v1', '_v2')):
+                    # v3 (Kvon: rotate the wrist so the Keyblade points toward the player, more in each image): 40, 60 deg.
+                    RUN_KEYS[0]['blade_dir'] = toward_cam(back_low, 40.0)
+                    RUN_KEYS[1]['blade_dir'] = toward_cam(back_low, 60.0)
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
