@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'backdash-concept': [
+const referenceSets = {'second-jump-concept': [
+  // Kvon: second jump (KH2 Aerial Dodge reference); Gemini concept art first, from the approved first jump.
+  'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png',
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
+], 'backdash-concept': [
   // Kvon: back-dash next (ground = air); Gemini concept art first, from his ref_04 back-dash reference.
   'design/references/air_movement/air_movement_ref_04.png',
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',

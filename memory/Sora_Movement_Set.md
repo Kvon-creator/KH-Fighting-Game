@@ -548,3 +548,13 @@ Pending review. Offered the matching brake transition.
   - **Verified:** takeoff 6 frames, 36 frames in the air, landing 10, then idle; protected files unchanged.
   - **Not included yet:** horizontal drift in the air, double jump.
 - **Jump cleanup, October26** (per Obsolete_Animation_Cleanup.md; recovery commit df2b1d3): deleted 155 obsolete jump folders (all test, option and older versions). Kept the final set: jump_start_v8, jump_rise_v16_t-30b_x-22_z-5_rz-12, jump_apex_v4, jump_fall_v4, jump_land_v5, plus their 2D folders. Godot still runs the jump without errors.
+
+**Second jump next, October26:** Kvon skipped the landing in-between and chose the second jump (KH2 Aerial Dodge reference). Reference choice: **Gemini concept art** first (round 32), shown to Kvon before building.
+
+**Why:** User decisions.
+- **Round 32 second-jump concept:** Gemini made 6 poses (`gemini_walk_review/round_32/gemini_original_preview.jpg`), no labels this time:
+  1. apex tuck;
+  2-4. forward flip with motion arcs (pose 3 upside down);
+  5. uncurled, open stance, slightly higher;
+  6. falling with the Key raised high.
+  Image mode needed re-selecting after the chat opened. Shown to Kvon.
