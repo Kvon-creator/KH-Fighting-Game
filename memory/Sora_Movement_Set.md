@@ -466,3 +466,23 @@ Pending review. Offered the matching brake transition.
   2-3. backwards hop: knees tucked, right hand holding the Key low/back, left fist at the chest;
   4. landing: wide two-handed stance.
   - It added text labels I asked it to leave out. Shown to Kvon.
+
+**Pivot to aerial movement, October26:** Kvon judged the round-31 sheet "matches that of a standard jumping animation rather than a quick backstep" and said "pivot to the aerial movement from this and come back to the back-dash later".
+- The back-dash is paused (its ground=air rule still stands).
+- The round-31 sheet becomes the jump reference. Planned first jump (KH1-style):
+  - takeoff = sheet pose 1;
+  - rising = sheet pose 2 / ref_01;
+  - apex tuck = sheet pose 3 / ref_02;
+  - falling = ref_03 with the Key raised high (Kvon's rule);
+  - landing = sheet pose 4.
+- The second jump (KH2 Aerial Dodge) and the forward air-dash come later.
+
+**Why:** User decision.
+- **Jump control (test scene):** Kvon chose **W / Up** to jump.
+- **Jump drawings built (October26; pending Kvon's review):** recipe `jump_<start|rise|apex|fall|land>_vN` (JUMP on the run machinery, in place, turn -10 like the glide). Current: start v2, rise v2, apex v3 (v2's .blend save failed on the flash drive), fall v3, land v2, plus 2D versions.
+  - **start** [2,2,2]: crouch, push through the toes as the left hand lets go, leave the floor.
+  - **rise** [4,4]: front knee driven high, back leg hanging, Key low behind.
+  - **apex** [6]: both knees tucked.
+  - **fall** [4,4]: legs reaching down, Key raised high and angled toward the camera so it fits the frame (v1/v2 clipped the top).
+  - **land** [3,3,4]: wide crouch, both hands on the Key, rising to the idle.
+  - Review sheet: `jump_fall2d_v3/Jump_All_Drawings.png`. Not in Godot yet.

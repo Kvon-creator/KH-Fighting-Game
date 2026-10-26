@@ -48,6 +48,13 @@ RUN = version if version.startswith(('run_start_v', 'run_loop_v', 'run_stop_v'))
 GLIDE = version if version.startswith(('glide_start_v', 'glide_loop_v', 'glide_stop_v')) else None
 if GLIDE:
     RUN = GLIDE.replace('glide_', 'run_').rsplit('_v', 1)[0] + '_v18'
+# jump_<part>_v*: Sora's first (KH1-style) jump, October 26 - from Gemini's round-31 sheet (which Kvon judged a
+# jump rather than a back-dash) and his air-pose references: takeoff, rising (ref_01), apex tuck (ref_02),
+# falling with the Keyblade raised high (ref_03, Kvon's rule) and landing. Built on the run machinery; the
+# drawings stay in place (the game moves him up and down).
+JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v')) else None
+if JUMP:
+    RUN = 'run_loop_v18'
 if RUN:
     version = 'battle_v12'
 if GAIT:
@@ -627,6 +634,9 @@ if RUN:
                    'run_stop': [2, 3, 3, 3, 3]}[RUN.rsplit('_v', 1)[0]]
     if GLIDE and RUN.startswith('run_loop'):
         GAME_FRAMES = [3]*6  # smooth hover loop: 6 drawings x 3 game frames
+    if JUMP:
+        GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
+                       'jump_land': [3, 3, 4]}[JUMP.rsplit('_v', 1)[0]]
     DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
 if CROUCH:
     # Full-crouch targets; drawings blend toward them by CR_T (0 = battle idle, 1 = crouched).
@@ -1702,7 +1712,77 @@ if LOOP:
 
         part = RUN.rsplit('_v', 1)[0]
         RUN_KEYS = []
-        if GLIDE and part == 'run_loop':
+        if JUMP:
+            J_TURN = -10.0  # the approved glide's camera angle
+            T_ = lambda v_: Matrix.Rotation(math.radians(J_TURN), 3, 'Z') @ Vector(v_)
+            CHEST = T_((.12, -.22, 1.02))  # left fist up at the chest (sheet poses 2-3)
+
+            def jk(feet, ce=0.0, hunch=0.0, pitch=0.0, neck=-6.0, hand=None, blade=None, release=1.0, arm=1.0):
+                return dict(turn=J_TURN, ce=ce, hunch=hunch, pitch=pitch, neck=neck, look=8.0, tilt=0.0, toe=15.0,
+                            twist=0.0, feet=feet, hand=hand if hand is not None else U_*-.16 + V_*.22 + Vector((0, 0, .80)),
+                            release=release, arm=arm, blade_s=1.0, hz=0.0, root=0.0,
+                            blade_dir=tuple(blade) if blade is not None else None, l_elbow_hint=(1, .4, -.3), l_shrug=0.0)
+            L0, R0 = IDLE_R['feet']['L'], IDLE_R['feet']['R']
+            back_low = (-U_*.62 + V_*.55 + Vector((0, 0, -.45))).normalized()   # Key low behind him, one hand
+            up_high = (-U_*.35 + V_*.25 + Vector((0, 0, .90))).normalized()     # Key raised high (falling)
+            J_V2 = not JUMP.endswith('_v1')
+            if J_V2:
+                # v2: v1's raised Key ran off the top of the frame - angled back over his shoulder instead.
+                up_high = (-U_*.75 + V_*.45 + Vector((0, 0, .50))).normalized()
+            if not JUMP.endswith(('_v1', '_v2')):
+                # v3: v2 still clipped the frame corner - raised but angled toward the camera (shorter on screen).
+                up_high = (-U_*.45 + V_*.85 + Vector((0, 0, .45))).normalized()
+            ARM_BACK = CHEST
+            jpart = JUMP.rsplit('_v', 1)[0]
+            if jpart == 'jump_start':
+                # Takeoff (sheet pose 1): crouch, push through the toes, leave the floor; the left hand lets go.
+                crouch = mix(IDLE_R, IDLE_R, 0.0); crouch.update(ce=.10, root=0.0)
+                crouch.update(hunch=4.0, pitch=4.0)
+                push = jk({'L': (L0[0]*.8, L0[1], .02, 25.0), 'R': (R0[0]*.8, R0[1], .03, 35.0)}, ce=.02, pitch=-2.0)
+                push.update(release=.5, blade_dir=tuple(CR_BLADE0.lerp(back_low, .5).normalized()))
+                leave = jk({'L': (L0[0]*.5, L0[1], .14, 40.0), 'R': (R0[0]*.5, R0[1], .10, 45.0)}, ce=-.04, pitch=-4.0,
+                           blade=back_low)
+                RUN_KEYS = [crouch, push, leave]
+            elif jpart == 'jump_rise':
+                # Rising (sheet pose 2 / ref_01): front knee driven up, the other leg trailing down, body upright.
+                RUN_KEYS = [jk({'L': (.10, LAT['L'], .34, 10.0), 'R': (-.08, LAT['R'], .10, 45.0)}, ce=-.02, pitch=-4.0,
+                               blade=back_low),
+                            jk({'L': (.10, LAT['L'], .38, 10.0), 'R': (-.06, LAT['R'], .14, 45.0)}, ce=-.02, pitch=-5.0,
+                               blade=back_low)]
+                if J_V2:
+                    # v2: v1 still read as a standing stance - hips up and the front knee driven high, back leg hanging.
+                    RUN_KEYS = [jk({'L': (.16, LAT['L'], .50, 0.0), 'R': (-.10, LAT['R'], .08, 50.0)}, ce=-.12, pitch=-4.0,
+                                   blade=back_low),
+                                jk({'L': (.16, LAT['L'], .54, 0.0), 'R': (-.08, LAT['R'], .12, 50.0)}, ce=-.12, pitch=-5.0,
+                                   blade=back_low)]
+            elif jpart == 'jump_apex':
+                # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
+                RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
+                               pitch=6.0, blade=back_low)]
+                if J_V2:
+                    RUN_KEYS = [jk({'L': (.10, LAT['L'], .54, 20.0), 'R': (.00, LAT['R'], .46, 30.0)}, ce=-.12, hunch=10.0,
+                                   pitch=8.0, blade=back_low)]
+            elif jpart == 'jump_fall':
+                # Falling (ref_03): legs open and reach down for the floor; the Keyblade is raised high (Kvon's rule).
+                hi = U_*-.04 + V_*.18 + Vector((0, 0, 1.50))
+                if J_V2:
+                    hi = U_*-.10 + V_*.20 + Vector((0, 0, 1.32))
+                if not JUMP.endswith(('_v1', '_v2')):
+                    hi = U_*-.06 + V_*.24 + Vector((0, 0, 1.26))
+                RUN_KEYS = [jk({'L': (.10, LAT['L'], .18, 20.0), 'R': (-.14, LAT['R'], .12, 35.0)}, pitch=-6.0, neck=-2.0,
+                               hand=hi, blade=up_high),
+                            jk({'L': (.14, LAT['L'], .10, 15.0), 'R': (-.18, LAT['R'], .06, 30.0)}, pitch=-6.0, neck=-2.0,
+                               hand=hi, blade=up_high)]
+            else:
+                # Landing (sheet pose 4): feet down wide, hips sink to absorb it, both hands back on the Key, rise.
+                land = mix(IDLE_R, IDLE_R, 0.0); land.update(ce=.10, hunch=4.0, pitch=4.0, root=0.0)
+                land['feet'] = {'L': (L0[0]*1.05, L0[1], 0.0, 0.0), 'R': (R0[0]*1.05, R0[1], 0.0, 0.0)}
+                mid = mix(land, IDLE_R, .5); mid['root'] = 0.0
+                end_ = mix(land, IDLE_R, .85); end_['root'] = 0.0
+                RUN_KEYS = [land, mid, end_]
+            for k_ in RUN_KEYS:
+                k_.setdefault('root', 0.0)
+        elif GLIDE and part == 'run_loop':
             RUN_KEYS = [loop_key(j) for j in range(6)]
         elif GLIDE and part == 'run_start':
             # Push-off (round 18, poses 1-2): dip, the back (right) foot pushes off on its toe while the front
