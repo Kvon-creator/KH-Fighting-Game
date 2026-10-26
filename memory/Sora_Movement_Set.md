@@ -455,3 +455,8 @@ Pending review. Offered the matching brake transition.
   - Leftover failed output folders: glide_start_v34b and v34c (a safety check blocked my rm). Delete them in the next cleanup.
 - **Kvon approved the smooth push-off ("Yes"), October23.** Cleanup: deleted glide_start_v34 / glide_start2d_v34 (old raised-Key push-off) and the failed glide_start_v34b / v34c.
 - **Final glide set:** glide_start_v34d, glide_loop_v34, glide_stop_v34, plus 2D versions. Recovery commit 71b2e6e.
+
+**Back-dash started, October26:** Kvon said "Yes" to the back-dash and "Reconnect to Gemini". Brave relaunched (its debug port took longer than the launcher waits); Gemini was signed in, in Pro mode, on the walking conversation.
+- **Round 29:** sent ref_04 plus the idle and glide sprites (all three images confirmed uploaded) and asked for a back-dash concept sheet.
+- **Gemini refused:** "I cannot fulfill this request. I am unable to generate the back-dash concept sheet as requested because I cannot generate images directly." The same conversation generated images in rounds 18/19.
+- Not retried, per the Gemini workflow rule (stop and report service refusals). Asked Kvon how to proceed.

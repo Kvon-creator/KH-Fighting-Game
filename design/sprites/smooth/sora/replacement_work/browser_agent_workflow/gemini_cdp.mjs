@@ -99,7 +99,12 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'glide-v10-check': [
+const referenceSets = {'backdash-concept': [
+  // Kvon: back-dash next (ground = air); Gemini concept art first, from his ref_04 back-dash reference.
+  'design/references/air_movement/air_movement_ref_04.png',
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
+  'design/models/sora/glide_loop2d_v34/frames_512/sora_idle3d_00.png'
+], 'glide-v10-check': [
   'design/models/sora/gemini_walk_review/round_25/Loop_Reference_vs_v10.png',
   'design/models/sora/gemini_walk_review/round_25/PushOff_Reference_vs_v10.png',
   'design/models/sora/gemini_walk_review/round_25/Landing_Reference_vs_v10.png'
