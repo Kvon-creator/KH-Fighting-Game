@@ -637,6 +637,8 @@ if RUN:
     if JUMP:
         GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
                        'jump_land': [3, 3, 4]}[JUMP.rsplit('_v', 1)[0]]
+        if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
+            GAME_FRAMES = [3, 3, 4]  # v4: in-between + the two falling drawings
     DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
 if CROUCH:
     # Full-crouch targets; drawings blend toward them by CR_T (0 = battle idle, 1 = crouched).
@@ -1884,6 +1886,17 @@ if LOOP:
                                hand=hi, blade=up_high),
                             jk({'L': (.14, LAT['L'], .10, 15.0), 'R': (-.18, LAT['R'], .06, 30.0)}, pitch=-6.0, neck=-2.0,
                                hand=hi, blade=up_high)]
+                if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                    # v4 (Kvon chose to smooth apex -> falling 1): one in-between drawing first, halfway between the
+                    # approved apex (Key beside his leg, turned toward the player, -30 twist) and falling 1 (Key raised).
+                    apex_hand = U_*-.24 + V_*.23 + Vector((0, 0, .80))
+                    apex_blade = (Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized()
+                    f1 = RUN_KEYS[0]
+                    mid_ = jk({'L': (.13, LAT['L'], .24, 28.0), 'R': (-.09, LAT['R'], .11, 40.0)}, ce=-.06, hunch=2.0,
+                              pitch=-2.0, neck=-4.0, hand=apex_hand.lerp(f1['hand'], .5),
+                              blade=(apex_blade + Vector(f1['blade_dir'])).normalized())
+                    mid_['hz'] = -.085; mid_['blade_twist'] = -15.0
+                    RUN_KEYS = [mid_] + RUN_KEYS
                 import re as re_k
                 m_k = re_k.search(r'_k(\d+)$', OUT_NAME)
                 if m_k:
