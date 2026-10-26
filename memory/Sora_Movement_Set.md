@@ -519,3 +519,4 @@ Pending review. Offered the matching brake transition.
 - **Twist too far, October26:** Kvon: "You twisted it way too far." Current rising = **jump_rise_v11_t20** (+20 deg in B's direction). "A little bit" twist ~ 20 deg; 45-60 read as too much.
 - **Twist 10, October26:** Kvon: "Try 10." Current rising = **jump_rise_v11_t10** (+10 deg).
 - **Twist 5, October26:** Kvon: "Try 5 instead." Current rising = **jump_rise_v11_t5** (+5 deg).
+- **Twist chosen, October26:** from the options sheet (`jump_rise2d_v11_t5/Rising2_Twist_Options_Sheet.png`, -60..+60), Kvon: "Use the -30 degrees". Current rising = **jump_rise_v11_t-30** (2D `jump_rise2d_v11_t-30`). Current jump set: start v8, rise v11_t-30, apex v3, fall v3, land v5. The other twist folders are obsolete at cleanup.
