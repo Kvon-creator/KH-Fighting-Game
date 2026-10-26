@@ -71,6 +71,14 @@ const WALK_JUMP_VX := 5.0
 const GLIDE_JUMP_VX := 12.0
 const BACK_DASH_JUMP_VX := 9.0
 const AIR_COAST := 0.98
+## Simple camera: the arena view's centre, the highest pixel row of Sora's hair in his 384 px frames,
+## how far below the top of the screen his head is kept, how quickly the camera eases (per game frame),
+## and the sky colour painted above the background.
+const SCREEN_CENTER := Vector2(640, 360)
+const HEAD_TOP_ROW := 60.0
+const CAMERA_MARGIN := 40.0
+const CAMERA_EASE := 0.25
+const SKY_COLOR := Color8(19, 28, 57)
 ## Ground moves any of which a jump, back-dash or glide may cancel at once.
 const GROUND_CANCEL := [&"idle", &"shuffle_forward", &"shuffle_back", &"crouch_down", &"crouch_hold",
 	&"crouch_up", &"glide_start", &"glide_loop", &"glide_stop", &"jump_land"]
@@ -119,6 +127,7 @@ const ANIMATIONS := {
 }
 
 var _sprite: AnimatedSprite2D
+var _camera: Camera2D
 var _start_x := 420.0
 ## Game frames to hold forward / back / crouch in the timed demos (-1 = not used).
 var _demo_forward_ticks := -1
@@ -186,6 +195,24 @@ func _ready() -> void:
 	_sprite.offset = -FEET
 	_sprite.position = Vector2(_start_x, FLOOR_Y)
 	add_child(_sprite)
+
+	# Simple camera (Kvon): fixed on the arena, it only rises when Sora's head nears the top of the screen
+	# (a high second jump) and never goes below the floor or sideways. The area above the background
+	# painting is filled with its sky colour so nothing shows empty.
+	var sky := ColorRect.new()
+	sky.color = SKY_COLOR
+	sky.position = Vector2(0, -600)
+	sky.size = Vector2(1280, 600)
+	sky.z_index = -10
+	add_child(sky)
+	move_child(sky, 0)
+	_camera = Camera2D.new()
+	_camera.position = SCREEN_CENTER
+	_camera.limit_left = 0
+	_camera.limit_right = 1280
+	_camera.limit_bottom = 720
+	add_child(_camera)
+	_camera.make_current()
 	_show(&"idle")
 
 	for arg in OS.get_cmdline_user_args():
@@ -215,6 +242,7 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	_tick += 1
+	_follow_camera()
 	var forward := _tick <= _demo_forward_ticks or Input.is_physical_key_pressed(KEY_D) \
 		or Input.is_physical_key_pressed(KEY_RIGHT) \
 		or (_demo_glide_ticks > 0 and (_tick <= 3 or (_tick >= 7 and _tick <= _demo_glide_ticks))) \
@@ -414,6 +442,14 @@ func _air_step() -> void:
 		drawing = maxi(drawing, 4)  # the brake already raised the Keyblade: straight into falling 1
 	if _sprite.animation != &"jump_air" or _sprite.frame != drawing:
 		_show(&"jump_air", drawing)
+
+
+## Raise the camera just enough to keep Sora's head CAMERA_MARGIN px below the top of the screen, easing
+## there (and back down to the arena view once he comes down).
+func _follow_camera() -> void:
+	var head_y := _sprite.position.y - FEET.y + HEAD_TOP_ROW
+	var target := minf(SCREEN_CENTER.y, head_y - CAMERA_MARGIN + SCREEN_CENTER.y)
+	_camera.position.y = lerpf(_camera.position.y, target, CAMERA_EASE)
 
 
 ## Sideways speed (px per game frame) a jump starts with, from what he was doing on the ground.
