@@ -1,0 +1,281 @@
+{
+  "version": "battle_v12",
+  "blender": "5.2.2 LTS",
+  "animation": "standing_breathing_idle",
+  "source": "downloads/p_ex150.fbx + downloads/Kingdom Key/Kingdom Key.obj",
+  "loop": true,
+  "canvas_size": [
+    512,
+    512
+  ],
+  "ground_baseline_y": 470,
+  "body_anchor": [
+    256,
+    470
+  ],
+  "total_duration_ms": 216.667,
+  "pose": {
+    "body_turn_deg": 50.00000274103453,
+    "drop": 0.19,
+    "lean_deg": 16,
+    "hunch_deg": 12,
+    "neck_counter_deg": -10,
+    "look_deg": 0.0,
+    "head_tilt_deg": 0.0,
+    "R_foot": [
+      -0.0623205229640007,
+      -0.06794228404760361,
+      0.0
+    ],
+    "L_foot": [
+      0.0623205229640007,
+      0.06794228404760361,
+      0.0
+    ],
+    "toe_deg": {
+      "L": 10.0,
+      "R": 10.0
+    },
+    "R_hand": [
+      -0.2119615525007248,
+      -0.24712814390659332,
+      0.6000000238418579
+    ],
+    "L_hand_along_handle": 0.06,
+    "grip_shift": 0,
+    "blade_dir": [
+      0.1881,
+      -0.9434,
+      0.2731
+    ],
+    "shoulder_reach": true,
+    "turn_blade": false,
+    "screen_blade": [
+      20,
+      37
+    ],
+    "auto_reach": true,
+    "L_palm_to_camera": true,
+    "L_palm_back_deg": 45,
+    "wrist_roll": null,
+    "screen_lean_deg": 0.0,
+    "screen_head_deg": 0.0,
+    "L_elbow_hint_world": [
+      0.15358978509902954,
+      1.0660254955291748,
+      -0.30000001192092896
+    ],
+    "L_shrug_deg": 0.0,
+    "R_elbow_hint_world": [
+      -0.8464101552963257,
+      -0.6660254597663879,
+      -0.30000001192092896
+    ],
+    "crouch_extra": -0.06,
+    "hunch_extra": 0.0,
+    "pitch_extra": 0.0,
+    "neck_extra": -8.0,
+    "twist_axis": "spine",
+    "chest_twist_deg": 0.0,
+    "hands_extra_z": 0.0,
+    "foot_pitch": {
+      "L": 0.0,
+      "R": 0.0
+    },
+    "L_free": [
+      [
+        0.12239465117454529,
+        0.2236505001783371,
+        0.75
+      ],
+      1.0
+    ],
+    "r_hand_rot": [
+      [
+        0.03708285093307495,
+        -0.5221661925315857,
+        0.786371111869812
+      ],
+      [
+        0.9166339039802551,
+        0.20786233246326447,
+        0.0947994589805603
+      ],
+      [
+        -0.22542721033096313,
+        0.7593086957931519,
+        0.5148274302482605
+      ]
+    ]
+  },
+  "breath": {
+    "drop": 0.025,
+    "lean_deg": 1.0,
+    "hands_z": -0.012,
+    "head_counter_deg": -0.5
+  },
+  "camera_yaw_deg": -40,
+  "ortho_scale": 2.1278,
+  "frames": [
+    {
+      "filename": "sora_idle3d_00.png",
+      "duration_ms": 50.0,
+      "breath": 0.0,
+      "lag": 0.1355,
+      "grip_error_L_m": 0.9996
+    },
+    {
+      "filename": "sora_idle3d_01.png",
+      "duration_ms": 66.667,
+      "breath": 0.0,
+      "lag": 0.1355,
+      "grip_error_L_m": 0.6456
+    },
+    {
+      "filename": "sora_idle3d_02.png",
+      "duration_ms": 100.0,
+      "breath": 0.0,
+      "lag": 0.1355,
+      "grip_error_L_m": 0.682
+    }
+  ],
+  "root_motion_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "game_frames_60fps": [
+    3,
+    4,
+    6
+  ],
+  "crouch": null,
+  "run": {
+    "recipe": "run_loop_v18",
+    "leg_length_m": 0.693,
+    "twist_sign": 1,
+    "per_frame": [
+      {
+        "screen_back_deg": 18.7,
+        "feet_world_s_lat_lift_pitch": {
+          "L": [
+            0.16,
+            -0.09,
+            0.26,
+            20.0
+          ],
+          "R": [
+            0.05,
+            0.09,
+            0.16,
+            20.0
+          ]
+        },
+        "hip_to_ankle_m": {
+          "L": 0.207,
+          "R": 0.305
+        },
+        "turn_deg": -10.0,
+        "left_release": 1.0,
+        "roll_deg": 123.7,
+        "spin_deg": 60.0,
+        "grounded": true
+      },
+      {
+        "screen_back_deg": 14.7,
+        "feet_world_s_lat_lift_pitch": {
+          "L": [
+            0.06,
+            -0.09,
+            0.08,
+            10.0
+          ],
+          "R": [
+            -0.01,
+            0.09,
+            0.05,
+            10.0
+          ]
+        },
+        "hip_to_ankle_m": {
+          "L": 0.43,
+          "R": 0.465
+        },
+        "turn_deg": -10.0,
+        "left_release": 1.0,
+        "roll_deg": 107.7,
+        "spin_deg": 60.0,
+        "grounded": true
+      },
+      {
+        "screen_back_deg": 12.7,
+        "feet_world_s_lat_lift_pitch": {
+          "L": [
+            0.02,
+            -0.09,
+            0.0,
+            0.0
+          ],
+          "R": [
+            -0.02,
+            0.09,
+            0.0,
+            0.0
+          ]
+        },
+        "hip_to_ankle_m": {
+          "L": 0.564,
+          "R": 0.566
+        },
+        "turn_deg": -10.0,
+        "left_release": 1.0,
+        "roll_deg": 101.7,
+        "spin_deg": 60.0,
+        "grounded": true
+      }
+    ],
+    "root_px_384": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "v12_spec": null,
+  "key_faces_camera": true,
+  "key_teeth_up": true,
+  "wrist_twist_deg": {
+    "L": -115
+  },
+  "hand_search": {
+    "grip_sides": [
+      "R",
+      "L"
+    ],
+    "L_palm_to_camera_dot": 0.622,
+    "L_palm_to_body_dot": 0.095,
+    "L_palm_to_camera_dot_after": 0.444
+  },
+  "fist_wrap": {
+    "R_fingers_radius_m": 0.0618,
+    "R_thumb_radius_m": 0.0536,
+    "L_fingers_radius_m": 0.0552,
+    "L_thumb_radius_m": 0.06,
+    "vertices_wrapped": 42
+  },
+  "reach_misses_m": [
+    0.0004
+  ],
+  "finger_curl": {
+    "R": {
+      "axis": "z",
+      "sign": -1,
+      "mean_dist_to_handle_m": null
+    },
+    "L": {
+      "axis": "z",
+      "sign": -1,
+      "mean_dist_to_handle_m": null
+    }
+  },
+  "blend": "sora_idle_loop.blend"
+}

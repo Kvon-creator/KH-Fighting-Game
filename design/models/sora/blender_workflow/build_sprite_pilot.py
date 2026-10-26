@@ -53,7 +53,9 @@ if GLIDE:
 # falling with the Keyblade raised high (ref_03, Kvon's rule) and landing. Built on the run machinery; the
 # drawings stay in place (the game moves him up and down).
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
-                                      'jump_spin_v', 'jump_dash_v', 'jump_bdash_v')) else None
+                                      'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
+                                      'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v')) else None
+HURT = JUMP if JUMP and JUMP.startswith('hurt_') else None
 if JUMP:
     RUN = 'run_loop_v18'
 if RUN:
@@ -638,7 +640,8 @@ if RUN:
     if JUMP:
         GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
                        'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3], 'jump_bdash': [2, 4, 4, 3, 4],
-                       'jump_land': [3, 3, 4]}[JUMP.rsplit('_v', 1)[0]]
+                       'jump_land': [3, 3, 4], 'hurt_ground': [2, 6, 5, 4], 'hurt_air': [4, 8],
+                       'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
             GAME_FRAMES = [3, 3, 4]  # v4: in-between + the two falling drawings
     DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
@@ -807,6 +810,10 @@ def solve_pose(breath=0.0, lag=None):
     if POSE.get('hunch_deg') or POSE.get('hunch_extra'):
         rotate_world('hara', ax_x, POSE.get('hunch_deg', 0) + POSE.get('hunch_extra', 0))
     rotate_world('mune', ax_x, POSE['lean_deg'] + b['lean_deg']*breath + POSE.get('pitch_extra', 0))
+    if POSE.get('screen_lean_deg'):
+        # Hurt v2+: knock the upper body back toward screen left in the screen plane (a lean about his own side axis
+        # mostly goes into the screen from this three-quarter camera and barely showed in v1).
+        rotate_world('hara', to_cam, POSE['screen_lean_deg'])
     if POSE.get('chest_roll'):
         # v18+: roll the chest about the body's forward axis toward the weight-bearing foot.
         roll_side, roll_deg = POSE['chest_roll']
@@ -832,6 +839,8 @@ def solve_pose(breath=0.0, lag=None):
         rotate_world('kubi', ax_x, b['head_counter_deg']*lag)
     if POSE.get('look_deg'):
         rotate_world('kubi', 'Z', POSE['look_deg'])  # eyes on the opponent
+    if POSE.get('screen_head_deg'):
+        rotate_world('kubi', to_cam, POSE['screen_head_deg'])  # hurt v2+: head thrown back on screen
     r_hand = turn_m @ Vector(POSE['R_hand']) + Vector((0, 0, b['hands_z']*lag))
     r_hand += Vector(POSE.get('grip_offset_world', (0, 0, 0)))  # v14+: grip moved off the stomach
     # v18+: the grip sinks with the deeper crouch, plus the weapon's vertical lag.
@@ -1975,6 +1984,103 @@ if LOOP:
                             k_['blade_dir'] = tuple(apex_b.lerp(down_b, e_).normalized())
                             k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80))
                     RUN_KEYS.append(k_)
+            elif HURT:
+                # Hurt set (Kvon, October 26; Gemini round-37 sheet): ground hit, air hit, head-first fall with his back
+                # to the screen, landing flat on his back (face up). Each drawing is solved upright first, so the knees
+                # and elbows bend the normal way, then the finished pose is turned as one piece: 'spin_deg' about his
+                # vertical axis, 'roll' in the screen plane about the hips (+ = head toward screen left), 'ground' drops
+                # the lowest point of the body onto the floor (+ 'lift' for a bounce). Kvon: Gemini's head-first poses
+                # had the legs facing the wrong way - turning the solved pose keeps the legs' anatomy at any angle.
+                B_ = lambda x_, y_, z_: T_((x_, y_, z_))   # body frame: +x his left, -y his front
+                hit_blade = (-U_*.70 + V_*.45 + Vector((0, 0, -.40))).normalized()
+                H_V2 = not HURT.endswith('_v1')
+                if H_V2:
+                    hit_blade = (-U_*.40 + V_*.80 + Vector((0, 0, -.45))).normalized()  # v1 ran off the left edge
+
+                def hurt(feet, ce, hunch, pitch, neck, hand, blade, l_hand, roll=0.0, spin=0.0, ground=False, lift=0.0):
+                    k_ = jk(feet, ce=ce, hunch=hunch, pitch=pitch, neck=neck, blade=blade)
+                    k_.update(hand=hand, l_hand=tuple(l_hand), roll=roll, ground=ground, lift=lift, look=0.0, toe=10.0)
+                    if spin:
+                        k_['spin_deg'] = spin
+                    return k_
+
+                def ease(a_, b_, w_, release):
+                    # In-between toward the idle: mix() keeps only the common numbers; carry the extras across.
+                    k_ = mix(a_, b_, w_)
+                    k_.update(blade_dir=tuple(Vector(a_['blade_dir']).lerp(CR_BLADE0, w_).normalized()),
+                              l_hand=a_['l_hand'], release=release, root=0.0, l_elbow_hint=(1, .4, -.3), l_shrug=0.0,
+                              lean_cam=a_.get('lean_cam', 0.0)*(1 - w_), head_cam=a_.get('head_cam', 0.0)*(1 - w_))
+                    return k_
+                stand = {'L': (L0[0], L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)}
+                if jpart == 'hurt_ground':
+                    # Snap back (chest out, head thrown back, arms flung), deepest lean, then recover into the idle.
+                    hit_k = hurt(stand, .05, -8.0, -14.0, -16.0, U_*-.34 + V_*.26 + Vector((0, 0, 1.00)), hit_blade,
+                                 B_(.30, -.28, 1.15))
+                    peak_k = hurt(stand, .07, -11.0, -20.0, -22.0, U_*-.40 + V_*.26 + Vector((0, 0, 1.05)), hit_blade,
+                                  B_(.32, -.20, 1.22))
+                    if H_V2:
+                        hit_k.update(lean_cam=20.0, head_cam=14.0, pitch=-8.0, hunch=-4.0, neck=-6.0)
+                        peak_k.update(lean_cam=27.0, head_cam=20.0, pitch=-10.0, hunch=-5.0, neck=-8.0)
+                    RUN_KEYS = [hit_k, peak_k, ease(peak_k, IDLE_R, .5, .5), ease(peak_k, IDLE_R, .85, .15)]
+                elif jpart == 'hurt_air':
+                    # The same snap back in the air, legs dangling in front; then drifting back and starting to tip over.
+                    RUN_KEYS = [hurt({'L': (.20, LAT['L'], .10, 20.0), 'R': (.04, LAT['R'], .05, 25.0)}, -.04, -8.0, -16.0,
+                                     -16.0, U_*-.36 + V_*.26 + Vector((0, 0, 1.02)), hit_blade, B_(.30, -.28, 1.18),
+                                     roll=10.0),
+                                hurt({'L': (.30, LAT['L'], .22, 15.0), 'R': (.18, LAT['R'], .14, 20.0)}, -.06, -10.0, -18.0,
+                                     -12.0, U_*-.40 + V_*.24 + Vector((0, 0, 1.08)), hit_blade, B_(.32, -.18, 1.25),
+                                     roll=35.0)]
+                    if H_V2:
+                        for k_, ln_ in zip(RUN_KEYS, (16.0, 10.0)):
+                            k_.update(lean_cam=ln_, head_cam=12.0)
+                elif jpart == 'hurt_fall':
+                    # Head first with his back to the screen and his feet in the air: tipping over while turning away,
+                    # upside down, then the shoulders heading for the floor. Arms loose around his head.
+                    over_blade = (-U_*.80 + V_*.40 + Vector((0, 0, .20))).normalized()
+                    RUN_KEYS = [hurt({'L': (.24, LAT['L'], .20, 15.0), 'R': (.10, LAT['R'], .12, 20.0)}, -.06, -6.0, -12.0,
+                                     -10.0, U_*-.30 + V_*.22 + Vector((0, 0, 1.25)), over_blade, B_(.30, -.12, 1.30),
+                                     roll=90.0, spin=70.0),
+                                hurt({'L': (.06, LAT['L'], .12, 30.0), 'R': (-.10, LAT['R'], .20, 30.0)}, -.06, 4.0, 0.0,
+                                     -6.0, U_*-.20 + V_*.20 + Vector((0, 0, 1.45)), over_blade, B_(.25, -.05, 1.45),
+                                     roll=175.0, spin=150.0),
+                                hurt({'L': (.10, LAT['L'], .16, 30.0), 'R': (-.06, LAT['R'], .24, 30.0)}, -.06, 6.0, 2.0,
+                                     -4.0, U_*-.18 + V_*.20 + Vector((0, 0, 1.40)), over_blade, B_(.25, -.08, 1.40),
+                                     roll=160.0, spin=150.0)]
+                    if H_V2:
+                        # v1's first drawing (on its side, half turned) read as a jumble: further over and further round.
+                        RUN_KEYS[0].update(roll=130.0, spin_deg=110.0)
+                        for k_ in RUN_KEYS:
+                            k_['blade_dir'] = tuple((-U_*.40 + V_*.80 + Vector((0, 0, .20))).normalized())
+                            if not HURT.endswith('_v2'):
+                                # v3: the spin turned v2's blade away from the camera (off the left edge): aim it so it
+                                # points at the camera AFTER the spin.
+                                k_['blade_dir'] = tuple(Matrix.Rotation(math.radians(-k_['spin_deg']), 3, 'Z')
+                                                        @ (V_*.85 - U_*.25 + Vector((0, 0, .20))).normalized())
+                else:
+                    # Shoulders hit the floor and the legs come down (a small bounce), settle, then lie flat on his back,
+                    # face up, head toward screen left, seen side-on, Key lying loosely along his right side.
+                    lie_blade = (V_*.30 + Vector((0, 0, -1.0))).normalized()
+                    straight = {'L': (.02, LAT['L'], 0.0, 0.0), 'R': (-.02, LAT['R'], 0.0, 0.0)}
+                    RUN_KEYS = [hurt({'L': (.16, LAT['L'], .26, 20.0), 'R': (.05, LAT['R'], .16, 20.0)}, -.02, 6.0, 0.0,
+                                     -6.0, U_*-.14 + V_*.28 + Vector((0, 0, 1.05)), lie_blade, B_(.28, -.05, 1.05),
+                                     roll=115.0, spin=60.0, ground=True, lift=.06),
+                                hurt({'L': (.06, LAT['L'], .08, 10.0), 'R': (-.01, LAT['R'], .05, 10.0)}, -.05, 2.0, 0.0,
+                                     -8.0, U_*-.10 + V_*.30 + Vector((0, 0, .80)), lie_blade, B_(.26, .02, .80),
+                                     roll=96.0, spin=60.0, ground=True, lift=.02),
+                                hurt(straight, -.06, 0.0, 0.0, -8.0, U_*-.10 + V_*.30 + Vector((0, 0, .70)), lie_blade,
+                                     B_(.25, .05, .75), roll=90.0, spin=60.0, ground=True)]
+                    if H_V2:
+                        # v1 lay tilted (legs raised) with the Key across his chest: set the hips->neck line to an exact
+                        # screen angle (180 = flat, head toward screen left), hand down by his hip.
+                        for k_, ang_ in zip(RUN_KEYS, (195.0, 183.0, 179.0) if HURT.endswith('_v2') else (205.0, 184.0, 180.0)):
+                            k_['body_angle'] = ang_
+                        for k_ in RUN_KEYS[1:]:
+                            k_['hand'] = U_*-.06 + V_*.32 + Vector((0, 0, .60))
+                            if not HURT.endswith(('_v2', '_v3')):
+                                # v4: v3's Key pointed down AND forward, so it rose off the floor once he lay down;
+                                # down and slightly back (after the spin), so it lies along his side on the floor.
+                                k_['blade_dir'] = tuple(Matrix.Rotation(math.radians(-k_['spin_deg']), 3, 'Z')
+                                                        @ (-U_*.15 + V_*.30 + Vector((0, 0, -1.0))).normalized())
             elif jpart == 'jump_fall':
                 # Falling (ref_03): legs open and reach down for the floor; the Keyblade is raised high (Kvon's rule).
                 hi = U_*-.04 + V_*.18 + Vector((0, 0, 1.50))
@@ -2265,6 +2371,8 @@ if LOOP:
                 blade = (rz_ @ blade).normalized()
                 return
             POSE['wrist_roll'] = k_.get('wrist_roll')
+            POSE['screen_lean_deg'] = k_.get('lean_cam', 0.0)
+            POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
             POSE['R_elbow_hint_world'] = k_.get('r_elbow_hint')
@@ -2282,6 +2390,8 @@ if LOOP:
                 POSE['foot_pitch'][sd] = pitch_
             arm_w = (k_['arm'] + 1)/2
             POSE['L_free'] = (tuple(ARM_FWD.lerp(ARM_BACK, arm_w)), k_['release'])
+            if k_.get('l_hand') is not None:
+                POSE['L_free'] = (tuple(k_['l_hand']), k_['release'])  # hurt: left hand flung to its own spot
             if k_.get('wrist_roll') is not None:
                 POSE['r_hand_rot'] = None
                 return
@@ -2646,6 +2756,9 @@ if LOOP:
             KATA_LOG = {'yaw_deg': best_k[1], 'lift_deg': best_k[2], 'gap_px_at_12deg': round(best_k[4], 2)}
             print('KATA_BEST', KATA_LOG)
         ARM_LOG = []
+    if HURT:
+        arm.rotation_mode = 'QUATERNION'
+        ARM_M0 = arm.matrix_world.copy()
     for i in range(n):
         breath = (1 - math.cos(2*math.pi*i/n)) / 2
         # v3+: follow-through lag; a symmetric breath alone made frames 1-4 repeat as 9-6.
@@ -2776,6 +2889,9 @@ if LOOP:
             POSE['front_arm_deg'] = ARM_SIGN*best[1]
             ARM_LOG.append({'abduction_deg': best[1], 'forearm_gap_px': round(best[2], 1),
                             'weapon_drag_deg': WEAPON_DRAG[i], 'pelvis_drop_px': round(6*bob, 2)})
+        if HURT:
+            arm.matrix_world = ARM_M0  # solve upright; the whole-body turn comes after
+            update()
         solve_pose(breath, lag)
         if RUN:
             reach = {sd: round((pose_world(f'{sd}_ashi1').translation - pose_world(f'{sd}_momo').translation).length, 3)
@@ -2787,6 +2903,39 @@ if LOOP:
             RUN_LOG.append({'screen_back_deg': round(back_deg, 1), 'feet_world_s_lat_lift_pitch': {sd: [round(v_, 3) for v_ in f_] for sd, f_ in RUN_KEYS[i]['feet'].items()},
                             'hip_to_ankle_m': reach, 'turn_deg': round(RUN_KEYS[i]['turn'], 1),
                             'left_release': round(RUN_KEYS[i]['release'], 2)})
+        if HURT:
+            # Turn the solved pose as one piece in the screen plane about the hips, then put it on the floor.
+            hk_ = RUN_KEYS[i]
+            piv_ = pose_world('hara').translation.copy()
+            cam_r_ = Vector((math.cos(t), math.sin(t), 0))
+            roll_ = hk_.get('roll', 0.0)
+            if 'body_angle' in hk_:
+                # v2+: roll so the hips->neck line sits at this screen angle (90 = upright, 180 = flat, head left).
+                d_ = pose_world('kubi').translation - piv_
+                if not HURT.endswith(('_v1', '_v2')):
+                    # v3: measure the whole body (ankles -> neck); v2's hips->neck line left the legs raised off the floor.
+                    d_ = pose_world('kubi').translation - (pose_world('L_ashi1').translation
+                                                           + pose_world('R_ashi1').translation)/2
+                roll_ = hk_['body_angle'] - math.degrees(math.atan2(d_.z, d_.dot(cam_r_)))
+            if OUT_NAME.endswith('_upright'):
+                roll_ = 0.0  # review: the solved pose before the whole-body turn
+            arm.matrix_world = (Matrix.Translation(piv_) @ Matrix.Rotation(math.radians(roll_), 4, to_cam)
+                                @ Matrix.Translation(-piv_) @ ARM_M0)
+            update()
+            if hk_.get('ground') and not OUT_NAME.endswith('_upright'):
+                dg_ = bpy.context.evaluated_depsgraph_get()
+                pts_ = [o.matrix_world @ v.co for o in body for v in o.evaluated_get(dg_).data.vertices]
+                low_ = min(p_.z for p_ in pts_)
+                xs_ = [p_.dot(cam_r_) for p_ in pts_]
+                # v2+: centre the figure across the frame (lying, he is longer than half the frame).
+                dx_ = cam.location.dot(cam_r_) - (min(xs_) + max(xs_))/2 if not HURT.endswith('_v1') else 0.0
+                arm.matrix_world = (Matrix.Translation(cam_r_*dx_ + Vector((0, 0, ground + hk_.get('lift', 0.0) - low_)))
+                                    @ arm.matrix_world)
+                update()
+            RUN_LOG[-1].update(roll_deg=round(roll_, 1), spin_deg=hk_.get('spin_deg', 0.0),
+                               grounded=bool(hk_.get('ground')))
+            for path in ('location', 'rotation_quaternion', 'scale'):
+                arm.keyframe_insert(path, frame=i + 1)
         if CROUCH or RUN:
             key.matrix_world = pose_world('R_te') @ CR_KEY_IN_TE
             update()
