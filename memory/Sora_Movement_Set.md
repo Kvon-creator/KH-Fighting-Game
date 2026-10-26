@@ -603,3 +603,16 @@ Pending review. Offered the matching brake transition.
   - Afterwards vy = 0 and the falling drawing is forced to >= falling 1 (skipping the swing-up, since the brake already raised the Key).
   - Flag `--dash-demo-at=M`; traced (the plain jump and spin are unchanged) and recorded.
 - **Air-dash cleanup:** deleted jump_dash_v1 (recovery commit above); kept jump_dash_v2 and jump_dash2d_v2.
+
+**Back-dash resumed, October26:** Kvon chose the back-dash. Control: **double-tap back (A/Left)**, on the ground or in the air. Reference: **new Gemini art** (round 35) stressing a quick, low backstep (round 31 read as a jump), based on ref_04.
+
+**Why:** User decisions.
+- **Rounds 35-36 back-dash:**
+  - **Round 35:** refused ("cannot generate images directly"), as in round 29.
+  - **Round 36:** after a page refresh (Kvon's earlier remedy), 5 low poses (`gemini_walk_review/round_36/gemini_original_preview.jpg`):
+    1. idle;
+    2. push-off with dust;
+    3. low hop, upright, knees bent, Key low in the right hand, left arm out;
+    4. feet reaching down;
+    5. landing back in the two-handed idle.
+  - In poses 2-4 he leans/moves forward-right rather than backward. Shown to Kvon.

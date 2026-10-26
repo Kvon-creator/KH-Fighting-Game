@@ -1,0 +1,35 @@
+{
+  "status": "provider_block",
+  "media": "image",
+  "tabId": "AD18C76E10050413A326994D4F09F2E3",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "backdash-low",
+  "promptSha256": "310b2fcc5e1d7e27fa5ad5b07dd2562439dc5cac1044a627cfe2f8c45b5e02f3",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\BACKDASH_LOW_ROUND_35.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-26T18:56:32.746Z",
+  "baselineImages": [
+    "65677ffe3c547ed74354034bafb0bcd6b1799e962ff40beac4afe38c6db7a032",
+    "f0f9e8ecba7b64e562f2d58acafdccbb505beee9a1fa0822264c2e8295254eea",
+    "f9dd9212cde25815f4a6edee9fb1ba4971c0250eb8dd47b9e65fb1198fefc572",
+    "c6b3e7102a65c3f4688f2d95d822aadcfebfff01841f32756c2bc4b804033b00",
+    "2330e7ab3e3d6940c1e2c7ddd3f8d3c5eb00de69dcd53b6d187181577b8ae590"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\references\\air_movement\\air_movement_ref_04.png",
+      "sha256": "7bae80251188dd861101026c93032c97c0102e4cd78029ae60d4c6bd6c25adb1"
+    },
+    {
+      "file": "design\\models\\sora\\gemini_walk_review\\round_31\\gemini_original_preview.jpg",
+      "sha256": "c0955fb04648e897b879b8d1d6b16f4cde9f4385e5fac7723f1d1c47ee09af74"
+    },
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "exactResponse": "I cannot fulfill this request. I am unable to generate the revised back-dash concept sheet as requested because I cannot generate images directly.\n\nImages\n\n\n\n\nPro\nAspect ratio\n\nGemini is AI and can make mistakes."
+}
