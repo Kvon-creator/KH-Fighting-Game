@@ -1806,6 +1806,12 @@ if LOOP:
                     # turn back to 65 deg (a less cocked wrist) and tip the blade downward toward his feet.
                     b7 = Vector(toward_cam(back_low, 65.0))*.75 + Vector((0, 0, -.55))
                     RUN_KEYS[1]['blade_dir'] = tuple(b7.normalized())
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+                    # v8+ (Kvon: v7 reverted; "straighten the wrist" = the Keyblade's handle/guard lined up with the forearm):
+                    # rising 2 uses a straight wrist (hand only rolls about the forearm, as in the glide). The roll is
+                    # chosen below so the blade angles somewhat down toward his feet.
+                    RUN_KEYS[1]['blade_dir'] = toward_cam(back_low, 75.0)
+                    RUN_KEYS[1]['wrist_roll'] = 0.0
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
@@ -2132,6 +2138,30 @@ if LOOP:
             for k_ in RUN_KEYS:
                 if k_.get('blade_ease') is not None:
                     k_['blade_dir'] = tuple(CR_BLADE0.lerp(loop_dir_, k_['blade_ease']).normalized())
+        if JUMP and JUMP.startswith('jump_rise') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+            # Straight-wrist roll for rising 2: whole Key in the frame and above the floor, blade pointing as far down
+            # (toward his feet) as the straight wrist allows, but not straight down - "somewhat".
+            TW_SIGN = 1
+            ground_j = world_bounds(body)[0].z
+            best_j = None
+            for roll_ in range(0, 360, 10):
+                apply_run(dict(RUN_KEYS[1], wrist_roll=float(roll_))); solve_pose(0.0, LAG0)
+                km_ = pose_world('R_te') @ CR_KEY_IN_TE
+                bd_ = km_.to_3x3().normalized().col[2]
+                tip_ = km_.translation + bd_*(KEY_REACH + .08)
+                ok_ = tip_.z > ground_j + .04 and abs((tip_ - pose_world('hara').translation).dot(U_)) < .80
+                score_ = -abs(bd_.z + .55) + .3*bd_.dot(to_cam) - (0 if ok_ else 10)
+                if not JUMP.endswith('_v8'):
+                    # v9: v8's pick swung the blade forward across his body toward the opponent; keep it on his own side
+                    # (not forward), turned toward the player and tipped down.
+                    score_ = -abs(bd_.z + .5) + .8*bd_.dot(to_cam) - 1.5*max(0.0, bd_.dot(U_)) - (0 if ok_ else 10)
+                print('ROLL', roll_, ok_, tuple(round(c_, 2) for c_ in bd_), round(score_, 3))
+                if best_j is None or score_ > best_j[0]:
+                    best_j = (score_, roll_, tuple(round(c_, 3) for c_ in bd_))
+            print('JUMP_WRIST_ROLL', best_j)
+            RUN_KEYS[1]['wrist_roll'] = float(best_j[1])
+            if OUT_NAME.startswith('jump_rise_v9_r'):
+                RUN_KEYS[1]['wrist_roll'] = float(OUT_NAME.rsplit('_r', 1)[1])  # review variants
         # Twist sign: at the left-foot contact the right (opposite) shoulder should be forward.
         TW_SIGN = 1
         apply_run(dict(loop_key(0), twist=0.0)); solve_pose(0.0, LAG0)

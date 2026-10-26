@@ -505,3 +505,9 @@ Pending review. Offered the matching brake transition.
 - **Rising 2 bend, October26:** Kvon: "Give rising 2 slight more bend, but still less than rising 1." **jump_rise_v5:** rising 2's fist halfway between v4's rising 1 and rising 2 (hand back -.24, hz -.17). Sheets `jump_rise2d_v5/Rising2_before_after.png`, `Takeoff_and_Rising.png`.
 - **Rising 2 wrist rotation, October26:** Kvon: "Increase the rotation on the wrist in rising 2." **jump_rise_v6:** rising 2's Keyblade turned 75 deg toward the player (was 60); everything else is v5. Sheets `jump_rise2d_v6/Rising2_rotation_before_after.png`, `Takeoff_and_Rising.png`.
 - **Rising 2 wrist straightened and Key down, October26:** Kvon: "Straighten the wrist some as well before angling the keyblade down towards Sora's feet somewhat." **jump_rise_v7:** the turn toward the camera eased to 65 deg, then the blade tipped down (0.75 turned + 0.55 down). The Key now hangs down along his standing leg toward his foot. Sheets `jump_rise2d_v7/Rising2_before_after.png`, `Takeoff_and_Rising.png`.
+- **Straight wrist = handle square to the forearm, October26:** Kvon clarified that "straighten the wrist" means "make the guard of the keyblade orient parallel to the forearm holding it" (handle perpendicular to the forearm, the fist's natural grip), and asked to revert v7.
+  - v8/v9: rising 2 uses the straight wrist (wrist_roll about the forearm), searched or chosen per roll.
+  - With this forearm, a straight wrist cannot point the blade both back and down: the down options point toward the camera/forward.
+  - Picked roll 210 (blade down toward his feet, toward the player): build `jump_rise_v9_r210` -> 2D `jump_rise2d_v9`.
+  - Review folders: jump_rise_v8 (forward across the body), jump_rise_v9 (roll 40, up/back), jump_rise_v9_r240/_r270.
+  - Sheets `jump_rise2d_v9/Rising2_straight_wrist.png`, `Takeoff_and_Rising.png`.
