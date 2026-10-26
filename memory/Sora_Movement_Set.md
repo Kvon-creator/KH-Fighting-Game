@@ -547,3 +547,4 @@ Pending review. Offered the matching brake transition.
   - ANIMATIONS entries can now list a per-drawing prefix and folder (indices 5 and 6). Demo flag `--jump-demo-at=N`; trace now prints y.
   - **Verified:** takeoff 6 frames, 36 frames in the air, landing 10, then idle; protected files unchanged.
   - **Not included yet:** horizontal drift in the air, double jump.
+- **Jump cleanup, October26** (per Obsolete_Animation_Cleanup.md; recovery commit df2b1d3): deleted 155 obsolete jump folders (all test, option and older versions). Kept the final set: jump_start_v8, jump_rise_v16_t-30b_x-22_z-5_rz-12, jump_apex_v4, jump_fall_v4, jump_land_v5, plus their 2D folders. Godot still runs the jump without errors.
