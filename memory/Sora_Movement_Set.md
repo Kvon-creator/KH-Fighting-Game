@@ -518,3 +518,4 @@ Pending review. Offered the matching brake transition.
 - **Twist direction corrected, October26:** Kvon: "I meant the other direction." Current rising = **jump_rise_v11_t60** (+60 deg, option B's direction a little further); -60 is not used.
 - **Twist too far, October26:** Kvon: "You twisted it way too far." Current rising = **jump_rise_v11_t20** (+20 deg in B's direction). "A little bit" twist ~ 20 deg; 45-60 read as too much.
 - **Twist 10, October26:** Kvon: "Try 10." Current rising = **jump_rise_v11_t10** (+10 deg).
+- **Twist 5, October26:** Kvon: "Try 5 instead." Current rising = **jump_rise_v11_t5** (+5 deg).
