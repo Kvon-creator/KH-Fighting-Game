@@ -1,0 +1,40 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "E28788AAF508D2FB5EC839733856923F",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "hurt-concept",
+  "promptSha256": "988ab8d4476d44eeafd4e22b5c1be6fd461750d4ebd6c1afbd24dfc4c108e0d8",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\HURT_CONCEPT_ROUND_37.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-26T22:22:56.423Z",
+  "baselineImages": [
+    "347d1ce803dc59393fb9bf35da274cd9d1f01d1998e611097f94ba03c48a4f53",
+    "f4529e70365ccc52a094010ab230bcc98259ba35a0b5b35928a7b8a49748d493",
+    "a0118d73fd85d3a9ac1919ac2971b58084943884ee05ab59c503466adaf22881",
+    "7995d0082048c7073b0ec4892d38c41f2471dd657755a2ff14007a3384d9294b",
+    "f4b39dc5f88d0a28cf1dd4505268e66b092e44c181a005a76ed82a1a204357ee",
+    "d9ab7973b297490647e2a85e0d36ef2df1593f7797117cd02d1de95bd63cc2ad"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\models\\sora\\jump_land2d_v5\\Jump_All_Sprites_Current.png",
+      "sha256": "cc78e6ea9b12a1fedab39c36c7afdad8a62e7c76c9dfec67b8b48645a1624314"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-26T22:24:26.696Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_37\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_37\\Gemini_Generated_Image_3cipz13cipz13cip.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}

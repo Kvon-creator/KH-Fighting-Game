@@ -1,0 +1,15 @@
+Here is the concept sheet charting out Sora's hit reactions and hard knockdown sequence. The top row maps out the initial impact and recovery/drift for both ground and air states, while the bottom row charts the upside-down fall into the flat-on-his-back landing.
+
+Before you translate this to the rig, take a look at the arched back on the initial ground/air impacts (Poses 1 and 3) — does this capture enough snap for the hit reaction, or do you need me to adjust the neck and torso angles to sell a heavier blow?
+
+Images
+
+
+
+
+Pro
+Aspect ratio
+
+Gemini is AI and can make mistakes.
+
+Creating your image

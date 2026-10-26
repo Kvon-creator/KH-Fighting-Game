@@ -1,0 +1,17 @@
+New set for Sora: his HURT (hit reaction) animations. He faces screen right; the hit always comes from the opponent on the right, so it knocks him back toward screen left.
+
+Attached: (1) Sora's battle idle in our sprite style, (2) his approved jump in the same style (for the airborne look).
+
+Please generate an image: a clean concept sheet, plain white background, the same 2D cel style, KH2 outfit and Kingdom Key as the attached sprites, the same character size in every pose, no text or labels. 8 poses in two rows of four, in this order:
+
+Row 1:
+1. Ground hit - the moment of impact: standing, his upper body snapped back toward screen left, head thrown back, chest pushed out, knees slightly bent, feet still on the floor; Keyblade still in his right hand, arms flung out.
+2. Ground hit - recovering: the lean back easing as he regains balance, about halfway back to the battle idle.
+3. Air hit - the moment of impact in mid-air: the same backward lean as pose 1 but airborne, legs dangling loosely below and slightly in front of him, arms and Keyblade flung out.
+4. Air hit - drifting back: body still leaning back, legs swinging forward, starting to tip over.
+
+Row 2:
+5. Falling head first: upside down in the air with his BACK facing the viewer, head pointing down toward the floor and his feet up in the air, arms loose around his head, still holding the Keyblade.
+6. Falling head first, closer to the floor: the same upside-down pose rotating so his shoulders are about to hit the ground first.
+7. Hitting the floor: landing flat on his back, a small bounce, limbs loose.
+8. Lying flat on the ground FACE UP (on his back), head toward screen left and feet toward screen right, body fully stretched out on the floor, Keyblade lying loosely in his right hand beside him.
