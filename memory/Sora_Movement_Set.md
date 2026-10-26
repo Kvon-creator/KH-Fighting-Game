@@ -494,3 +494,4 @@ Pending review. Offered the matching brake transition.
   - The glide/run blends have the same old offset (approved, not rebuilt).
   - Test folders: jump_land_v3_down/cam/back, jump_idlecheck, jump_idlecheck2 (apex by mistake), jump_b_idlecheck.
   - Current set: start v4, rise v2, apex v3, fall v3, land v5. Sheet `jump_land2d_v5/Jump_All_Drawings.png`.
+- **Takeoff 3 elbow, October26:** Kvon asked to isolate the takeoff poses (`jump_start2d_v4/Takeoff_Poses.png`, plus `jump_land2d_v5/Landing_Poses.png` made first by mistake), then "Straighten the elbow holding the keyblade a bit in takeoff 3". **jump_start_v5:** takeoff 3's fist reaches ~6 cm further down and back. Sheets `jump_start2d_v5/Takeoff_Poses.png`, `Takeoff3_before_after.png`.

@@ -1749,6 +1749,10 @@ if LOOP:
                 leave = jk({'L': (L0[0]*.5, L0[1], .14, 40.0), 'R': (R0[0]*.5, R0[1], .10, 45.0)}, ce=-.04, pitch=-4.0,
                            blade=back_low)
                 RUN_KEYS = [crouch, push, leave]
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
+                    # v5 (Kvon: straighten the Keyblade elbow a bit in takeoff 3): the fist reaches ~6 cm further down and
+                    # back along the arm.
+                    leave['hand'] = U_*-.20 + V_*.23 + Vector((0, 0, .76))
             elif jpart == 'jump_rise':
                 # Rising (sheet pose 2 / ref_01): front knee driven up, the other leg trailing down, body upright.
                 RUN_KEYS = [jk({'L': (.10, LAT['L'], .34, 10.0), 'R': (-.08, LAT['R'], .10, 45.0)}, ce=-.02, pitch=-4.0,
