@@ -1821,6 +1821,11 @@ if LOOP:
                     # v11 (Kvon: twist the Keyblade while keeping it in the same position): rising 2's Key rolls about its
                     # own shaft; the hand turns with it.
                     RUN_KEYS[1]['blade_twist'] = float(OUT_NAME.rsplit('_t', 1)[1]) if '_t' in OUT_NAME.rsplit('_v', 1)[-1] else 45.0
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 12))):
+                    # v12 (Kvon: rising 2's raised upper leg is pressed too far into his torso): the knee comes down and
+                    # forward a little, so the thigh clears the jacket.
+                    lf_ = RUN_KEYS[1]['feet']['L']
+                    RUN_KEYS[1]['feet']['L'] = (lf_[0] + .06, lf_[1], lf_[2] - .12, lf_[3])
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
