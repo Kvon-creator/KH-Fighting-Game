@@ -511,3 +511,4 @@ Pending review. Offered the matching brake transition.
   - Picked roll 210 (blade down toward his feet, toward the player): build `jump_rise_v9_r210` -> 2D `jump_rise2d_v9`.
   - Review folders: jump_rise_v8 (forward across the body), jump_rise_v9 (roll 40, up/back), jump_rise_v9_r240/_r270.
   - Sheets `jump_rise2d_v9/Rising2_straight_wrist.png`, `Takeoff_and_Rising.png`.
+- **Reverted, October26:** Kvon: "Revert the change." Rising is back to **jump_rise_v6** (rising 2's Key turned 75 deg toward the player with the bent wrist; v5 elbow). v7 (blade tipped down) and v8/v9 (straight wrist) are not used; they are obsolete at the next cleanup. Current jump set: start v8, rise v6, apex v3, fall v3, land v5.
