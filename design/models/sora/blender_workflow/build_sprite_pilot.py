@@ -1820,7 +1820,9 @@ if LOOP:
                 if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
                     # v11 (Kvon: twist the Keyblade while keeping it in the same position): rising 2's Key rolls about its
                     # own shaft; the hand turns with it.
-                    RUN_KEYS[1]['blade_twist'] = float(OUT_NAME.rsplit('_t', 1)[1]) if '_t' in OUT_NAME.rsplit('_v', 1)[-1] else 45.0
+                    import re as re_t
+                    m_t = re_t.search(r'_t(-?\d+)', OUT_NAME.rsplit('_v', 1)[-1])
+                    RUN_KEYS[1]['blade_twist'] = float(m_t.group(1)) if m_t else 45.0
                 if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 12))):
                     # v12 (Kvon: rising 2's raised upper leg is pressed too far into his torso): the knee comes down and
                     # forward a little, so the thigh clears the jacket.
@@ -1841,7 +1843,16 @@ if LOOP:
                     # v15 (Kvon: rotate the joint so the upper leg's toes point down): the raised foot's ankle pitches
                     # 70 deg toes-down; the ankle target is lowered by the same toe offset so the leg itself doesn't move.
                     lf_ = RUN_KEYS[1]['feet']['L']
-                    RUN_KEYS[1]['feet']['L'] = (lf_[0], lf_[1], lf_[2] - TOE_D*(math.sin(math.radians(70)) - math.sin(math.radians(35))), 70.0)
+                    if JUMP.endswith('_v15'):
+                        RUN_KEYS[1]['feet']['L'] = (lf_[0], lf_[1], lf_[2] - TOE_D*(math.sin(math.radians(70)) - math.sin(math.radians(35))), 70.0)
+                if JUMP.endswith('_v16'):
+                    # v16 = v14 (Kvon reverted the v15 toe change) + leg-position review options from the output name:
+                    # ..._x<cm>_z<cm> moves the raised foot forward(+)/back(-) and up(+)/down(-).
+                    import re as re_
+                    m_ = re_.search(r'_x(-?\d+)_z(-?\d+)$', OUT_NAME)
+                    if m_:
+                        lf_ = RUN_KEYS[1]['feet']['L']
+                        RUN_KEYS[1]['feet']['L'] = (lf_[0] + int(m_.group(1))/100, lf_[1], lf_[2] + int(m_.group(2))/100, lf_[3])
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
