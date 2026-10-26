@@ -1,0 +1,9 @@
+{
+  "source": "jump_rise_v15_t-30/sora_idle_loop.blend",
+  "version": "jump_rise2d_v15",
+  "frames": [
+    "sora_idle3d_00.png",
+    "sora_idle3d_01.png"
+  ],
+  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
+}

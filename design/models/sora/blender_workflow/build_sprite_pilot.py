@@ -1837,6 +1837,11 @@ if LOOP:
                     # clearly further forward and down so hip-to-ankle opens up.
                     lf_ = RUN_KEYS[1]['feet']['L']
                     RUN_KEYS[1]['feet']['L'] = (lf_[0] + .12, lf_[1], lf_[2] - .12, 35.0)
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 15))):
+                    # v15 (Kvon: rotate the joint so the upper leg's toes point down): the raised foot's ankle pitches
+                    # 70 deg toes-down; the ankle target is lowered by the same toe offset so the leg itself doesn't move.
+                    lf_ = RUN_KEYS[1]['feet']['L']
+                    RUN_KEYS[1]['feet']['L'] = (lf_[0], lf_[1], lf_[2] - TOE_D*(math.sin(math.radians(70)) - math.sin(math.radians(35))), 70.0)
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
