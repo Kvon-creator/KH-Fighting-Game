@@ -1812,6 +1812,11 @@ if LOOP:
                     # chosen below so the blade angles somewhat down toward his feet.
                     RUN_KEYS[1]['blade_dir'] = toward_cam(back_low, 75.0)
                     RUN_KEYS[1]['wrist_roll'] = 0.0
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 10))):
+                    # v10 (Kvon reverted v7-v9 to v6, then: angle the Keyblade down slightly more): v6's 75 deg turn toward
+                    # the player with the bent wrist, tipped a little further down.
+                    RUN_KEYS[1]['wrist_roll'] = None
+                    RUN_KEYS[1]['blade_dir'] = tuple((Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
@@ -2138,7 +2143,7 @@ if LOOP:
             for k_ in RUN_KEYS:
                 if k_.get('blade_ease') is not None:
                     k_['blade_dir'] = tuple(CR_BLADE0.lerp(loop_dir_, k_['blade_ease']).normalized())
-        if JUMP and JUMP.startswith('jump_rise') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+        if JUMP and JUMP.startswith('jump_rise') and JUMP.endswith(('_v8', '_v9')):
             # Straight-wrist roll for rising 2: whole Key in the frame and above the floor, blade pointing as far down
             # (toward his feet) as the straight wrist allows, but not straight down - "somewhat".
             TW_SIGN = 1

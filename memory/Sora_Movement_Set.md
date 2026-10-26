@@ -512,3 +512,4 @@ Pending review. Offered the matching brake transition.
   - Review folders: jump_rise_v8 (forward across the body), jump_rise_v9 (roll 40, up/back), jump_rise_v9_r240/_r270.
   - Sheets `jump_rise2d_v9/Rising2_straight_wrist.png`, `Takeoff_and_Rising.png`.
 - **Reverted, October26:** Kvon: "Revert the change." Rising is back to **jump_rise_v6** (rising 2's Key turned 75 deg toward the player with the bent wrist; v5 elbow). v7 (blade tipped down) and v8/v9 (straight wrist) are not used; they are obsolete at the next cleanup. Current jump set: start v8, rise v6, apex v3, fall v3, land v5.
+- **Rising 2 Key slightly lower, October26:** Kvon: "And the keyblade down slightly more." **jump_rise_v10** = v6 (75 deg turn, bent wrist) with the blade tipped down (+0.3 down). The v8/v9 roll search is limited to those versions. Current set: start v8, rise v10, apex v3, fall v3, land v5. Sheets `jump_rise2d_v10/Rising2_before_after.png`, `Takeoff_and_Rising.png`.
