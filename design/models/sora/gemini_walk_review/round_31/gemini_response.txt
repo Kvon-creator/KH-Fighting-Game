@@ -1,0 +1,15 @@
+Here is the concept sheet for Sora's back-dash sequence, mapping the progression from the initial crouch and push-off, through the one-handed airborne hop, and landing securely back into the two-handed battle idle guard.
+
+Now that we have the 2D visual target for the back-dash momentum, would you like me to analyze the exact hara/mune back-leaning pitch and leg extension vectors required to translate this into bone targets for your script?
+
+Images
+
+
+
+
+Pro
+Aspect ratio
+
+Gemini is AI and can make mistakes.
+
+Creating your image

@@ -1,0 +1,39 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "74709CB41403798385873E3BD5A33E3A",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "backdash-concept",
+  "promptSha256": "d535e21278add59586aa59d4b6ff3647934ac1d704203dfc8134453363b4b3b7",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\BACKDASH_CONCEPT_ROUND_31.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-26T13:00:16.512Z",
+  "baselineImages": [
+    "f825e7d97881d9b7c732f120e0396a05584c462b46f9f229b1d523d1c6930bb3"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\references\\air_movement\\air_movement_ref_04.png",
+      "sha256": "7bae80251188dd861101026c93032c97c0102e4cd78029ae60d4c6bd6c25adb1"
+    },
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\models\\sora\\glide_loop2d_v34\\frames_512\\sora_idle3d_00.png",
+      "sha256": "b57a8a4f6a2edf11a99aacaee2284d35b5cae0a8f9ff65303da1c0ff2bf70f56"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-26T13:01:39.202Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_31\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_31\\Gemini_Generated_Image_tp0mzktp0mzktp0m.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}
