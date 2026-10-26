@@ -1849,7 +1849,12 @@ if LOOP:
                     # v16 = v14 (Kvon reverted the v15 toe change) + leg-position review options from the output name:
                     # ..._x<cm>_z<cm> moves the raised foot forward(+)/back(-) and up(+)/down(-).
                     import re as re_
-                    m_ = re_.search(r'_x(-?\d+)_z(-?\d+)$', OUT_NAME)
+                    m_r = re_.search(r'_rz(-?\d+)$', OUT_NAME)
+                    if m_r:
+                        # ..._rz<cm>: the hanging (lower) leg's foot moves up(+)/down(-) - down straightens that leg.
+                        rf_ = RUN_KEYS[1]['feet']['R']
+                        RUN_KEYS[1]['feet']['R'] = (rf_[0], rf_[1], rf_[2] + int(m_r.group(1))/100, rf_[3])
+                    m_ = re_.search(r'_x(-?\d+)_z(-?\d+)(?:_rz-?\d+)?$', OUT_NAME)
                     if m_:
                         lf_ = RUN_KEYS[1]['feet']['L']
                         RUN_KEYS[1]['feet']['L'] = (lf_[0] + int(m_.group(1))/100, lf_[1], lf_[2] + int(m_.group(2))/100, lf_[3])
