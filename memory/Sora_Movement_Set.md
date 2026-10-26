@@ -637,3 +637,4 @@ Pending review. Offered the matching brake transition.
   - **Jump carry:** takeoff vx = walk +/-5, glide +12, back-dash -9 px/frame. Holding the same way keeps a faster carry; no input coasts at 0.98/frame; dash momentum still fades at 0.9.
   - **Steering:** up to +/-6 px/frame, accel 0.6.
   - **Traced:** standing jump (no drift), walk jump (~190 px forward), glide jump (~430 px), back-dash jump (backwards), walk->crouch, glide->back-dash.
+- **Double jump further and higher, October26:** Kvon: "I want the double jump to travel a little further and higher." JUMP2_SPEED 0.7 -> 0.8 of the first jump (peak ~128 px above the press point vs ~98). JUMP2_VX = 7 px/frame sideways push in the held direction (unless already faster). Used at the very peak of the first jump, his hair passes the top of the fixed 720 px test screen by ~25 px (head top row 79 of 384); a game camera or a slightly lower first jump would fix it.

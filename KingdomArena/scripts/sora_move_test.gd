@@ -38,9 +38,12 @@ const JUMP_HEIGHT := 200.0
 const JUMP_RISE_FRAMES := 18.0
 const JUMP_GRAVITY := 2.0 * JUMP_HEIGHT / (JUMP_RISE_FRAMES * JUMP_RISE_FRAMES)
 const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
-## Second jump: launch speed as a share of the first jump's. A smaller burst (about half the first
-## jump's height), so a second jump at the top of the first keeps his head on screen.
-const JUMP2_SPEED := JUMP_SPEED * 0.7
+## Second jump: launch speed as a share of the first jump's (about two-thirds of its height; Kvon asked
+## for a little higher than 0.7). Used at the very top of the first jump, his hair can pass the top of
+## this fixed test screen by ~25 px.
+const JUMP2_SPEED := JUMP_SPEED * 0.8
+## Second jump sideways push (Kvon: travel a little further): px per game frame in the held direction.
+const JUMP2_VX := 7.0
 ## Game frames into the second jump at which the post-spin swing-up drawing ends (22 spin + 3).
 const SPIN_SWING_END := 25
 ## Forward air-dash: game frames for the tuck, burst, dash 1, dash 2 and brake, and px moved forward per
@@ -256,6 +259,8 @@ func _physics_process(_delta: float) -> void:
 		elif jump_pressed and not _jump2_used and _dash_tick < 0:
 			_jump2_used = true  # second jump: a new upward burst and the spin
 			_vy = -JUMP2_SPEED
+			if _air_input != 0.0 and absf(_vx) < JUMP2_VX:
+				_vx = _air_input * JUMP2_VX
 			_spin_tick = 0
 			_after_dash = false
 		_air_step()
