@@ -621,3 +621,9 @@ Pending review. Offered the matching brake transition.
   - Key low behind in the right hand; left arm out for balance; settle regrips with both hands.
   - **v1:** barely off the floor, no visible lean. **v2:** current.
   - 2D `jump_bdash2d_v2`: `BackDash_Sequence.png`, `BackDash_preview(_slow).gif` (the GIF moves him ~160 px back with a small lift).
+- **Back-dash and air-dash timing, October26:** Kvon: "I want the back-hop to linger slightly longer and carry a greater distance. I also want the air dashes to do the same while carrying some momentum." Drawings unchanged (bdash v2, dash v2); Godot timing changed:
+  - **Back-dash** (double-tap A/Left, `back_dash_384`): holds [2,7,7,3,4] = 23 frames; speeds -6/-17/-14/-5/0 (~245 px); a 32 px sin hop over the hop drawings on the ground.
+  - **In the air:** a back-dash plays push/hop/hop 2 with no gravity, sharing the one air dash per jump.
+  - **Forward air-dash:** holds [3,3,6,6,4] (~255 px).
+  - **Momentum:** after either air dash, vx = +/-7 px/frame fading by x0.9 per frame until landing.
+  - Flags `--bdash-demo-at=N`; all three traced; ground back-dash recorded.

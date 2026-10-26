@@ -7,13 +7,14 @@ extends Node2D
 ## hold to glide low across the floor; on release he skids to a stop into the idle. Press W or Up to
 ## jump straight up (takeoff, then the air drawing follows his vertical speed, then the landing);
 ## press it again in the air for the second jump (an upright spin, like KH2's Aerial Dodge), or
-## double-tap D or Right in the air to air-dash forward (once each per jump).
+## double-tap D or Right in the air to air-dash forward (once each per jump). Double-tap A or Left to
+## back-dash: a low backward hop on the ground, or a backward air dash (sharing the one air dash).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
 ## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
 ## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again,
-## `--dash-demo-at=M` double-taps forward from frame M);
+## `--dash-demo-at=M` double-taps forward from frame M); `--bdash-demo-at=N` double-taps back;
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
@@ -43,8 +44,18 @@ const JUMP2_SPEED := JUMP_SPEED * 0.7
 const SPIN_SWING_END := 25
 ## Forward air-dash: game frames for the tuck, burst, dash 1, dash 2 and brake, and px moved forward per
 ## game frame in each (about 190 px in all).
-const AIR_DASH_HOLDS := [3, 3, 4, 4, 3]
+## (Kvon: the air dashes linger slightly longer and carry momentum.) About 255 px in all.
+const AIR_DASH_HOLDS := [3, 3, 6, 6, 4]
 const AIR_DASH_SPEED := [4.0, 10.0, 16.0, 16.0, 6.0]
+## Back-dash (double-tap back): push, hop, hop 2, touch down, settle - game frames and px per game frame
+## (negative = backward). On the ground he hops low along BACK_DASH_HEIGHT; in the air only the push and
+## hops play, then he falls. Kvon: the hop lingers slightly longer and carries further (~245 px).
+const BACK_DASH_HOLDS := [2, 7, 7, 3, 4]
+const BACK_DASH_SPEED := [-6.0, -17.0, -14.0, -5.0, 0.0]
+const BACK_DASH_HEIGHT := 32.0
+## Sideways speed (px per game frame) an air dash leaves him with; it fades by AIR_DRAG each frame.
+const AIR_DASH_CARRY := 7.0
+const AIR_DRAG := 0.9
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing,
 ## optional file numbers in play order (crouch_up is crouch_down backwards)]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
@@ -83,6 +94,8 @@ const ANIMATIONS := {
 	&"jump_spin": ["res://assets/sora/jump_spin_384/", "sora_jump_spin_", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], []],
 	# Forward air-dash: burst, dash 1, dash 2, brake (timed by AIR_DASH_HOLDS in _air_step).
 	&"jump_dash": ["res://assets/sora/jump_dash_384/", "sora_jump_dash_", [3, 4, 4, 3], []],
+	# Back-dash: push, hop, hop 2, touch down, settle (timed by BACK_DASH_HOLDS).
+	&"back_dash": ["res://assets/sora/back_dash_384/", "sora_back_dash_", [2, 7, 7, 3, 4], []],
 }
 
 var _sprite: AnimatedSprite2D
@@ -104,6 +117,14 @@ var _spin_tick := -1
 var _dash_used := false
 var _dash_tick := -1
 var _after_dash := false
+## Which air dash is running (true = back-dash), sideways momentum in px per game frame, the ground
+## back-dash's game frame (-1 = not back-dashing), and back double-tap tracking.
+var _dash_back := false
+var _vx := 0.0
+var _bd_tick := -1
+var _back_was := false
+var _last_back_press := -1000
+var _demo_bdash_at := -1
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -154,6 +175,8 @@ func _ready() -> void:
 			_demo_crouch_from = int(arg.trim_prefix("--crouch-demo-from="))
 		elif arg.begins_with("--glide-demo-ticks="):
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
+		elif arg.begins_with("--bdash-demo-at="):
+			_demo_bdash_at = int(arg.trim_prefix("--bdash-demo-at="))
 		elif arg.begins_with("--dash-demo-at="):
 			_demo_dash_at = int(arg.trim_prefix("--dash-demo-at="))
 		elif arg.begins_with("--jump2-demo-at="):
@@ -173,7 +196,14 @@ func _physics_process(_delta: float) -> void:
 		or (_demo_glide_ticks > 0 and (_tick <= 3 or (_tick >= 7 and _tick <= _demo_glide_ticks))) \
 		or (_demo_dash_at > 0 and (_tick - _demo_dash_at) in [0, 1, 5, 6])
 	var back := _tick <= _demo_back_ticks or Input.is_physical_key_pressed(KEY_A) \
-		or Input.is_physical_key_pressed(KEY_LEFT)
+		or Input.is_physical_key_pressed(KEY_LEFT) \
+		or (_demo_bdash_at > 0 and (_tick - _demo_bdash_at) in [0, 1, 5, 6])
+	# A new back press soon after the previous one is a back-dash (on the ground or in the air).
+	var back_tap := false
+	if back and not _back_was:
+		back_tap = _tick - _last_back_press <= DOUBLE_TAP_FRAMES
+		_last_back_press = _tick
+	_back_was = back
 	var crouch := (_demo_crouch_from <= _tick and _tick <= _demo_crouch_ticks) \
 		or Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)
 	# A new forward press soon after the previous one is a double tap: glide while it stays held (on the
@@ -196,9 +226,11 @@ func _physics_process(_delta: float) -> void:
 	var jump_pressed := jump and not _jump_was
 	_jump_was = jump
 	if _air:
-		if double_tap and not _dash_used and _dash_tick < 0 and _spin_tick < 0:
-			_dash_used = true  # forward air-dash: a straight horizontal burst
+		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0:
+			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
+			_dash_back = back_tap and not double_tap
 			_dash_tick = 0
+			_after_dash = false
 		elif jump_pressed and not _jump2_used and _dash_tick < 0:
 			_jump2_used = true  # second jump: a new upward burst and the spin
 			_vy = -JUMP2_SPEED
@@ -206,8 +238,15 @@ func _physics_process(_delta: float) -> void:
 			_after_dash = false
 		_air_step()
 		return
+	if _bd_tick >= 0:
+		_back_dash_step()
+		return
 	if jump_pressed and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
 		_show(&"jump_start")  # from the idle stance (a step just begun snaps back to it)
+		return
+	if back_tap and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
+		_bd_tick = 0  # back-dash from the idle stance (a step just begun snaps back to it)
+		_back_dash_step()
 		return
 	if glide_wanted and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
 		_show(&"glide_start")  # from the idle stance (a step just begun snaps back to it)
@@ -240,6 +279,7 @@ func _physics_process(_delta: float) -> void:
 			_dash_used = false
 			_dash_tick = -1
 			_after_dash = false
+			_vx = 0.0
 			_air_step()
 		elif anim == &"glide_start" and at_end:
 			_show(&"glide_loop", GLIDE_ENTRY_DRAWING)
@@ -263,19 +303,19 @@ func _physics_process(_delta: float) -> void:
 ## speed, and land when the feet reach the floor.
 func _air_step() -> void:
 	if _dash_tick >= 0:
-		# Forward air-dash: no gravity, a straight horizontal move. Brief tuck (the apex drawing), then the
-		# dash drawings with their own holds and speeds, then he falls in the falling pose.
-		var t_dash := _dash_tick
+		# Air dash: no gravity, a straight horizontal move with its own drawings, holds and speeds. Forward:
+		# brief tuck (the apex drawing), burst, dash 1, dash 2, brake. Back: push, hop, hop 2. Then he falls,
+		# carrying some sideways momentum.
+		var holds_d: Array = BACK_DASH_HOLDS.slice(0, 3) if _dash_back else AIR_DASH_HOLDS
+		var speeds_d: Array = BACK_DASH_SPEED.slice(0, 3) if _dash_back else AIR_DASH_SPEED
+		var step := _step_of(_dash_tick, holds_d)
 		_dash_tick += 1
-		var step := 0
-		for i in AIR_DASH_HOLDS.size():
-			if t_dash < AIR_DASH_HOLDS[i]:
-				break
-			t_dash -= AIR_DASH_HOLDS[i]
-			step += 1
-		if step < AIR_DASH_HOLDS.size():
-			_sprite.position.x = clampf(_sprite.position.x + AIR_DASH_SPEED[step], LEFT_LIMIT, RIGHT_LIMIT)
-			if step == 0:
+		if step < holds_d.size():
+			_sprite.position.x = clampf(_sprite.position.x + speeds_d[step], LEFT_LIMIT, RIGHT_LIMIT)
+			if _dash_back:
+				if _sprite.animation != &"back_dash" or _sprite.frame != step:
+					_show(&"back_dash", step)
+			elif step == 0:
 				if _sprite.animation != &"jump_air" or _sprite.frame != 2:
 					_show(&"jump_air", 2)
 			elif _sprite.animation != &"jump_dash" or _sprite.frame != step - 1:
@@ -283,7 +323,10 @@ func _air_step() -> void:
 			return
 		_dash_tick = -1
 		_vy = 0.0
-		_after_dash = true
+		_vx = -AIR_DASH_CARRY if _dash_back else AIR_DASH_CARRY
+		_after_dash = not _dash_back  # the forward brake already raised the Keyblade
+	_sprite.position.x = clampf(_sprite.position.x + _vx, LEFT_LIMIT, RIGHT_LIMIT)
+	_vx *= AIR_DRAG
 	_sprite.position.y += _vy
 	_vy += JUMP_GRAVITY
 	if _sprite.position.y >= FLOOR_Y:
@@ -292,6 +335,7 @@ func _air_step() -> void:
 		_spin_tick = -1
 		_dash_tick = -1
 		_after_dash = false
+		_vx = 0.0
 		_show(&"jump_land")
 		return
 	if _spin_tick >= 0:
@@ -316,6 +360,36 @@ func _air_step() -> void:
 		drawing = maxi(drawing, 4)  # the brake already raised the Keyblade: straight into falling 1
 	if _sprite.animation != &"jump_air" or _sprite.frame != drawing:
 		_show(&"jump_air", drawing)
+
+
+## Which step of a timed move a game frame falls in (the step count once it is over).
+func _step_of(frame: int, holds: Array) -> int:
+	var step := 0
+	for h: int in holds:
+		if frame < h:
+			return step
+		frame -= h
+		step += 1
+	return step
+
+
+## One game frame of the ground back-dash: move back, hop low over the hop drawings, then the touch
+## down and settle, then the idle.
+func _back_dash_step() -> void:
+	var step := _step_of(_bd_tick, BACK_DASH_HOLDS)
+	if step >= BACK_DASH_HOLDS.size():
+		_bd_tick = -1
+		_sprite.position.y = FLOOR_Y
+		_show(&"idle")
+		return
+	var hop_start: int = BACK_DASH_HOLDS[0]
+	var hop_len: int = BACK_DASH_HOLDS[1] + BACK_DASH_HOLDS[2]
+	var u := float(_bd_tick - hop_start) / hop_len
+	_sprite.position.y = FLOOR_Y - (BACK_DASH_HEIGHT * sin(PI * u) if u > 0.0 and u < 1.0 else 0.0)
+	_sprite.position.x = clampf(_sprite.position.x + BACK_DASH_SPEED[step], LEFT_LIMIT, RIGHT_LIMIT)
+	_bd_tick += 1
+	if _sprite.animation != &"back_dash" or _sprite.frame != step:
+		_show(&"back_dash", step)
 
 
 ## Shows a drawing and applies its root motion as it starts.
