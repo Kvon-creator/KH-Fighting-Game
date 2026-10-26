@@ -627,3 +627,7 @@ Pending review. Offered the matching brake transition.
   - **Forward air-dash:** holds [3,3,6,6,4] (~255 px).
   - **Momentum:** after either air dash, vx = +/-7 px/frame fading by x0.9 per frame until landing.
   - Flags `--bdash-demo-at=N`; all three traced; ground back-dash recorded.
+- **Faster glide and air steering, October26:** Kvon: "I want the forward dash to be faster on the ground. I also want him to be able to move left and right in the air without having to dash."
+  - **Glide:** root motion x1.5: loop 45 px per 3-frame drawing (900 px/s, was 600); push-off [5.42, 21.66, 27.07, 43.32]; skid [45, 27.07, 13.54, 5.42, 0]. Drawings unchanged.
+  - **Air steering:** while airborne (not during a dash or spin), holding D/Right or A/Left eases vx toward +/-4 px/frame (accel 0.5/frame). Dash momentum above that fades by the 0.9 drag first; no input = drag. About 140 px of drift over a full jump.
+  - Traced: glide, jump holding forward, jump holding back.

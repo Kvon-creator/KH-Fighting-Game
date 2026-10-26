@@ -9,6 +9,7 @@ extends Node2D
 ## press it again in the air for the second jump (an upright spin, like KH2's Aerial Dodge), or
 ## double-tap D or Right in the air to air-dash forward (once each per jump). Double-tap A or Left to
 ## back-dash: a low backward hop on the ground, or a backward air dash (sharing the one air dash).
+## Hold D/Right or A/Left in the air to drift that way.
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
@@ -56,6 +57,10 @@ const BACK_DASH_HEIGHT := 32.0
 ## Sideways speed (px per game frame) an air dash leaves him with; it fades by AIR_DRAG each frame.
 const AIR_DASH_CARRY := 7.0
 const AIR_DRAG := 0.9
+## Air steering (Kvon: move left and right in the air without dashing): holding D/Right or A/Left eases
+## his sideways speed toward this many px per game frame (240 px/s).
+const AIR_STEER_SPEED := 4.0
+const AIR_STEER_ACCEL := 0.5
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing,
 ## optional file numbers in play order (crouch_up is crouch_down backwards)]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
@@ -74,13 +79,13 @@ const ANIMATIONS := {
 	&"crouch_up": ["res://assets/sora/crouch_down_384/", "sora_crouch_down_",
 		[3, 2, 2, 1, 1, 1, 2], [], [6, 5, 4, 3, 2, 1, 0]],
 	# Low ground glide (replaces the run; from Gemini's concept art): push-off, a hovering loop at
-	# 600 px/s (no planted feet, so it can stop after any drawing), skid landing into the idle.
+	# 900 px/s (Kvon: faster; no planted feet, so it can stop after any drawing), skid landing into the idle.
 	&"glide_start": ["res://assets/sora/glide_start_384/", "sora_glide_start_",
-		[2, 2, 3, 3], [3.61, 14.44, 18.05, 28.88]],
+		[2, 2, 3, 3], [5.42, 21.66, 27.07, 43.32]],
 	&"glide_loop": ["res://assets/sora/glide_loop_384/", "sora_glide_loop_",
-		[3, 3, 3, 3, 3, 3], [30.0, 30.0, 30.0, 30.0, 30.0, 30.0]],
+		[3, 3, 3, 3, 3, 3], [45.0, 45.0, 45.0, 45.0, 45.0, 45.0]],
 	&"glide_stop": ["res://assets/sora/glide_stop_384/", "sora_glide_stop_",
-		[2, 3, 3, 3, 3], [30.0, 18.05, 9.03, 3.61, 0.0]],
+		[2, 3, 3, 3, 3], [45.0, 27.07, 13.54, 5.42, 0.0]],
 	# Jump: takeoff on the ground, then one "air" animation whose drawing is picked from his vertical
 	# speed each game frame (rising 1, rising 2, apex, swing up, falling 1, falling 2), then the landing.
 	&"jump_start": ["res://assets/sora/jump_start_384/", "sora_jump_start_", [2, 2, 2], []],
@@ -121,6 +126,8 @@ var _after_dash := false
 ## back-dash's game frame (-1 = not back-dashing), and back double-tap tracking.
 var _dash_back := false
 var _vx := 0.0
+## Held left/right in the air this frame (-1, 0 or 1).
+var _air_input := 0.0
 var _bd_tick := -1
 var _back_was := false
 var _last_back_press := -1000
@@ -226,6 +233,7 @@ func _physics_process(_delta: float) -> void:
 	var jump_pressed := jump and not _jump_was
 	_jump_was = jump
 	if _air:
+		_air_input = (1.0 if forward and not back else 0.0) - (1.0 if back and not forward else 0.0)
 		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0:
 			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
 			_dash_back = back_tap and not double_tap
@@ -325,8 +333,16 @@ func _air_step() -> void:
 		_vy = 0.0
 		_vx = -AIR_DASH_CARRY if _dash_back else AIR_DASH_CARRY
 		_after_dash = not _dash_back  # the forward brake already raised the Keyblade
+	if _air_input != 0.0:
+		# Steering: ease toward the held direction's speed (dash momentum above it fades out first).
+		var target := _air_input * AIR_STEER_SPEED
+		if absf(_vx) > AIR_STEER_SPEED and signf(_vx) == signf(target):
+			_vx *= AIR_DRAG
+		else:
+			_vx = move_toward(_vx, target, AIR_STEER_ACCEL)
+	else:
+		_vx *= AIR_DRAG
 	_sprite.position.x = clampf(_sprite.position.x + _vx, LEFT_LIMIT, RIGHT_LIMIT)
-	_vx *= AIR_DRAG
 	_sprite.position.y += _vy
 	_vy += JUMP_GRAVITY
 	if _sprite.position.y >= FLOOR_Y:
