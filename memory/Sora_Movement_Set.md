@@ -616,3 +616,8 @@ Pending review. Offered the matching brake transition.
     4. feet reaching down;
     5. landing back in the two-handed idle.
   - In poses 2-4 he leans/moves forward-right rather than backward. Shown to Kvon.
+- **Back-dash built (October26; pending review):** recipe `jump_bdash_vN`, 5 drawings [2,4,4,3,4]: push, hop, hop 2, touch down, settle.
+  - Corrected from round 36 so he leans BACK: torso pitch -17 / -12, feet out in front and lifted (L .28/.24, R .12/.16).
+  - Key low behind in the right hand; left arm out for balance; settle regrips with both hands.
+  - **v1:** barely off the floor, no visible lean. **v2:** current.
+  - 2D `jump_bdash2d_v2`: `BackDash_Sequence.png`, `BackDash_preview(_slow).gif` (the GIF moves him ~160 px back with a small lift).

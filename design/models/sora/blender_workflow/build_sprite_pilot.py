@@ -53,7 +53,7 @@ if GLIDE:
 # falling with the Keyblade raised high (ref_03, Kvon's rule) and landing. Built on the run machinery; the
 # drawings stay in place (the game moves him up and down).
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
-                                      'jump_spin_v', 'jump_dash_v')) else None
+                                      'jump_spin_v', 'jump_dash_v', 'jump_bdash_v')) else None
 if JUMP:
     RUN = 'run_loop_v18'
 if RUN:
@@ -637,7 +637,7 @@ if RUN:
         GAME_FRAMES = [3]*6  # smooth hover loop: 6 drawings x 3 game frames
     if JUMP:
         GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
-                       'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3],
+                       'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3], 'jump_bdash': [2, 4, 4, 3, 4],
                        'jump_land': [3, 3, 4]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
             GAME_FRAMES = [3, 3, 4]  # v4: in-between + the two falling drawings
@@ -1877,6 +1877,37 @@ if LOOP:
                             pitch=2.0, blade=(Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
                     k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80)); k_['hz'] = -.17; k_['blade_twist'] = -30.0
                     RUN_KEYS = [k_]
+            elif jpart == 'jump_bdash':
+                # Back-dash (Kvon: Gemini round 36, a quick LOW backstep, corrected so he leans BACK): push off from the
+                # idle, a low hop with the body upright and tipped back, knees bent, feet a little in front, Keyblade low
+                # behind in the right hand, left arm out for balance; feet reach down, touch down and settle in the idle.
+                hop_k = jk({'L': (.18, LAT['L'], .12, 15.0), 'R': (.02, LAT['R'], .08, 10.0)}, ce=-.02, hunch=-3.0,
+                           pitch=-9.0, neck=8.0, blade=back_low)
+                hop_k['hand'] = U_*-.24 + V_*.22 + Vector((0, 0, .72))
+                ARM_BACK = T_((.30, -.10, .92))   # left arm out to his left side for balance
+                push_k = mix(IDLE_R, hop_k, .35); push_k['ce'] += .07
+                push_k['feet'] = {sd: (f_[0], f_[1], .02, 20.0) for sd, f_ in push_k['feet'].items()}
+                push_k['blade_dir'] = tuple(CR_BLADE0.lerp(Vector(back_low), .5).normalized())
+                hop2_k = dict(hop_k); hop2_k['feet'] = {'L': (.16, LAT['L'], .04, 10.0), 'R': (.0, LAT['R'], .02, 8.0)}
+                hop2_k['pitch'] = -6.0
+                touch_k = mix(hop2_k, IDLE_R, .55); touch_k['ce'] += .05
+                touch_k['feet'] = {sd: (f_[0], f_[1], 0.0, 0.0) for sd, f_ in touch_k['feet'].items()}
+                touch_k['blade_dir'] = tuple(Vector(back_low).lerp(CR_BLADE0, .55).normalized())
+                settle_k = mix(hop2_k, IDLE_R, .9); settle_k['release'] = 0.0
+                settle_k['feet'] = {sd: (f_[0], f_[1], 0.0, 0.0) for sd, f_ in settle_k['feet'].items()}
+                settle_k['blade_dir'] = tuple(Vector(back_low).lerp(CR_BLADE0, .92).normalized())
+                if not JUMP.endswith('_v1'):
+                    # v2: v1's hop barely left the floor and the lean back didn't show: feet out in front and lifted,
+                    # knees bent, torso tipped back more (the drawings are in place; the game lifts him a little too).
+                    for k_, (lf_, rf_, pt_, hn_) in ((hop_k, ((.28, .24), (.12, .16), -17.0, -7.0)),
+                                                     (hop2_k, ((.24, .12), (.08, .08), -12.0, -5.0))):
+                        k_['feet'] = {'L': (lf_[0], LAT['L'], lf_[1], 5.0), 'R': (rf_[0], LAT['R'], rf_[1], 5.0)}
+                        k_['pitch'], k_['hunch'] = pt_, hn_
+                    hop_k['ce'] = -.06
+                    touch_k = mix(hop2_k, IDLE_R, .55); touch_k['ce'] += .05
+                    touch_k['feet'] = {sd: (f_[0], f_[1], 0.0, 0.0) for sd, f_ in touch_k['feet'].items()}
+                    touch_k['blade_dir'] = tuple(Vector(back_low).lerp(CR_BLADE0, .55).normalized())
+                RUN_KEYS = [push_k, hop_k, hop2_k, touch_k, settle_k]
             elif jpart == 'jump_dash':
                 # Forward air-dash (Kvon: Gemini round-34 sheet, bottom-left pose as the main reference, transitions
                 # built around it): burst out of the apex tuck -> the dash pose (leaning forward and crouched, front
