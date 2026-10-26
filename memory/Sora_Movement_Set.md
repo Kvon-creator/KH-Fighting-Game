@@ -597,3 +597,8 @@ Pending review. Offered the matching brake transition.
   - **v1:** too upright and facing the camera; legs under him; Key off the frame.
   - **v2 (current):** dash turned +25, hunch 16 / pitch 26 / neck -34; both legs bent with the feet trailing (L -.06 lift .32, R -.38 lift .22); Key arm reaching back, blade back and toward the camera so it fits. Brake upright (turn 8), Key rising toward the falling pose.
   - 2D `jump_dash2d_v2`: `AirDash_Sequence.png` (with the reference crop), `AirDash_preview(_slow).gif`.
+- **Air-dash approved "for now" and in Godot, October26:** Kvon: "It looks right for now" (may revisit).
+  - `jump_dash_384`; a double tap of forward while airborne (once per jump, not during the spin) plays the apex tuck 3 frames, then burst 3 / dash 1 4 / dash 2 4 / brake 3 frames.
+  - No gravity during the dash; it moves 4/10/16/16/6 px per frame (~190 px).
+  - Afterwards vy = 0 and the falling drawing is forced to >= falling 1 (skipping the swing-up, since the brake already raised the Key).
+  - Flag `--dash-demo-at=M`; traced (the plain jump and spin are unchanged) and recorded.

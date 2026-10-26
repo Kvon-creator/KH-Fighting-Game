@@ -6,12 +6,14 @@ extends Node2D
 ## wins over walking; during a step he crouches once the step finishes. Double-tap D or Right and
 ## hold to glide low across the floor; on release he skids to a stop into the idle. Press W or Up to
 ## jump straight up (takeoff, then the air drawing follows his vertical speed, then the landing);
-## press it again in the air for the second jump (an upright spin, like KH2's Aerial Dodge).
+## press it again in the air for the second jump (an upright spin, like KH2's Aerial Dodge), or
+## double-tap D or Right in the air to air-dash forward (once each per jump).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
 ## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
-## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again);
+## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again,
+## `--dash-demo-at=M` double-taps forward from frame M);
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
@@ -39,6 +41,10 @@ const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
 const JUMP2_SPEED := JUMP_SPEED * 0.7
 ## Game frames into the second jump at which the post-spin swing-up drawing ends (22 spin + 3).
 const SPIN_SWING_END := 25
+## Forward air-dash: game frames for the tuck, burst, dash 1, dash 2 and brake, and px moved forward per
+## game frame in each (about 190 px in all).
+const AIR_DASH_HOLDS := [3, 3, 4, 4, 3]
+const AIR_DASH_SPEED := [4.0, 10.0, 16.0, 16.0, 6.0]
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing,
 ## optional file numbers in play order (crouch_up is crouch_down backwards)]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
@@ -75,6 +81,8 @@ const ANIMATIONS := {
 	&"jump_land": ["res://assets/sora/jump_land_384/", "sora_jump_land_", [3, 3, 4], []],
 	# Second jump: the apex pose spinning on his vertical axis in 30-degree steps (2 game frames each).
 	&"jump_spin": ["res://assets/sora/jump_spin_384/", "sora_jump_spin_", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], []],
+	# Forward air-dash: burst, dash 1, dash 2, brake (timed by AIR_DASH_HOLDS in _air_step).
+	&"jump_dash": ["res://assets/sora/jump_dash_384/", "sora_jump_dash_", [3, 4, 4, 3], []],
 }
 
 var _sprite: AnimatedSprite2D
@@ -87,9 +95,15 @@ var _demo_crouch_from := 1
 var _demo_glide_ticks := -1
 var _demo_jump_at := -1
 var _demo_jump2_at := -1
+var _demo_dash_at := -1
 ## Second jump: whether it has been used in this jump, and game frames into its spin (-1 = not spinning).
 var _jump2_used := false
 var _spin_tick := -1
+## Forward air-dash: whether it has been used in this jump, game frames into it (-1 = not dashing),
+## and whether he is falling after one (the falling drawing then skips the swing-up).
+var _dash_used := false
+var _dash_tick := -1
+var _after_dash := false
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -140,6 +154,8 @@ func _ready() -> void:
 			_demo_crouch_from = int(arg.trim_prefix("--crouch-demo-from="))
 		elif arg.begins_with("--glide-demo-ticks="):
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
+		elif arg.begins_with("--dash-demo-at="):
+			_demo_dash_at = int(arg.trim_prefix("--dash-demo-at="))
 		elif arg.begins_with("--jump2-demo-at="):
 			_demo_jump2_at = int(arg.trim_prefix("--jump2-demo-at="))
 		elif arg.begins_with("--jump-demo-at="):
@@ -154,14 +170,18 @@ func _physics_process(_delta: float) -> void:
 	_tick += 1
 	var forward := _tick <= _demo_forward_ticks or Input.is_physical_key_pressed(KEY_D) \
 		or Input.is_physical_key_pressed(KEY_RIGHT) \
-		or (_demo_glide_ticks > 0 and (_tick <= 3 or (_tick >= 7 and _tick <= _demo_glide_ticks)))
+		or (_demo_glide_ticks > 0 and (_tick <= 3 or (_tick >= 7 and _tick <= _demo_glide_ticks))) \
+		or (_demo_dash_at > 0 and (_tick - _demo_dash_at) in [0, 1, 5, 6])
 	var back := _tick <= _demo_back_ticks or Input.is_physical_key_pressed(KEY_A) \
 		or Input.is_physical_key_pressed(KEY_LEFT)
 	var crouch := (_demo_crouch_from <= _tick and _tick <= _demo_crouch_ticks) \
 		or Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)
-	# A new forward press soon after the previous one is a double tap: glide while it stays held.
+	# A new forward press soon after the previous one is a double tap: glide while it stays held (on the
+	# ground) or air-dash (in the air).
+	var double_tap := false
 	if forward and not _forward_was:
 		_glide = _tick - _last_forward_press <= DOUBLE_TAP_FRAMES
+		double_tap = _glide
 		_last_forward_press = _tick
 	if not forward:
 		_glide = false
@@ -176,10 +196,14 @@ func _physics_process(_delta: float) -> void:
 	var jump_pressed := jump and not _jump_was
 	_jump_was = jump
 	if _air:
-		if jump_pressed and not _jump2_used:
+		if double_tap and not _dash_used and _dash_tick < 0 and _spin_tick < 0:
+			_dash_used = true  # forward air-dash: a straight horizontal burst
+			_dash_tick = 0
+		elif jump_pressed and not _jump2_used and _dash_tick < 0:
 			_jump2_used = true  # second jump: a new upward burst and the spin
 			_vy = -JUMP2_SPEED
 			_spin_tick = 0
+			_after_dash = false
 		_air_step()
 		return
 	if jump_pressed and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
@@ -213,6 +237,9 @@ func _physics_process(_delta: float) -> void:
 			_vy = -JUMP_SPEED
 			_jump2_used = false
 			_spin_tick = -1
+			_dash_used = false
+			_dash_tick = -1
+			_after_dash = false
 			_air_step()
 		elif anim == &"glide_start" and at_end:
 			_show(&"glide_loop", GLIDE_ENTRY_DRAWING)
@@ -235,12 +262,36 @@ func _physics_process(_delta: float) -> void:
 ## One airborne game frame: move by the vertical speed, apply gravity, pick the air drawing from the
 ## speed, and land when the feet reach the floor.
 func _air_step() -> void:
+	if _dash_tick >= 0:
+		# Forward air-dash: no gravity, a straight horizontal move. Brief tuck (the apex drawing), then the
+		# dash drawings with their own holds and speeds, then he falls in the falling pose.
+		var t_dash := _dash_tick
+		_dash_tick += 1
+		var step := 0
+		for i in AIR_DASH_HOLDS.size():
+			if t_dash < AIR_DASH_HOLDS[i]:
+				break
+			t_dash -= AIR_DASH_HOLDS[i]
+			step += 1
+		if step < AIR_DASH_HOLDS.size():
+			_sprite.position.x = clampf(_sprite.position.x + AIR_DASH_SPEED[step], LEFT_LIMIT, RIGHT_LIMIT)
+			if step == 0:
+				if _sprite.animation != &"jump_air" or _sprite.frame != 2:
+					_show(&"jump_air", 2)
+			elif _sprite.animation != &"jump_dash" or _sprite.frame != step - 1:
+				_show(&"jump_dash", step - 1)
+			return
+		_dash_tick = -1
+		_vy = 0.0
+		_after_dash = true
 	_sprite.position.y += _vy
 	_vy += JUMP_GRAVITY
 	if _sprite.position.y >= FLOOR_Y:
 		_sprite.position.y = FLOOR_Y
 		_air = false
 		_spin_tick = -1
+		_dash_tick = -1
+		_after_dash = false
 		_show(&"jump_land")
 		return
 	if _spin_tick >= 0:
@@ -261,6 +312,8 @@ func _air_step() -> void:
 	var t := _vy / JUMP_SPEED  # -1 at launch, 0 at the peak, about +1 on landing
 	var drawing := 0 if t < -0.55 else (1 if t < -0.15 else (2 if t <= 0.15 else (
 		3 if t < 0.4 else (4 if t < 0.75 else 5))))
+	if _after_dash:
+		drawing = maxi(drawing, 4)  # the brake already raised the Keyblade: straight into falling 1
 	if _sprite.animation != &"jump_air" or _sprite.frame != drawing:
 		_show(&"jump_air", drawing)
 
