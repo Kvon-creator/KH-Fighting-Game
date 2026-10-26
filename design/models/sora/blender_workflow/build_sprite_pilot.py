@@ -1787,6 +1787,13 @@ if LOOP:
                     # v3 (Kvon: rotate the wrist so the Keyblade points toward the player, more in each image): 40, 60 deg.
                     RUN_KEYS[0]['blade_dir'] = toward_cam(back_low, 40.0)
                     RUN_KEYS[1]['blade_dir'] = toward_cam(back_low, 60.0)
+                if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                    # v4 (Kvon: rising 1's Keyblade elbow straighter than takeoff 3, rising 2 straighter still): the hips
+                    # (and shoulders) ride 12 cm higher in the rising drawings, so the fist goes further down and back
+                    # relative to the shoulder - takeoff 3 sits ~0.72 m below... ~0.66 and ~0.60 here.
+                    for k_, (back_, hz_) in zip(RUN_KEYS, ((-.22, -.14), (-.26, -.20))):
+                        k_['hand'] = U_*back_ + V_*.23 + Vector((0, 0, .80))
+                        k_['hz'] = hz_
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,

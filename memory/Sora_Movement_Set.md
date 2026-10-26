@@ -501,3 +501,4 @@ Pending review. Offered the matching brake transition.
   - Builder helper `toward_cam(b, deg)` rotates a blade direction toward the camera.
   - **jump_start_v8:** takeoff 3 at 20 deg. **jump_rise_v3:** 40 and 60 deg. The Key reads progressively shorter (foreshortened) as it turns toward the viewer.
   - Sheets `jump_start2d_v8/Takeoff_and_Rising.png` and `Takeoff_and_Rising_v7_vs_v8.png`.
+- **Progressive elbow straightening, October26:** Kvon: rising 1's Keyblade elbow straighter than takeoff 3, then "rising 3" (there are only two rising drawings, so read as rising 2) straighter still. **jump_rise_v4:** fist further down and back (hand back -.22 / -.26, hz -.14 / -.20); the 40/60 deg turn toward the player is kept. Sheets `jump_rise2d_v4/Elbow_progression_before_after.png`, `Takeoff_and_Rising.png`.
