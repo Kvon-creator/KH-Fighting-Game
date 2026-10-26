@@ -1876,6 +1876,24 @@ if LOOP:
                                hand=hi, blade=up_high),
                             jk({'L': (.14, LAT['L'], .10, 15.0), 'R': (-.18, LAT['R'], .06, 30.0)}, pitch=-6.0, neck=-2.0,
                                hand=hi, blade=up_high)]
+                import re as re_k
+                m_k = re_k.search(r'_k(\d+)$', OUT_NAME)
+                if m_k:
+                    # Falling-1 Keyblade position options (Kvon's review sheet): (hand in U/V/up, blade direction).
+                    Z_ = Vector((0, 0, 1))
+                    KOPT = {
+                        1: (hi, Vector(up_high)),                                              # current
+                        2: (U_*-.02 + V_*.20 + Z_*1.30, (Z_ + V_*.25).normalized()),           # straight up overhead
+                        3: (U_*-.10 + V_*.22 + Z_*1.22, (-U_ + Z_*.15 + V_*.3).normalized()),  # high, blade straight back
+                        4: (U_*.10 + V_*.26 + Z_*1.24, (U_*.5 + Z_ + V_*.3).normalized()),     # high in front, tip up-forward
+                        5: (U_*-.12 + V_*.24 + Z_*1.08, (-U_*.7 + Z_*.6 + V_*.4).normalized()),# shoulder height, back and up
+                        6: (U_*-.04 + V_*.20 + Z_*1.30, (U_*.8 + Z_*.25 + V_*.3).normalized()),# overhead, tip pointing forward
+                        7: (U_*-.18 + V_*.24 + Z_*1.18, (-U_*.5 + V_*.4 - Z_*.75).normalized()),# behind the head, tip down the back
+                        8: (U_*-.20 + V_*.28 + Z_*1.34, (-U_*.6 + Z_*.75 + V_*.3).normalized()),# arm up and back, diagonal
+                        9: (U_*-.16 + V_*.22 + Z_*.80, Vector(back_low)),                       # low behind (as rising)
+                    }
+                    h_k, b_k = KOPT[int(m_k.group(1))]
+                    RUN_KEYS[0]['hand'] = h_k; RUN_KEYS[0]['blade_dir'] = tuple(b_k)
             else:
                 # Landing (sheet pose 4): feet down wide, hips sink to absorb it, both hands back on the Key, rise.
                 land = mix(IDLE_R, IDLE_R, 0.0); land.update(ce=.10, hunch=4.0, pitch=4.0, root=0.0)
