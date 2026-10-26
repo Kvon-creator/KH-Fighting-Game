@@ -1801,6 +1801,11 @@ if LOOP:
                 if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
                     # v6 (Kvon: increase the wrist rotation in rising 2): the Keyblade turns 75 deg toward the player (was 60).
                     RUN_KEYS[1]['blade_dir'] = toward_cam(back_low, 75.0)
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+                    # v7 (Kvon: straighten the wrist some, then angle the Keyblade down toward his feet somewhat): ease the
+                    # turn back to 65 deg (a less cocked wrist) and tip the blade downward toward his feet.
+                    b7 = Vector(toward_cam(back_low, 65.0))*.75 + Vector((0, 0, -.55))
+                    RUN_KEYS[1]['blade_dir'] = tuple(b7.normalized())
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
