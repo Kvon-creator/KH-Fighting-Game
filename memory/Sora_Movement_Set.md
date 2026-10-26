@@ -569,3 +569,9 @@ Pending review. Offered the matching brake transition.
   5. facing front again, uncurled;
   6. falling with the Key raised.
   - Poses 1, 5 and 6 reuse round 32's art; the circular swirl is a drawn effect. Shown to Kvon.
+- **Second jump spin built (October26; pending review):** Kvon: "Yes, but I need sora posed in more angles to have a smoother transition between images."
+  - Recipe `jump_spin_vN`: the approved apex pose turned about his vertical axis in 30 deg steps (11 drawings [2]*11; 0/360 = the apex drawing). `apply_run` now supports `spin_deg` (rotates the hand, feet, left-arm target, elbow hints and Key hand orientation).
+  - **v1:** blade level out sideways, hits the frame. **v2:** hangs down (fits). **v3:** in between, hits the sides.
+  - **v4 (current):** eases from the apex blade to hanging down over the first and last 60 deg; all drawings inside the frame.
+  - Spin direction: front turns away first (`ccw` in the output name reverses it).
+  - 2D `jump_spin2d_v4`: `Spin_All_Angles.png`, `Spin_preview(_slow).gif`.

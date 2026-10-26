@@ -52,7 +52,8 @@ if GLIDE:
 # jump rather than a back-dash) and his air-pose references: takeoff, rising (ref_01), apex tuck (ref_02),
 # falling with the Keyblade raised high (ref_03, Kvon's rule) and landing. Built on the run machinery; the
 # drawings stay in place (the game moves him up and down).
-JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v')) else None
+JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
+                                      'jump_spin_v')) else None
 if JUMP:
     RUN = 'run_loop_v18'
 if RUN:
@@ -636,6 +637,7 @@ if RUN:
         GAME_FRAMES = [3]*6  # smooth hover loop: 6 drawings x 3 game frames
     if JUMP:
         GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
+                       'jump_spin': [2]*11,
                        'jump_land': [3, 3, 4]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
             GAME_FRAMES = [3, 3, 4]  # v4: in-between + the two falling drawings
@@ -1875,6 +1877,34 @@ if LOOP:
                             pitch=2.0, blade=(Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
                     k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80)); k_['hz'] = -.17; k_['blade_twist'] = -30.0
                     RUN_KEYS = [k_]
+            elif jpart == 'jump_spin':
+                # Second jump (Kvon: KH2 Aerial Dodge - an upright spin on his vertical axis like a top, from Gemini's
+                # round-33 sheet, with more angles than the sheet): the approved apex pose turned through a full circle
+                # in 30 deg steps (11 drawings; the 0/360 pose is the apex drawing itself). Feet, hands, blade, left
+                # arm and elbow directions all turn with the body about his vertical axis.
+                SPIN_DIR = -1.0 if 'ccw' in OUT_NAME else 1.0
+                for a_ in range(30, 360, 30):
+                    k_ = jk({'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}, ce=-.12, hunch=5.0,
+                            pitch=2.0, blade=(Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
+                    k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80)); k_['hz'] = -.17; k_['blade_twist'] = -30.0
+                    k_['spin_deg'] = SPIN_DIR*a_
+                    if not JUMP.endswith('_v1'):
+                        # v2: v1's blade stuck straight out sideways at the side-on angles and hit the frame edge; it now
+                        # hangs down close along his leg (as in Gemini's sheet) so it stays near his body all the way round.
+                        k_['blade_dir'] = tuple((Vector(toward_cam(back_low, 75.0))*.45 + Vector((0, 0, -1.0))).normalized())
+                        if not JUMP.endswith(('_v1', '_v2')):
+                            # v3: v2 ran off the frame's bottom and changed too much from the apex; between the two.
+                            k_['blade_dir'] = tuple((Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.75))).normalized())
+                            k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .86))
+                        if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                            # v4: v3 still hit the side edges (a level Key is too long side-on). Hang it down (v2, fits)
+                            # through the middle of the spin and ease from/back to the apex angle over the first/last 60 deg.
+                            apex_b = (Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized()
+                            down_b = (Vector(toward_cam(back_low, 75.0))*.45 + Vector((0, 0, -1.0))).normalized()
+                            e_ = min(1.0, min(a_, 360 - a_)/60.0)
+                            k_['blade_dir'] = tuple(apex_b.lerp(down_b, e_).normalized())
+                            k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80))
+                    RUN_KEYS.append(k_)
             elif jpart == 'jump_fall':
                 # Falling (ref_03): legs open and reach down for the floor; the Keyblade is raised high (Kvon's rule).
                 hi = U_*-.04 + V_*.18 + Vector((0, 0, 1.50))
@@ -2144,6 +2174,26 @@ if LOOP:
 
         def apply_run(k_):
             global blade
+            if k_.get('spin_deg'):
+                # Jump spin: turn the whole pose (body, feet, hands, left-arm target, elbow hints) about the vertical
+                # axis through the hips; the Key hand keeps its grip and turns with him.
+                rz_ = Matrix.Rotation(math.radians(k_['spin_deg']), 3, 'Z')
+                k_ = dict(k_); k_['spin_deg'] = 0.0
+                k_['turn'] = k_['turn'] + math.degrees(math.atan2(rz_[1][0], rz_[0][0]))
+                k_['hand'] = rz_ @ Vector(k_['hand'])
+                feet_ = {}
+                for sd_, (fs_, fl_, *rest_) in k_['feet'].items():
+                    wv_ = rz_ @ (U_*fs_ + V_*fl_)
+                    feet_[sd_] = (wv_.dot(U_), wv_.dot(V_), *rest_)
+                k_['feet'] = feet_
+                k_['l_elbow_hint'] = tuple(rz_ @ Vector(k_.get('l_elbow_hint') or (1, .4, -.3)))
+                k_['r_elbow_hint'] = tuple(rz_ @ Vector(k_.get('r_elbow_hint') or (-1, .4, -.3)))
+                apply_run(k_)
+                POSE['L_free'] = (tuple(rz_ @ Vector(POSE['L_free'][0])), POSE['L_free'][1])
+                if POSE.get('r_hand_rot'):
+                    POSE['r_hand_rot'] = [list(r_) for r_ in (rz_ @ Matrix(POSE['r_hand_rot']))]
+                blade = (rz_ @ blade).normalized()
+                return
             POSE['wrist_roll'] = k_.get('wrist_roll')
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
