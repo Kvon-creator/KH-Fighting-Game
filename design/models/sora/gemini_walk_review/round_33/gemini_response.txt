@@ -1,0 +1,17 @@
+Here is the corrected concept sheet for the second jump, updating the Aerial Dodge from a forward flip to the vertical top spin your director requested.
+
+The sheet maps out the 360-degree vertical rotation, starting from the three-quarter view, progressing through the back-facing spins with tucked legs and a close-held Keyblade, and finishing with the uncurl into the approved falling pose.
+
+To translate this into your 3D engine, do you want to calculate the 360-degree rotation across 4 game frames (a highly aggressive spin) or 8 frames (a slightly floatier spin) before he breaks out into the fall?
+
+Images
+
+
+
+
+Pro
+Aspect ratio
+
+Gemini is AI and can make mistakes.
+
+Creating your image

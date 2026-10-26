@@ -558,3 +558,14 @@ Pending review. Offered the matching brake transition.
   5. uncurled, open stance, slightly higher;
   6. falling with the Key raised high.
   Image mode needed re-selecting after the chat opened. Shown to Kvon.
+- **Correction, October26:** Kvon: "I need his body to spin around on an axis like a top. Having him do a flip is inaccurate." The second jump is an upright spin about the vertical axis (like a top), not a forward flip. Round 33 asks Gemini for a redraw.
+
+**Why:** User correction.
+- **Round 33 spin concept:** Gemini redrew it as an upright top-spin (`gemini_walk_review/round_33/gemini_original_preview.jpg`):
+  1. apex tuck;
+  2. quarter turn;
+  3. back to the viewer;
+  4. three-quarters (back/side);
+  5. facing front again, uncurled;
+  6. falling with the Key raised.
+  - Poses 1, 5 and 6 reuse round 32's art; the circular swirl is a drawn effect. Shown to Kvon.

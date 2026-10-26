@@ -1,0 +1,37 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "AD18C76E10050413A326994D4F09F2E3",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "second-jump-spin",
+  "promptSha256": "8963818c9f4f9548835b88468e447000b6a878b32733bff68931be7e75e469d3",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\SECOND_JUMP_SPIN_ROUND_33.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-26T18:13:36.925Z",
+  "baselineImages": [
+    "65677ffe3c547ed74354034bafb0bcd6b1799e962ff40beac4afe38c6db7a032",
+    "f0f9e8ecba7b64e562f2d58acafdccbb505beee9a1fa0822264c2e8295254eea",
+    "f9dd9212cde25815f4a6edee9fb1ba4971c0250eb8dd47b9e65fb1198fefc572"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\gemini_walk_review\\round_32\\gemini_original_preview.jpg",
+      "sha256": "ee32daebc679f54e9d33255af6a3436c4158a116eef87c5aed7c4d9a7e9c0c4d"
+    },
+    {
+      "file": "design\\models\\sora\\jump_land2d_v5\\Jump_All_Sprites_Current.png",
+      "sha256": "cc78e6ea9b12a1fedab39c36c7afdad8a62e7c76c9dfec67b8b48645a1624314"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-26T18:14:56.955Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_33\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_33\\Gemini_Generated_Image_piptq9piptq9pipt.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}
