@@ -541,3 +541,9 @@ Pending review. Offered the matching brake transition.
 - **Apex approved, October26:** Kvon: "That's good" -> final apex **jump_apex_v4**. Remaining: falling 1-2 (falling 1 keeps the raised Key per Kvon; apex -> falling 1 is the big jump), landing.
 - **Apex -> falling smoothed, October26:** Kvon chose option 2 (add an in-between). **jump_fall_v4:** 3 drawings [3,3,4]: an in-between (hand halfway, blade halfway between the apex's and falling 1's, twist -15, legs/torso halfway), then falling 1 and 2 unchanged (pixel diff vs v3 at most 6). 2D `jump_fall2d_v4`; sheet `Apex_to_Falling.png`; GIFs `Jump_Cycle(_slow).gif` there.
 - **Falling approved, October26:** Kvon: "I like it." Final falling = **jump_fall_v4**. Remaining: landing (falling 2 -> landing 1 swings the Key from overhead to the two-handed front grip in one drawing), then Godot (W/Up) and cleanup.
+- **Jump in Godot, October26:** Kvon: "put the jump in Godot, then move on to the cleanup."
+  - **Assets:** jump_start_384 (start v8), jump_rise_384 (rise v16_t-30b_x-22_z-5_rz-12), jump_apex_384 (apex v4), jump_fall_384 (fall v4: in-between, fall 1, fall 2), jump_land_384 (land v5).
+  - **Script:** W/Up (new press) from idle or a shuffle -> jump_start [2,2,2] -> airborne: y += vy, vy += gravity (200 px peak, 18 frames up); the `jump_air` drawing is picked from vy/launch speed (thresholds -.55/-.15/.15/.4/.75) -> jump_land [3,3,4] on reaching the floor -> idle.
+  - ANIMATIONS entries can now list a per-drawing prefix and folder (indices 5 and 6). Demo flag `--jump-demo-at=N`; trace now prints y.
+  - **Verified:** takeoff 6 frames, 36 frames in the air, landing 10, then idle; protected files unchanged.
+  - **Not included yet:** horizontal drift in the air, double jump.

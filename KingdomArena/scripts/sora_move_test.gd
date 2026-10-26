@@ -4,11 +4,13 @@ extends Node2D
 ## idle; when the key is released he finishes the current step (back to the idle stance) and
 ## stands. Hold S or Down to crouch (Keyblade in one hand); release to stand back up. Crouching
 ## wins over walking; during a step he crouches once the step finishes. Double-tap D or Right and
-## hold to glide low across the floor; on release he skids to a stop into the idle.
+## hold to glide low across the floor; on release he skids to a stop into the idle. Press W or Up to
+## jump straight up (takeoff, then the air drawing follows his vertical speed, then the landing).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
-## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N);
+## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
+## `-- --jump-demo-at=N` presses jump on game frame N;
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
@@ -25,6 +27,12 @@ const RIGHT_LIMIT := 1280.0 - 120.0
 const DOUBLE_TAP_FRAMES := 15
 ## The glide push-off ends on the loop's first pose, so it hands over to this glide_loop drawing.
 const GLIDE_ENTRY_DRAWING := 1
+## Jump: peak height in px and game frames from leaving the floor to the peak; gravity and launch
+## speed follow from these (a 0.6 s hop).
+const JUMP_HEIGHT := 200.0
+const JUMP_RISE_FRAMES := 18.0
+const JUMP_GRAVITY := 2.0 * JUMP_HEIGHT / (JUMP_RISE_FRAMES * JUMP_RISE_FRAMES)
+const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
 ## name -> [folder, file prefix, game frames per drawing, root motion in px per drawing,
 ## optional file numbers in play order (crouch_up is crouch_down backwards)]
 ## Root motion is how far his body moves as each drawing starts, taken from the render (metres x
@@ -50,6 +58,15 @@ const ANIMATIONS := {
 		[3, 3, 3, 3, 3, 3], [30.0, 30.0, 30.0, 30.0, 30.0, 30.0]],
 	&"glide_stop": ["res://assets/sora/glide_stop_384/", "sora_glide_stop_",
 		[2, 3, 3, 3, 3], [30.0, 18.05, 9.03, 3.61, 0.0]],
+	# Jump: takeoff on the ground, then one "air" animation whose drawing is picked from his vertical
+	# speed each game frame (rising 1, rising 2, apex, swing up, falling 1, falling 2), then the landing.
+	&"jump_start": ["res://assets/sora/jump_start_384/", "sora_jump_start_", [2, 2, 2], []],
+	&"jump_air": ["res://assets/sora/jump_rise_384/", "sora_jump_rise_", [1, 1, 1, 1, 1, 1], [],
+		[0, 1, 0, 0, 1, 2], ["sora_jump_rise_", "sora_jump_rise_", "sora_jump_apex_", "sora_jump_fall_",
+		"sora_jump_fall_", "sora_jump_fall_"], ["res://assets/sora/jump_rise_384/",
+		"res://assets/sora/jump_rise_384/", "res://assets/sora/jump_apex_384/", "res://assets/sora/jump_fall_384/",
+		"res://assets/sora/jump_fall_384/", "res://assets/sora/jump_fall_384/"]],
+	&"jump_land": ["res://assets/sora/jump_land_384/", "sora_jump_land_", [3, 3, 4], []],
 }
 
 var _sprite: AnimatedSprite2D
@@ -60,6 +77,12 @@ var _demo_back_ticks := -1
 var _demo_crouch_ticks := -1
 var _demo_crouch_from := 1
 var _demo_glide_ticks := -1
+var _demo_jump_at := -1
+## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
+## jump key was held last frame (a jump starts on a new press).
+var _air := false
+var _vy := 0.0
+var _jump_was := false
 var _tick := 0
 ## Game frames the current drawing has been shown.
 var _hold := 0
@@ -80,8 +103,11 @@ func _ready() -> void:
 		var prefix: String = ANIMATIONS[anim][1]
 		var order: Array = ANIMATIONS[anim][4] if ANIMATIONS[anim].size() > 4 \
 			else range(ANIMATIONS[anim][2].size())
-		for i: int in order:
-			frames.add_frame(anim, load(folder + prefix + "%02d.png" % i) as Texture2D)
+		for k in order.size():
+			# Optional per-drawing prefix/folder lists (the jump's air drawings come from several folders).
+			var pre: String = ANIMATIONS[anim][5][k] if ANIMATIONS[anim].size() > 5 else prefix
+			var dir: String = ANIMATIONS[anim][6][k] if ANIMATIONS[anim].size() > 6 else folder
+			frames.add_frame(anim, load(dir + pre + "%02d.png" % order[k]) as Texture2D)
 
 	_sprite = AnimatedSprite2D.new()
 	_sprite.sprite_frames = frames
@@ -102,6 +128,8 @@ func _ready() -> void:
 			_demo_crouch_from = int(arg.trim_prefix("--crouch-demo-from="))
 		elif arg.begins_with("--glide-demo-ticks="):
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
+		elif arg.begins_with("--jump-demo-at="):
+			_demo_jump_at = int(arg.trim_prefix("--jump-demo-at="))
 		elif arg == "--trace":
 			_trace = true
 		elif arg.begins_with("--capture="):
@@ -129,6 +157,15 @@ func _physics_process(_delta: float) -> void:
 		&"shuffle_back" if back and not forward else &"idle"))
 	var glide_wanted := _glide and wanted == &"shuffle_forward"
 	var anim := _sprite.animation
+	var jump := _tick == _demo_jump_at or Input.is_physical_key_pressed(KEY_W) 		or Input.is_physical_key_pressed(KEY_UP)
+	var jump_pressed := jump and not _jump_was
+	_jump_was = jump
+	if _air:
+		_air_step()
+		return
+	if jump_pressed and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
+		_show(&"jump_start")  # from the idle stance (a step just begun snaps back to it)
+		return
 	if glide_wanted and anim in [&"idle", &"shuffle_forward", &"shuffle_back"]:
 		_show(&"glide_start")  # from the idle stance (a step just begun snaps back to it)
 		return
@@ -152,7 +189,11 @@ func _physics_process(_delta: float) -> void:
 	var holds: Array = ANIMATIONS[anim][2]
 	if _hold >= holds[_sprite.frame]:
 		var at_end := _sprite.frame + 1 == holds.size()
-		if anim == &"glide_start" and at_end:
+		if anim == &"jump_start" and at_end:
+			_air = true  # leave the floor
+			_vy = -JUMP_SPEED
+			_air_step()
+		elif anim == &"glide_start" and at_end:
 			_show(&"glide_loop", GLIDE_ENTRY_DRAWING)
 		elif anim == &"glide_loop" and not glide_wanted:
 			_show(&"glide_stop")  # hovering, nothing planted: land after any drawing
@@ -170,6 +211,23 @@ func _physics_process(_delta: float) -> void:
 			_show(wanted)
 
 
+## One airborne game frame: move by the vertical speed, apply gravity, pick the air drawing from the
+## speed, and land when the feet reach the floor.
+func _air_step() -> void:
+	_sprite.position.y += _vy
+	_vy += JUMP_GRAVITY
+	if _sprite.position.y >= FLOOR_Y:
+		_sprite.position.y = FLOOR_Y
+		_air = false
+		_show(&"jump_land")
+		return
+	var t := _vy / JUMP_SPEED  # -1 at launch, 0 at the peak, about +1 on landing
+	var drawing := 0 if t < -0.55 else (1 if t < -0.15 else (2 if t <= 0.15 else (
+		3 if t < 0.4 else (4 if t < 0.75 else 5))))
+	if _sprite.animation != &"jump_air" or _sprite.frame != drawing:
+		_show(&"jump_air", drawing)
+
+
 ## Shows a drawing and applies its root motion as it starts.
 func _show(anim: StringName, drawing: int = 0) -> void:
 	_sprite.animation = anim
@@ -179,7 +237,8 @@ func _show(anim: StringName, drawing: int = 0) -> void:
 	if drawing < motion.size():
 		_sprite.position.x = clampf(_sprite.position.x + motion[drawing], LEFT_LIMIT, RIGHT_LIMIT)
 	if _trace:
-		print("TRACE ", _tick, " ", anim, " ", drawing, " ", snappedf(_sprite.position.x, 0.01))
+		print("TRACE ", _tick, " ", anim, " ", drawing, " ", snappedf(_sprite.position.x, 0.01), " ",
+			snappedf(_sprite.position.y, 0.01))
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
