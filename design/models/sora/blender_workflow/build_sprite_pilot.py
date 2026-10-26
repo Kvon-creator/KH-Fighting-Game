@@ -53,7 +53,7 @@ if GLIDE:
 # falling with the Keyblade raised high (ref_03, Kvon's rule) and landing. Built on the run machinery; the
 # drawings stay in place (the game moves him up and down).
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
-                                      'jump_spin_v')) else None
+                                      'jump_spin_v', 'jump_dash_v')) else None
 if JUMP:
     RUN = 'run_loop_v18'
 if RUN:
@@ -637,7 +637,7 @@ if RUN:
         GAME_FRAMES = [3]*6  # smooth hover loop: 6 drawings x 3 game frames
     if JUMP:
         GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
-                       'jump_spin': [2]*11,
+                       'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3],
                        'jump_land': [3, 3, 4]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
             GAME_FRAMES = [3, 3, 4]  # v4: in-between + the two falling drawings
@@ -1877,6 +1877,45 @@ if LOOP:
                             pitch=2.0, blade=(Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
                     k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80)); k_['hz'] = -.17; k_['blade_twist'] = -30.0
                     RUN_KEYS = [k_]
+            elif jpart == 'jump_dash':
+                # Forward air-dash (Kvon: Gemini round-34 sheet, bottom-left pose as the main reference, transitions
+                # built around it): burst out of the apex tuck -> the dash pose (leaning forward and crouched, front
+                # knee tucked under, back leg trailing, Keyblade held straight back behind him in the right hand,
+                # left fist forward at the chest) held for two drawings -> brake upright, handing over to falling.
+                apex_k = jk({'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}, ce=-.12, hunch=5.0,
+                            pitch=2.0, blade=(Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
+                apex_k['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80)); apex_k['hz'] = -.17
+                dash_blade = (-U_*.75 + V_*.6 + Vector((0, 0, .05))).normalized()
+                dash_k = jk({'L': (.12, LAT['L'], .26, 25.0), 'R': (-.42, LAT['R'], .12, 40.0)}, ce=-.10, hunch=12.0,
+                            pitch=16.0, neck=-20.0, blade=dash_blade)
+                dash_k['hand'] = U_*-.34 + V_*.24 + Vector((0, 0, .98))
+                ARM_BACK = CHEST + U_*.14
+                burst_k = mix(apex_k, dash_k, .5)
+                burst_k['blade_dir'] = tuple((Vector(apex_k['blade_dir']) + dash_blade).normalized())
+                dash2_k = dict(dash_k); dash2_k['feet'] = {'L': (.10, LAT['L'], .24, 25.0), 'R': (-.38, LAT['R'], .14, 40.0)}
+                dash2_k['pitch'] = 14.0
+                brake_k = jk({'L': (.10, LAT['L'], .18, 20.0), 'R': (-.16, LAT['R'], .12, 35.0)}, ce=-.04, hunch=2.0,
+                             pitch=-4.0, neck=-6.0, blade=(-U_*.5 + V_*.4 + Vector((0, 0, .75))).normalized())
+                brake_k['hand'] = U_*-.18 + V_*.22 + Vector((0, 0, 1.12))
+                if not JUMP.endswith('_v1'):
+                    # v2: v1 stood too upright facing the camera with the legs under him and the Key off the frame.
+                    # Turn more side-on (like the sheet), lean well forward, both legs bent with the feet trailing
+                    # behind, the Key arm reaching back with the blade angled toward the camera so it fits.
+                    dash_blade = (-U_*.55 + V_*.82 + Vector((0, 0, .08))).normalized()
+                    dash_k = jk({'L': (-.06, LAT['L'], .32, 45.0), 'R': (-.38, LAT['R'], .22, 55.0)}, ce=-.10, hunch=16.0,
+                                pitch=26.0, neck=-34.0, blade=dash_blade)
+                    dash_k['turn'] = 25.0
+                    dash_k['hand'] = U_*-.40 + V_*.24 + Vector((0, 0, .98))
+                    burst_k = mix(apex_k, dash_k, .5)
+                    burst_k['blade_dir'] = tuple((Vector(apex_k['blade_dir']) + dash_blade).normalized())
+                    dash2_k = dict(dash_k)
+                    dash2_k['feet'] = {'L': (-.04, LAT['L'], .30, 45.0), 'R': (-.34, LAT['R'], .22, 55.0)}
+                    dash2_k['pitch'] = 22.0
+                    brake_k = jk({'L': (.10, LAT['L'], .18, 20.0), 'R': (-.16, LAT['R'], .12, 35.0)}, ce=-.04, hunch=2.0,
+                                 pitch=-4.0, neck=-6.0, blade=(-U_*.35 + V_*.7 + Vector((0, 0, .6))).normalized())
+                    brake_k['turn'] = 8.0
+                    brake_k['hand'] = U_*-.18 + V_*.22 + Vector((0, 0, 1.05))
+                RUN_KEYS = [burst_k, dash_k, dash2_k, brake_k]
             elif jpart == 'jump_spin':
                 # Second jump (Kvon: KH2 Aerial Dodge - an upright spin on his vertical axis like a top, from Gemini's
                 # round-33 sheet, with more angles than the sheet): the approved apex pose turned through a full circle

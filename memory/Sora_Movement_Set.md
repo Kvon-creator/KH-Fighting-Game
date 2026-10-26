@@ -593,3 +593,7 @@ Pending review. Offered the matching brake transition.
   5. braking upright;
   6. falling with the Key raised.
   - Speed lines and dust are drawn effects; pose 1 holds the Key two-handed (rule says one hand). Image mode needed re-selecting again. Shown to Kvon.
+- **Air-dash built (October26; pending review):** Kvon: "Use the bottom left pose as the main reference for the dash, then build the transitions around that." Recipe `jump_dash_vN` (4 drawings [3,4,4,3]): burst (apex/dash blend), dash 1, dash 2, brake; then the existing falling in-between and fall.
+  - **v1:** too upright and facing the camera; legs under him; Key off the frame.
+  - **v2 (current):** dash turned +25, hunch 16 / pitch 26 / neck -34; both legs bent with the feet trailing (L -.06 lift .32, R -.38 lift .22); Key arm reaching back, blade back and toward the camera so it fits. Brake upright (turn 8), Key rising toward the falling pose.
+  - 2D `jump_dash2d_v2`: `AirDash_Sequence.png` (with the reference crop), `AirDash_preview(_slow).gif`.
