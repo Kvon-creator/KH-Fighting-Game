@@ -460,3 +460,4 @@ Pending review. Offered the matching brake transition.
 - **Round 29:** sent ref_04 plus the idle and glide sprites (all three images confirmed uploaded) and asked for a back-dash concept sheet.
 - **Gemini refused:** "I cannot fulfill this request. I am unable to generate the back-dash concept sheet as requested because I cannot generate images directly." The same conversation generated images in rounds 18/19.
 - Not retried, per the Gemini workflow rule (stop and report service refusals). Asked Kvon how to proceed.
+- **Round 30 (Kvon chose "try Gemini once more"):** selected Upload & tools -> **Create image** (the composer shows "Describe your image" and an Images chip) and resent the same request with the three images. Reply: **"Sorry, something went wrong. Please try your request again."** No image. Stopped after this one retry and asked Kvon.

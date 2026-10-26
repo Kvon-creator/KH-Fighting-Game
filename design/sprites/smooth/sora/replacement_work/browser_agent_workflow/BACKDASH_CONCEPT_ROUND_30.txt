@@ -1,0 +1,12 @@
+Next move for Sora: the BACK-DASH. It is a short, quick hop backwards away from the opponent (Sora faces screen right, so he travels toward screen left), and the same animation is used on the ground and in the air.
+
+Attached:
+1. My director's pose reference for the back-dash (another character, pose only - not Sora's design).
+2. Sora's approved battle idle in our sprite style (he starts and ends the ground back-dash here).
+3. Sora's approved glide pose, for the one-handed Keyblade carry and style.
+
+Please generate an image: a clean concept sheet of Sora doing the back-dash, facing screen right, plain white background, the same 2D cel style, KH2 outfit and Kingdom Key as the attached Sora sprites, the same size in every cell, no text.
+Show the poses in order in a grid:
+1. Takeoff from the battle idle: a quick crouch and push off the floor backwards.
+2-3. The backwards hop through the air, following the reference pose: body leaning back, legs tucked or trailing forward, Keyblade in his RIGHT hand only, low and pointing away from the opponent; left arm free.
+4. Landing back into the battle idle (both hands on the Keyblade again).
