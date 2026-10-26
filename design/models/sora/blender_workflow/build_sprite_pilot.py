@@ -1758,6 +1758,11 @@ if LOOP:
                     # up toward the shoulders, so both elbows bend a little more.
                     crouch['hz'] = crouch.get('hz', 0.0) + .05
                     push['hz'] = push.get('hz', 0.0) + .05
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+                    # v7 (Kvon: keep takeoff 1's extra bend; he meant LESS bend for 2 and 3): the grip drops ~5 cm in
+                    # takeoff 2 (below its v5 height) and ~4 cm more in takeoff 3, so those elbows straighten a little.
+                    push['hz'] = -.05
+                    leave['hz'] = leave.get('hz', 0.0) - .04
             elif jpart == 'jump_rise':
                 # Rising (sheet pose 2 / ref_01): front knee driven up, the other leg trailing down, body upright.
                 RUN_KEYS = [jk({'L': (.10, LAT['L'], .34, 10.0), 'R': (-.08, LAT['R'], .10, 45.0)}, ce=-.02, pitch=-4.0,
