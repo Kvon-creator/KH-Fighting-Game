@@ -602,3 +602,4 @@ Pending review. Offered the matching brake transition.
   - No gravity during the dash; it moves 4/10/16/16/6 px per frame (~190 px).
   - Afterwards vy = 0 and the falling drawing is forced to >= falling 1 (skipping the swing-up, since the brake already raised the Key).
   - Flag `--dash-demo-at=M`; traced (the plain jump and spin are unchanged) and recorded.
+- **Air-dash cleanup:** deleted jump_dash_v1 (recovery commit above); kept jump_dash_v2 and jump_dash2d_v2.
