@@ -580,3 +580,4 @@ Pending review. Offered the matching brake transition.
   - The 0.85 speed put his head off the top of the screen when used at the peak; 0.7 keeps it on.
   - Flag `--jump2-demo-at=M`; traced and recorded.
   - An old heredoc patch had collapsed a line continuation in the `jump` input line; fixed.
+- **Spin cleanup:** deleted jump_spin_v1-v3 (recovery commit 9c37cdf); kept jump_spin_v4 and jump_spin2d_v4.
