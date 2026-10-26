@@ -1865,6 +1865,14 @@ if LOOP:
                 if J_V2:
                     RUN_KEYS = [jk({'L': (.10, LAT['L'], .54, 20.0), 'R': (.00, LAT['R'], .46, 30.0)}, ce=-.12, hunch=10.0,
                                    pitch=8.0, blade=back_low)]
+                if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                    # v4 (Kvon: the apex continues on from the approved rising 2): same Keyblade hand, direction and
+                    # -30 deg twist as rising 2; the raised knee lifts a little higher and the hanging leg tucks up under
+                    # him; a slight curl forward at the top.
+                    k_ = jk({'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}, ce=-.12, hunch=5.0,
+                            pitch=2.0, blade=(Vector(toward_cam(back_low, 75.0)) + Vector((0, 0, -.3))).normalized())
+                    k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80)); k_['hz'] = -.17; k_['blade_twist'] = -30.0
+                    RUN_KEYS = [k_]
             elif jpart == 'jump_fall':
                 # Falling (ref_03): legs open and reach down for the floor; the Keyblade is raised high (Kvon's rule).
                 hi = U_*-.04 + V_*.18 + Vector((0, 0, 1.50))
