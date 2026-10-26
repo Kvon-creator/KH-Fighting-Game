@@ -1826,6 +1826,17 @@ if LOOP:
                     # forward a little, so the thigh clears the jacket.
                     lf_ = RUN_KEYS[1]['feet']['L']
                     RUN_KEYS[1]['feet']['L'] = (lf_[0] + .06, lf_[1], lf_[2] - .12, lf_[3])
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 13))):
+                    # v13 (Kvon: straighten both legs some; the higher leg's toes point down some): the raised foot reaches
+                    # further forward and a bit lower, the hanging foot drops lower, and the raised foot pitches toes-down.
+                    lf_ = RUN_KEYS[1]['feet']['L']; rf_ = RUN_KEYS[1]['feet']['R']
+                    RUN_KEYS[1]['feet']['L'] = (lf_[0] + .08, lf_[1], lf_[2] - .04, 35.0)
+                    RUN_KEYS[1]['feet']['R'] = (rf_[0] - .02, rf_[1], rf_[2] - .08, rf_[3])
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 14))):
+                    # v14: v13's raised leg barely straightened (the toes-down pitch lifts the ankle target); reach it
+                    # clearly further forward and down so hip-to-ankle opens up.
+                    lf_ = RUN_KEYS[1]['feet']['L']
+                    RUN_KEYS[1]['feet']['L'] = (lf_[0] + .12, lf_[1], lf_[2] - .12, 35.0)
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
