@@ -1794,6 +1794,10 @@ if LOOP:
                     for k_, (back_, hz_) in zip(RUN_KEYS, ((-.22, -.14), (-.26, -.20))):
                         k_['hand'] = U_*back_ + V_*.23 + Vector((0, 0, .80))
                         k_['hz'] = hz_
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
+                    # v5 (Kvon: rising 2 slightly more bend, still less than rising 1): rising 2's fist comes back halfway.
+                    RUN_KEYS[1]['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80))
+                    RUN_KEYS[1]['hz'] = -.17
             elif jpart == 'jump_apex':
                 # Apex tuck (sheet pose 3 / ref_02): both knees pulled up, slight curl forward.
                 RUN_KEYS = [jk({'L': (.06, LAT['L'], .42, 20.0), 'R': (-.02, LAT['R'], .34, 30.0)}, ce=-.02, hunch=8.0,
