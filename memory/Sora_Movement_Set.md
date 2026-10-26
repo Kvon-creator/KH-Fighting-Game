@@ -575,3 +575,8 @@ Pending review. Offered the matching brake transition.
   - **v4 (current):** eases from the apex blade to hanging down over the first and last 60 deg; all drawings inside the frame.
   - Spin direction: front turns away first (`ccw` in the output name reverses it).
   - 2D `jump_spin2d_v4`: `Spin_All_Angles.png`, `Spin_preview(_slow).gif`.
+- **Second jump approved and in Godot, October26:** Kvon: "Everything is fine" (spin v4: direction, 2 frames per angle, apex pose).
+  - `jump_spin_384`; W/Up pressed again while airborne (once per jump) sets vy = -0.7 x the first jump's speed and plays the 11 spin drawings, then the swing-up drawing (air 3) until frame 25 of the second jump, then the normal speed-picked fall.
+  - The 0.85 speed put his head off the top of the screen when used at the peak; 0.7 keeps it on.
+  - Flag `--jump2-demo-at=M`; traced and recorded.
+  - An old heredoc patch had collapsed a line continuation in the `jump` input line; fixed.
