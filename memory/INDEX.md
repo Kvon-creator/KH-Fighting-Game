@@ -17,7 +17,7 @@
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
 - [Sora Base Design](Sora_Base_Design.md): Approved standard KH2 outfit and Kingdom Key.
 - [Sora Frame Size](Sora_Frame_Size.md): October22 standard is now 384 x 384 in-game frames (Sora ~256 px tall); supersedes 128 x 128.
-- [Sora Idle Pose](Sora_Idle_Pose.md): Approved combat idle pose with Keyblade aligned behind body pointing away from opponent.
+- [Sora Idle Pose](Sora_Idle_Pose.md): Approved battle idle holds the Keyblade low in front, blade angled up toward the opponent (corrected October27).
 - [Sora Movement Set](Sora_Movement_Set.md): October22 movement list incl. back-dash (ground=air), forward air-dash, landing, rise/fall air poses; 384px sprite2d_v3 style; air pose references.
 - [Obsolete animation cleanup](Obsolete_Animation_Cleanup.md): After Kvon approves an animation cycle's final version, commit/push, then delete its obsolete version folders (keep finals and every .import file), test Godot, commit.
 - [Pinned: hair/cloth follow-through](Sora_Secondary_Motion_Idea.md): Deferred idea; PS2 hair/hood/necklace/jacket bones exist; don't start until Kvon revives it.
@@ -25,7 +25,7 @@
 - [Sora Basic Attacks](Sora_Basic_Attacks.md): Approved nine basic attacks and Down + Heavy launcher.
 - [Sora Sprite Facing](Sora_Sprite_Facing.md): Approved one-direction artwork mirrored for the opposite facing.
 - [Sora Standing Height](Sora_Standing_Height.md): Approved approximately 96-pixel standing height.
-- [Sora Standing Light](Sora_Standing_Light.md): Approved short Kingdom Key thrust.
+- [Sora Standing Light](Sora_Standing_Light.md): Guard bash like a bunt - Key level across his body, guard pushed into the opponent (replaced the thrust October27).
 - [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Approved wide spinning Kingdom Key slash.
 - [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash.

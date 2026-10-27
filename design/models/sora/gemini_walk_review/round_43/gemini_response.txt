@@ -1,0 +1,15 @@
+Here is the revised concept sheet for the Standing Light attack, changing the long lunge into the compact Guard Bash your director requested. The sequence keeps his stance grounded and tight, moving from the battle idle into the level, bunt-like push, and snapping immediately back to the guard.
+
+To make sure the impact frame hits with the right punch in the game engine, do you want to break down the exact amount of forward translation on the root bone needed to sell the weight of the bash without overextending his reach?
+
+Images
+
+
+
+
+Pro
+Aspect ratio
+
+Gemini is AI and can make mistakes.
+
+Generating the image response

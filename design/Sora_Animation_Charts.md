@@ -40,7 +40,7 @@ Every attack requires readable preparation, commitment, striking and recovery po
 
 | Attack | Drawings | Preparation -> strike -> recovery |
 | --- | ---: | --- |
-| Standing Light | 6 | Small draw-back -> short Keyblade thrust -> tight guard return. |
+| Standing Light | 5 | (Kvon, October 27) Guard bash like a bunt: Keyblade brought level across his body (right hand on the handle, left hand steadying the shaft) -> short push so the guard hits -> quick return. No big wind-up, short range. |
 | Standing Medium | 8 | Side wind-up -> horizontal Keyblade slash across his body -> follow-through toward Heavy. |
 | Standing Heavy | 10 | Planted rotational wind-up -> wide spinning Keyblade slash -> visible full-body settle. |
 | Crouching Light | 6 | Low small draw-back -> quick low Keyblade slash -> balanced low guard. |

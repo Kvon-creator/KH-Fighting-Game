@@ -1,5 +1,7 @@
 # Sora Idle Pose
 
-**Fact or rule:** Sora's idle standing pose aligns the Keyblade held low in front with both hands near hip/groin level, with the blade extending diagonally upward and backward to the left (behind his body / pointing away from the enemy player on the right), matching the reference in `design/references/sora_idle_smash_stance_reference.png`, while wearing his approved standard KH2 outfit.
+**Fact or rule:** The approved battle idle (battle_v12 / sprite2d_v3, `KingdomArena/assets/sora/idle_battle_384/`) holds the Keyblade low in front with both hands, the blade angled up IN FRONT of him toward the opponent (screen right). Standard KH2 outfit. When checking concept art against "the idle", compare with these sprites, not with older descriptions.
 
-**Why:** K'von corrected the idle standing pose so the sword is aligned holding the Keyblade behind him pointing away from the enemy player, matching the reference image provided.
+**Correction, October 27:** An older version of this note said the blade pointed up and back, away from the opponent. Kvon: "His approved idle DOES already have the keyblade angled in front of him." I had flagged Gemini's round-41 idle poses as wrong because of the old note.
+
+**Why:** Kvon's correction; the approved sprites show the blade in front.
