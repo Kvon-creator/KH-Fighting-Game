@@ -147,7 +147,7 @@ const ANIMATIONS := {
 	# Get-up after lying down (Kvon approved): sit up, tuck, crouch, rise, settle. The lying drawing is centred
 	# in its frame but the get-up stands on the usual feet spot, so the first drawing shifts him to keep his
 	# hips in place.
-	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [3, 3, 3, 3, 3],
+	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [4, 4, 4, 3, 3],
 		[8.0, 0.0, 0.0, 0.0, 0.0]],
 }
 
