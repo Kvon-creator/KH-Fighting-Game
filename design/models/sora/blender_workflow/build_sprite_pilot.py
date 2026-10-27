@@ -2145,7 +2145,8 @@ if LOOP:
 
                     def bunt(hand, ce, pitch, feet):
                         # v2: v1's left hand (.22 m back) sat almost on the guard; further back along the shaft.
-                        back_ = .22 if HURT.endswith('_v1') else .32
+                        back_ = .22 if HURT.endswith('_v1') else (.32 if HURT.endswith(('_v2', '_v3')) else
+                                                                  (.24 if HURT.endswith('_v4') else .36))
                         k_ = hurt(feet, ce, 0.0, pitch, -6.0, hand, lvl_blade, hand + lvl_blade*back_, ground=True)
                         k_.update(no_center=True, look=8.0)
                         if not HURT.endswith(('_v1', '_v2')):
@@ -2158,6 +2159,21 @@ if LOOP:
                     set_k = bunt(U_*.14 + V_*.22 + Vector((0, 0, .96)), .05, 2.0, stand)
                     bash_k = bunt(U_*.34 + V_*.22 + Vector((0, 0, .96)), .08, 8.0, step_in)
                     recoil_k = bunt(U_*.18 + V_*.22 + Vector((0, 0, .94)), .06, 4.0, step_in)
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        # v4 (Kvon: extend the Keyblade out in front for the hit): guard at arm's length on the bash,
+                        # bigger step in and lean; the hands closer together on the Key so both arms can reach.
+                        step_in = {'L': (L0[0] + .12, L0[1], 0.0, 0.0), 'R': (R0[0] + .04, R0[1], 0.0, 0.0)}
+                        set_k = bunt(U_*.20 + V_*.20 + Vector((0, 0, .98)), .05, 3.0, stand)
+                        bash_k = bunt(U_*.52 + V_*.16 + Vector((0, 0, 1.00)), .09, 12.0, step_in)
+                        recoil_k = bunt(U_*.30 + V_*.18 + Vector((0, 0, .98)), .07, 6.0, step_in)
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                        # v5: v4's Key crossed his face - chest height; hands further apart (right hand past the guard,
+                        # on the shaft) and the Key slid forward so the handle's middle sits in the left fist.
+                        set_k = bunt(U_*.20 + V_*.20 + Vector((0, 0, .90)), .05, 3.0, stand)
+                        bash_k = bunt(U_*.52 + V_*.16 + Vector((0, 0, .92)), .09, 12.0, step_in)
+                        recoil_k = bunt(U_*.30 + V_*.18 + Vector((0, 0, .90)), .07, 6.0, step_in)
+                        for k_ in (set_k, bash_k, recoil_k):
+                            k_['key_slide'] = .12
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
@@ -3097,9 +3113,20 @@ if LOOP:
                 arm.keyframe_insert(path, frame=i + 1)
         if CROUCH or RUN:
             key.matrix_world = pose_world('R_te') @ CR_KEY_IN_TE
-            if RUN and RUN_KEYS[i].get('key_in_left'):
-                # Standing Light v3+: same Key angle, slid along its line so the handle sits in the left fist.
+            if RUN and RUN_KEYS[i].get('key_in_left') and HURT.endswith('_v3'):
+                # Standing Light v3: same Key angle, slid along its line so the handle sits in the left fist.
                 key.matrix_world = Matrix.Translation(hand_point('L') - hand_point('R')) @ key.matrix_world
+            elif RUN and RUN_KEYS[i].get('key_in_left'):
+                # v4+ (Kvon: the wrists must line up with the parts they hold): the Key's grip point (now in the right
+                # fist) goes to the centre of the LEFT fist and the blade runs from there through the right fist's
+                # centre, so the handle sits in the left fist and the shaft passes through the right one.
+                g_w = hand_point('R'); l_w = hand_point('L')
+                old_d = key.matrix_world.to_3x3().normalized().col[2]
+                turn_k = old_d.rotation_difference((g_w - l_w).normalized()).to_matrix().to_4x4()
+                key.matrix_world = Matrix.Translation(l_w) @ turn_k @ Matrix.Translation(-g_w) @ key.matrix_world
+                # v5+: slide the Key forward along its line (toward the guard end) so the handle's middle is in the fist.
+                key.matrix_world = (Matrix.Translation(-(g_w - l_w).normalized()*RUN_KEYS[i].get('key_slide', 0.0))
+                                    @ key.matrix_world)
             update()
         else:
             place_key()
