@@ -2242,6 +2242,33 @@ if LOOP:
                                        U_*.62 + V_*.76 + Vector((0, 0, .04)), ce=.12, pitch=10.0, feet=heel)
                         follow = slash(-25.0, 18.0, U_*.10 + V_*-.06 + Vector((0, 0, 1.08)),
                                        -U_*.70 - V_*.25 + Vector((0, 0, .55)), ce=.10, pitch=6.0, feet=heel)
+                    if not HURT.endswith(('_v1', '_v2')):
+                        # v3 (Kvon: match Gemini's raised poses): both hands up by his REAR shoulder beside his head, the
+                        # blade angled up and FORWARD over his head like a batter's stance (v2 pointed it up and back).
+                        raised = slash(25.0, -10.0, U_*-.20 + V_*.10 + Vector((0, 0, 1.28)),
+                                       U_*.45 + V_*.15 + Vector((0, 0, .88)), ce=.05)
+                        for k_ in (begin, impact, follow):
+                            k_['smear'] = True  # the fast part of the swing gets a smear (make_smears.py)
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        # v4 (Kvon's reference: Ekko's standing heavy in 2XKO): a deep lunge on the impact - front foot
+                        # far forward with the knee bent, back leg stretched behind with the heel up, a hard lean into
+                        # the swing, both arms extended with the Key level and slightly up; raised poses lowered (v3's
+                        # tip left the frame top). Impact smear spans windup -> begin -> impact (smear = drawings back).
+                        lunge = {'L': (L0[0] + .22, L0[1], 0.0, 0.0), 'R': (R0[0] - .14, R0[1], 0.0, 35.0)}
+                        mid_l = {'L': (L0[0] + .12, L0[1], 0.0, 0.0), 'R': (R0[0] - .06, R0[1], 0.0, 20.0)}
+                        raised = slash(25.0, -10.0, U_*-.20 + V_*.10 + Vector((0, 0, 1.12)),
+                                       U_*.62 + V_*.18 + Vector((0, 0, .70)), ce=.05)
+                        begin = slash(45.0, -2.0, U_*.08 + V_*.26 + Vector((0, 0, .95)),
+                                      U_*.40 + V_*.90 + Vector((0, 0, .04)), ce=.12, pitch=8.0, feet=mid_l)
+                        impact = slash(10.0, 18.0, U_*.36 + V_*.12 + Vector((0, 0, 1.00)),
+                                       U_*.60 + V_*.72 + Vector((0, 0, .22)), ce=.17, pitch=18.0, hunch=6.0, feet=lunge)
+                        follow = slash(-25.0, 18.0, U_*.14 + V_*-.06 + Vector((0, 0, 1.08)),
+                                       -U_*.70 - V_*.25 + Vector((0, 0, .55)), ce=.14, pitch=10.0, feet=lunge)
+                        begin['smear'], impact['smear'], follow['smear'] = 1, 2, 1
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                        # v5: the swing rises into the hit - the wind-up blade starts a little low behind him.
+                        windup = slash(75.0, -16.0, U_*-.24 + V_*.20 + Vector((0, 0, .90)),
+                                       -U_*.55 + V_*.80 + Vector((0, 0, -.22)), ce=.10, hunch=4.0)
                     ins = []
                     for w_ in (.66, .33):  # idle -> raised in-betweens (w_ = share of the idle left)
                         k_ = ease(raised, IDLE_R, w_, 0.0)
@@ -2997,6 +3024,7 @@ if LOOP:
             KATA_LOG = {'yaw_deg': best_k[1], 'lift_deg': best_k[2], 'gap_px_at_12deg': round(best_k[4], 2)}
             print('KATA_BEST', KATA_LOG)
         ARM_LOG = []
+    KEY_TRACK = []
     if HURT:
         arm.rotation_mode = 'QUATERNION'
         ARM_M0 = arm.matrix_world.copy()
@@ -3234,6 +3262,12 @@ if LOOP:
         img = bpy.data.images.load(str(path512))
         small = img.copy(); small.scale(128, 128)
         small.filepath_raw = str(OUT / 'frames_128' / path512.name); small.file_format = 'PNG'; small.save()
+        if HURT:
+            # Smear data (Standing Medium v3+): the Key's grip point and blade direction in this drawing, so
+            # make_smears.py can sweep the blade between drawings and draw the smear as its own layer.
+            KEY_TRACK.append({'grip_world': [round(c_, 5) for c_ in hand_point('R')],
+                              'dir_world': [round(c_, 5) for c_ in key.matrix_world.to_3x3().normalized().col[2]],
+                              'smear': int(RUN_KEYS[i].get('smear') or 0)})
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
                        'grip_error_L_m': round((hand_point('L')
@@ -3268,6 +3302,8 @@ if LOOP:
         'canvas_size': [512, 512], 'ground_baseline_y': 470, 'body_anchor': [256, 470],
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
+        'camera_location': [round(c_, 5) for c_ in cam.location], 'key_reach_m': KEY_REACH,
+        'key_track': globals().get('KEY_TRACK', []),
         'root_motion_m': ROOT_MOTION if GAIT or RUN else None,
         'game_frames_60fps': globals().get('GAME_FRAMES'),
         'crouch': {'recipe': CROUCH, 'targets': CR, 'per_frame': CR_LOG} if CROUCH else None,

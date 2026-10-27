@@ -1,0 +1,20 @@
+{
+  "source": "atk_smed_v4",
+  "smears": [
+    {
+      "drawing": 4,
+      "from_drawing": 3,
+      "sweep_deg": 58.4
+    },
+    {
+      "drawing": 5,
+      "from_drawing": 3,
+      "sweep_deg": 77.5
+    },
+    {
+      "drawing": 6,
+      "from_drawing": 5,
+      "sweep_deg": 122.6
+    }
+  ]
+}

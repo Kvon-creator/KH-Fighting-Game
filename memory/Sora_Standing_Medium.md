@@ -9,3 +9,8 @@
 
 **Smears, October 27:** Kvon chose "Build my own": no download (the SMEAR extension would install outside the project and was reported to error on Blender 5.2.1 with a rigged character). Generate the smear from the Keyblade's actual swept arc between drawings with Blender's built-in tools, rendered as a separate effect layer (the chart's rule: effects separate from body frames), timed in Godot.
 **Why:** Kvon's choice.
+
+**Correction, October 27:** Kvon: "The wind-up of him putting the keyblade above his shoulder doesn't match that of the poses gemini gave. There is also no smear effect like I asked for." Gemini's poses 1-2: both hands up by his REAR shoulder (beside his head, screen-left side), the blade angled UP and FORWARD over his head like a batter's stance (v2 pointed it up and back). Smears must come with the attack, not be deferred.
+**Why:** Kvon's correction.
+
+**Reference, October 27:** Kvon: "I think a good reference would be Ekko's standing heavy attack in 2XKO." Saved the 2XKO wiki's 5H image (screenshot of the public wiki image) as `design/references/ekko_2xko_5h_reference.png`; wiki frame data 13 startup / 3 active / 21 recovery ("The mandatory batter normal"). Impact frame: deep lunge (front knee bent far forward, back leg straight behind, heel up), body leaning hard into the swing, torso turned through, both arms extended, weapon level and slightly up; the smear is a thick SOLID crescent from low behind him up to the weapon, widest at the weapon, tapering to a point at the start. v4 follows this: lunge impact, tapered solid crescents (impact smear spans windup -> begin -> impact), raised poses lowered (v3 ran off the top).
