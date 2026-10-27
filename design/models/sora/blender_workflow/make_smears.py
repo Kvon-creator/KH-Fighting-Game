@@ -111,6 +111,25 @@ def thrust(draw, a, b, width_px, tone):
     draw.ellipse([end[0] - w, end[1] - w, end[0] + w, end[1] + w], fill=tone)
 
 
+def dash_lines(draw, a, b):
+    a, b = np.array(a), np.array(b)
+    d = b - a
+    ln = float(np.linalg.norm(d))
+    if ln < 1e-6:
+        return
+    u = d/ln; nrm = np.array([-u[1], u[0]])
+    head = a + d*.80                                   # lines end a little behind the guard
+    for off_px, len_k, w_px in ((-14, .70, 3), (0, 1.0, 3), (13, .55, 2)):
+        front = head + nrm*off_px*SS
+        back = front - u*ln*len_k
+        steps = 6
+        for k in range(steps):                         # thin toward the back end, fully opaque only at the front
+            p0 = back + (front - back)*k/steps; p1 = back + (front - back)*(k + 1)/steps
+            t_ = (k + 1)/steps
+            draw.line([tuple(p0), tuple(p1)], fill=GUARD_TONE[:3] + (int(200*t_),),
+                      width=max(1, round(w_px*SS*(.4 + .6*t_))))
+
+
 report = []
 for i, fr in enumerate(track):
     img = Image.new('RGBA', (512*SS, 512*SS), (0, 0, 0, 0))
@@ -122,8 +141,9 @@ for i, fr in enumerate(track):
         pa = np.array(a_['lgrip_world']) + RIGHT*shift
         pb = np.array(fr['lgrip_world'])
         draw = ImageDraw.Draw(img, 'RGBA')
-        thrust(draw, screen(pa), screen(pb), 44, GUARD_TONE)
-        thrust(draw, screen(pa + (pb - pa)*.25), screen(pb), 20, GUARD_CORE)
+        # Kvon: subtle dash lines instead of a smear - three thin gold lines trailing behind the guard along the
+        # push, offset across it, different lengths, thinning toward their back ends.
+        dash_lines(draw, screen(pa), screen(pb))
         report.append({'drawing': i, 'from_drawing': i - back, 'style': 'thrust',
                        'length_px': round(float(np.linalg.norm(np.array(screen(pb)) - np.array(screen(pa))))/SS, 1)})
     elif back and i - back >= 0:
