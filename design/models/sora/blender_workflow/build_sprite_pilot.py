@@ -2308,6 +2308,26 @@ if LOOP:
                         impact['hand'] = U_*.44 + V_*.12 + Vector((0, 0, .86))
                         if not HURT.endswith('_v11'):
                             impact['blade_dir'] = tuple((U_*.50 + V_*.80 + Vector((0, 0, .22))).normalized())  # v12: v11 tip touched the edge
+                    wrap = None
+                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 13))):
+                        # v13 (Kvon: the body follows the Keyblade like someone swinging a bat): a kinetic chain - the
+                        # hips lead into the swing while the shoulders lag, the shoulders and arms whip through to the
+                        # impact, then the body keeps turning with the Key: a new "wrap" drawing (Key sweeping on round
+                        # in front of him), and the follow-through with hips and chest fully round, the back foot
+                        # pivoting onto its toe with the knee turned in, the front leg straighter and the arms wrapped
+                        # up over his front shoulder.
+                        pivot = {'L': (L0[0] + .22, L0[1], 0.0, 0.0), 'R': (R0[0] - .06, R0[1], .02, 50.0)}
+                        begin.update(turn=40.0, twist=-22.0, hand=bf(40.0, -.10, -.18, .92))
+                        impact.update(turn=-15.0, twist=8.0)
+                        wrap = slash(-45.0, 16.0, bf(-45.0, .06, -.40, .98), -U_*.30 + V_*.92 + Vector((0, 0, .12)),
+                                     ce=.13, pitch=12.0, feet=lunge)
+                        wrap['knee_in'] = {'R': .4}
+                        follow.update(turn=-70.0, twist=20.0, ce=.07, pitch=4.0, feet=pivot,
+                                      hand=bf(-70.0, .14, -.10, 1.12), knee_in={'R': .8})
+                        recover.update(turn=-35.0, twist=6.0, feet=pivot, knee_in={'R': .5},
+                                       hand=bf(-35.0, 0.0, -.28, .82))
+                        wrap['smear'] = 1
+                        follow['smear'] = 1
                     ins = []
                     for w_ in (.66, .33):  # idle -> raised in-betweens (w_ = share of the idle left)
                         k_ = ease(raised, IDLE_R, w_, 0.0)
@@ -2315,7 +2335,11 @@ if LOOP:
                         ins.append(k_)
                     back_k = ease(recover, IDLE_R, .7, 0.0)
                     back_k.update(ground=True, no_center=True)
-                    RUN_KEYS = ins + [raised, windup, begin, impact, follow, recover, back_k]
+                    RUN_KEYS = ins + [raised, windup, begin, impact] + ([wrap] if wrap else []) + [follow, recover, back_k]
+                    if wrap:
+                        GAME_FRAMES = [2, 2, 3, 3, 2, 3, 2, 3, 4, 4]
+                        DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]
+                        n = len(DURATIONS_MS)
                 elif jpart == 'hurt_getup':
                     # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
                     # Smash's floor getup / Street Fighter's quick rise): from lying face up, sit up leaning back with
@@ -2679,6 +2703,8 @@ if LOOP:
             POSE['leg_reach'] = k_.get('leg_reach')
             POSE['ankle_deg'] = k_.get('ankle_deg')
             POSE['hip_back_deg'] = k_.get('hip_back_deg')
+            if HURT:
+                POSE['knee_in'] = dict(k_.get('knee_in') or {})  # Standing Medium v13+: back knee turns in on the pivot
             POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
