@@ -2142,6 +2142,9 @@ if LOOP:
                     # in front toward the opponent and blade pointing back, right fist (inside the guard) on the handle,
                     # left hand steadying the shaft behind it; a short shove forward so the guard hits, then back.
                     lvl_blade = (-U_*.92 + V_*.30 + Vector((0, 0, .04))).normalized()
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                        # v6 (Kvon): the blade tip points slightly toward the player (~35 deg toward the camera).
+                        lvl_blade = (-U_*.80 + V_*.55 + Vector((0, 0, .03))).normalized()
 
                     def bunt(hand, ce, pitch, feet):
                         # v2: v1's left hand (.22 m back) sat almost on the guard; further back along the shaft.
