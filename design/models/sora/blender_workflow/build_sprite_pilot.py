@@ -2269,6 +2269,28 @@ if LOOP:
                         # v5: the swing rises into the hit - the wind-up blade starts a little low behind him.
                         windup = slash(75.0, -16.0, U_*-.24 + V_*.20 + Vector((0, 0, .90)),
                                        -U_*.55 + V_*.80 + Vector((0, 0, -.22)), ce=.10, hunch=4.0)
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                        # v6 (Kvon: where is the arm not holding the Keyblade?): v5's hands sat out toward his right
+                        # (camera) side, so once he turned the left hand could not reach the handle (up to .28 m short)
+                        # and that arm hid behind him. Hands are now placed in his own body frame where both arms reach:
+                        # (x = his left, y = behind, z = up) - rear shoulder, rear hip, chest, arm's length, other shoulder.
+                        bf = lambda turn_, x_, y_, z_: Matrix.Rotation(math.radians(turn_), 3, 'Z') @ Vector((x_, y_, z_))
+                        for k_, (x_, y_, z_) in ((raised, (-.14, -.06, 1.18)), (windup, (-.18, .02, .95)),
+                                                 (begin, (-.04, -.30, .96)), (impact, (0.0, -.42, 1.00)),
+                                                 (follow, (.12, -.12, 1.10)), (recover, (0.0, -.28, .82))):
+                            k_['hand'] = bf(k_['turn'], x_, y_, z_)
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+                        # v7: the left hand was on the handle all along (beside the right one) but the arm stayed on the
+                        # far side, hidden behind his torso and right arm. Point the left elbow down and toward the
+                        # camera so that arm comes round the near side and its forearm shows reaching to the handle.
+                        for k_ in (raised, windup, begin, impact, follow, recover):
+                            k_['l_elbow_hint'] = tuple(V_*.75 + U_*.10 + Vector((0, 0, -.65)))
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+                        # v8: v7's raised tip left the frame top - hands a little lower, blade tilted further forward.
+                        raised['hand'] = bf(raised['turn'], -.14, -.06, 1.06)
+                        raised['blade_dir'] = tuple((U_*.75 + V_*.18 + Vector((0, 0, .55))).normalized())
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7', '_v8')):
+                        recover['blade_dir'] = tuple((U_*.62 + V_*.62 + Vector((0, 0, -.20))).normalized())  # v9: v8's tip touched the right edge
                     ins = []
                     for w_ in (.66, .33):  # idle -> raised in-betweens (w_ = share of the idle left)
                         k_ = ease(raised, IDLE_R, w_, 0.0)
@@ -3176,6 +3198,12 @@ if LOOP:
             POSE['wrist_roll'] = float(best_g[1])
             print('SHAFT_GRIP', i, best_g)
         solve_pose(breath, lag)
+        if HURT and OUT_NAME.endswith('_dbg'):
+            sh_ = pose_world('L_ude1').translation; el_ = pose_world('L_ude2').translation; wr_ = pose_world('L_te').translation
+            print('DBG', i, 'R', [round(c_, 3) for c_ in hand_point('R')], 'L', [round(c_, 3) for c_ in hand_point('L')],
+                  'Lsh', [round(c_, 3) for c_ in sh_], 'armlen', round((el_ - sh_).length + (wr_ - el_).length, 3),
+                  'sh->R', round((hand_point('R') - sh_).length, 3), 'L_free', POSE.get('L_free'), 'blade',
+                  [round(c_, 3) for c_ in blade])
         if RUN:
             reach = {sd: round((pose_world(f'{sd}_ashi1').translation - pose_world(f'{sd}_momo').translation).length, 3)
                      for sd in ('L', 'R')}
