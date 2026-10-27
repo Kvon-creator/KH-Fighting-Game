@@ -55,7 +55,7 @@ if GLIDE:
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
-                                      'hurt_getup_v', 'atk_slight_v')) else None
+                                      'hurt_getup_v', 'atk_slight_v', 'atk_smed_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -644,7 +644,8 @@ if RUN:
                        'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3], 'jump_bdash': [2, 4, 4, 3, 4],
                        'jump_land': [3, 3, 4], 'hurt_ground': [2, 6, 5, 4], 'hurt_air': [4, 8],
                        'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6],
-                       'hurt_getup': [5, 4, 4, 4, 4], 'atk_slight': [2, 4, 3, 3]}[JUMP.rsplit('_v', 1)[0]]
+                       'hurt_getup': [5, 4, 4, 4, 4], 'atk_slight': [2, 4, 3, 3],
+                       'atk_smed': [2, 2, 3, 3, 2, 3, 4, 4, 4]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2200,6 +2201,55 @@ if LOOP:
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
+                elif jpart == 'atk_smed':
+                    # Standing Medium (Kvon, October 27; Gemini round 44 + his notes): a horizontal two-handed slash. Out of
+                    # the idle the Key rises over his right shoulder (two in-betweens), winds back level behind him with the
+                    # torso turned well away, then he throws his weight into it: hips and shoulders turn through square
+                    # to past square, front knee bends, back heel lifts, the Key sweeps level in front of him to full
+                    # extension, follows through up over his other shoulder, comes down and settles into the idle.
+                    # 'turn' = body facing (+50 = side-on toward the opponent), 'twist' = shoulders past the hips
+                    # (+ = right shoulder forward). release 0 = both hands on the handle.
+                    def slash(turn, twist, hand, blade, ce=.06, pitch=0.0, hunch=0.0, neck=-6.0, feet=None):
+                        k_ = hurt(feet or stand, ce, hunch, pitch, neck, hand, Vector(blade).normalized(),
+                                  hand, ground=True)
+                        k_.update(no_center=True, look=8.0, turn=turn, twist=twist, release=0.0)
+                        return k_
+                    heel = {'L': (L0[0] + .04, L0[1], 0.0, 0.0), 'R': (R0[0] + .03, R0[1], 0.0, 25.0)}
+                    raised = slash(5.0, -6.0, U_*-.06 + V_*.14 + Vector((0, 0, 1.28)),
+                                   -U_*.45 + V_*.25 + Vector((0, 0, .85)), ce=.04)
+                    windup = slash(95.0, -18.0, U_*-.28 + V_*.18 + Vector((0, 0, .95)),
+                                   -U_*.75 + V_*.60 + Vector((0, 0, .06)), ce=.10, hunch=4.0)
+                    begin = slash(55.0, -4.0, U_*.04 + V_*.26 + Vector((0, 0, .95)),
+                                  U_*.10 + V_*.98 + Vector((0, 0, .04)), ce=.10, pitch=4.0, feet=heel)
+                    impact = slash(15.0, 14.0, U_*.34 + V_*.12 + Vector((0, 0, .95)),
+                                   U_*.80 + V_*.58 + Vector((0, 0, .04)), ce=.12, pitch=10.0, feet=heel)
+                    follow = slash(-25.0, 18.0, U_*.12 + V_*-.08 + Vector((0, 0, 1.18)),
+                                   -U_*.45 - V_*.30 + Vector((0, 0, .85)), ce=.10, pitch=6.0, feet=heel)
+                    recover = slash(-15.0, 6.0, U_*.10 + V_*.18 + Vector((0, 0, .80)),
+                                    U_*.80 + V_*.30 + Vector((0, 0, -.20)), ce=.08)
+                    if not HURT.endswith('_v1'):
+                        # v2: v1's raised and follow-through Keys stood straight up off the frame top, the wind-up showed
+                        # his whole back with the Key off the left edge, the slash start hid the blade end-on and the
+                        # impact ran off the right edge: tilt the over-shoulder blades back, ease the wind-up turn, and
+                        # angle the slash/impact blades a little toward the camera so they fit.
+                        raised = slash(10.0, -8.0, U_*-.08 + V_*.14 + Vector((0, 0, 1.20)),
+                                       -U_*.80 + V_*.25 + Vector((0, 0, .50)), ce=.04)
+                        windup = slash(75.0, -16.0, U_*-.24 + V_*.20 + Vector((0, 0, .95)),
+                                       -U_*.55 + V_*.80 + Vector((0, 0, .06)), ce=.10, hunch=4.0)
+                        begin = slash(45.0, -2.0, U_*.06 + V_*.26 + Vector((0, 0, .95)),
+                                      U_*.40 + V_*.90 + Vector((0, 0, .04)), ce=.10, pitch=4.0, feet=heel)
+                        impact = slash(15.0, 14.0, U_*.28 + V_*.14 + Vector((0, 0, .95)),
+                                       U_*.62 + V_*.76 + Vector((0, 0, .04)), ce=.12, pitch=10.0, feet=heel)
+                        follow = slash(-25.0, 18.0, U_*.10 + V_*-.06 + Vector((0, 0, 1.08)),
+                                       -U_*.70 - V_*.25 + Vector((0, 0, .55)), ce=.10, pitch=6.0, feet=heel)
+                    ins = []
+                    for w_ in (.66, .33):  # idle -> raised in-betweens (w_ = share of the idle left)
+                        k_ = ease(raised, IDLE_R, w_, 0.0)
+                        k_.update(ground=True, no_center=True)
+                        ins.append(k_)
+                    back_k = ease(recover, IDLE_R, .7, 0.0)
+                    back_k.update(ground=True, no_center=True)
+                    RUN_KEYS = ins + [raised, windup, begin, impact, follow, recover, back_k]
                 elif jpart == 'hurt_getup':
                     # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
                     # Smash's floor getup / Street Fighter's quick rise): from lying face up, sit up leaning back with
