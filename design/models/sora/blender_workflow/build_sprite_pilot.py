@@ -873,6 +873,10 @@ def solve_pose(breath=0.0, lag=None):
         two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', foot_t, knee)
         if toe or turn:
             rotate_world(f'{s}_ashi1', 'Z', sign*toe + turn)  # feet don't inherit the body turn
+    if POSE.get('hip_back_deg'):
+        # Hurt (Kvon): swing both legs backward at the hip joints about his side-to-side axis.
+        for s_h in ('L', 'R'):
+            rotate_world(f'{s_h}_momo', (turn_m @ Vector((1, 0, 0))).normalized(), POSE['hip_back_deg'])
     for side, deg in POSE.get('foot_pitch', {}).items():
         if deg:
             # Heel up about the ankle, toes down (the ankle target was raised to keep toes on the floor).
@@ -2047,6 +2051,10 @@ if LOOP:
                         # sharp C, chest pushed out, head thrown back so the face aims at the ceiling.
                         hit_k.update(lean_cam=36.0, head_cam=28.0, pitch=-16.0, hunch=-8.0, neck=-14.0)
                         peak_k.update(lean_cam=44.0, head_cam=34.0, pitch=-18.0, hunch=-9.0, neck=-16.0)
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        # v4 (Kvon: leans too far back): halfway between v2 and v3.
+                        hit_k.update(lean_cam=28.0, head_cam=21.0, pitch=-12.0, hunch=-6.0, neck=-10.0)
+                        peak_k.update(lean_cam=35.0, head_cam=27.0, pitch=-14.0, hunch=-7.0, neck=-12.0)
                     RUN_KEYS = [hit_k, peak_k, ease(peak_k, IDLE_R, .5, .5), ease(peak_k, IDLE_R, .85, .15)]
                 elif jpart == 'hurt_air':
                     # The same snap back in the air, legs dangling in front; then drifting back and starting to tip over.
@@ -2106,6 +2114,16 @@ if LOOP:
                                                         @ (V_*.85 - U_*.25 + Vector((0, 0, .20))).normalized())
                     if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
                         RUN_KEYS.insert(0, flat_k)
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+                        # v7 (Kvon): drawings 3-4 keep drawing 2's tilt and turn (head first on the diagonal) instead of
+                        # going straight upside down; all four swing the legs back slightly at the hips.
+                        for k_ in RUN_KEYS[2:]:
+                            k_.update(roll=RUN_KEYS[1]['roll'], spin_deg=RUN_KEYS[1]['spin_deg'])
+                            if not HURT.endswith('_v7'):
+                                # v8: v7 kept the Key aimed for the old turn and it ran off the bottom: aim as drawing 2.
+                                k_['blade_dir'] = RUN_KEYS[1]['blade_dir']
+                        for k_ in RUN_KEYS:
+                            k_['hip_back_deg'] = 12.0
                 else:
                     # Shoulders hit the floor and the legs come down (a small bounce), settle, then lie flat on his back,
                     # face up, head toward screen left, seen side-on, Key lying loosely along his right side.
@@ -2437,6 +2455,7 @@ if LOOP:
             POSE['screen_lean_deg'] = k_.get('lean_cam', 0.0)
             POSE['leg_reach'] = k_.get('leg_reach')
             POSE['ankle_deg'] = k_.get('ankle_deg')
+            POSE['hip_back_deg'] = k_.get('hip_back_deg')
             POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
