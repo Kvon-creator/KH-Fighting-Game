@@ -2151,7 +2151,9 @@ if LOOP:
                     def bunt(hand, ce, pitch, feet):
                         # v2: v1's left hand (.22 m back) sat almost on the guard; further back along the shaft.
                         back_ = .22 if HURT.endswith('_v1') else (.32 if HURT.endswith(('_v2', '_v3')) else
-                                                                  (.24 if HURT.endswith('_v4') else .36))
+                                                                  (.24 if HURT.endswith('_v4') else
+                                                                   (.36 if HURT.endswith(('_v5', '_v6', '_v7', '_v8'))
+                                                                    else .44)))  # v9 (Kvon): further up the shaft
                         k_ = hurt(feet, ce, 0.0, pitch, -6.0, hand, lvl_blade, hand + lvl_blade*back_, ground=True)
                         k_.update(no_center=True, look=8.0)
                         if not HURT.endswith(('_v1', '_v2')):

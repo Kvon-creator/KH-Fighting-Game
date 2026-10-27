@@ -13,3 +13,5 @@
 **Correction, October 27:** Kvon: "The angle of the keyblade should be oriented so the tip of the blade points slightly towards the player." v6: blade direction -U*.80 + V*.55 (about 35 deg toward the camera; v5 was about 18 deg); the right hand sits on the shaft along that line.
 
 **Correction, October 27:** Kvon: "Increase the angle a little bit more, and fix the hand that is holding the shaft of the blade. Right now, the wrist is unnecessarily bent and doesn't line up with the part of the blade being held." v7: blade ~45 deg toward the camera (-U*.72 + V*.70); right (shaft) hand uses a straight wrist (`wrist_roll`), the roll searched per drawing so the fist's grip axis lines up with the shaft (v6 forced the idle's handle-grip hand angle, which bent the wrist).
+
+**Correction, October 27:** Kvon: "Now slide the hand holding the shaft slightly further up. Bend the elbow and adjust the shoulder angle as needed." v9: the right hand sits .44 m from the left fist along the shaft (was .36); elbow/shoulder follow from the arm solve; straight-wrist grip as v8.
