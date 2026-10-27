@@ -2328,6 +2328,29 @@ if LOOP:
                                        hand=bf(-35.0, 0.0, -.28, .82))
                         wrap['smear'] = 1
                         follow['smear'] = 1
+                    if wrap and not HURT.endswith('_v13'):
+                        # v14 (Kvon: legs in to almost meet under his torso; the Key fully extended for max range): feet a
+                        # hand's width apart under him from the wind-up on (raised halfway), less knee bend; on the impact
+                        # the arms straighten at shoulder height and the blade points straight at the opponent. Drawings
+                        # whose reach passes the frame edge are shifted left inside the frame (offset_px; Godot shifts
+                        # the sprite back by the same amount).
+                        close = lambda l_, r_, rl_=0.0, rp_=0.0: {'L': (l_, L0[1], 0.0, 0.0), 'R': (r_, R0[1], rl_, rp_)}
+                        raised['feet'] = close(L0[0]*.6, R0[0]*.6)
+                        windup.update(feet=close(.16, -.12), ce=.07)
+                        begin.update(feet=close(.14, -.10, 0.0, 20.0), ce=.08)
+                        impact.update(feet=close(.12, -.08, .02, 35.0), ce=.08, pitch=14.0,
+                                      hand=U_*.52 + V_*.10 + Vector((0, 0, 1.02)),
+                                      blade_dir=tuple((U_*.95 + V_*.22 + Vector((0, 0, .10))).normalized()),
+                                      offset_px=(-120, 0))
+                        wrap.update(feet=close(.12, -.08, .02, 35.0), ce=.08, offset_px=(-40, 0))
+                        follow.update(feet=close(.12, -.06, .02, 50.0), ce=.05)
+                        recover.update(feet=close(.14, -.10, .02, 30.0), ce=.06)
+                        if not HURT.endswith('_v14'):
+                            # v15: with the feet that close, v14's knee bend bowed the knees apart into a squat - straighter
+                            # legs through the swing.
+                            for k_, ce_ in ((windup, .04), (begin, .04), (impact, .03), (wrap, .03), (follow, .02),
+                                            (recover, .03)):
+                                k_['ce'] = ce_
                     ins = []
                     for w_ in (.66, .33):  # idle -> raised in-betweens (w_ = share of the idle left)
                         k_ = ease(raised, IDLE_R, w_, 0.0)
@@ -3338,7 +3361,8 @@ if LOOP:
             # make_smears.py can sweep the blade between drawings and draw the smear as its own layer.
             KEY_TRACK.append({'grip_world': [round(c_, 5) for c_ in hand_point('R')],
                               'dir_world': [round(c_, 5) for c_ in key.matrix_world.to_3x3().normalized().col[2]],
-                              'smear': int(RUN_KEYS[i].get('smear') or 0)})
+                              'smear': int(RUN_KEYS[i].get('smear') or 0),
+                              'offset_px': list(RUN_KEYS[i].get('offset_px') or (0, 0))})
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
                        'grip_error_L_m': round((hand_point('L')

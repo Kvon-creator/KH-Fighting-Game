@@ -99,7 +99,10 @@ for i, fr in enumerate(track):
         path, sweep = [], 0.0
         for s_ in range(i - back, i):
             a, b = track[s_], track[s_ + 1]
-            ga, gb = np.array(a['grip_world']), np.array(b['grip_world'])
+            # Drawings shifted inside the frame (offset_px) are drawn where they appear in THIS drawing's frame.
+            sh_ = lambda f_: (np.array(fr.get('offset_px', (0, 0)))[0] - np.array(f_.get('offset_px', (0, 0)))[0])/PX
+            ga = np.array(a['grip_world']) + RIGHT*sh_(a)
+            gb = np.array(b['grip_world']) + RIGHT*sh_(b)
             da, db = np.array(a['dir_world']), np.array(b['dir_world'])
             sweep += math.degrees(math.acos(max(-1.0, min(1.0, float(da.dot(db)/np.linalg.norm(da)/np.linalg.norm(db))))))
             last = s_ == i - 1
