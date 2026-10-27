@@ -55,7 +55,7 @@ if GLIDE:
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
-                                      'hurt_getup_v', 'atk_slight_v', 'atk_smed_v')) else None
+                                      'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -645,7 +645,9 @@ if RUN:
                        'jump_land': [3, 3, 4], 'hurt_ground': [2, 6, 5, 4], 'hurt_air': [4, 8],
                        'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6],
                        'hurt_getup': [5, 4, 4, 4, 4], 'atk_slight': [2, 4, 3, 3],
-                       'atk_smed': [2, 2, 3, 3, 2, 3, 4, 4, 4]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_smed': [2, 2, 3, 3, 2, 3, 4, 4, 4],
+                       # Standing Heavy: Ekko's heavy timing - startup 13 (7 drawings), active 3, recovery 21.
+                       'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2205,6 +2207,83 @@ if LOOP:
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
+                elif jpart == 'atk_sheavy':
+                    # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
+                    # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
+                    # spot (turning away first: back to the viewer, round to chest-to-camera) with the Key trailing out
+                    # level -> deep-lunge impact with the Key level out front -> follow-through over the shoulder -> heavy
+                    # settle with the Key pointing down -> idle. Hands/blades in his body frame where they turn with him;
+                    # through the spin the feet pivot with the body so the legs never twist.
+                    bfh = lambda turn_, x_, y_, z_: Matrix.Rotation(math.radians(turn_), 3, 'Z') @ Vector((x_, y_, z_))
+
+                    def hv(turn, twist, hand, blade, ce=.06, pitch=0.0, hunch=0.0, feet=None):
+                        k_ = hurt(feet or stand, ce, hunch, pitch, -6.0, hand, Vector(blade).normalized(), hand, ground=True)
+                        k_.update(no_center=True, look=8.0, turn=turn, twist=twist, release=0.0,
+                                  l_elbow_hint=tuple(V_*.75 + U_*.10 + Vector((0, 0, -.65))))
+                        return k_
+
+                    def pivot_feet(turn, half=.11):
+                        # feet side by side under him in his body frame, turned with him
+                        out = {}
+                        for sd_, x_ in (('L', half), ('R', -half)):
+                            w_ = bfh(turn, x_, 0.0, 0.0)
+                            out[sd_] = (w_.dot(U_), w_.dot(V_), 0.0, 10.0)
+                        return out
+                    lunge = {'L': (L0[0] + .22, L0[1], 0.0, 0.0), 'R': (R0[0] - .14, R0[1], 0.0, 35.0)}
+                    raised = hv(25.0, -10.0, bfh(25.0, -.14, -.06, 1.06), U_*.75 + V_*.18 + Vector((0, 0, .55)), ce=.06)
+                    windup = hv(60.0, -16.0, bfh(60.0, -.18, .04, .90), -U_*.60 + V_*.75 + Vector((0, 0, -.15)), ce=.14,
+                                hunch=6.0, feet={'L': (L0[0] + .08, L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)})
+                    spin0 = hv(100.0, -12.0, bfh(100.0, -.10, -.20, 1.05), bfh(100.0, -.50, .50, .70), ce=.08,
+                               feet=pivot_feet(100.0, .16))
+                    spin1 = hv(150.0, -8.0, bfh(150.0, -.20, -.15, .95), bfh(150.0, -.60, .75, .05), ce=.04,
+                               feet=pivot_feet(150.0))
+                    spin2 = hv(230.0, -8.0, bfh(230.0, -.20, -.15, .95), bfh(230.0, -.60, .75, .05), ce=.04,
+                               feet=pivot_feet(230.0))
+                    around = hv(310.0, -6.0, bfh(310.0, -.10, -.25, 1.00), bfh(310.0, -.55, .60, .55), ce=.05,
+                                feet=pivot_feet(310.0))
+                    impact = hv(375.0, 10.0, U_*.44 + V_*.12 + Vector((0, 0, .86)), U_*.50 + V_*.80 + Vector((0, 0, .22)),
+                                ce=.17, pitch=16.0, hunch=6.0, feet=lunge)
+                    follow = hv(410.0, 16.0, bfh(410.0, .12, -.12, 1.10), -U_*.70 - V_*.25 + Vector((0, 0, .55)), ce=.14,
+                                pitch=8.0, feet=lunge)
+                    settle = hv(20.0, 4.0, bfh(20.0, 0.0, -.30, .70), U_*.35 + V_*.35 + Vector((0, 0, -.90)), ce=.16,
+                                hunch=14.0, pitch=10.0, feet={'L': (L0[0] + .08, L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)})
+                    if not HURT.endswith('_v1'):
+                        # v2 (closer to Gemini's sheet): the turn goes the other way - out of the wind-up his chest swings
+                        # toward the camera with the Key up and back over his left shoulder (pose 4), then his back comes
+                        # round (pose 5), round again to the front (pose 6) and into the impact; one continuous turn
+                        # (decreasing angle). The level trailing Key keeps the same place relative to his body.
+                        rb_ = lambda turn_, w_: tuple(Matrix.Rotation(math.radians(-turn_), 3, 'Z') @ Vector(w_))
+                        trail_b = rb_(-150.0, (-U_*.85 + V_*.30 + Vector((0, 0, .02))).normalized())
+                        spin0 = hv(-30.0, -10.0, bfh(-30.0, .12, -.10, 1.10), bfh(-30.0, .40, .40, .80), ce=.08,
+                                   feet=pivot_feet(-30.0, .16))
+                        spin1 = hv(-150.0, -8.0, bfh(-150.0, .05, -.28, .95), bfh(-150.0, *trail_b), ce=.04,
+                                   feet=pivot_feet(-150.0))
+                        spin2 = hv(-240.0, -8.0, bfh(-240.0, .05, -.28, .95), bfh(-240.0, *trail_b), ce=.04,
+                                   feet=pivot_feet(-240.0))
+                        around = hv(-330.0, -6.0, bfh(-330.0, .12, -.10, 1.08), bfh(-330.0, .40, .40, .80), ce=.05,
+                                    feet=pivot_feet(-330.0))
+                        impact['turn'] = -345.0
+                        follow['turn'] = -385.0; follow['hand'] = bfh(-385.0, .12, -.12, 1.10)
+                        settle['hand'] = bfh(20.0, 0.0, -.30, .80)
+                        settle['blade_dir'] = tuple((U_*.45 + V_*.45 + Vector((0, 0, -.75))).normalized())
+                    if not HURT.endswith(('_v1', '_v2')):
+                        # v3: v2's raised blades stood straight up off the frame top, the back-view trailing Key ran off
+                        # the left edge and the settle tip went through the floor: tilt them back / toward the camera.
+                        for k_, tn_ in ((spin0, -30.0), (around, -330.0)):
+                            k_['blade_dir'] = tuple(bfh(tn_, .30, .75, .55).normalized())
+                        trail2 = rb_(-150.0, (-U_*.55 + V_*.80 + Vector((0, 0, .02))).normalized())
+                        spin1['blade_dir'] = tuple(bfh(-150.0, *trail2).normalized())
+                        spin2['blade_dir'] = tuple(bfh(-240.0, *trail2).normalized())
+                        settle['blade_dir'] = tuple((U_*.55 + V_*.55 + Vector((0, 0, -.62))).normalized())
+                    for k_ in (spin1, spin2, around):
+                        k_['smear'] = 1
+                    impact['smear'] = 2
+                    follow['smear'] = 1
+                    pre = ease(raised, IDLE_R, .5, 0.0)
+                    pre.update(ground=True, no_center=True)
+                    back_k = ease(settle, IDLE_R, .7, 0.0)
+                    back_k.update(ground=True, no_center=True, turn=IDLE_R['turn'] + (settle['turn'] - IDLE_R['turn'])*.3)
+                    RUN_KEYS = [pre, raised, windup, spin0, spin1, spin2, around, impact, follow, settle, back_k]
                 elif jpart == 'atk_smed':
                     # Standing Medium (Kvon, October 27; Gemini round 44 + his notes): a horizontal two-handed slash. Out of
                     # the idle the Key rises over his right shoulder (two in-betweens), winds back level behind him with the
