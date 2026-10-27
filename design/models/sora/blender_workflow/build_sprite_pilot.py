@@ -2124,6 +2124,16 @@ if LOOP:
                                 k_['blade_dir'] = RUN_KEYS[1]['blade_dir']
                         for k_ in RUN_KEYS:
                             k_['hip_back_deg'] = 12.0
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7', '_v8')):
+                        # v9 (Kvon): the final falling drawing straight upside down with the arms down at his sides
+                        # (body frame before the turn; the Key hangs along his right side).
+                        RUN_KEYS[3].update(roll=180.0, hand=B_(-.30, .04, .80), l_hand=tuple(B_(.30, .04, .80)),
+                                           release=1.0, blade_dir=tuple(T_((-.12, .05, -1.0)).normalized()))
+                        if not HURT.endswith('_v9'):
+                            # v10: v9's hands sat at the waist with bent elbows; lower so the arms hang straight at his sides.
+                            RUN_KEYS[3].update(hand=B_(-.30, .04, .64), l_hand=tuple(B_(.30, .04, .64)))
+                        if not HURT.endswith(('_v9', '_v10')):
+                            RUN_KEYS[3]['offset_px'] = (0, -24)  # v11: v10's Key tip touched the top edge
                 else:
                     # Shoulders hit the floor and the legs come down (a small bounce), settle, then lie flat on his back,
                     # face up, head toward screen left, seen side-on, Key lying loosely along his right side.
