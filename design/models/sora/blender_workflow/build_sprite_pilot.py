@@ -2148,6 +2148,11 @@ if LOOP:
                         back_ = .22 if HURT.endswith('_v1') else .32
                         k_ = hurt(feet, ce, 0.0, pitch, -6.0, hand, lvl_blade, hand + lvl_blade*back_, ground=True)
                         k_.update(no_center=True, look=8.0)
+                        if not HURT.endswith(('_v1', '_v2')):
+                            # v3 (Kvon: swap the hands for this attack): the LEFT fist holds the handle inside the guard at
+                            # `hand`, the right hand steadies the shaft behind it; the Key is slid onto the left fist after
+                            # the solve ('key_in_left').
+                            k_.update(hand=hand + lvl_blade*back_, l_hand=tuple(hand), key_in_left=True)
                         return k_
                     step_in = {'L': (L0[0] + .06, L0[1], 0.0, 0.0), 'R': (R0[0] + .02, R0[1], 0.0, 0.0)}
                     set_k = bunt(U_*.14 + V_*.22 + Vector((0, 0, .96)), .05, 2.0, stand)
@@ -3092,6 +3097,9 @@ if LOOP:
                 arm.keyframe_insert(path, frame=i + 1)
         if CROUCH or RUN:
             key.matrix_world = pose_world('R_te') @ CR_KEY_IN_TE
+            if RUN and RUN_KEYS[i].get('key_in_left'):
+                # Standing Light v3+: same Key angle, slid along its line so the handle sits in the left fist.
+                key.matrix_world = Matrix.Translation(hand_point('L') - hand_point('R')) @ key.matrix_world
             update()
         else:
             place_key()
