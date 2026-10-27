@@ -2145,6 +2145,8 @@ if LOOP:
                     if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
                         # v6 (Kvon): the blade tip points slightly toward the player (~35 deg toward the camera).
                         lvl_blade = (-U_*.80 + V_*.55 + Vector((0, 0, .03))).normalized()
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+                        lvl_blade = (-U_*.72 + V_*.70 + Vector((0, 0, .03))).normalized()  # v7: ~45 deg (Kvon: more)
 
                     def bunt(hand, ce, pitch, feet):
                         # v2: v1's left hand (.22 m back) sat almost on the guard; further back along the shaft.
@@ -2177,6 +2179,8 @@ if LOOP:
                         recoil_k = bunt(U_*.30 + V_*.18 + Vector((0, 0, .90)), .07, 6.0, step_in)
                         for k_ in (set_k, bash_k, recoil_k):
                             k_['key_slide'] = .12
+                            if not HURT.endswith('_v5') and not HURT.endswith('_v6'):
+                                k_['shaft_grip'] = tuple(lvl_blade)  # v7: straight wrist on the shaft hand
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
@@ -3063,6 +3067,20 @@ if LOOP:
         if HURT:
             arm.matrix_world = ARM_M0  # solve upright; the whole-body turn comes after
             update()
+        if HURT and RUN_KEYS[i].get('shaft_grip'):
+            # Standing Light v7+ (Kvon: the shaft hand's wrist was bent and didn't line up): a straight wrist that only
+            # rolls about the forearm; pick the roll whose fist grip axis lines up best with the shaft.
+            shaft_ = Vector(RUN_KEYS[i]['shaft_grip']).normalized()
+            KEY_ROT_FACE = Matrix(POSE['r_hand_rot']) @ CR_KEY_IN_TE.to_3x3()  # the Key's own angle (guard to camera)
+            best_g = None
+            for roll_ in range(0, 360, 10):
+                POSE['wrist_roll'] = float(roll_); POSE['r_hand_rot'] = None
+                solve_pose(breath, lag)
+                ax_g = (pose_world('R_te').to_3x3().normalized() @ CR_KEY_IN_TE.to_3x3().normalized()).col[2]
+                if best_g is None or abs(ax_g.dot(shaft_)) > best_g[0]:
+                    best_g = (abs(ax_g.dot(shaft_)), roll_)
+            POSE['wrist_roll'] = float(best_g[1])
+            print('SHAFT_GRIP', i, best_g)
         solve_pose(breath, lag)
         if RUN:
             reach = {sd: round((pose_world(f'{sd}_ashi1').translation - pose_world(f'{sd}_momo').translation).length, 3)
@@ -3120,6 +3138,12 @@ if LOOP:
                 # Standing Light v3: same Key angle, slid along its line so the handle sits in the left fist.
                 key.matrix_world = Matrix.Translation(hand_point('L') - hand_point('R')) @ key.matrix_world
             elif RUN and RUN_KEYS[i].get('key_in_left'):
+                if RUN_KEYS[i].get('shaft_grip') and not HURT.endswith('_v7'):
+                    # v8: the straight-wrist hand roll turned the whole Key on its axis (guard edge-on in v7); keep the
+                    # Key's own angle (guard face to the camera) and only take its grip point from the fist.
+                    gk_ = key.matrix_world.inverted() @ hand_point('R')
+                    key.matrix_world = (Matrix.Translation(hand_point('R') - KEY_ROT_FACE @ gk_)
+                                        @ KEY_ROT_FACE.to_4x4())
                 # v4+ (Kvon: the wrists must line up with the parts they hold): the Key's grip point (now in the right
                 # fist) goes to the centre of the LEFT fist and the blade runs from there through the right fist's
                 # centre, so the handle sits in the left fist and the shaft passes through the right one.
