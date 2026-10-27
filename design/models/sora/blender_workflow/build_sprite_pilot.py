@@ -54,7 +54,8 @@ if GLIDE:
 # drawings stay in place (the game moves him up and down).
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
-                                      'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v')) else None
+                                      'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
+                                      'hurt_getup_v')) else None
 HURT = JUMP if JUMP and JUMP.startswith('hurt_') else None
 if JUMP:
     RUN = 'run_loop_v18'
@@ -641,7 +642,8 @@ if RUN:
         GAME_FRAMES = {'jump_start': [2, 2, 2], 'jump_rise': [4, 4], 'jump_apex': [6], 'jump_fall': [4, 4],
                        'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3], 'jump_bdash': [2, 4, 4, 3, 4],
                        'jump_land': [3, 3, 4], 'hurt_ground': [2, 6, 5, 4], 'hurt_air': [4, 8],
-                       'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6]}[JUMP.rsplit('_v', 1)[0]]
+                       'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6],
+                       'hurt_getup': [5, 4, 4, 4, 4]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2134,6 +2136,37 @@ if LOOP:
                             RUN_KEYS[3].update(hand=B_(-.30, .04, .64), l_hand=tuple(B_(.30, .04, .64)))
                         if not HURT.endswith(('_v9', '_v10')):
                             RUN_KEYS[3]['offset_px'] = (0, -24)  # v11: v10's Key tip touched the top edge
+                elif jpart == 'hurt_getup':
+                    # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
+                    # Smash's floor getup / Street Fighter's quick rise): from lying face up, sit up leaning back with
+                    # the left hand pushing on the floor behind him, tuck the knees, rise over the feet into a crouch,
+                    # come up, settle into the idle. Hips lowered toward the floor by 'ce', grounded, not centred (the
+                    # standing drawings must line up with the idle's feet).
+                    sit_blade = (U_*.90 + V_*.35 + Vector((0, 0, -.12))).normalized()
+                    sit_k = hurt({'L': (.60, LAT['L'], 0.0, 0.0), 'R': (.55, LAT['R'], 0.0, 0.0)}, .36, 0.0, 0.0, -6.0,
+                                 B_(-.30, .10, .18), sit_blade, B_(.22, .30, .14), spin=30.0, ground=True)
+                    sit_k.update(lean_cam=50.0, head_cam=-22.0, leg_reach=.95)
+                    tuck_k = hurt({'L': (.30, LAT['L'], 0.0, 0.0), 'R': (.22, LAT['R'], 0.0, 0.0)}, .34, 10.0, 4.0, -10.0,
+                                  B_(-.32, -.05, .30), (U_*.70 + V_*.45 + Vector((0, 0, -.25))).normalized(),
+                                  B_(.25, .25, .16), spin=20.0, ground=True)
+                    tuck_k.update(lean_cam=20.0, head_cam=-10.0)
+                    crouch_k = hurt({'L': (.12, LAT['L'], 0.0, 0.0), 'R': (-.06, LAT['R'], 0.0, 0.0)}, .25, 18.0, 14.0,
+                                    -24.0, U_*-.25 + V_*.25 + Vector((0, 0, .45)), back_low, B_(.30, -.28, .12),
+                                    spin=10.0, ground=True)
+                    rise_k = hurt({'L': (.30, LAT['L'], 0.0, 0.0), 'R': (-.26, LAT['R'], 0.0, 0.0)}, .12, 8.0, 6.0, -10.0,
+                                  U_*-.20 + V_*.24 + Vector((0, 0, .62)),
+                                  tuple(Vector(back_low).lerp(CR_BLADE0, .5).normalized()), B_(.20, -.25, .80),
+                                  ground=True)
+                    rise_k['release'] = .5
+                    if not HURT.endswith('_v1'):
+                        # v2: v1's blade tips went through the floor on drawings 1-3: lay them level along the floor
+                        # (toward his feet), then held out low behind him, angled toward the camera.
+                        sit_k['blade_dir'] = tuple((U_*.90 + V_*.40 + Vector((0, 0, .04))).normalized())
+                        tuck_k['blade_dir'] = tuple((U_*.75 + V_*.60 + Vector((0, 0, .02))).normalized())
+                        crouch_k['blade_dir'] = tuple((-U_*.55 + V_*.80 + Vector((0, 0, -.05))).normalized())
+                    RUN_KEYS = [sit_k, tuck_k, crouch_k, rise_k, ease(rise_k, IDLE_R, .7, .15)]
+                    for k_ in RUN_KEYS:
+                        k_.update(ground=True, no_center=True)
                 else:
                     # Shoulders hit the floor and the legs come down (a small bounce), settle, then lie flat on his back,
                     # face up, head toward screen left, seen side-on, Key lying loosely along his right side.
@@ -3022,7 +3055,8 @@ if LOOP:
                 low_ = min(p_.z for p_ in pts_)
                 xs_ = [p_.dot(cam_r_) for p_ in pts_]
                 # v2+: centre the figure across the frame (lying, he is longer than half the frame).
-                dx_ = cam.location.dot(cam_r_) - (min(xs_) + max(xs_))/2 if not HURT.endswith('_v1') else 0.0
+                dx_ = (cam.location.dot(cam_r_) - (min(xs_) + max(xs_))/2
+                       if not HURT.endswith('_v1') and not hk_.get('no_center') else 0.0)
                 arm.matrix_world = (Matrix.Translation(cam_r_*dx_ + Vector((0, 0, ground + hk_.get('lift', 0.0) - low_)))
                                     @ arm.matrix_world)
                 update()
