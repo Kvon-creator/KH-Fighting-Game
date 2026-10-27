@@ -1,0 +1,37 @@
+{
+  "status": "waiting_for_gemini",
+  "media": "image",
+  "tabId": "F0B0FFCD472F4884AC39F933ED0721AB",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "getup-concept",
+  "promptSha256": "4846c154c5c17461d71ba823e256fae1f53ea2a5ee4fc33abb7bf7f705ff0695",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\GETUP_CONCEPT_ROUND_39.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-27T16:31:15.443Z",
+  "baselineImages": [
+    "1d14ffbdda8331f391f0b012a72be684782ea404628829288348f0de8558f735",
+    "66444343429f481151f2c5f156a5613b36fa19b0096684b1c698388afecfc3c2",
+    "ca0f34d2d71a35f5c7bc5313c58c971c168353aefa79505c09b320bae907ec9d",
+    "f67941d453c77abc0caebf58d14ae3fab5c5c0c0d6cd1f085ecc3f68d289586d",
+    "79ee42459c935eb22c017f5a1216bc89121f046ead731823db4b0ecc96d66edc",
+    "9d092d31a8688b36b37d88114c54e8ed8587d23309334cb38228b1b013ed28bc",
+    "7e538f6f8dd24f64b26a8b3a37d7f50741171b9a92020e5fd7bd7c8d1f5f9ef5"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\hurt_down2d_v6\\frames_512\\sora_idle3d_02.png",
+      "sha256": "d86689fd8b0638cf4f8a3f1002a2a5d8b3fb783a3ed9ba168e40afcc379bcda6"
+    },
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\models\\sora\\hurt_fall2d_v11\\Hurt_All_Sprites.png",
+      "sha256": "76ab3c5cb276fefab17ca3d0fb1e61f9c5ad80fc456348ee96cae014dee7b350"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "note": "Timed out collecting; rerun this same attempt to collect without resubmitting."
+}

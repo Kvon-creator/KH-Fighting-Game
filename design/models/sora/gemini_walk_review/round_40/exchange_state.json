@@ -1,0 +1,36 @@
+{
+  "status": "waiting_for_gemini",
+  "media": "image",
+  "tabId": "F0B0FFCD472F4884AC39F933ED0721AB",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "getup-concept",
+  "promptSha256": "4846c154c5c17461d71ba823e256fae1f53ea2a5ee4fc33abb7bf7f705ff0695",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\GETUP_CONCEPT_ROUND_39.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-27T16:48:14.621Z",
+  "baselineImages": [
+    "aba28ee75a9024814920fd9b63d8cab4aeaf1335c09d95734a8b78ba8afc59c2",
+    "1e4f699bffe19d7caea387c4ed580d07b667f3b91e78bb14fa524def556d8bce",
+    "a6490dc7f2b5209db38f08f0e9b50f8b2c512b2196f3f10b252777d9bae9621d",
+    "bfcd2bc96d5ac59bbe87c0cf5ca5e85848f0b26291cc3e687a8ca821de338163",
+    "b49c650b23bb27becc093118d1243aacc44a1f74b53ff9a7cdcec706b3cf0f19",
+    "669db148287e194bceea68b53f6f76afd2c4d648f698492b77b55badaf51da7a"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\hurt_down2d_v6\\frames_512\\sora_idle3d_02.png",
+      "sha256": "d86689fd8b0638cf4f8a3f1002a2a5d8b3fb783a3ed9ba168e40afcc379bcda6"
+    },
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\models\\sora\\hurt_fall2d_v11\\Hurt_All_Sprites.png",
+      "sha256": "76ab3c5cb276fefab17ca3d0fb1e61f9c5ad80fc456348ee96cae014dee7b350"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "note": "Timed out collecting; rerun this same attempt to collect without resubmitting."
+}
