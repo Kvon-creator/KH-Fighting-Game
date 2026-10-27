@@ -1,0 +1,39 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "C2A1C3A90075562C7F6F65A4C4781D33",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "standing-medium-concept",
+  "promptSha256": "978b4b4c5dcc49168654aecbae4306b9de8f83040ecc82351c6e1da39a9ff5dd",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\STANDING_MEDIUM_CONCEPT_ROUND_44.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-27T20:50:48.750Z",
+  "baselineImages": [
+    "fdacc77395a7ac87e2283c21ecbf47c321cdf27decfbbc10f78686bab18dcdc9",
+    "ad924e5e746305437c99799d5cdb9e70b67be67abe0e8079c592e2a4965c6e5c",
+    "3dfad40d73877ec8334401ef254a828042a3ed16dd1c437b40bda16e98791237",
+    "75a03ea7086a3002943dd7d8a9f1cb6c54c3731149da13f0c97f54baea5354e7",
+    "1b64853730ffcda9239e55275dacfe04a5865e3ed8788e1361d859071dee6282"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\models\\sora\\atk_slight2d_v11\\Standing_Light_Sheet.png",
+      "sha256": "77eece2a1b0309942f5b6788f896ff5e2a4c30c04d24bccd26752e3c31c3629a"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-27T20:52:25.828Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_44\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_44\\Gemini_Generated_Image_u1fdfnu1fdfnu1fd.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}

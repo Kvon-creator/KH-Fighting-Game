@@ -1,0 +1,15 @@
+Next for Sora: his STANDING MEDIUM attack - a horizontal Kingdom Key slash across his body toward the opponent on the right. It is stronger and wider than his Standing Light, but still a quick, controlled swing (not a big spin - that is his Heavy).
+
+Attached: (1) Sora's approved battle idle in our sprite style (both hands on the Keyblade, blade angled up in front of him toward the opponent) - start and end pose; (2) his approved Standing Light (a short guard bash) for style and size.
+
+My director's rules: the knees must always bend the natural way; keep the whole Keyblade close enough to his body to stay inside a square frame around him.
+
+Please generate an image: a clean concept sheet of Sora's Standing Medium, facing screen right, plain white background, the same 2D cel style, KH2 outfit and Kingdom Key as the attached sprites, the same character size in every pose, no text, labels or swing effects. 8 poses in two rows of four, in order:
+1. Battle idle (as in image 1).
+2. Side wind-up: torso turning away from the opponent, the Keyblade drawn back level beside his rear hip, both hands on it.
+3. Wind-up peak: hips loaded, Keyblade fully back behind him, level, front foot planted.
+4. Slash begins: hips and shoulders turning toward the opponent, the Keyblade sweeping forward level at waist-to-chest height.
+5. Slash impact: the Keyblade level and fully out in front of him toward screen right, arms extended.
+6. Follow-through: the Keyblade continuing across his body toward his other side, torso turned past square.
+7. Recovering: the Keyblade coming back in front of him, weight settling.
+8. Back to the battle idle (as in image 1).

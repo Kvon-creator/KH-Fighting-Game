@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'standing-light-bunt': [
+const referenceSets = {'standing-medium-concept': [
+  // Kvon: next attack after the approved Standing Light - the Standing Medium; Gemini concept art first.
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
+  'design/models/sora/atk_slight2d_v11/Standing_Light_Sheet.png'
+], 'standing-light-bunt': [
   // Kvon: the Standing Light becomes a bunt-style guard bash instead of the round-41 thrust.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/gemini_walk_review/round_41/gemini_original_preview.jpg'

@@ -1,0 +1,19 @@
+Here is the concept sheet mapping out Sora's Standing Medium horizontal slash.   
+imgbin.com
++ 2
+
+The sequence keeps the horizontal swing compact and controlled, moving from the battle idle into the side wind-up, extending through the waist-to-chest height slash, and following through before settling back into the guard.
+
+When applying this to the 3D rig, do you want to keep the root bone completely stationary for this attack, or should there be a slight forward translation on the impact frame (Pose 5) to give it a bit more weight?
+
+Images
+
+
+
+
+Pro
+Aspect ratio
+
+Gemini is AI and can make mistakes.
+
+Formatting the image response
