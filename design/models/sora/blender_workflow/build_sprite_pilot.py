@@ -642,6 +642,8 @@ if RUN:
                        'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3], 'jump_bdash': [2, 4, 4, 3, 4],
                        'jump_land': [3, 3, 4], 'hurt_ground': [2, 6, 5, 4], 'hurt_air': [4, 8],
                        'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6]}[JUMP.rsplit('_v', 1)[0]]
+        if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+            GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
             GAME_FRAMES = [3, 3, 4]  # v4: in-between + the two falling drawings
     DURATIONS_MS = [round(f*1000/60, 3) for f in GAME_FRAMES]
@@ -2040,6 +2042,11 @@ if LOOP:
                     if H_V2:
                         hit_k.update(lean_cam=20.0, head_cam=14.0, pitch=-8.0, hunch=-4.0, neck=-6.0)
                         peak_k.update(lean_cam=27.0, head_cam=20.0, pitch=-10.0, hunch=-5.0, neck=-8.0)
+                    if not HURT.endswith(('_v1', '_v2')):
+                        # v3 (Kvon picked Gemini round 38 #1): a violent snap - the spine bent back another ~17 deg into a
+                        # sharp C, chest pushed out, head thrown back so the face aims at the ceiling.
+                        hit_k.update(lean_cam=36.0, head_cam=28.0, pitch=-16.0, hunch=-8.0, neck=-14.0)
+                        peak_k.update(lean_cam=44.0, head_cam=34.0, pitch=-18.0, hunch=-9.0, neck=-16.0)
                     RUN_KEYS = [hit_k, peak_k, ease(peak_k, IDLE_R, .5, .5), ease(peak_k, IDLE_R, .85, .15)]
                 elif jpart == 'hurt_air':
                     # The same snap back in the air, legs dangling in front; then drifting back and starting to tip over.
@@ -2061,6 +2068,8 @@ if LOOP:
                             for k_ in RUN_KEYS:
                                 k_['leg_reach'] = .94   # v5 (Kvon): slightly more knee bend
                             RUN_KEYS[1]['ankle_deg'] = 30.0  # v5 (Kvon): straighten the ankles on the drift drawing
+                        if not HURT.endswith(('_v2', '_v3', '_v4', '_v5')):
+                            RUN_KEYS[0]['ankle_deg'] = 30.0  # v6 (Gemini round 38 #3): the impact drawing too
                 elif jpart == 'hurt_fall':
                     # Head first with his back to the screen and his feet in the air: tipping over while turning away,
                     # upside down, then the shoulders heading for the floor. Arms loose around his head.
@@ -2077,6 +2086,14 @@ if LOOP:
                     if not HURT.endswith(('_v1', '_v2', '_v3')):
                         for k_ in RUN_KEYS:
                             k_['leg_reach'] = .975 if HURT.endswith('_v4') else .94  # v4 (Kvon): mostly straight; v5: bit more bend
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                        # v6 (Gemini round 38 #2): an in-between from the air drift (roll 35) - body horizontal in the air,
+                        # back parallel to the floor, just starting to turn away; legs mostly straight, feet pointed.
+                        flat_k = hurt({'L': (.30, LAT['L'], .22, 15.0), 'R': (.18, LAT['R'], .14, 20.0)}, -.06, -10.0,
+                                      -16.0, -12.0, U_*-.36 + V_*.24 + Vector((0, 0, 1.15)),
+                                      (-U_*.40 + V_*.80 + Vector((0, 0, .20))).normalized(), B_(.32, -.16, 1.28),
+                                      roll=80.0, spin=25.0)
+                        flat_k.update(lean_cam=6.0, head_cam=10.0, leg_reach=.94, ankle_deg=30.0, offset_px=(-30, 0))
                     if H_V2:
                         # v1's first drawing (on its side, half turned) read as a jumble: further over and further round.
                         RUN_KEYS[0].update(roll=130.0, spin_deg=110.0)
@@ -2087,6 +2104,8 @@ if LOOP:
                                 # points at the camera AFTER the spin.
                                 k_['blade_dir'] = tuple(Matrix.Rotation(math.radians(-k_['spin_deg']), 3, 'Z')
                                                         @ (V_*.85 - U_*.25 + Vector((0, 0, .20))).normalized())
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                        RUN_KEYS.insert(0, flat_k)
                 else:
                     # Shoulders hit the floor and the legs come down (a small bounce), settle, then lie flat on his back,
                     # face up, head toward screen left, seen side-on, Key lying loosely along his right side.
@@ -2107,6 +2126,19 @@ if LOOP:
                             k_['body_angle'] = ang_
                         for k_ in RUN_KEYS[1:]:
                             k_['hand'] = U_*-.06 + V_*.32 + Vector((0, 0, .60))
+                            if not HURT.endswith(('_v2', '_v3', '_v4')):
+                                # v5+ (Gemini round 38 #4): chest and face turned more toward the camera so face-up reads
+                                # (v4 was exact profile), right hand resting on the floor beside his hip, out to his side
+                                # and level with his back, Key along the floor toward his feet.
+                                k_['spin_deg'] = 30.0
+                                k_['hand'] = B_(-.36, .10, .66)  # body frame; the spin turns it with him
+                                k_['blade_dir'] = tuple(T_((-.25, .15, -1.0)).normalized())
+                                if not HURT.endswith('_v5'):
+                                    # v6: v5's blade tipped toward his back, i.e. down through the floor once he lay down;
+                                    # hand level with his back and the blade tilted a little toward his front (up).
+                                    k_['hand'] = B_(-.36, .02, .66)
+                                    k_['blade_dir'] = tuple(T_((-.25, -.12, -1.0)).normalized())
+                                continue
                             if not HURT.endswith(('_v2', '_v3')):
                                 # v4: v3's Key pointed down AND forward, so it rose off the floor once he lay down;
                                 # down and slightly back (after the spin), so it lies along his side on the floor.
