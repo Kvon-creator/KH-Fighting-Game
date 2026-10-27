@@ -151,7 +151,7 @@ const ANIMATIONS := {
 	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [4, 4, 4, 3, 3],
 		[8.0, 0.0, 0.0, 0.0, 0.0]],
 	# Standing Light (U; Kvon approved): a bunt-style guard bash - set, bash, recoil, return to the idle.
-	&"attack_light": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [2, 4, 3, 3], []],
+	&"attack_light": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [2, 6, 3, 3], []],  # Kvon: the hit drawing lingers (was 4)
 }
 
 var _sprite: AnimatedSprite2D
