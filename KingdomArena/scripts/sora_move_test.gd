@@ -14,13 +14,14 @@ extends Node2D
 ## Hurt tests (no opponent yet): H = a hit (on the ground he snaps back and recovers; in the air he is
 ## knocked down), J = a knockdown from the ground (launched back, head-first fall, lands on his back, lies
 ## there a moment, then gets up).
+## U = Standing Light (a guard bash; while standing or walking).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
 ## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
 ## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again,
 ## `--dash-demo-at=M` double-taps forward from frame M); `--bdash-demo-at=N` double-taps back;
-## `--hit-demo-at=N` / `--knock-demo-at=N` press H / J on game frame N;
+## `--hit-demo-at=N` / `--knock-demo-at=N` / `--light-demo-at=N` press H / J / U on game frame N;
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
@@ -149,6 +150,8 @@ const ANIMATIONS := {
 	# hips in place.
 	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [4, 4, 4, 3, 3],
 		[8.0, 0.0, 0.0, 0.0, 0.0]],
+	# Standing Light (U; Kvon approved): a bunt-style guard bash - set, bash, recoil, return to the idle.
+	&"attack_light": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [2, 4, 3, 3], []],
 }
 
 var _sprite: AnimatedSprite2D
@@ -193,6 +196,9 @@ var _hit_was := false
 var _knock_was := false
 var _demo_hit_at := -1
 var _demo_knock_at := -1
+## Standing Light: the U key last frame and the timed demo press (`--light-demo-at=N`).
+var _light_was := false
+var _demo_light_at := -1
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -263,6 +269,8 @@ func _ready() -> void:
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
 		elif arg.begins_with("--hit-demo-at="):
 			_demo_hit_at = int(arg.trim_prefix("--hit-demo-at="))
+		elif arg.begins_with("--light-demo-at="):
+			_demo_light_at = int(arg.trim_prefix("--light-demo-at="))
 		elif arg.begins_with("--knock-demo-at="):
 			_demo_knock_at = int(arg.trim_prefix("--knock-demo-at="))
 		elif arg.begins_with("--bdash-demo-at="):
@@ -326,6 +334,9 @@ func _physics_process(_delta: float) -> void:
 	var knock := _tick == _demo_knock_at or Input.is_physical_key_pressed(KEY_J)
 	var knock_pressed := knock and not _knock_was
 	_knock_was = knock
+	var light := _tick == _demo_light_at or Input.is_physical_key_pressed(KEY_U)
+	var light_pressed := light and not _light_was
+	_light_was = light
 	if _down_tick < 0 and (knock_pressed or (hit_pressed and (_air or _hurt_tick >= 0))):
 		_start_knockdown(_air or _hurt_tick >= 0)
 	elif _down_tick < 0 and hit_pressed:
@@ -369,6 +380,12 @@ func _physics_process(_delta: float) -> void:
 		_bd_tick = -1
 		_sprite.position.y = FLOOR_Y
 		_show(&"jump_start", 1 if moving else 0)  # already moving: skip the crouch drawing
+		return
+	# Standing Light (U): from any standing ground move (not crouching, not mid back-dash); it plays to the
+	# end (only a hit interrupts it), then he returns to whatever is held.
+	if light_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
+		_sprite.position.y = FLOOR_Y
+		_show(&"attack_light")
 		return
 	if back_tap and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0
