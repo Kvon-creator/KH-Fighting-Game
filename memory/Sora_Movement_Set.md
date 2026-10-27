@@ -651,3 +651,6 @@ Pending review. Offered the matching brake transition.
 - **Correction, October27:** Kvon: "His legs should be mostly straightened out in the 2nd and 3rd rows of sprites" (air hit and head-first fall). Rebuilt with a `leg_reach` option: each foot target is pulled to a fixed fraction of the full leg length along its direction (0.975 = mostly straight, slight knee bend kept).
 **Why:** Kvon's correction.
   - Result (pending Kvon's review): `hurt_air_v4` (legs straight; `offset_px` nudges drawing 1 up 36 px and drawing 2 left 44 px so the longer legs stay in the frame) and `hurt_fall_v4` (legs straight). Sheet `hurt_air2d_v4/Hurt_All_Sprites.png`, GIF `hurt_air2d_v4/Air_Hit_To_Knockdown_slow.gif`.
+- **Correction, October27:** Kvon: "Straighten the ankles in the second image on row two and add slightly more bend to the knees in each of the rows that you had just edited." Air drift drawing: feet follow the shin line (new `ankle_deg` = angle between the shin's continuation and the foot; 30 = relaxed, nearly pointed). Air hit and fall: `leg_reach` .975 -> .94.
+**Why:** Kvon's correction.
+  - Result (pending Kvon's review): `hurt_air_v5` / `hurt_fall_v5` (+2D). Sheet `hurt_fall2d_v5/Hurt_All_Sprites.png`, GIF `hurt_fall2d_v5/Air_Hit_To_Knockdown_slow.gif`. Feet on the drift drawing now continue the shin line instead of tilting up.

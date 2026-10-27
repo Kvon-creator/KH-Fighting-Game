@@ -877,6 +877,17 @@ def solve_pose(breath=0.0, lag=None):
             ankle = pose_world(f'{side}_ashi1').translation
             fwd = pose_world(f'{side}_ashi2').translation - ankle; fwd.z = 0; fwd.normalize()
             rotate_world(f'{side}_ashi1', fwd.cross(Vector((0, 0, 1))).normalized(), -deg)
+    if POSE.get('ankle_deg') is not None:
+        # Hurt (Kvon: straighten the ankles): turn each foot in the shin/foot plane so the foot leaves the shin's line
+        # at this angle (0 = fully pointed in line with the shin, 90 = a neutral right-angle ankle).
+        for s_a in ('L', 'R'):
+            ank_ = pose_world(f'{s_a}_ashi1').translation
+            shin_ = (ank_ - pose_world(f'{s_a}_sune').translation).normalized()
+            foot_ = (pose_world(f'{s_a}_ashi2').translation - ank_).normalized()
+            ax_a = shin_.cross(foot_)
+            if ax_a.length > 1e-4:
+                rotate_world(f'{s_a}_ashi1', ax_a.normalized(),
+                             POSE['ankle_deg'] - math.degrees(shin_.angle(foot_)))
     if POSE.get('head_yaw_cancel') and POSE.get('chest_twist_deg'):
         rotate_world('kubi', 'Z', -POSE['chest_twist_deg'])  # v19+: face stays on the opponent
     if POSE.get('L_shrug_deg'):
@@ -2046,6 +2057,10 @@ if LOOP:
                         if not HURT.endswith(('_v2', '_v3')):
                             RUN_KEYS[0]['offset_px'] = (0, 36)    # v4: v3's feet touched the bottom edge
                             RUN_KEYS[1]['offset_px'] = (-44, 0)   # v4: and the right edge
+                        if not HURT.endswith(('_v2', '_v3', '_v4')):
+                            for k_ in RUN_KEYS:
+                                k_['leg_reach'] = .94   # v5 (Kvon): slightly more knee bend
+                            RUN_KEYS[1]['ankle_deg'] = 30.0  # v5 (Kvon): straighten the ankles on the drift drawing
                 elif jpart == 'hurt_fall':
                     # Head first with his back to the screen and his feet in the air: tipping over while turning away,
                     # upside down, then the shoulders heading for the floor. Arms loose around his head.
@@ -2061,7 +2076,7 @@ if LOOP:
                                      roll=160.0, spin=150.0)]
                     if not HURT.endswith(('_v1', '_v2', '_v3')):
                         for k_ in RUN_KEYS:
-                            k_['leg_reach'] = .975  # v4 (Kvon): legs mostly straight
+                            k_['leg_reach'] = .975 if HURT.endswith('_v4') else .94  # v4 (Kvon): mostly straight; v5: bit more bend
                     if H_V2:
                         # v1's first drawing (on its side, half turned) read as a jumble: further over and further round.
                         RUN_KEYS[0].update(roll=130.0, spin_deg=110.0)
@@ -2389,6 +2404,7 @@ if LOOP:
             POSE['wrist_roll'] = k_.get('wrist_roll')
             POSE['screen_lean_deg'] = k_.get('lean_cam', 0.0)
             POSE['leg_reach'] = k_.get('leg_reach')
+            POSE['ankle_deg'] = k_.get('ankle_deg')
             POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
