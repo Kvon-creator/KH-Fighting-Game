@@ -14,14 +14,16 @@ extends Node2D
 ## Hurt tests (no opponent yet): H = a hit (on the ground he snaps back and recovers; in the air he is
 ## knocked down), J = a knockdown from the ground (launched back, head-first fall, lands on his back, lies
 ## there a moment, then gets up).
-## U = Standing Light (a guard bash; while standing or walking).
+## U = Standing Light (a guard bash), I = Standing Medium (a batter-style slash with Keyblade smears); while
+## standing or walking.
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
 ## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
 ## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again,
 ## `--dash-demo-at=M` double-taps forward from frame M); `--bdash-demo-at=N` double-taps back;
-## `--hit-demo-at=N` / `--knock-demo-at=N` / `--light-demo-at=N` press H / J / U on game frame N;
+## `--hit-demo-at=N` / `--knock-demo-at=N` / `--light-demo-at=N` / `--medium-demo-at=N` press H / J / U / I on
+## game frame N;
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
@@ -152,9 +154,22 @@ const ANIMATIONS := {
 		[8.0, 0.0, 0.0, 0.0, 0.0]],
 	# Standing Light (U; Kvon approved): a bunt-style guard bash - set, bash, recoil, return to the idle.
 	&"attack_light": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [6, 3, 6, 7], []],  # Kvon: startup 6, active 3, recovery 13
+	# Standing Medium (I; Kvon: fine for now): batter-style horizontal slash. Startup 9 (rise x2, raised, wind-up,
+	# slash start), active 3 (impact), recovery 17 (wrap, follow-through, recover, return) - between the Light and
+	# Ekko's heavy (13/3/21), since Ekko's reference move is a heavy.
+	&"attack_medium": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 3, 2, 3, 3, 5, 5, 4],
+		[]],
 }
 
+## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
+## the sprite is shifted back right by this many px so he stays in place.
+const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0]}
+## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
+const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"]}
+
 var _sprite: AnimatedSprite2D
+var _smear: Sprite2D
+var _smear_frames := {}
 var _camera: Camera2D
 var _start_x := 420.0
 ## Game frames to hold forward / back / crouch in the timed demos (-1 = not used).
@@ -199,6 +214,9 @@ var _demo_knock_at := -1
 ## Standing Light: the U key last frame and the timed demo press (`--light-demo-at=N`).
 var _light_was := false
 var _demo_light_at := -1
+## Standing Medium: the I key last frame and the timed demo press (`--medium-demo-at=N`).
+var _medium_was := false
+var _demo_medium_at := -1
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -236,6 +254,16 @@ func _ready() -> void:
 	_sprite.offset = -FEET
 	_sprite.position = Vector2(_start_x, FLOOR_Y)
 	add_child(_sprite)
+	# Smear layer: a child of the sprite (so it moves with him and draws on top), shown only on smeared drawings.
+	_smear = Sprite2D.new()
+	_smear.centered = false
+	_smear.visible = false
+	_sprite.add_child(_smear)
+	for anim: StringName in SMEARS:
+		var list: Array[Texture2D] = []
+		for k in ANIMATIONS[anim][2].size():
+			list.append(load(SMEARS[anim][0] + SMEARS[anim][1] + "%02d.png" % k) as Texture2D)
+		_smear_frames[anim] = list
 
 	# Simple camera (Kvon): fixed on the arena, it only rises when Sora's head nears the top of the screen
 	# (a high second jump) and never goes below the floor or sideways. The area above the background
@@ -269,6 +297,8 @@ func _ready() -> void:
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
 		elif arg.begins_with("--hit-demo-at="):
 			_demo_hit_at = int(arg.trim_prefix("--hit-demo-at="))
+		elif arg.begins_with("--medium-demo-at="):
+			_demo_medium_at = int(arg.trim_prefix("--medium-demo-at="))
 		elif arg.begins_with("--light-demo-at="):
 			_demo_light_at = int(arg.trim_prefix("--light-demo-at="))
 		elif arg.begins_with("--knock-demo-at="):
@@ -337,6 +367,9 @@ func _physics_process(_delta: float) -> void:
 	var light := _tick == _demo_light_at or Input.is_physical_key_pressed(KEY_U)
 	var light_pressed := light and not _light_was
 	_light_was = light
+	var medium := _tick == _demo_medium_at or Input.is_physical_key_pressed(KEY_I)
+	var medium_pressed := medium and not _medium_was
+	_medium_was = medium
 	if _down_tick < 0 and (knock_pressed or (hit_pressed and (_air or _hurt_tick >= 0))):
 		_start_knockdown(_air or _hurt_tick >= 0)
 	elif _down_tick < 0 and hit_pressed:
@@ -386,6 +419,11 @@ func _physics_process(_delta: float) -> void:
 	if light_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
 		_sprite.position.y = FLOOR_Y
 		_show(&"attack_light")
+		return
+	# Standing Medium (I): same rules as the Light.
+	if medium_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
+		_sprite.position.y = FLOOR_Y
+		_show(&"attack_medium")
 		return
 	if back_tap and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0
@@ -632,6 +670,12 @@ func _show(anim: StringName, drawing: int = 0) -> void:
 	_sprite.animation = anim
 	_sprite.frame = drawing
 	_hold = 0
+	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
+	_sprite.offset = -FEET + Vector2(shift, 0)
+	_smear.visible = _smear_frames.has(anim)
+	if _smear.visible:
+		_smear.texture = _smear_frames[anim][drawing]
+		_smear.offset = _sprite.offset
 	var motion: Array = ANIMATIONS[anim][3]
 	if drawing < motion.size():
 		_sprite.position.x = clampf(_sprite.position.x + motion[drawing], LEFT_LIMIT, RIGHT_LIMIT)
