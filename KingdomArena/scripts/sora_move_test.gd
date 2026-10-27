@@ -12,7 +12,7 @@ extends Node2D
 ## Hold D/Right or A/Left in the air to drift that way.
 ## Hurt tests (no opponent yet): H = a hit (on the ground he snaps back and recovers; in the air he is
 ## knocked down), J = a knockdown from the ground (launched back, head-first fall, lands on his back, lies
-## there a moment, then stands - there is no get-up animation yet).
+## there a moment, then gets up).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
@@ -143,6 +143,11 @@ const ANIMATIONS := {
 	&"hurt_air": ["res://assets/sora/hurt_air_384/", "sora_hurt_air_", [4, 8], []],
 	&"hurt_fall": ["res://assets/sora/hurt_fall_384/", "sora_hurt_fall_", [3, 4, 4, 4], []],
 	&"hurt_down": ["res://assets/sora/hurt_down_384/", "sora_hurt_down_", [3, 4, 6], []],
+	# Get-up after lying down (Kvon approved): sit up, tuck, crouch, rise, settle. The lying drawing is centred
+	# in its frame but the get-up stands on the usual feet spot, so the first drawing shifts him to keep his
+	# hips in place.
+	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [5, 4, 4, 4, 4],
+		[8.0, 0.0, 0.0, 0.0, 0.0]],
 }
 
 var _sprite: AnimatedSprite2D
@@ -581,14 +586,15 @@ func _hurt_air_step() -> void:
 		_show(anim, drawing)
 
 
-## One game frame of the knockdown: shoulders hit, settle, lie flat for LIE_FRAMES, then stand.
+## One game frame of the knockdown: shoulders hit, settle, lie flat for LIE_FRAMES, then get up (the get-up
+## then plays like any ground animation and ends in the idle).
 func _down_step() -> void:
 	_down_tick += 1
 	var holds: Array = ANIMATIONS[&"hurt_down"][2]
 	var step := mini(_step_of(_down_tick, holds), holds.size() - 1)
 	if _down_tick >= 13 + LIE_FRAMES:
 		_down_tick = -1
-		_show(&"idle")
+		_show(&"hurt_getup")
 		return
 	if _sprite.frame != step:
 		_show(&"hurt_down", step)
