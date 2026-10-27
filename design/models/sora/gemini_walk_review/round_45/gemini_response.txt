@@ -1,0 +1,16 @@
+Here is the concept sheet charting out Sora's Standing Heavy spinning slash.   
+imgbin.com
++ 2
+
+The sequence maps the full 360-degree rotation, starting from the battle idle into a deeply coiled wind-up, turning his back to the viewer mid-spin to sell the torque, and driving the Kingdom Key through a wide, smeared arc into a heavy lunge before recovering.
+
+To make sure the rig holds its balance correctly during the spin, do you want me to calculate the exact center-of-gravity shifts (from the back foot during the wind-up to the deep front lunge on impact) for your translation parameters?
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Creating your image
