@@ -55,8 +55,9 @@ if GLIDE:
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
-                                      'hurt_getup_v')) else None
-HURT = JUMP if JUMP and JUMP.startswith('hurt_') else None
+                                      'hurt_getup_v', 'atk_slight_v')) else None
+# Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
+HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
     RUN = 'run_loop_v18'
 if RUN:
@@ -643,7 +644,7 @@ if RUN:
                        'jump_spin': [2]*11, 'jump_dash': [3, 4, 4, 3], 'jump_bdash': [2, 4, 4, 3, 4],
                        'jump_land': [3, 3, 4], 'hurt_ground': [2, 6, 5, 4], 'hurt_air': [4, 8],
                        'hurt_fall': [4, 4, 4], 'hurt_down': [3, 4, 6],
-                       'hurt_getup': [5, 4, 4, 4, 4]}[JUMP.rsplit('_v', 1)[0]]
+                       'hurt_getup': [5, 4, 4, 4, 4], 'atk_slight': [2, 4, 3, 3]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2136,6 +2137,25 @@ if LOOP:
                             RUN_KEYS[3].update(hand=B_(-.30, .04, .64), l_hand=tuple(B_(.30, .04, .64)))
                         if not HURT.endswith(('_v9', '_v10')):
                             RUN_KEYS[3]['offset_px'] = (0, -24)  # v11: v10's Key tip touched the top edge
+                elif jpart == 'atk_slight':
+                    # Standing Light (Kvon, October 27): a guard bash like a bunt - the Key level at chest height, guard
+                    # in front toward the opponent and blade pointing back, right fist (inside the guard) on the handle,
+                    # left hand steadying the shaft behind it; a short shove forward so the guard hits, then back.
+                    lvl_blade = (-U_*.92 + V_*.30 + Vector((0, 0, .04))).normalized()
+
+                    def bunt(hand, ce, pitch, feet):
+                        # v2: v1's left hand (.22 m back) sat almost on the guard; further back along the shaft.
+                        back_ = .22 if HURT.endswith('_v1') else .32
+                        k_ = hurt(feet, ce, 0.0, pitch, -6.0, hand, lvl_blade, hand + lvl_blade*back_, ground=True)
+                        k_.update(no_center=True, look=8.0)
+                        return k_
+                    step_in = {'L': (L0[0] + .06, L0[1], 0.0, 0.0), 'R': (R0[0] + .02, R0[1], 0.0, 0.0)}
+                    set_k = bunt(U_*.14 + V_*.22 + Vector((0, 0, .96)), .05, 2.0, stand)
+                    bash_k = bunt(U_*.34 + V_*.22 + Vector((0, 0, .96)), .08, 8.0, step_in)
+                    recoil_k = bunt(U_*.18 + V_*.22 + Vector((0, 0, .94)), .06, 4.0, step_in)
+                    back_k = ease(recoil_k, IDLE_R, .6, .4)
+                    back_k.update(ground=True, no_center=True)
+                    RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
                 elif jpart == 'hurt_getup':
                     # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
                     # Smash's floor getup / Street Fighter's quick rise): from lying face up, sit up leaning back with
