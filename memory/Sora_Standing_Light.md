@@ -15,3 +15,5 @@
 **Correction, October 27:** Kvon: "Increase the angle a little bit more, and fix the hand that is holding the shaft of the blade. Right now, the wrist is unnecessarily bent and doesn't line up with the part of the blade being held." v7: blade ~45 deg toward the camera (-U*.72 + V*.70); right (shaft) hand uses a straight wrist (`wrist_roll`), the roll searched per drawing so the fist's grip axis lines up with the shaft (v6 forced the idle's handle-grip hand angle, which bent the wrist).
 
 **Correction, October 27:** Kvon: "Now slide the hand holding the shaft slightly further up. Bend the elbow and adjust the shoulder angle as needed." v9: the right hand sits .44 m from the left fist along the shaft (was .36); elbow/shoulder follow from the arm solve; straight-wrist grip as v8.
+
+**Correction, October 27:** Kvon: "Bring his front foot in a little closer to his torso during the attack." v10: front foot at idle -.03 m on the set and idle -.05 m on the bash/recoil (v9 stepped it out +.12).
