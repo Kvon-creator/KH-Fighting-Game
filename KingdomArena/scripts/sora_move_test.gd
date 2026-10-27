@@ -85,10 +85,11 @@ const CAMERA_EASE := 0.25
 const SKY_COLOR := Color8(19, 28, 57)
 ## Knockdown: launch speed (px per game frame, about 145 px high and half a second in the air), backward
 ## push, game frames for air hit 1, air hit 2 and the first three falling drawings (the last falling
-## drawing is held until he lands), and how long he lies on the floor before standing.
+## drawing is held until he lands), and how long he lies on the floor before standing. (Kvon: faster from
+## the first air pose to the last - 12 game frames instead of 23.)
 const KNOCK_SPEED := JUMP_SPEED * 0.85
 const KNOCK_VX := 5.0
-const HURT_AIR_HOLDS := [4, 8, 3, 4, 4]
+const HURT_AIR_HOLDS := [2, 4, 2, 2, 2]
 const LIE_FRAMES := 60
 ## Ground moves any of which a jump, back-dash or glide may cancel at once.
 const GROUND_CANCEL := [&"idle", &"shuffle_forward", &"shuffle_back", &"crouch_down", &"crouch_hold",
