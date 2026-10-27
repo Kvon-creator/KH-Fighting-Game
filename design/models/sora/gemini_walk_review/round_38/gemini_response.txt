@@ -1,0 +1,44 @@
+Here is the strict, prioritized breakdown of the 3D renders against the concept and the director's notes:
+
+Row 1 (Ground Hit)
+
+Reads well: The recovery phase (drawings 3 and 4) slides back into the battle idle smoothly.
+
+Needs change: The initial impact (drawings 1 and 2) looks like he is leaning back voluntarily, lacking the violent "snap" of taking a hit.
+
+Pose changes: Pitch the spine (hara and mune) backward an additional 15 to 20 degrees to force a sharp, broken "C" curve. Push the chest out, and pitch the neck (kubi) further back so his face aims up at the ceiling.
+
+Row 2 (Air Hit)
+
+Reads well: The torso lean and flailing arms capture the airborne drift well.
+
+Needs change: The legs are tucked up like he is sitting in a chair, and his feet are flat.
+
+Pose changes: Extend the legs so they hang forward and down, leaving only a slight, natural bend in the knees. Straighten the ankles completely so the toes point downward along the line of the leg.
+
+Row 3 (Head-first Fall)
+
+Reads well: The vertical upside-down alignment on drawings 2 and 3 works mechanically.
+
+Needs change: The knees are still sharply bent, and the transition from Row 2 is too abrupt.
+
+Pose changes: Straighten both legs so they point upward toward the sky, keeping only a slight knee bend.
+
+Transitions: The jump from Row 2 (drifting backward) to Row 3 (tipping sideways/upside down) is jarring because it skips the horizontal tipping point. You need an in-between drawing bridging Row 2 and Row 3 where Sora is completely horizontal in the air (back parallel to the floor).
+
+Row 4 (Knockdown)
+
+Reads well: The heavy shoulder impact on drawing 1 sells the weight of the landing.
+
+Needs change: On drawings 2 and 3, he rolls over and lands face-down/on his side. The director explicitly requested him lying flat on his back, face up.
+
+Pose changes: Rotate the root body axis 180 degrees so his back is entirely flat against the floor and his chest/face point straight up. Adjust the right arm so the Keyblade rests loosely on the ground beside his hip, rather than getting trapped under his torso.
+
+
+
+
+Pro
+
+Gemini is AI and can make mistakes.
+
+Analyzing animation pose errors

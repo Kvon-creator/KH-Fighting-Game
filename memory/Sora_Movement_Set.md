@@ -654,3 +654,9 @@ Pending review. Offered the matching brake transition.
 - **Correction, October27:** Kvon: "Straighten the ankles in the second image on row two and add slightly more bend to the knees in each of the rows that you had just edited." Air drift drawing: feet follow the shin line (new `ankle_deg` = angle between the shin's continuation and the foot; 30 = relaxed, nearly pointed). Air hit and fall: `leg_reach` .975 -> .94.
 **Why:** Kvon's correction.
   - Result (pending Kvon's review): `hurt_air_v5` / `hurt_fall_v5` (+2D). Sheet `hurt_fall2d_v5/Hurt_All_Sprites.png`, GIF `hurt_fall2d_v5/Air_Hit_To_Knockdown_slow.gif`. Feet on the drift drawing now continue the shin line instead of tilting up.
+- **Gemini round 38 (hurt review, October27; Kvon: "Connect with Gemini for suggestions"):** both images confirmed on the message (built sheet v5 1024x1024 + round-37 concept). Image mode had to be switched off first (button `[aria-label="Deselect Images"]`) for a text reply. Gemini's list (`gemini_walk_review/round_38/gemini_response.txt`):
+  1. Ground hit drawings 1-2: more violent snap - spine back another 15-20 deg (sharp C curve), chest out, head back so the face aims at the ceiling.
+  2. Air hit: legs "tucked like sitting", feet flat - extend the legs forward/down with a slight bend, ankles fully pointed along the leg. (My check: largely outdated - v5 legs are already mostly straight per Kvon; only the ankles on drawing 1 are still flexed.)
+  3. Fall: "knees still sharply bent" (my check: not true in v5, slight bend only). Valid point: add an in-between drawing between the air drift and the fall with his body horizontal in the air.
+  4. Knockdown drawings 2-3: claims he lands face-down/on his side (my check: he is face up, but seen side-on the face/chest read weakly); move the Keyblade off his body to rest on the floor beside his hip.
+  Not applied; reported to Kvon.

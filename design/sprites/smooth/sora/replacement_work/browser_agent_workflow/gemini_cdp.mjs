@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'hurt-concept': [
+const referenceSets = {'hurt-review': [
+  // Kvon: get Gemini's suggestions on the built hurt set, next to its round-37 concept.
+  'design/models/sora/hurt_fall2d_v5/Hurt_All_Sprites.png',
+  'design/models/sora/gemini_walk_review/round_37/gemini_original_preview.jpg'
+], 'hurt-concept': [
   // Kvon: four hurt animations; Gemini concept art first, in the approved sprite style.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png'
