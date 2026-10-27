@@ -39,6 +39,10 @@ INNER = .30                               # the band's inner edge at its widest 
 STOP = .94                                # stop this far along the last segment, short of the blade
 OUTER_TONE = (122, 178, 255, 235)         # deeper outer band
 CORE_TONE = (232, 243, 255, 240)          # pale core
+# Guard-bash streak (Standing Light; Kvon: match the guard's colour): sampled from the guard in the approved drawing
+# (mid 234,156,0 / highlight 255,190,0), with a lighter gold core for the same two-tone look.
+GUARD_TONE = (234, 156, 0, 235)
+GUARD_CORE = (255, 214, 96, 240)
 
 
 def screen(p):
@@ -118,8 +122,8 @@ for i, fr in enumerate(track):
         pa = np.array(a_['lgrip_world']) + RIGHT*shift
         pb = np.array(fr['lgrip_world'])
         draw = ImageDraw.Draw(img, 'RGBA')
-        thrust(draw, screen(pa), screen(pb), 44, OUTER_TONE)
-        thrust(draw, screen(pa + (pb - pa)*.25), screen(pb), 20, CORE_TONE)
+        thrust(draw, screen(pa), screen(pb), 44, GUARD_TONE)
+        thrust(draw, screen(pa + (pb - pa)*.25), screen(pb), 20, GUARD_CORE)
         report.append({'drawing': i, 'from_drawing': i - back, 'style': 'thrust',
                        'length_px': round(float(np.linalg.norm(np.array(screen(pb)) - np.array(screen(pa))))/SS, 1)})
     elif back and i - back >= 0:

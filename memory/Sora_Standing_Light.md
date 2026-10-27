@@ -21,3 +21,5 @@
 **Correction, October 27:** Kvon: "Bring the foot in a little further." v11: front foot idle -.07 (set) / -.10 (bash, recoil).
 
 **Smear, October 27:** Kvon: "First I want to add a small smear to the light attack as well." `atk_slight_v12` = the approved v11 poses (pixel-identical) with the bash drawing flagged `smear_style='thrust'`; make_smears.py draws a short tapered two-tone streak (44/20 px wide, ~77 px long at 512) from the guard's previous position to just behind it. Exported to `KingdomArena/assets/sora/attack_light_smear_384/`; `SMEARS` in sora_move_test.gd shows it on the bash drawing only (active frames). Verified in a recorded movie.
+
+**Correction, October 27:** Kvon: "I think the smear should match the color of the guard." The Light's streak now uses the guard's gold sampled from the approved drawing (outer 234,156,0 / core 255,214,96); the Medium's blade smears stay blue. Re-exported to `attack_light_smear_384/`.
