@@ -2186,6 +2186,13 @@ if LOOP:
                                          {'L': (L0[0] - .03, L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)})
                             bash_k = bunt(U_*.52 + V_*.16 + Vector((0, 0, .92)), .09, 12.0, near_)
                             recoil_k = bunt(U_*.30 + V_*.18 + Vector((0, 0, .90)), .07, 6.0, near_)
+                        if not HURT.endswith(('_v5', '_v6', '_v7', '_v8', '_v9', '_v10')):
+                            # v11 (Kvon: a little further in).
+                            near_ = {'L': (L0[0] - .10, L0[1], 0.0, 0.0), 'R': (R0[0] + .04, R0[1], 0.0, 0.0)}
+                            set_k = bunt(U_*.20 + V_*.20 + Vector((0, 0, .90)), .05, 3.0,
+                                         {'L': (L0[0] - .07, L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)})
+                            bash_k = bunt(U_*.52 + V_*.16 + Vector((0, 0, .92)), .09, 12.0, near_)
+                            recoil_k = bunt(U_*.30 + V_*.18 + Vector((0, 0, .90)), .07, 6.0, near_)
                         for k_ in (set_k, bash_k, recoil_k):
                             k_['key_slide'] = .12
                             if not HURT.endswith('_v5') and not HURT.endswith('_v6'):

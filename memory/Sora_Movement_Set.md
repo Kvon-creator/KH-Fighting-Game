@@ -697,3 +697,4 @@ Pending review. Offered the matching brake transition.
 - **Standing Light v8, October27 (pending Kvon's review):** blade ~45 deg toward the camera; shaft (right) hand with a straight wrist, roll searched so the fist lines up with the shaft (v7 let that roll turn the Key edge-on; v8 keeps the Key's own guard-to-camera angle, `KEY_ROT_FACE`). 2D `atk_slight2d_v8`, sheet/GIF there.
 - **Standing Light v9, October27 (pending Kvon's review):** shaft hand .44 m up the shaft (Kvon). 2D `atk_slight2d_v9`, sheet/GIF there.
 - **Standing Light v10, October27 (pending Kvon's review):** front foot pulled in (idle -.03 set, -.05 bash/recoil). 2D `atk_slight2d_v10`, sheet/GIF there.
+- **Standing Light v11, October27 (pending Kvon's review):** front foot further in (idle -.07 set, -.10 bash/recoil). 2D `atk_slight2d_v11`, sheet/GIF there.

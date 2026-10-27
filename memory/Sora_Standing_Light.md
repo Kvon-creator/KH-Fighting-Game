@@ -17,3 +17,5 @@
 **Correction, October 27:** Kvon: "Now slide the hand holding the shaft slightly further up. Bend the elbow and adjust the shoulder angle as needed." v9: the right hand sits .44 m from the left fist along the shaft (was .36); elbow/shoulder follow from the arm solve; straight-wrist grip as v8.
 
 **Correction, October 27:** Kvon: "Bring his front foot in a little closer to his torso during the attack." v10: front foot at idle -.03 m on the set and idle -.05 m on the bash/recoil (v9 stepped it out +.12).
+
+**Correction, October 27:** Kvon: "Bring the foot in a little further." v11: front foot idle -.07 (set) / -.10 (bash, recoil).
