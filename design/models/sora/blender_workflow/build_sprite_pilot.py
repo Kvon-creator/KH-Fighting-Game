@@ -2291,6 +2291,23 @@ if LOOP:
                         raised['blade_dir'] = tuple((U_*.75 + V_*.18 + Vector((0, 0, .55))).normalized())
                     if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7', '_v8')):
                         recover['blade_dir'] = tuple((U_*.62 + V_*.62 + Vector((0, 0, -.20))).normalized())  # v9: v8's tip touched the right edge
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7', '_v8', '_v9')):
+                        # v10 (Kvon: on the slash start and impact the arms were completely behind his body): his chest
+                        # faced away from the camera there, so the arms reached forward on the far side. Turn the chest
+                        # toward the camera through the swing (like Ekko's frame and his idle) so the arms are in front
+                        # of the body; the feet keep the lunge, so hips and shoulders twist into it.
+                        for k_, (tn_, tw_, (x_, y_, z_)) in ((begin, (20.0, 0.0, (-.04, -.32, .96))),
+                                                             (impact, (-20.0, 10.0, (0.0, -.42, 1.00))),
+                                                             (follow, (-40.0, 12.0, (.12, -.14, 1.10))),
+                                                             (recover, (-20.0, 4.0, (0.0, -.28, .82)))):
+                            k_.update(turn=tn_, twist=tw_, hand=bf(tn_, x_, y_, z_))
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7', '_v8', '_v9', '_v10')):
+                        # v11: v10's hands bunched at his chest with the guard over his face - reach out toward the
+                        # opponent (screen right) at chest-to-waist height so the arms extend, like Ekko's.
+                        begin['hand'] = U_*.14 + V_*.22 + Vector((0, 0, .90))
+                        impact['hand'] = U_*.44 + V_*.12 + Vector((0, 0, .86))
+                        if not HURT.endswith('_v11'):
+                            impact['blade_dir'] = tuple((U_*.50 + V_*.80 + Vector((0, 0, .22))).normalized())  # v12: v11 tip touched the edge
                     ins = []
                     for w_ in (.66, .33):  # idle -> raised in-betweens (w_ = share of the idle left)
                         k_ = ease(raised, IDLE_R, w_, 0.0)
