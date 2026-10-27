@@ -91,7 +91,7 @@ const SKY_COLOR := Color8(19, 28, 57)
 const KNOCK_SPEED := JUMP_SPEED * 0.85
 const KNOCK_VX := 5.0
 const HURT_AIR_HOLDS := [2, 4, 2, 2, 2]
-const LIE_FRAMES := 60
+const LIE_FRAMES := 30  # Kvon: less time on the floor (was 60)
 ## Ground moves any of which a jump, back-dash or glide may cancel at once.
 const GROUND_CANCEL := [&"idle", &"shuffle_forward", &"shuffle_back", &"crouch_down", &"crouch_hold",
 	&"crouch_up", &"glide_start", &"glide_loop", &"glide_stop", &"jump_land"]
@@ -147,7 +147,7 @@ const ANIMATIONS := {
 	# Get-up after lying down (Kvon approved): sit up, tuck, crouch, rise, settle. The lying drawing is centred
 	# in its frame but the get-up stands on the usual feet spot, so the first drawing shifts him to keep his
 	# hips in place.
-	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [5, 4, 4, 4, 4],
+	&"hurt_getup": ["res://assets/sora/hurt_getup_384/", "sora_hurt_getup_", [3, 3, 3, 3, 3],
 		[8.0, 0.0, 0.0, 0.0, 0.0]],
 }
 
