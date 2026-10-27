@@ -1,0 +1,30 @@
+{
+  "status": "submission_attempted",
+  "media": "image",
+  "tabId": "00E8138F757A586D357EC1D3CD28DBA7",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "standing-light-concept",
+  "promptSha256": "c1b07c9e5e9243428645c1cd6049c8a6d5e63cc143e0ae73f117b8676bd1a995",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\STANDING_LIGHT_CONCEPT_ROUND_41.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-27T18:14:27.072Z",
+  "baselineImages": [
+    "67b79a3f4f0af68b9f2db6a4320e35d7668401910080f9acd696429778e0304b",
+    "34288548d37b90ce84bb271daa16f8aae7aac6429cc1d9ec70ab49e5629ba45c",
+    "b332f032a152424bf596b6f0842b7aa7af6855ed410f88a173699382c60ed4fc",
+    "3e3d300f67b3e9163f958f746d4614ae26960cae7d34cff738cefb0d1a32367a",
+    "11d17a04460079834d9f950d33bf25426e2f00c0fa862088acfb5de9843498f8"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\references\\sora_attack_pose_reference.jpg",
+      "sha256": "90461fafc52a0f22fd6de6a8b69a021ba1b5ad766c2735440975025d4471c95b"
+    }
+  ],
+  "finalUserApproval": "pending"
+}
