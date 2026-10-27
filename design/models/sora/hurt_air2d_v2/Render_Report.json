@@ -1,9 +1,0 @@
-{
-  "source": "hurt_air_v2/sora_idle_loop.blend",
-  "version": "hurt_air2d_v2",
-  "frames": [
-    "sora_idle3d_00.png",
-    "sora_idle3d_01.png"
-  ],
-  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
-}
