@@ -165,7 +165,8 @@ const ANIMATIONS := {
 ## the sprite is shifted back right by this many px so he stays in place.
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0]}
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
-const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"]}
+const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
+	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"]}  # Kvon: a small streak on the bash
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D

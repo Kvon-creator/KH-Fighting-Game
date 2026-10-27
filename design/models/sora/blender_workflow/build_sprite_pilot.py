@@ -2198,6 +2198,10 @@ if LOOP:
                             k_['key_slide'] = .12
                             if not HURT.endswith('_v5') and not HURT.endswith('_v6'):
                                 k_['shaft_grip'] = tuple(lvl_blade)  # v7: straight wrist on the shaft hand
+                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 12))):
+                        # v12 (Kvon: a small smear on the Light too): same poses as the approved v11; the bash drawing
+                        # gets a short straight streak behind the guard (make_smears.py 'thrust' style).
+                        bash_k.update(smear=1, smear_style='thrust')
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
@@ -3362,7 +3366,9 @@ if LOOP:
             KEY_TRACK.append({'grip_world': [round(c_, 5) for c_ in hand_point('R')],
                               'dir_world': [round(c_, 5) for c_ in key.matrix_world.to_3x3().normalized().col[2]],
                               'smear': int(RUN_KEYS[i].get('smear') or 0),
-                              'offset_px': list(RUN_KEYS[i].get('offset_px') or (0, 0))})
+                              'offset_px': list(RUN_KEYS[i].get('offset_px') or (0, 0)),
+                              'lgrip_world': [round(c_, 5) for c_ in hand_point('L')],
+                              'smear_style': RUN_KEYS[i].get('smear_style', 'arc')})
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
                        'grip_error_L_m': round((hand_point('L')

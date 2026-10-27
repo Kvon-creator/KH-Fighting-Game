@@ -91,11 +91,38 @@ def crescent(draw, path, inner_frac, tone, sag, min_px):
     draw.polygon(outer + inner[::-1], fill=tone)
 
 
+def thrust(draw, a, b, width_px, tone):
+    # Straight streak for a push (the Standing Light's guard bash): from where the guard was (a point) to just behind
+    # where it is now (full width), tapering to a point behind it, with a rounded leading end.
+    a, b = np.array(a), np.array(b)
+    d = b - a
+    ln = float(np.linalg.norm(d))
+    if ln < 1e-6:
+        return
+    u = d/ln; nrm = np.array([-u[1], u[0]])
+    end = a + d*.85                                   # stop short of the guard so it stays readable
+    w = width_px*SS/2
+    pts = [tuple(a), tuple(end + nrm*w), tuple(end - nrm*w)]
+    draw.polygon(pts, fill=tone)
+    draw.ellipse([end[0] - w, end[1] - w, end[0] + w, end[1] + w], fill=tone)
+
+
 report = []
 for i, fr in enumerate(track):
     img = Image.new('RGBA', (512*SS, 512*SS), (0, 0, 0, 0))
     back = int(fr.get('smear') or 0)
-    if back and i - back >= 0:
+    if back and i - back >= 0 and fr.get('smear_style') == 'thrust':
+        # Guard point = the leading (left) fist for the Light; earlier drawing moved into this drawing's frame.
+        a_ = track[i - back]
+        shift = (fr.get('offset_px', (0, 0))[0] - a_.get('offset_px', (0, 0))[0])/PX
+        pa = np.array(a_['lgrip_world']) + RIGHT*shift
+        pb = np.array(fr['lgrip_world'])
+        draw = ImageDraw.Draw(img, 'RGBA')
+        thrust(draw, screen(pa), screen(pb), 44, OUTER_TONE)
+        thrust(draw, screen(pa + (pb - pa)*.25), screen(pb), 20, CORE_TONE)
+        report.append({'drawing': i, 'from_drawing': i - back, 'style': 'thrust',
+                       'length_px': round(float(np.linalg.norm(np.array(screen(pb)) - np.array(screen(pa))))/SS, 1)})
+    elif back and i - back >= 0:
         path, sweep = [], 0.0
         for s_ in range(i - back, i):
             a, b = track[s_], track[s_ + 1]

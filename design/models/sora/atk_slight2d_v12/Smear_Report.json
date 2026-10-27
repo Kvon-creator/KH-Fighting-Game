@@ -1,0 +1,11 @@
+{
+  "source": "atk_slight_v12",
+  "smears": [
+    {
+      "drawing": 1,
+      "from_drawing": 0,
+      "style": "thrust",
+      "length_px": 77.3
+    }
+  ]
+}
