@@ -860,7 +860,15 @@ def solve_pose(breath=0.0, lag=None):
             knee_hint = knee_hint.lerp(Vector((-sign*.6, -1, 0)), knee_in)
         knee = turn_m @ knee_hint
         lift = foot[2] or 0  # walk gait raises the swinging foot
-        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', turn_m @ Vector((foot[0], foot[1], ankle_z + lift)), knee)
+        foot_t = turn_m @ Vector((foot[0], foot[1], ankle_z + lift))
+        if POSE.get('leg_reach'):
+            # Hurt (Kvon: legs mostly straight in the air hit and the fall): the foot goes to this fraction of the full
+            # leg length along its direction from the hip, so the knee keeps only a slight bend.
+            hip_l = pose_world(f'{s}_momo').translation
+            len_l = ((pose_world(f'{s}_sune').translation - hip_l).length
+                     + (pose_world(f'{s}_ashi1').translation - pose_world(f'{s}_sune').translation).length)
+            foot_t = hip_l + (foot_t - hip_l).normalized()*len_l*POSE['leg_reach']
+        two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', foot_t, knee)
         if toe or turn:
             rotate_world(f'{s}_ashi1', 'Z', sign*toe + turn)  # feet don't inherit the body turn
     for side, deg in POSE.get('foot_pitch', {}).items():
@@ -2033,6 +2041,11 @@ if LOOP:
                     if H_V2:
                         for k_, ln_ in zip(RUN_KEYS, (16.0, 10.0)):
                             k_.update(lean_cam=ln_, head_cam=12.0)
+                            if not HURT.endswith('_v2'):
+                                k_['leg_reach'] = .975  # v3 (Kvon): legs mostly straight
+                        if not HURT.endswith(('_v2', '_v3')):
+                            RUN_KEYS[0]['offset_px'] = (0, 36)    # v4: v3's feet touched the bottom edge
+                            RUN_KEYS[1]['offset_px'] = (-44, 0)   # v4: and the right edge
                 elif jpart == 'hurt_fall':
                     # Head first with his back to the screen and his feet in the air: tipping over while turning away,
                     # upside down, then the shoulders heading for the floor. Arms loose around his head.
@@ -2046,6 +2059,9 @@ if LOOP:
                                 hurt({'L': (.10, LAT['L'], .16, 30.0), 'R': (-.06, LAT['R'], .24, 30.0)}, -.06, 6.0, 2.0,
                                      -4.0, U_*-.18 + V_*.20 + Vector((0, 0, 1.40)), over_blade, B_(.25, -.08, 1.40),
                                      roll=160.0, spin=150.0)]
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        for k_ in RUN_KEYS:
+                            k_['leg_reach'] = .975  # v4 (Kvon): legs mostly straight
                     if H_V2:
                         # v1's first drawing (on its side, half turned) read as a jumble: further over and further round.
                         RUN_KEYS[0].update(roll=130.0, spin_deg=110.0)
@@ -2372,6 +2388,7 @@ if LOOP:
                 return
             POSE['wrist_roll'] = k_.get('wrist_roll')
             POSE['screen_lean_deg'] = k_.get('lean_cam', 0.0)
+            POSE['leg_reach'] = k_.get('leg_reach')
             POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
@@ -2931,6 +2948,12 @@ if LOOP:
                 dx_ = cam.location.dot(cam_r_) - (min(xs_) + max(xs_))/2 if not HURT.endswith('_v1') else 0.0
                 arm.matrix_world = (Matrix.Translation(cam_r_*dx_ + Vector((0, 0, ground + hk_.get('lift', 0.0) - low_)))
                                     @ arm.matrix_world)
+                update()
+            if hk_.get('offset_px'):
+                # v4+: straight legs reach further - nudge an air drawing back inside the frame (screen px, x right/y up).
+                px_m_ = cam_data.ortho_scale/512
+                arm.matrix_world = (Matrix.Translation(cam_r_*hk_['offset_px'][0]*px_m_
+                                                       + Vector((0, 0, hk_['offset_px'][1]*px_m_))) @ arm.matrix_world)
                 update()
             RUN_LOG[-1].update(roll_deg=round(roll_, 1), spin_deg=hk_.get('spin_deg', 0.0),
                                grounded=bool(hk_.get('ground')))
