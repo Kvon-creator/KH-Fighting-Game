@@ -5,7 +5,8 @@ extends Node2D
 ## stands. Hold S or Down to crouch (Keyblade in one hand); release to stand back up. Crouching
 ## wins over walking; during a step he crouches once the step finishes. Double-tap D or Right and
 ## hold to glide low across the floor; on release he skids to a stop into the idle. Press W or Up to
-## jump straight up (takeoff, then the air drawing follows his vertical speed, then the landing);
+## jump straight up (takeoff, then the air drawing follows his vertical speed, then the landing; keep it
+## held to jump again as soon as he is upright on the ground);
 ## press it again in the air for the second jump (an upright spin, like KH2's Aerial Dodge), or
 ## double-tap D or Right in the air to air-dash forward (once each per jump). Double-tap A or Left to
 ## back-dash: a low backward hop on the ground, or a backward air dash (sharing the one air dash).
@@ -160,6 +161,8 @@ var _demo_crouch_ticks := -1
 var _demo_crouch_from := 1
 var _demo_glide_ticks := -1
 var _demo_jump_at := -1
+## `--jump-hold-to=N` keeps the demo jump held from `--jump-demo-at` through game frame N.
+var _demo_jump_hold := -1
 var _demo_jump2_at := -1
 var _demo_dash_at := -1
 ## Second jump: whether it has been used in this jump, and game frames into its spin (-1 = not spinning).
@@ -268,6 +271,8 @@ func _ready() -> void:
 			_demo_dash_at = int(arg.trim_prefix("--dash-demo-at="))
 		elif arg.begins_with("--jump2-demo-at="):
 			_demo_jump2_at = int(arg.trim_prefix("--jump2-demo-at="))
+		elif arg.begins_with("--jump-hold-to="):
+			_demo_jump_hold = int(arg.trim_prefix("--jump-hold-to="))
 		elif arg.begins_with("--jump-demo-at="):
 			_demo_jump_at = int(arg.trim_prefix("--jump-demo-at="))
 		elif arg == "--trace":
@@ -310,6 +315,7 @@ func _physics_process(_delta: float) -> void:
 	var glide_wanted := _glide and wanted == &"shuffle_forward"
 	var anim := _sprite.animation
 	var jump := _tick == _demo_jump_at or _tick == _demo_jump2_at \
+		or (_demo_jump_at > 0 and _demo_jump_at <= _tick and _tick <= _demo_jump_hold) \
 		or Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)
 	var jump_pressed := jump and not _jump_was
 	_jump_was = jump
@@ -353,7 +359,11 @@ func _physics_process(_delta: float) -> void:
 	# landing - can be cancelled straight into a jump, a back-dash or a glide. A jump keeps the ground
 	# speed he had: a decent arc from a walk, a much longer one out of a glide or back-dash.
 	var back_dashing := _bd_tick >= 0
-	if jump_pressed and (back_dashing or anim in GROUND_CANCEL):
+	# Held jump (Kvon): keep jumping as soon as he is upright on the ground again - the landing's last
+	# (nearly standing) drawing, standing or walking; not during the crouched landing drawings.
+	var upright := anim in [&"idle", &"shuffle_forward", &"shuffle_back"] or (anim == &"jump_land"
+		and _sprite.frame == ANIMATIONS[&"jump_land"][2].size() - 1)
+	if (jump_pressed and (back_dashing or anim in GROUND_CANCEL)) or (jump and upright and not back_dashing):
 		_takeoff_vx = _ground_speed(anim, forward, back)
 		var moving := absf(_takeoff_vx) > 0.0
 		_bd_tick = -1
