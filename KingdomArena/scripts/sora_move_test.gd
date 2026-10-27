@@ -10,12 +10,16 @@ extends Node2D
 ## double-tap D or Right in the air to air-dash forward (once each per jump). Double-tap A or Left to
 ## back-dash: a low backward hop on the ground, or a backward air dash (sharing the one air dash).
 ## Hold D/Right or A/Left in the air to drift that way.
+## Hurt tests (no opponent yet): H = a hit (on the ground he snaps back and recovers; in the air he is
+## knocked down), J = a knockdown from the ground (launched back, head-first fall, lands on his back, lies
+## there a moment, then stands - there is no get-up animation yet).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
 ## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
 ## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again,
 ## `--dash-demo-at=M` double-taps forward from frame M); `--bdash-demo-at=N` double-taps back;
+## `--hit-demo-at=N` / `--knock-demo-at=N` press H / J on game frame N;
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
 ## Animation is stepped once per physics tick (60 per second, the project default), like a
@@ -79,6 +83,13 @@ const HEAD_TOP_ROW := 60.0
 const CAMERA_MARGIN := 40.0
 const CAMERA_EASE := 0.25
 const SKY_COLOR := Color8(19, 28, 57)
+## Knockdown: launch speed (px per game frame, about 145 px high and half a second in the air), backward
+## push, game frames for air hit 1, air hit 2 and the first three falling drawings (the last falling
+## drawing is held until he lands), and how long he lies on the floor before standing.
+const KNOCK_SPEED := JUMP_SPEED * 0.85
+const KNOCK_VX := 5.0
+const HURT_AIR_HOLDS := [4, 8, 3, 4, 4]
+const LIE_FRAMES := 60
 ## Ground moves any of which a jump, back-dash or glide may cancel at once.
 const GROUND_CANCEL := [&"idle", &"shuffle_forward", &"shuffle_back", &"crouch_down", &"crouch_hold",
 	&"crouch_up", &"glide_start", &"glide_loop", &"glide_stop", &"jump_land"]
@@ -124,6 +135,13 @@ const ANIMATIONS := {
 	&"jump_dash": ["res://assets/sora/jump_dash_384/", "sora_jump_dash_", [3, 4, 4, 3], []],
 	# Back-dash: push, hop, hop 2, touch down, settle (timed by BACK_DASH_HOLDS).
 	&"back_dash": ["res://assets/sora/back_dash_384/", "sora_back_dash_", [2, 7, 7, 3, 4], []],
+	# Hurt (Kvon's approved set): ground hit with a short knockback; air hit, head-first fall and the
+	# knockdown on his back are timed by HURT_AIR_HOLDS and _down_step.
+	&"hurt_ground": ["res://assets/sora/hurt_ground_384/", "sora_hurt_ground_", [2, 6, 5, 4],
+		[-10.0, -14.0, -4.0, 0.0]],
+	&"hurt_air": ["res://assets/sora/hurt_air_384/", "sora_hurt_air_", [4, 8], []],
+	&"hurt_fall": ["res://assets/sora/hurt_fall_384/", "sora_hurt_fall_", [3, 4, 4, 4], []],
+	&"hurt_down": ["res://assets/sora/hurt_down_384/", "sora_hurt_down_", [3, 4, 6], []],
 }
 
 var _sprite: AnimatedSprite2D
@@ -158,6 +176,14 @@ var _bd_tick := -1
 var _back_was := false
 var _last_back_press := -1000
 var _demo_bdash_at := -1
+## Hurt: game frames into the knocked-back air time and into the knockdown on the floor (-1 = not
+## running), the H / J keys last frame, and the timed demo presses.
+var _hurt_tick := -1
+var _down_tick := -1
+var _hit_was := false
+var _knock_was := false
+var _demo_hit_at := -1
+var _demo_knock_at := -1
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -226,6 +252,10 @@ func _ready() -> void:
 			_demo_crouch_from = int(arg.trim_prefix("--crouch-demo-from="))
 		elif arg.begins_with("--glide-demo-ticks="):
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
+		elif arg.begins_with("--hit-demo-at="):
+			_demo_hit_at = int(arg.trim_prefix("--hit-demo-at="))
+		elif arg.begins_with("--knock-demo-at="):
+			_demo_knock_at = int(arg.trim_prefix("--knock-demo-at="))
 		elif arg.begins_with("--bdash-demo-at="):
 			_demo_bdash_at = int(arg.trim_prefix("--bdash-demo-at="))
 		elif arg.begins_with("--dash-demo-at="):
@@ -277,6 +307,26 @@ func _physics_process(_delta: float) -> void:
 		or Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)
 	var jump_pressed := jump and not _jump_was
 	_jump_was = jump
+	# Hurt tests: being hit overrides whatever he is doing (except lying on the floor).
+	var hit := _tick == _demo_hit_at or Input.is_physical_key_pressed(KEY_H)
+	var hit_pressed := hit and not _hit_was
+	_hit_was = hit
+	var knock := _tick == _demo_knock_at or Input.is_physical_key_pressed(KEY_J)
+	var knock_pressed := knock and not _knock_was
+	_knock_was = knock
+	if _down_tick < 0 and (knock_pressed or (hit_pressed and (_air or _hurt_tick >= 0))):
+		_start_knockdown(_air or _hurt_tick >= 0)
+	elif _down_tick < 0 and hit_pressed:
+		_bd_tick = -1
+		_sprite.position.y = FLOOR_Y
+		_show(&"hurt_ground")
+		return
+	if _hurt_tick >= 0:
+		_hurt_air_step()
+		return
+	if _down_tick >= 0:
+		_down_step()
+		return
 	if _air:
 		_air_input = (1.0 if forward and not back else 0.0) - (1.0 if back and not forward else 0.0)
 		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0:
@@ -493,6 +543,54 @@ func _back_dash_step() -> void:
 	_bd_tick += 1
 	if _sprite.animation != &"back_dash" or _sprite.frame != step:
 		_show(&"back_dash", step)
+
+
+## Knocked back into the air (from the ground, or a hit while already airborne - a smaller pop up then).
+func _start_knockdown(airborne: bool) -> void:
+	_air = false  # the jump logic stays off; _hurt_air_step moves him instead
+	_dash_tick = -1
+	_spin_tick = -1
+	_bd_tick = -1
+	_after_dash = false
+	_vy = -KNOCK_SPEED * (0.5 if airborne else 1.0)
+	_vx = -KNOCK_VX
+	_hurt_tick = 0
+	_down_tick = -1
+
+
+## One game frame knocked back in the air: air hit, drift, then the head-first fall (its last drawing
+## held), under the jump's gravity; on reaching the floor he lands on his back.
+func _hurt_air_step() -> void:
+	var step := _step_of(_hurt_tick, HURT_AIR_HOLDS)
+	_hurt_tick += 1
+	_vx *= AIR_COAST
+	_sprite.position.x = clampf(_sprite.position.x + _vx, LEFT_LIMIT, RIGHT_LIMIT)
+	_sprite.position.y += _vy
+	_vy += JUMP_GRAVITY
+	if _sprite.position.y >= FLOOR_Y:
+		_sprite.position.y = FLOOR_Y
+		_hurt_tick = -1
+		_vx = 0.0
+		_down_tick = 0
+		_show(&"hurt_down")
+		return
+	var anim: StringName = &"hurt_air" if step < 2 else &"hurt_fall"
+	var drawing := step if step < 2 else mini(step - 2, 3)
+	if _sprite.animation != anim or _sprite.frame != drawing:
+		_show(anim, drawing)
+
+
+## One game frame of the knockdown: shoulders hit, settle, lie flat for LIE_FRAMES, then stand.
+func _down_step() -> void:
+	_down_tick += 1
+	var holds: Array = ANIMATIONS[&"hurt_down"][2]
+	var step := mini(_step_of(_down_tick, holds), holds.size() - 1)
+	if _down_tick >= 13 + LIE_FRAMES:
+		_down_tick = -1
+		_show(&"idle")
+		return
+	if _sprite.frame != step:
+		_show(&"hurt_down", step)
 
 
 ## Shows a drawing and applies its root motion as it starts.
