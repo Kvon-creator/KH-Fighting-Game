@@ -2256,7 +2256,18 @@ if LOOP:
                         follow_k['blade_dir'] = tuple((U_*.72 - to_cam*.35 + Vector((0, 0, -.12))).normalized())  # v2 end-on
                         back1['blade_dir'] = tuple((Vector(follow_k['blade_dir']) + cr_blade).normalized())
                         back2['blade_dir'] = tuple((Vector(follow_k['blade_dir'])*.15 + cr_blade).normalized())
-                    sweep_k['smear'] = 1; hit_k['smear'] = 2
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        follow_k['offset_px'] = (-30, 0)   # v4: v3's follow-through tip touched the right edge
+                        back1['blade_dir'] = tuple((-U_*.20 + V_*.40 + Vector((0, 0, -.30))).normalized())  # v3 end-on
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                        back1['blade_dir'] = tuple((-U_*.30 + V_*.40 + Vector((0, 0, -.08))).normalized())  # v5: v4 dipped through the floor
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                        # v6: smears traced from the draw-back ran along the floor (the blade starts pointing back): smear
+                        # only the visible part of the swing - sweep -> hit, and hit -> follow-through.
+                        sweep_k['smear'] = 0; hit_k['smear'] = 1; follow_k['smear'] = 1
+                        CL_SMEAR_SET = True
+                    if not globals().get('CL_SMEAR_SET'):
+                        sweep_k['smear'] = 1; hit_k['smear'] = 2
                     RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one

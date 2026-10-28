@@ -72,7 +72,9 @@ def sag_offsets(path):
     dev = max(abs(float((p_ - a).dot(nrm))) for p_ in outer)
     need = max(0.0, .20*length - dev)
     n = len(path) - 1
-    return [need*math.sin(math.pi*k/n) for k in range(n + 1)]
+    # A low swing (its path in the bottom third of the frame) bows UP so the crescent stays above the floor.
+    sign = -1.0 if float(outer[:, 1].mean()) > 512*SS*.62 else 1.0
+    return [sign*need*math.sin(math.pi*k/n) for k in range(n + 1)]
 
 
 def crescent(draw, path, inner_frac, tone, sag, min_px):
@@ -90,8 +92,10 @@ def crescent(draw, path, inner_frac, tone, sag, min_px):
             dir_ = to_grip/np.linalg.norm(to_grip) if np.linalg.norm(to_grip) > 1e-6 else np.array([0.0, 1.0])
             v_ = dir_*want
         inner.append(tuple(o_ + v_))
-    outer = [(x, y + sag[k]) for k, (x, y) in enumerate(outer)]
-    inner = [(x, y + sag[k]) for k, (x, y) in enumerate(inner)]
+    # Parts of the sweep that dip below the floor are flattened onto it (a band skimming the floor, like Ky's 2S).
+    fy = rep.get('ground_baseline_y', 470)*SS - 3*SS
+    outer = [(x, min(y + sag[k], fy)) for k, (x, y) in enumerate(outer)]
+    inner = [(x, min(y + sag[k], fy - 10*SS*((k/n)**.75))) for k, (x, y) in enumerate(inner)]
     draw.polygon(outer + inner[::-1], fill=tone)
 
 
@@ -167,6 +171,9 @@ for i, fr in enumerate(track):
         crescent(draw, path, INNER, OUTER_TONE, sag, 64)
         crescent(draw, path, .62, CORE_TONE, sag, 30)  # narrower pale core along the tip side
         report.append({'drawing': i, 'from_drawing': i - back, 'sweep_deg': round(sweep, 1)})
+    # Smears never go below the floor (low slashes bowed downward would): clear everything under the floor line.
+    floor_y = int(rep.get('ground_baseline_y', 470)*SS)
+    ImageDraw.Draw(img).rectangle([0, floor_y, 512*SS, 512*SS], fill=(0, 0, 0, 0))
     img.resize((512, 512), Image.LANCZOS).save(OUT / f'sora_smear_{i:02d}.png')
 (SORA / dst / 'Smear_Report.json').write_text(json.dumps({'source': src, 'smears': report}, indent=2) + '\n',
                                              encoding='utf-8')
