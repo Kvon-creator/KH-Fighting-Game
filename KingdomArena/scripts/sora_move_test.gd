@@ -14,15 +14,16 @@ extends Node2D
 ## Hurt tests (no opponent yet): H = a hit (on the ground he snaps back and recovers; in the air he is
 ## knocked down), J = a knockdown from the ground (launched back, head-first fall, lands on his back, lies
 ## there a moment, then gets up).
-## U = Standing Light (a guard bash), I = Standing Medium (a batter-style slash with Keyblade smears); while
-## standing or walking.
+## U = Standing Light (a guard bash), I = Standing Medium (a batter-style slash with Keyblade smears),
+## O = Standing Heavy (an advancing downward slash); while standing or walking.
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
 ## default 1), `-- --glide-demo-ticks=N` double-taps forward (held on frames 1-3 and 7-N),
 ## `-- --jump-demo-at=N` presses jump on game frame N (`--jump2-demo-at=M` presses it again,
 ## `--dash-demo-at=M` double-taps forward from frame M); `--bdash-demo-at=N` double-taps back;
-## `--hit-demo-at=N` / `--knock-demo-at=N` / `--light-demo-at=N` / `--medium-demo-at=N` press H / J / U / I on
+## `--hit-demo-at=N` / `--knock-demo-at=N` / `--light-demo-at=N` / `--medium-demo-at=N` / `--heavy-demo-at=N` press H / J /
+## U / I / O on
 ## game frame N;
 ## `--capture=<png path>` saves a screenshot after 1.5 s and quits.
 ##
@@ -159,14 +160,21 @@ const ANIMATIONS := {
 	# Ekko's heavy (13/3/21), since Ekko's reference move is a heavy.
 	&"attack_medium": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 3, 2, 3, 3, 5, 5, 4],
 		[]],
+	# Standing Heavy (O): an advancing downward slash (Kvon; Sol's 6H as reference) - lift, overhead, back foot steps
+	# up, front foot strides as the Key comes down, impact lunge, follow-through, recover, back foot steps up, idle.
+	# Startup 13, active 3, recovery 21 (Ekko's heavy). Root motion from the render (~101 px forward in all).
+	&"attack_heavy": ["res://assets/sora/attack_heavy_384/", "sora_attack_heavy_", [2, 4, 3, 4, 3, 5, 6, 5, 5],
+		[0.0, -3.61, 21.65, 21.65, 94.61, 3.61, -18.04, -2.2, -16.64]],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
 ## the sprite is shifted back right by this many px so he stays in place.
-const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0]}
+const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
+	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0]}
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
-	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"]}  # Kvon: a small streak on the bash
+	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
+	&"attack_heavy": ["res://assets/sora/attack_heavy_smear_384/", "sora_attack_heavy_smear_"]}  # Kvon: a small streak on the bash
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -218,6 +226,9 @@ var _demo_light_at := -1
 ## Standing Medium: the I key last frame and the timed demo press (`--medium-demo-at=N`).
 var _medium_was := false
 var _demo_medium_at := -1
+## Standing Heavy: the O key last frame and the timed demo press (`--heavy-demo-at=N`).
+var _heavy_was := false
+var _demo_heavy_at := -1
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -298,6 +309,8 @@ func _ready() -> void:
 			_demo_glide_ticks = int(arg.trim_prefix("--glide-demo-ticks="))
 		elif arg.begins_with("--hit-demo-at="):
 			_demo_hit_at = int(arg.trim_prefix("--hit-demo-at="))
+		elif arg.begins_with("--heavy-demo-at="):
+			_demo_heavy_at = int(arg.trim_prefix("--heavy-demo-at="))
 		elif arg.begins_with("--medium-demo-at="):
 			_demo_medium_at = int(arg.trim_prefix("--medium-demo-at="))
 		elif arg.begins_with("--light-demo-at="):
@@ -371,6 +384,9 @@ func _physics_process(_delta: float) -> void:
 	var medium := _tick == _demo_medium_at or Input.is_physical_key_pressed(KEY_I)
 	var medium_pressed := medium and not _medium_was
 	_medium_was = medium
+	var heavy := _tick == _demo_heavy_at or Input.is_physical_key_pressed(KEY_O)
+	var heavy_pressed := heavy and not _heavy_was
+	_heavy_was = heavy
 	if _down_tick < 0 and (knock_pressed or (hit_pressed and (_air or _hurt_tick >= 0))):
 		_start_knockdown(_air or _hurt_tick >= 0)
 	elif _down_tick < 0 and hit_pressed:
@@ -425,6 +441,11 @@ func _physics_process(_delta: float) -> void:
 	if medium_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
 		_sprite.position.y = FLOOR_Y
 		_show(&"attack_medium")
+		return
+	# Standing Heavy (O): same rules.
+	if heavy_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
+		_sprite.position.y = FLOOR_Y
+		_show(&"attack_heavy")
 		return
 	if back_tap and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0
