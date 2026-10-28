@@ -2387,7 +2387,16 @@ if LOOP:
                             for k_ in (draw_k, sweep_k, hit_k, follow_k):
                                 k_['l_hand'] = tuple(l_tuck)
                             back1['l_hand'] = tuple(l_tuck.lerp(cr_guard, .5))
-                    if OUT_NAME.endswith('_lhandcheck'):
+                    if OUT_NAME.endswith('_lhandcheck2'):
+                        # review 2 (Kvon: focus on C, rotate the shoulder so the fist is toward the player): C's rib-height
+                        # fist, brought round toward the camera in steps (world V_ = toward the viewer).
+                        RUN_KEYS = []
+                        for p_, dv_ in (((.18, .12, .95), 0.0), ((.14, -.04, .95), .12), ((.12, -.08, .95), .22),
+                                        ((.10, -.10, .95), .32)):
+                            k_ = dict(draw_k); k_.update(l_hand=tuple(tc_ @ Vector(p_) + V_*dv_), smear=0)
+                            RUN_KEYS.append(k_)
+                        GAME_FRAMES = [6]*len(RUN_KEYS); DURATIONS_MS = [100.0]*len(RUN_KEYS); n = len(RUN_KEYS)
+                    elif OUT_NAME.endswith('_lhandcheck'):
                         # review (Kvon: show possible orientations of the non-sword arm for the first pose): the chamber
                         # drawing with the left fist in different places (body frame: +x his left, -y forward, z up).
                         L_OPTIONS = [('A tucked at side', (.22, .06, .80)), ('B chest guard', (.10, -.30, .98)),
