@@ -56,7 +56,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
-                                      'atk_clight_v')) else None
+                                      'atk_clight_v', 'atk_cmed_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -649,7 +649,7 @@ if RUN:
                        'atk_smed': [2, 2, 3, 3, 2, 3, 4, 4, 4],
                        # Standing Heavy: Ekko's heavy timing - startup 13 (7 drawings), active 3, recovery 21.
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
-                       'atk_clight': [2, 3, 3, 4, 4, 4]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2227,7 +2227,12 @@ if LOOP:
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
-                elif jpart == 'atk_clight':
+                elif jpart in ('atk_clight', 'atk_cmed'):
+                    # The Crouching Medium (atk_cmed) reuses this section's kneel, crouch guard and cl() keys: build the
+                    # approved Crouching Light (v30) first, then replace its drawings below.
+                    CM_HURT = HURT if jpart == 'atk_cmed' else None
+                    if CM_HURT:
+                        HURT = 'atk_clight_v30'
                     # Crouching Light (Kvon, October 27; posture after Ky's 2S in Guilty Gear Strive): from the approved
                     # crouch (crouch_hold_v4: sunk .32, hunch 9, pitch 10, neck -12, knees splayed .6, right fist low behind
                     # him with the blade trailing back, left fist up at the chest) a small draw-back, a quick one-handed
@@ -2558,6 +2563,34 @@ if LOOP:
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
                         GAME_FRAMES = [6]; DURATIONS_MS = [100.0]; n = 1
+                    if CM_HURT:
+                        HURT = CM_HURT
+                        # Crouching Medium v1 (Kvon, October 28: the active pose like Ky's GGST 2S, his reference
+                        # design/references/ky_ggst_2s_active_kvon.png): review-only active-pose candidates on the approved
+                        # kneel, free fist at the chest guard. A = Ky's pose: end of a wide low sweep, sword arm extended
+                        # back and low on the camera side, blade trailing behind to the floor, chest opened toward the
+                        # camera, forward lean. B = A with a small lean (Kvon's Crouching Light rule). C = the same body
+                        # mid-sweep, blade low and out in front toward the opponent.
+                        trail_ = -U_*.80 + V_*.55 + Vector((0, 0, -.30))
+                        cm_a = cl(U_*-.28 + V_*.32 + Vector((0, 0, .50)), trail_, ce=.36, hunch=12.0, pitch=24.0,
+                                  turn=IDLE_R['turn'])
+                        cm_a.update(twist=-20.0, offset_px=(70, 0))
+                        cm_b = cl(U_*-.28 + V_*.32 + Vector((0, 0, .54)), trail_, ce=.36, hunch=9.0, pitch=12.0,
+                                  turn=IDLE_R['turn'])
+                        cm_b.update(twist=-20.0, offset_px=(70, 0))
+                        cm_c = cl(U_*.28 + V_*.34 + Vector((0, 0, .52)), U_*.60 + V_*.70 + Vector((0, 0, -.25)), ce=.36,
+                                  hunch=9.0, pitch=14.0, turn=IDLE_R['turn'])
+                        cm_c.update(twist=35.0, offset_px=(-60, 0))
+                        if not HURT.endswith('_v1'):
+                            # v2: in v1's A/B the sword hand sat in front of his knee (arm across his body; Ky's reaches
+                            # back past his hip) and the tip dipped under the floor: hand back behind the hip and higher,
+                            # blade raised so the tip just touches the floor, drawn further right in the frame.
+                            trail_ = -U_*.85 + V_*.55 + Vector((0, 0, -.22))
+                            for k_, z_ in ((cm_a, .66), (cm_b, .70)):
+                                k_.update(hand=U_*-.50 + V_*.30 + Vector((0, 0, z_)),
+                                          blade_dir=tuple(trail_.normalized()), offset_px=(100, 0))
+                        RUN_KEYS = [cm_a, cm_b, cm_c]
+                        GAME_FRAMES = [6]*3; DURATIONS_MS = [100.0]*3; n = 3
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
