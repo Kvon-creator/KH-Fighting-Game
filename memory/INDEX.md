@@ -27,7 +27,7 @@
 - [Sora Standing Height](Sora_Standing_Height.md): Approved approximately 96-pixel standing height.
 - [Sora Standing Light](Sora_Standing_Light.md): Guard bash like a bunt - Key level across his body, guard pushed into the opponent (replaced the thrust October27).
 - [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
-- [Sora Standing Heavy](Sora_Standing_Heavy.md): Approved wide spinning Kingdom Key slash.
+- [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
 - [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash.
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): Approved wide low Kingdom Key sweep.
 - [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.

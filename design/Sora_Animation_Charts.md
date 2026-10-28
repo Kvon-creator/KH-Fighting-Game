@@ -42,7 +42,7 @@ Every attack requires readable preparation, commitment, striking and recovery po
 | --- | ---: | --- |
 | Standing Light | 5 | (Kvon, October 27) Guard bash like a bunt: Keyblade brought level across his body (right hand on the handle, left hand steadying the shaft) -> short push so the guard hits -> quick return. No big wind-up, short range. |
 | Standing Medium | 8 | Side wind-up -> horizontal Keyblade slash across his body -> follow-through toward Heavy. |
-| Standing Heavy | 10 | Planted rotational wind-up -> wide spinning Keyblade slash -> visible full-body settle. |
+| Standing Heavy | 10 | (Kvon, October 27) Keyblade raised overhead -> back foot steps forward past the front foot for range -> downward slash in front of him -> visible full-body settle. |
 | Crouching Light | 6 | Low small draw-back -> quick low Keyblade slash -> balanced low guard. |
 | Crouching Medium | 8 | Low torso rotation -> wide low Keyblade sweep -> re-center in crouch. |
 | Crouching Heavy | 10 | Compressed grounded wind-up -> upward Keyblade swing that launches the opponent while Sora stays grounded -> grounded recovery or approved air-chase transition. |

@@ -1,0 +1,32 @@
+{
+  "status": "waiting_for_gemini",
+  "media": "image",
+  "tabId": "C2A1C3A90075562C7F6F65A4C4781D33",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "standing-heavy-downslash",
+  "promptSha256": "77b8fc93699dec061d957a16a641864cf3c3190d633819345972a11c12baed28",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\STANDING_HEAVY_DOWNSLASH_ROUND_46.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-27T23:52:32.766Z",
+  "baselineImages": [
+    "5c28caa5a7eaba04d31dfcf91ede09efdf28029ef21206aa7d02ddd3d3c095f0",
+    "a2126f6be4f57286d99505db4e4f3f75a9feeca979deba75f923ffac6926e99f",
+    "81cab04da39f135ccbe39319aeba61bf69051c6ccd6c0b4e456f9b4bc6092d1a",
+    "ee8e4427a9032fb23714af1fc57f0dbd2e083c4b4572e54c8e359896a0f40fcb",
+    "6123a9e4e0e138f45c8be091a67587dc5a341c4258ab6e79b3854935f75a0388",
+    "9b9559c9a044a7f6e5a4cd3e2ce3438f245db4b757a7cf3f400a6986d8624201"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    },
+    {
+      "file": "design\\models\\sora\\atk_smed2d_v15\\Standing_Medium_Sheet.png",
+      "sha256": "d5644c9e1822f62eb9611bd1aaea82d6dc7f7dff78516e390a5a07cef88d8650"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "note": "Timed out collecting; rerun this same attempt to collect without resubmitting."
+}

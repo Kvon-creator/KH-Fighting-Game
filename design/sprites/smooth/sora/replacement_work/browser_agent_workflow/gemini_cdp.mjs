@@ -99,7 +99,11 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'standing-heavy-concept': [
+const referenceSets = {'standing-heavy-downslash': [
+  // Kvon: the Standing Heavy becomes an advancing downward slash (step forward with the back foot for range).
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
+  'design/models/sora/atk_smed2d_v15/Standing_Medium_Sheet.png'
+], 'standing-heavy-concept': [
   // Kvon: the Standing Heavy (wide spinning slash) after the approved Light and the Medium; Gemini concept art first.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/atk_smed2d_v15/Standing_Medium_Sheet.png',
