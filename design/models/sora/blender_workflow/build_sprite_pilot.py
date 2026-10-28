@@ -3132,6 +3132,8 @@ if LOOP:
             CR_KNEEL = (0.0, .03, 40.0, -.08)  # v10: v9's foot sat too far back (leg straight, knee off the floor)
         if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
             CR_KNEEL = (0.0, .11, 25.0, -.08)  # v11: v10's toe went ~10 cm through the floor - ankle up, less pitch
+        # v12 (Kvon: turn the shin so the foot sits slightly behind him toward the background): metres away from the camera.
+        CR_KNEEL_DEPTH = .14 if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 12))) else 0.0
         # v6: (slide left, lift, pitch, sink); v7: v6's shin/foot hid behind the guard and the knee dipped below the
         # floor - foot further left so the shin shows along the floor, a little less sink.
     V12 = GAIT and globals().get('V12')
@@ -3398,7 +3400,7 @@ if LOOP:
                 ks_, ka_, kp_, kc_ = CR_KNEEL
                 tb_ = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z').inverted()
                 right_ = Vector((math.cos(t), math.sin(t), 0))
-                d_ = tb_ @ (right_*-ks_)
+                d_ = tb_ @ (right_*-ks_ - to_cam*CR_KNEEL_DEPTH)  # v12+: foot turned back toward the background
                 fx_, fy_, _ = CR_RFOOT0
                 POSE['R_foot'] = (fx_ + d_.x*w_, fy_ + d_.y*w_, ka_*w_)
                 POSE['foot_pitch'] = {'R': kp_*w_}
