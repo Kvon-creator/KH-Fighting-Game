@@ -1,6 +1,8 @@
 ﻿# Sora Crouching Light
 
-**Fact or rule:** Sora's crouching Light attack is a quick low Kingdom Key slash.
+**Fact or rule:** Sora's crouching Light attack is a quick low Kingdom Key **jab** (changed October28 from the original low slash).
+
+**Jab, October28:** Kvon: "try to make the attack a jab instead of a downward slash." v16: chamber at the hip with the blade aimed at the opponent -> straight low thrust -> retract -> crouch; torso rotates toward the attack with small lean (twist -10/25/45/40/15, pitch 9-12); thrust dash lines trail the right fist (new `smear_grip: 'R'` option in make_smears.py). v16's hit target (V_ .34) was out of arm's reach (fist stopped at the sweep's spot) and the return blade went through the floor. v17 (current, pending review): chamber U_ -.22, hit hand U_ .30 / V_ .18 (fist travels ~.35 m), return blade level behind. Lesson: check `key_track` grip positions - an unreachable hand target silently shortens the motion. Review `atk_clight2d_v17/Crouching_Light_compare.png` (v16 top, v17 bottom).
 
 **Why:** K'von selected this motion during basic-attack design review. No further reason was provided.
 

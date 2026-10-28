@@ -12,7 +12,7 @@
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [Mobile Workflow](Codex_Mobile_Workflow.md): Phone pairing requested before further Gemini sprite generation; setup and status.
-- [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, and commit/push approval requirement.
+- [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, commit/push approval; push after every finished step.
 - [Godot executable](Godot_Executable.md): Godot 4.7.2 path, KingdomArena project, online-docs use, verified import/capture/movie test commands.
 - [Git Executable](Git_Executable.md): User-provided installation path for commits and periodic main pushes when Git is absent from PATH.
 - [Sora Animation Workflow](Sora_Animation_Workflow.md): Original character concept, adapted boss methodology, design review, and one-question-at-a-time clarification.
@@ -29,7 +29,7 @@
 - [Sora Standing Light](Sora_Standing_Light.md): Guard bash like a bunt - Key level across his body, guard pushed into the opponent (replaced the thrust October27).
 - [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
-- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash; v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14, small-lean v15 pending review (rotate toward the attack, little lean).
+- [Sora Crouching Light](Sora_Crouching_Light.md): Now a quick low Kingdom Key jab (v17 pending review); earlier slash history: v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14, small-lean v15 pending review (rotate toward the attack, little lean).
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): Approved wide low Kingdom Key sweep.
 - [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.
 

@@ -2346,6 +2346,39 @@ if LOOP:
                                 for k_, p_, h_, tw_ in ((sweep_k, 6.0, 9.0, 35.0), (hit_k, 13.0, 9.0, 45.0),
                                                         (follow_k, 14.0, 9.0, 50.0), (back1, 11.0, 9.0, 20.0)):
                                     k_.update(pitch=p_, hunch=h_, twist=tw_)
+                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 16))):
+                        # v16 (Kvon: make it a jab instead of a downward slash): chamber at the hip with the blade
+                        # already aimed at the opponent, a straight low thrust out to about the slash's reach, retract,
+                        # back to the crouch. Torso rotates toward the attack with a small lean (v15 rule); hands sit on
+                        # the camera side (V_ .34) so the arm stays out of his body. Thrust dash lines behind the right
+                        # fist on the hit instead of an arc smear.
+                        jab_dir = U_*.96 + V_*.08 + Vector((0, 0, -.16))
+                        draw_k = cl(U_*-.10 + V_*.34 + Vector((0, 0, .74)), jab_dir, pitch=9.0, turn=IDLE_R['turn'])
+                        sweep_k = cl(U_*.12 + V_*.34 + Vector((0, 0, .70)), jab_dir, ce=.34, pitch=10.0,
+                                     turn=IDLE_R['turn'])
+                        hit_k = cl(U_*.30 + V_*.34 + Vector((0, 0, .66)), jab_dir, ce=.36, pitch=12.0,
+                                   turn=IDLE_R['turn'])
+                        follow_k = cl(U_*.24 + V_*.34 + Vector((0, 0, .67)), jab_dir, ce=.35, pitch=11.0,
+                                      turn=IDLE_R['turn'])
+                        back1 = cl(cr_hand.lerp(U_*.02 + V_*.34 + Vector((0, 0, .72)), .5) + V_*.12,
+                                   (jab_dir + cr_blade).normalized(), ce=.33, pitch=10.0, turn=IDLE_R['turn'])
+                        back2 = cl(cr_hand.lerp(follow_k['hand'], .15), (jab_dir*.15 + cr_blade), ce=.32,
+                                   turn=IDLE_R['turn'])
+                        for k_, tw_ in ((draw_k, -10.0), (sweep_k, 25.0), (hit_k, 45.0), (follow_k, 40.0),
+                                        (back1, 15.0)):
+                            k_['twist'] = tw_
+                        hit_k['offset_px'] = (-40, 0)
+                        follow_k['offset_px'] = (-30, 0)
+                        hit_k.update(smear=1, smear_style='thrust', smear_grip='R')
+                        if not HURT.endswith('_v16'):
+                            # v17: v16's hit target (V_ .34) was out of arm's reach - the fist stopped where the sweep
+                            # was, so the jab barely travelled; and the return blade dipped through the floor. Chamber
+                            # further back, extended hands nearer his body line, return blade level behind (as v5).
+                            draw_k['hand'] = U_*-.22 + V_*.30 + Vector((0, 0, .74))
+                            sweep_k['hand'] = U_*.06 + V_*.24 + Vector((0, 0, .70))
+                            hit_k['hand'] = U_*.30 + V_*.18 + Vector((0, 0, .66))
+                            follow_k['hand'] = U_*.22 + V_*.20 + Vector((0, 0, .67))
+                            back1['blade_dir'] = tuple((-U_*.30 + V_*.40 + Vector((0, 0, -.08))).normalized())
                     RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
@@ -3761,8 +3794,9 @@ if LOOP:
                               'offset_px': list(RUN_KEYS[i].get('offset_px') or (0, 0)),
                               'lgrip_world': [round(c_, 5) for c_ in hand_point('L')],
                               'smear_style': RUN_KEYS[i].get('smear_style', 'arc')})
-            if 'smear_bow' in RUN_KEYS[i]:
-                KEY_TRACK[-1]['smear_bow'] = RUN_KEYS[i]['smear_bow']
+            for opt_ in ('smear_bow', 'smear_grip'):
+                if opt_ in RUN_KEYS[i]:
+                    KEY_TRACK[-1][opt_] = RUN_KEYS[i][opt_]
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
                        'grip_error_L_m': round((hand_point('L')

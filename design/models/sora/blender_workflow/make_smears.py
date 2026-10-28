@@ -142,8 +142,10 @@ for i, fr in enumerate(track):
         # Guard point = the leading (left) fist for the Light; earlier drawing moved into this drawing's frame.
         a_ = track[i - back]
         shift = (fr.get('offset_px', (0, 0))[0] - a_.get('offset_px', (0, 0))[0])/PX
-        pa = np.array(a_['lgrip_world']) + RIGHT*shift
-        pb = np.array(fr['lgrip_world'])
+        # smear_grip 'R' (Crouching Light jab v16+): the lines trail the right fist instead.
+        gk_ = 'grip_world' if fr.get('smear_grip') == 'R' else 'lgrip_world'
+        pa = np.array(a_[gk_]) + RIGHT*shift
+        pb = np.array(fr[gk_])
         draw = ImageDraw.Draw(img, 'RGBA')
         # Kvon: subtle dash lines instead of a smear - three thin gold lines trailing behind the guard along the
         # push, offset across it, different lengths, thinning toward their back ends.
