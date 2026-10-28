@@ -2387,7 +2387,45 @@ if LOOP:
                             for k_ in (draw_k, sweep_k, hit_k, follow_k):
                                 k_['l_hand'] = tuple(l_tuck)
                             back1['l_hand'] = tuple(l_tuck.lerp(cr_guard, .5))
-                    if OUT_NAME.endswith('_lhandcheck2'):
+                    if OUT_NAME.endswith('_lhandcheck5'):
+                        # review 5: lhandcheck4 opened C2 to 68 but C1 only to 135 (fist kept against the ribs folds the
+                        # elbow); C1 fist lower and further toward the camera. Others as lhandcheck4.
+                        RUN_KEYS = []
+                        for p_, dv_, dir_, ext_ in (((.18, .12, .95), 0.0, (.67, .21, -.71), .10),
+                                                    ((.20, .00, .70), .32, (0, 0, 1), 0.0),
+                                                    ((.12, -.10, .82), .32, (0, 0, 1), 0.0),
+                                                    ((.10, -.10, .95), .32, (-.46, -.83, -.33), .06)):
+                            k_ = dict(draw_k)
+                            k_.update(l_hand=tuple(tc_ @ Vector(p_) + V_*dv_ + Vector(dir_).normalized()*ext_), smear=0)
+                            RUN_KEYS.append(k_)
+                        GAME_FRAMES = [6]*len(RUN_KEYS); DURATIONS_MS = [100.0]*len(RUN_KEYS); n = len(RUN_KEYS)
+                    elif OUT_NAME.endswith('_lhandcheck4'):
+                        # review 4: lhandcheck3 opened C (84) and C3 (37) but C1 folded further (164) and C2 barely moved
+                        # (91) - the shoulder slid forward after the fist. C1/C2 fists instead drop below the shoulder and
+                        # come further toward the camera.
+                        RUN_KEYS = []
+                        for p_, dv_, dir_, ext_ in (((.18, .12, .95), 0.0, (.67, .21, -.71), .10),
+                                                    ((.16, -.02, .80), .22, (0, 0, 1), 0.0),
+                                                    ((.12, -.10, .82), .32, (0, 0, 1), 0.0),
+                                                    ((.10, -.10, .95), .32, (-.46, -.83, -.33), .06)):
+                            k_ = dict(draw_k)
+                            k_.update(l_hand=tuple(tc_ @ Vector(p_) + V_*dv_ + Vector(dir_).normalized()*ext_), smear=0)
+                            RUN_KEYS.append(k_)
+                        GAME_FRAMES = [6]*len(RUN_KEYS); DURATIONS_MS = [100.0]*len(RUN_KEYS); n = len(RUN_KEYS)
+                    elif OUT_NAME.endswith('_lhandcheck3'):
+                        # review 3 (Kvon: less bend in the elbow for all of these poses): the lhandcheck2 fists moved
+                        # further from the shoulder along the measured shoulder -> fist direction (elbow_angles.py on
+                        # lhandcheck2: bends 133 / 149 / 95 / 62 deg).
+                        RUN_KEYS = []
+                        for p_, dv_, dir_, ext_ in (((.18, .12, .95), 0.0, (.67, .21, -.71), .10),
+                                                    ((.14, -.04, .95), .12, (.86, -.12, -.49), .12),
+                                                    ((.12, -.08, .95), .22, (.25, -.75, -.62), .10),
+                                                    ((.10, -.10, .95), .32, (-.46, -.83, -.33), .06)):
+                            k_ = dict(draw_k)
+                            k_.update(l_hand=tuple(tc_ @ Vector(p_) + V_*dv_ + Vector(dir_).normalized()*ext_), smear=0)
+                            RUN_KEYS.append(k_)
+                        GAME_FRAMES = [6]*len(RUN_KEYS); DURATIONS_MS = [100.0]*len(RUN_KEYS); n = len(RUN_KEYS)
+                    elif OUT_NAME.endswith('_lhandcheck2'):
                         # review 2 (Kvon: focus on C, rotate the shoulder so the fist is toward the player): C's rib-height
                         # fist, brought round toward the camera in steps (world V_ = toward the viewer).
                         RUN_KEYS = []
