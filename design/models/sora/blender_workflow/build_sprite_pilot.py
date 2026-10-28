@@ -2387,7 +2387,19 @@ if LOOP:
                             for k_ in (draw_k, sweep_k, hit_k, follow_k):
                                 k_['l_hand'] = tuple(l_tuck)
                             back1['l_hand'] = tuple(l_tuck.lerp(cr_guard, .5))
-                    RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
+                    if OUT_NAME.endswith('_lhandcheck'):
+                        # review (Kvon: show possible orientations of the non-sword arm for the first pose): the chamber
+                        # drawing with the left fist in different places (body frame: +x his left, -y forward, z up).
+                        L_OPTIONS = [('A tucked at side', (.22, .06, .80)), ('B chest guard', (.10, -.30, .98)),
+                                     ('C high chamber at ribs', (.18, .12, .95)), ('D forward guard', (.06, -.42, 1.02)),
+                                     ('E on front knee', (.12, -.34, .58)), ('F back for balance', (.30, .32, .86))]
+                        RUN_KEYS = []
+                        for label_, p_ in L_OPTIONS:
+                            k_ = dict(draw_k); k_.update(l_hand=tuple(tc_ @ Vector(p_)), smear=0)
+                            RUN_KEYS.append(k_)
+                        GAME_FRAMES = [6]*len(RUN_KEYS); DURATIONS_MS = [100.0]*len(RUN_KEYS); n = len(RUN_KEYS)
+                    else:
+                        RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
                         GAME_FRAMES = [6]; DURATIONS_MS = [100.0]; n = 1
