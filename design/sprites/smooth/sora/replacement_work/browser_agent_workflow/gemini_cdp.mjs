@@ -99,7 +99,12 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'crouching-medium-concept': [
+const referenceSets = {'crouching-medium-own-renders': [
+  // Round 49: round 48 ("I encountered an error...") likely tripped on the third-party Ky art; only Sora's own renders
+  // now - the kneeling crouch and our 3D active-pose candidate A (Ky-style) as the pose guide.
+  'design/models/sora/crouch_hold2d_v18/frames_512/sora_idle3d_00.png',
+  'design/models/sora/atk_cmed2d_v2/frames_512/sora_idle3d_00.png'
+], 'crouching-medium-concept': [
   // Kvon: a full Crouching Medium pose sheet from Sora's existing 3D renders, active frame matching Ky's GGST 2S.
   'design/models/sora/crouch_hold2d_v18/frames_512/sora_idle3d_00.png',
   'design/models/sora/atk_clight2d_v30/Crouching_Light_Sheet.png',
@@ -394,6 +399,15 @@ async function exchange() {
         uploaded=await evaluate(observation);
       }
       if(uploaded.text.includes('Uploading image'))throw Error('Art references are still uploading; no prompt submitted.');
+      // Rounds 47 and 49: Send was clicked while the thumbnails were still processing (this UI shows only a spinner, not
+      // "Uploading image") and Gemini dropped the message back to its start page. Wait until every reference preview has
+      // loaded and no progress indicator is showing, then let the page settle before sending.
+      const loadedDeadline=Date.now()+60000;
+      // Round 50: the composer thumbnails are now alt "attachment" (earlier "Uploaded image preview").
+      const previewsReady=()=>evaluate(`queryAll('img[alt="Uploaded image preview"],img[alt="attachment"]').filter(e=>e.complete&&e.naturalWidth>0).length>=${refs.length}`);
+      while(!(await previewsReady())&&Date.now()<loadedDeadline) {await new Promise(resolve=>setTimeout(resolve,1000));await guard();}
+      if(!(await previewsReady()))throw Error('Art reference previews did not finish loading; no prompt submitted.');
+      await new Promise(resolve=>setTimeout(resolve,4000));
     }
     if(options['weapon-reference']==='true') {
       const weapon=inside('design/sprites/smooth/sora/replacement_work/ready/run_loop/layers/art_pass_05/kingdom_key_master_finished.png');

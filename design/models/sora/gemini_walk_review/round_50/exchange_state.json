@@ -1,0 +1,24 @@
+{
+  "status": "submission_attempted",
+  "media": "image",
+  "tabId": "5988EACC6F6B40692380D557E0416271",
+  "chatUrl": "https://gemini.google.com/app",
+  "referenceSet": "crouching-medium-own-renders",
+  "promptSha256": "ea3e7bd07aeee2c986db9a95a84ef5c57cc94e8fce83dbc20c8ba54ba153e1ea",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\CROUCHING_MEDIUM_CONCEPT_ROUND_49.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-28T14:55:47.917Z",
+  "baselineImages": [],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\crouch_hold2d_v18\\frames_512\\sora_idle3d_00.png",
+      "sha256": "78892f53df791a18bd606f7ecd379c932304c69b13e5e947ba1562676f2eb442"
+    },
+    {
+      "file": "design\\models\\sora\\atk_cmed2d_v2\\frames_512\\sora_idle3d_00.png",
+      "sha256": "964ee0c7b2f6d57e71184b66df304b57aecb3d4ec599f261171c2912cfa0b508"
+    }
+  ],
+  "finalUserApproval": "pending"
+}

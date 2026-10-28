@@ -1,0 +1,28 @@
+{
+  "status": "submission_attempted",
+  "media": "image",
+  "tabId": "5988EACC6F6B40692380D557E0416271",
+  "chatUrl": "https://gemini.google.com/app",
+  "referenceSet": "crouching-medium-concept",
+  "promptSha256": "82dce957e6b32b7bf87dde420be9377a304dd71ffd42f449a1f4a24d6c56a0a4",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\CROUCHING_MEDIUM_CONCEPT_ROUND_47.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-28T14:41:01.507Z",
+  "baselineImages": [],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\crouch_hold2d_v18\\frames_512\\sora_idle3d_00.png",
+      "sha256": "78892f53df791a18bd606f7ecd379c932304c69b13e5e947ba1562676f2eb442"
+    },
+    {
+      "file": "design\\models\\sora\\atk_clight2d_v30\\Crouching_Light_Sheet.png",
+      "sha256": "3d610ff936f8e6c503f8155cca907e1c8724440b43a85555cf9c74b306c7d4ed"
+    },
+    {
+      "file": "design\\references\\ky_ggst_2s_active_kvon.png",
+      "sha256": "16fd2bb7b691e2cbbe1dc0b7aae2a84b3664fca1166ff4856b6fbad111d12d3a"
+    }
+  ],
+  "finalUserApproval": "pending"
+}
