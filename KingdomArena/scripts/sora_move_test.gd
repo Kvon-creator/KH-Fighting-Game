@@ -16,6 +16,7 @@ extends Node2D
 ## there a moment, then gets up).
 ## U = Standing Light (a guard bash), I = Standing Medium (a batter-style slash with Keyblade smears),
 ## O = Standing Heavy (an advancing downward slash); while standing or walking.
+## U while holding S or Down = Crouching Light (a low jab from the kneel).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
@@ -165,16 +166,21 @@ const ANIMATIONS := {
 	# Startup 13, active 3, recovery 21 (Ekko's heavy). Root motion from the render (~101 px forward in all).
 	&"attack_heavy": ["res://assets/sora/attack_heavy_384/", "sora_attack_heavy_", [2, 4, 3, 4, 3, 5, 6, 5, 5],
 		[0.0, -3.61, 21.65, 21.65, 94.61, 3.61, -18.04, -2.2, -16.64]],
+	# Crouching Light (U while crouching; Kvon approved v30): a low jab from the kneel - chamber, drive, hit, hold,
+	# return, back in the crouch guard. Startup 5, active 3, recovery 12.
+	&"attack_clight": ["res://assets/sora/attack_clight_384/", "sora_attack_clight_", [2, 3, 3, 4, 4, 4], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
 ## the sprite is shifted back right by this many px so he stays in place.
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
-	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0]}
+	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
+	&"attack_clight": [0, 45, 82.5, 75, 0, 0]}
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
-	&"attack_heavy": ["res://assets/sora/attack_heavy_smear_384/", "sora_attack_heavy_smear_"]}  # Kvon: a small streak on the bash
+	&"attack_heavy": ["res://assets/sora/attack_heavy_smear_384/", "sora_attack_heavy_smear_"],  # Kvon: a small streak on the bash
+	&"attack_clight": ["res://assets/sora/attack_clight_smear_384/", "sora_attack_clight_smear_"]}
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -431,6 +437,12 @@ func _physics_process(_delta: float) -> void:
 		_sprite.position.y = FLOOR_Y
 		_show(&"jump_start", 1 if moving else 0)  # already moving: skip the crouch drawing
 		return
+	# Crouching Light (U while S/Down is held): from any ground move (not mid back-dash); like the standing
+	# attacks it plays to the end (only a hit interrupts it), then he stays crouched or stands up.
+	if light_pressed and not back_dashing and crouch and anim in GROUND_CANCEL:
+		_sprite.position.y = FLOOR_Y
+		_show(&"attack_clight")
+		return
 	# Standing Light (U): from any standing ground move (not crouching, not mid back-dash); it plays to the
 	# end (only a hit interrupts it), then he returns to whatever is held.
 	if light_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
@@ -508,6 +520,9 @@ func _physics_process(_delta: float) -> void:
 			_show(&"idle")
 		elif anim == &"crouch_down" or anim == &"crouch_hold":
 			_show(&"crouch_hold")
+		elif anim == &"attack_clight":
+			# It ends in the crouch guard: stay down, or stand up from the full crouch.
+			_show(&"crouch_hold" if crouch else &"crouch_up")
 		else:
 			# End of a step cycle, standing up or the glide landing: the feet are in the idle stance, so
 			# he can stand, crouch, switch direction or keep going without any pop.
