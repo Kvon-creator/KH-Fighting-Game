@@ -2284,6 +2284,81 @@ if LOOP:
                     back_k = ease(settle, IDLE_R, .7, 0.0)
                     back_k.update(ground=True, no_center=True, turn=IDLE_R['turn'] + (settle['turn'] - IDLE_R['turn'])*.3)
                     RUN_KEYS = [pre, raised, windup, spin0, spin1, spin2, around, impact, follow, settle, back_k]
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        # v4 (Kvon: instead an ADVANCING DOWNWARD SLASH, stepping forward with the back foot for range;
+                        # reference Sol's 6H in Guilty Gear Strive): Key lifts -> overhead -> the back foot steps up to the
+                        # front foot -> the front foot strides out into a deep lunge as the Key comes down -> impact
+                        # (torso leaning hard forward, both hands driving the blade down-forward in front) -> follow-
+                        # through low -> recover -> the back foot steps up into the idle, one step further on. Feet are
+                        # planned in world terms (x0/r0 = idle front/back foot) and the body position b each drawing; the
+                        # drawing's feet are world - b and its root motion is the change in b, so planted feet stay put.
+                        x0, r0 = L0[0], R0[0]
+                        Rp = x0 - .08                       # where the back foot plants after stepping up
+                        b4 = Rp + .38                       # body over the lunge
+                        Lp = b4 + .26                       # front foot of the lunge
+                        b_end = Lp - x0                     # idle again with the left foot still planted at Lp
+                        # (drawing, body b, L world (s, lift, pitch), R world (s, lift, pitch))
+                        plan = [(0.0, (x0, 0, 0), (r0, 0, 0)),
+                                (-.02, (x0, 0, 0), (r0, 0, 10.0)),
+                                (.10, (x0, 0, 0), ((r0 + x0)/2, .10, 20.0)),
+                                (.22, (x0 + .22, .07, 10.0), (Rp, 0, 0)),
+                                (b4, (Lp, 0, 0), (Rp, 0, 30.0)),
+                                (b4 + .02, (Lp, 0, 0), (Rp, 0, 30.0)),
+                                (b4 - .08, (Lp, 0, 0), (Rp, 0, 15.0)),
+                                ((b4 + b_end)/2, (Lp, 0, 0), ((Rp + b_end + r0)/2, .08, 15.0)),
+                                (b_end, (Lp, 0, 0), (b_end + r0, 0, 0))]
+                        bfz = lambda tn_, x_, y_, z_: bfh(tn_, x_, y_, z_)
+                        poses = [  # turn, twist, hand, blade, ce, pitch, hunch
+                            (15.0, -4.0, bfz(15.0, -.04, -.10, 1.10), U_*.20 + V_*.25 + Vector((0, 0, 1.0)), .07, 0.0, 0.0),
+                            (20.0, -6.0, bfz(20.0, -.08, .04, 1.32), -U_*.55 + V_*.35 + Vector((0, 0, .75)), .05, -6.0, -4.0),
+                            (15.0, -4.0, bfz(15.0, -.06, .02, 1.30), -U_*.50 + V_*.35 + Vector((0, 0, .80)), .03, -4.0, -2.0),
+                            (5.0, 4.0, bfz(5.0, 0.0, -.20, 1.28), U_*.30 + V_*.40 + Vector((0, 0, .85)), .08, 6.0, 4.0),
+                            (0.0, 10.0, U_*.40 + V_*.16 + Vector((0, 0, .78)), U_*.55 + V_*.50 + Vector((0, 0, -.62)),
+                             .18, 22.0, 12.0),
+                            (0.0, 10.0, U_*.34 + V_*.18 + Vector((0, 0, .62)), U_*.40 + V_*.55 + Vector((0, 0, -.72)),
+                             .19, 26.0, 14.0),
+                            (5.0, 6.0, U_*.26 + V_*.20 + Vector((0, 0, .70)), U_*.60 + V_*.55 + Vector((0, 0, -.40)),
+                             .14, 14.0, 8.0)]
+                        keys_ = []
+                        for j_, (b_, (lx_, ll_, lp_), (rx_, rl_, rp_)) in enumerate(plan[:7]):
+                            tn_, tw_, hd_, bl_, ce_, pt_, hn_ = poses[j_]
+                            ft_ = {'L': (lx_ - b_, L0[1], ll_, lp_), 'R': (rx_ - b_, R0[1], rl_, rp_)}
+                            k_ = hv(tn_, tw_, hd_, bl_, ce=ce_, pitch=pt_, hunch=hn_, feet=ft_)
+                            keys_.append(k_)
+                        for j_ in (7, 8):  # back foot steps up, then the idle
+                            b_, (lx_, ll_, lp_), (rx_, rl_, rp_) = plan[j_]
+                            k_ = ease(keys_[6], IDLE_R, .55 if j_ == 7 else .9, 0.0)
+                            k_.update(ground=True, no_center=True,
+                                      feet={'L': (lx_ - b_, L0[1], ll_, lp_), 'R': (rx_ - b_, R0[1], rl_, rp_)})
+                            keys_.append(k_)
+                        prev_ = 0.0
+                        for k_, (b_, *_) in zip(keys_, plan):
+                            k_['root'] = b_ - prev_; prev_ = b_
+                        if not HURT.endswith('_v4'):
+                            # v5: v4's raised blades left the frame top and the impact/follow-through tips went through the
+                            # floor - angle them toward the camera / less steeply; a wider lunge like Sol's.
+                            fix_ = {0: (None, U_*.45 + V_*.40 + Vector((0, 0, .60))),
+                                    1: (bfz(20.0, -.08, .04, 1.22), -U_*.70 + V_*.50 + Vector((0, 0, .45))),
+                                    2: (bfz(15.0, -.06, .02, 1.20), -U_*.65 + V_*.50 + Vector((0, 0, .50))),
+                                    3: (bfz(5.0, 0.0, -.20, 1.16), U_*.50 + V_*.55 + Vector((0, 0, .50))),
+                                    4: (U_*.40 + V_*.16 + Vector((0, 0, .82)), U_*.62 + V_*.60 + Vector((0, 0, -.36))),
+                                    5: (U_*.36 + V_*.18 + Vector((0, 0, .72)), U_*.50 + V_*.65 + Vector((0, 0, -.48))),
+                                    6: (None, U_*.62 + V_*.60 + Vector((0, 0, -.25)))}
+                            for j_, (hd_, bl_) in fix_.items():
+                                if hd_ is not None:
+                                    keys_[j_]['hand'] = hd_
+                                keys_[j_]['blade_dir'] = tuple(bl_.normalized())
+                            for j_ in (4, 5, 6):  # wider lunge: front foot further ahead, back leg further behind
+                                f_ = keys_[j_]['feet']
+                                keys_[j_]['feet'] = {'L': (f_['L'][0] + .06, *f_['L'][1:]), 'R': (f_['R'][0] - .06, *f_['R'][1:])}
+                                keys_[j_]['ce'] = min(keys_[j_]['ce'], .14)
+                        if not HURT.endswith(('_v4', '_v5')):
+                            keys_[4]['offset_px'] = (-48, 0)  # v6: v5's impact tip touched the right edge (Godot shifts back)
+                        keys_[3]['smear'] = 2; keys_[4]['smear'] = 2; keys_[5]['smear'] = 1
+                        RUN_KEYS = keys_
+                        GAME_FRAMES = [2, 4, 3, 4, 3, 5, 6, 5, 5]   # startup 13, active 3, recovery 21 (Ekko's heavy)
+                        DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]
+                        n = len(DURATIONS_MS)
                 elif jpart == 'atk_smed':
                     # Standing Medium (Kvon, October 27; Gemini round 44 + his notes): a horizontal two-handed slash. Out of
                     # the idle the Key rises over his right shoulder (two in-betweens), winds back level behind him with the
