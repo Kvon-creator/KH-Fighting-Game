@@ -1,0 +1,11 @@
+{
+  "source": "atk_clight_v30",
+  "smears": [
+    {
+      "drawing": 2,
+      "from_drawing": 1,
+      "style": "thrust",
+      "length_px": 59.5
+    }
+  ]
+}

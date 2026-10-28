@@ -936,6 +936,21 @@ def solve_pose(breath=0.0, lag=None):
     if ONE_HAND:
         guard_hint = turn_m @ Vector(POSE.get('L_elbow_hint', (1, .6, -.2)))
         two_bone('L_ude1', 'L_ude2', 'L_te', turn_m @ Vector(POSE['L_relaxed_wrist']), guard_hint)
+    elif POSE.get('L_arm'):
+        # Crouching Light v30+: the free arm set directly by shape, not by a hand target - the shoulder -> wrist
+        # direction and elbow side from a reference drawing, turned with the shoulder line, and an exact elbow fold
+        # (0 = straight). No shoulder reach, so the fold is what's asked for.
+        la_ = POSE['L_arm']
+        sh_l, sh_r = pose_world('L_ude1').translation, pose_world('R_ude1').translation
+        yaw_ = math.degrees(math.atan2((sh_l - sh_r).y, (sh_l - sh_r).x))
+        rot_ = Matrix.Rotation(math.radians(yaw_ - la_['ref_yaw']), 3, 'Z')
+        h_ = sh_l.copy()
+        l1_ = (pose_world('L_ude2').translation - h_).length
+        l2_ = (pose_world('L_te').translation - pose_world('L_ude2').translation).length
+        inner_ = math.radians(180 - la_['fold'])
+        dist_ = math.sqrt(l1_*l1_ + l2_*l2_ - 2*l1_*l2_*math.cos(inner_))
+        two_bone('L_ude1', 'L_ude2', 'L_te', h_ + (rot_ @ Vector(la_['dir'])).normalized()*dist_,
+                 rot_ @ Vector(la_['elbow']))
     elif POSE.get('L_free'):
         # Crouch: the left hand slides off the handle toward its free guard spot.
         l_target, l_w = POSE['L_free']
@@ -2401,7 +2416,50 @@ if LOOP:
                             sweep_k['offset_px'] = (-60, 0)
                             hit_k['offset_px'] = (-110, 0)
                             follow_k['offset_px'] = (-100, 0)
-                            if HURT.endswith(tuple(f'_v{n_}' for n_ in range(21, 100))):
+                            if HURT.endswith(tuple(f'_v{n_}' for n_ in range(26, 100))):
+                                # v26 (Kvon: the arm stays tucked at his side for poses 1-4; after pose 2 the elbow bends
+                                # more and more until pose 4): the fist holds the chamber spot instead of swinging across
+                                # his chest with the twist; poses 3 and 4 pull it toward the shoulder (v27+, measured).
+                                for k_ in (draw_k, sweep_k, hit_k, follow_k):
+                                    k_['l_hand'] = tuple(c2_)
+                                if not HURT.endswith('_v26'):
+                                    # v27: v26's fixed fist left the arm straight (35/29/31 deg) - the twist carries his
+                                    # left shoulder ~.15 m back. Rebuild each fist from the measured shoulder (v26 world):
+                                    # the chamber's shoulder -> fist offset turned with the shoulder line (+35 / +50 / +40
+                                    # deg) and shortened for more bend in poses 3-4 (1 / .87 / .75). Target = chamber
+                                    # target + (wanted fist - chamber fist); `l_fix` adds the measured residual (v28+).
+                                    s1_, f1_ = Vector((.0521, -.161, .7572)), Vector((-.0458, -.3478, .5781))
+                                    l_fix = {}
+                                    if not HURT.endswith('_v27'):
+                                        # v28: v27's fists landed off the wanted spots (bends 96 / 63 / 63) - each drawing's
+                                        # measured residual (wanted - v27 fist) added to its target.
+                                        l_fix = {id(sweep_k): (.1922, -.1496, .0484), id(hit_k): (.3447, -.2674, .0205),
+                                                 id(follow_k): (.3122, -.2415, .016)}
+                                    for k_, s_, yaw_, sc_ in ((sweep_k, (-.1538, .0766, .8234), 35.4, 1.0),
+                                                              (hit_k, (-.3112, .2244, .7861), 50.1, .87),
+                                                              (follow_k, (-.2743, .1942, .7956), 40.4, .75)):
+                                        want_ = Vector(s_) + Matrix.Rotation(math.radians(yaw_), 3, 'Z') @ (f1_ - s1_)*sc_
+                                        # v29: v28's full residual over-folded (100 / 140 / 144: the shoulder follows the
+                                        # fist in). Interpolated per drawing from the measured bends for 70 / 85 / 100 deg:
+                                        # drive .57 of v27's move (v26 35 -> v27 96), hit .29 and hold .46 of the residual.
+                                        base_, fs_ = 1.0, 1.0
+                                        if not HURT.endswith(('_v27', '_v28')):
+                                            base_, fs_ = {id(sweep_k): (.57, 0.0), id(hit_k): (1.0, .29),
+                                                          id(follow_k): (1.0, .46)}[id(k_)]
+                                        k_['l_hand'] = tuple(c2_ + (want_ - f1_)*base_ +
+                                                             Vector(l_fix.get(id(k_), (0, 0, 0)))*fs_)
+                                back1['l_hand'] = tuple(Vector(follow_k['l_hand']).lerp(cr_guard, .5))
+                                if HURT.endswith(tuple(f'_v{n_}' for n_ in range(30, 100))):
+                                    # v30: v27-v29's hand targets were chased by the shoulder reach and the bend jumped
+                                    # (96/63/63, 100/140/144, 92/10/40). Poses 2-4 now set the arm by shape (new 'l_arm'):
+                                    # the chamber's measured shoulder -> wrist direction and elbow side (v25 drawing 1:
+                                    # true elbow fold 96.5 deg, shoulder line yaw -33.4) turned with his shoulders, folded
+                                    # 96.5 (same as the chamber) -> 111.5 -> 126.5 deg.
+                                    arm_ref = dict(ref_yaw=-33.4, dir=(-.0979, -.1868, -.1791), elbow=(.0681, -.0935, -.1909))
+                                    for k_, fold_ in ((sweep_k, 96.5), (hit_k, 111.5), (follow_k, 126.5)):
+                                        k_['l_arm'] = dict(arm_ref, fold=fold_)
+                                    back1['l_hand'] = tuple(c2_.lerp(cr_guard, .5))
+                            elif HURT.endswith(tuple(f'_v{n_}' for n_ in range(21, 26))):
                                 # v21: what sets the bend is the shoulder-to-fist distance (v19: chamber .277 m = 68 deg,
                                 # hit / hold .356 m = 47 / 46 deg). Keep v19's directions; pull the hit and hold fists
                                 # ~.08 m toward the measured shoulder (elbow_angles / shfist on v19).
@@ -3211,6 +3269,7 @@ if LOOP:
             POSE['L_free'] = (tuple(ARM_FWD.lerp(ARM_BACK, arm_w)), k_['release'])
             if k_.get('l_hand') is not None:
                 POSE['L_free'] = (tuple(k_['l_hand']), k_['release'])  # hurt: left hand flung to its own spot
+            POSE['L_arm'] = k_.get('l_arm')
             if k_.get('wrist_roll') is not None:
                 POSE['r_hand_rot'] = None
                 return
