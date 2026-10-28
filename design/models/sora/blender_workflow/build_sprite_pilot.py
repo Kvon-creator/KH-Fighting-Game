@@ -2387,7 +2387,20 @@ if LOOP:
                             for k_ in (draw_k, sweep_k, hit_k, follow_k):
                                 k_['l_hand'] = tuple(l_tuck)
                             back1['l_hand'] = tuple(l_tuck.lerp(cr_guard, .5))
-                    if OUT_NAME.endswith('_lhandcheck5'):
+                    if OUT_NAME.endswith('_lhandcheck6'):
+                        # review 6 (Kvon: take the new C2, pivot the shoulder so the elbow moves further toward his back):
+                        # lhandcheck5's C2 fist unchanged; the left elbow hint swings from the default toward his back
+                        # (tc_ (0, 1, 0): he faces -y in his body frame), a little down.
+                        c2_hand = tuple(tc_ @ Vector((.12, -.10, .82)) + V_*.32)
+                        back_dir = (tc_ @ Vector((0, 1, 0)) + Vector((0, 0, -.30))).normalized()
+                        RUN_KEYS = []
+                        for t_ in (0.0, .4, .7, 1.0):
+                            k_ = dict(draw_k)
+                            k_.update(l_hand=c2_hand, smear=0,
+                                      l_elbow_hint=tuple(Vector((1, .4, -.3)).normalized().lerp(back_dir, t_)))
+                            RUN_KEYS.append(k_)
+                        GAME_FRAMES = [6]*len(RUN_KEYS); DURATIONS_MS = [100.0]*len(RUN_KEYS); n = len(RUN_KEYS)
+                    elif OUT_NAME.endswith('_lhandcheck5'):
                         # review 5: lhandcheck4 opened C2 to 68 but C1 only to 135 (fist kept against the ribs folds the
                         # elbow); C1 fist lower and further toward the camera. Others as lhandcheck4.
                         RUN_KEYS = []
