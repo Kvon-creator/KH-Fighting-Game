@@ -2221,11 +2221,22 @@ if LOOP:
                     cr_hand = tc_ @ Vector((-.36, .10, .82))
                     cr_guard = tc_ @ Vector((.10, -.30, .98))
                     cr_blade = (-U_*.55 + -to_cam*.75 + Vector((0, 0, -.38))).normalized()   # trailing back, behind him
+                    KNEEL_CL = not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 7)))
+                    if KNEEL_CL:
+                        # v7+ (Kvon approved the kneeling crouch, crouch_*_v15): hips .08 higher than the old crouch, the
+                        # back (right) knee straight down to the floor, the shin turned .50 m toward the background, the
+                        # foot on its toes (pitch 25, ankle .11 up).
+                        kneel_R = (R0[0], R0[1] - .50, .11 - TOE_D*math.sin(math.radians(25.0)), 25.0)
 
                     def cl(hand, blade, ce=.32, hunch=9.0, pitch=10.0, turn=None, l_hand=None, feet=None):
+                        if KNEEL_CL:
+                            ce -= .08
+                            feet = feet or {'L': stand['L'], 'R': kneel_R}
                         k_ = hurt(feet or stand, ce, hunch, pitch, -12.0, hand, Vector(blade).normalized(),
                                   l_hand if l_hand is not None else cr_guard, ground=True)
                         k_.update(no_center=True, look=8.0, knee_splay=.6, release=1.0)
+                        if KNEEL_CL:
+                            k_.update(toe=IDLE_R['toe'], knee_hint_world={'R': tuple(U_*.15 + Vector((0, 0, -1.0)))})
                         if turn is not None:
                             k_['turn'] = turn
                         return k_
@@ -2963,7 +2974,9 @@ if LOOP:
             POSE['hip_back_deg'] = k_.get('hip_back_deg')
             if HURT:
                 POSE['knee_in'] = dict(k_.get('knee_in') or {})
-                POSE['knee_splay'] = k_.get('knee_splay')  # crouching attacks: knees wide like the crouch  # Standing Medium v13+: back knee turns in on the pivot
+                POSE['knee_splay'] = k_.get('knee_splay')  # crouching attacks: knees wide like the crouch
+                POSE['knee_hint_world'] = k_.get('knee_hint_world') or {}  # kneeling crouch: back knee down
+                POSE['knee_hint_w'] = 1.0  # Standing Medium v13+: back knee turns in on the pivot
             POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
@@ -3140,6 +3153,11 @@ if LOOP:
             CR_KNEEL_DEPTH = .42  # v14 (Kvon: more turn than v13)
         if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 15))):
             CR_KNEEL_DEPTH = .50  # v15 (Kvon: a little more turn)
+        if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 16))):
+            # v16 (Kvon: turn until the foot is almost completely behind Sora): depth alone barely moves it on screen,
+            # so the foot also slides toward his body centre (negative slide = toward screen right).
+            CR_KNEEL = (-.30, .11, 25.0, -.08)
+            CR_KNEEL_DEPTH = .60
         # v6: (slide left, lift, pitch, sink); v7: v6's shin/foot hid behind the guard and the knee dipped below the
         # floor - foot further left so the shin shows along the floor, a little less sink.
     V12 = GAIT and globals().get('V12')
