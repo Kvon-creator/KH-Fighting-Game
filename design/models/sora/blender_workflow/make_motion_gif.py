@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
-assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
+assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 version, out_name = sys.argv[1], sys.argv[2]
 travel = '--travel' in sys.argv
 cycles = int(sys.argv[sys.argv.index('--cycles') + 1]) if '--cycles' in sys.argv else 3

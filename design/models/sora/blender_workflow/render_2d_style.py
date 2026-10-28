@@ -11,7 +11,7 @@ from pathlib import Path
 import bpy
 
 ROOT = Path(__file__).resolve().parents[4]
-assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
+assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 source, version = sys.argv[sys.argv.index('--')+1:][:2]
 SORA = ROOT / 'design/models/sora'
 SRC = SORA / source / 'sora_idle_loop.blend'

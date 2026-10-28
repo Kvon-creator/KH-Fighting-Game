@@ -1,0 +1,7 @@
+{
+  "prompt": "a person crouches down and does a fast low slash forward with the right arm, then crouches again.",
+  "seconds": "2",
+  "postprocess": "IK",
+  "space": "MeYourHint/MoMask",
+  "when": "2026-10-28T12:29:12.101Z"
+}

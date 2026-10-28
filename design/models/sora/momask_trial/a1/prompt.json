@@ -1,0 +1,7 @@
+{
+  "prompt": "a person kneels low on one knee and quickly swings a sword with the right hand from behind to the front at knee height, then returns to the kneeling pose.",
+  "seconds": "2",
+  "postprocess": "IK",
+  "space": "MeYourHint/MoMask",
+  "when": "2026-10-28T12:28:59.232Z"
+}

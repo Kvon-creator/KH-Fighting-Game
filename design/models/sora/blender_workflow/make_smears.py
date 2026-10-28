@@ -19,7 +19,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[4]
-assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
+assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 src, dst = sys.argv[1:3]
 SORA = ROOT / 'design/models/sora'
 rep = json.loads((SORA / src / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
@@ -167,7 +167,8 @@ for i, fr in enumerate(track):
                 u = (STOP if last else 1.0)*j/STEPS
                 path.append((ga + (gb - ga)*u, slerp(da, db, u)))
         draw = ImageDraw.Draw(img, 'RGBA')
-        sag = sag_offsets(path)
+        # smear_bow False (Crouching Light v11+): a chop's tip path already curves; don't bow it.
+        sag = sag_offsets(path) if fr.get('smear_bow', True) else [0.0]*len(path)
         crescent(draw, path, INNER, OUTER_TONE, sag, 64)
         crescent(draw, path, .62, CORE_TONE, sag, 30)  # narrower pale core along the tip side
         report.append({'drawing': i, 'from_drawing': i - back, 'sweep_deg': round(sweep, 1)})

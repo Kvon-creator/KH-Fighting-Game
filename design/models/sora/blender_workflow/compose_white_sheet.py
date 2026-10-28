@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
-assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
+assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 version, cols, rows = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
 OUT = ROOT / 'design/models/sora' / version
 frames = [f['filename'] for f in json.loads((OUT / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))['frames']]

@@ -1,0 +1,15 @@
+{
+  "source": "atk_clight_v10",
+  "smears": [
+    {
+      "drawing": 2,
+      "from_drawing": 1,
+      "sweep_deg": 13.7
+    },
+    {
+      "drawing": 3,
+      "from_drawing": 2,
+      "sweep_deg": 51.6
+    }
+  ]
+}

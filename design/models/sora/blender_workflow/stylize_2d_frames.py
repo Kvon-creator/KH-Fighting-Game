@@ -13,7 +13,7 @@ import numpy as np
 from PIL import Image, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[4]
-assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
+assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 source, version = sys.argv[1:3]
 SORA = ROOT / 'design/models/sora'
 OUT = SORA / version

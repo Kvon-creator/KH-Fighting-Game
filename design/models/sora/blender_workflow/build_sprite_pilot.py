@@ -16,7 +16,7 @@ import numpy as np
 from mathutils import Euler, Matrix, Quaternion, Vector
 
 ROOT = Path(__file__).resolve().parents[4]
-assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
+assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 ARGS = sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else ['sprite_pilot_v1']
 version = ARGS[0]  # pose recipe
 # Optional output name. sheet_*: same recipe on the from-scratch rig (character_blockout_v8)
@@ -2288,6 +2288,40 @@ if LOOP:
                         CL_SMEAR_SET = True
                     if not globals().get('CL_SMEAR_SET'):
                         sweep_k['smear'] = 1; hit_k['smear'] = 2
+                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))):
+                        # v9 (Kvon: refine with MoMask): body mechanics from MoMask clip a3 (momask_trial/a3/
+                        # swing_analysis.json), scaled to the kneel and to a Light. Wind-up: hand up and back past the
+                        # shoulder (a3 f15-16), blade angled toward the camera so it stays in frame; swipe down and
+                        # forward while the hips drop (a3 f17-21, hips -.25 m -> .06 here); the torso pitches forward
+                        # and the right shoulder leads through the hit and follow-through (a3 pitch 13 -> 54, shoulder
+                        # twist +16 -> +25; halved for the kneel). Same drawings, timing and kneeling legs as v8.
+                        draw_k = cl(U_*-.12 + V_*.30 + Vector((0, 0, 1.08)), -U_*.45 + V_*.75 + Vector((0, 0, .50)),
+                                    hunch=6.0, pitch=6.0, turn=IDLE_R['turn'] + 12.0)
+                        sweep_k = cl(U_*.06 + V_*.28 + Vector((0, 0, .86)), U_*.70 + V_*.45 + Vector((0, 0, .25)),
+                                     ce=.35, pitch=4.0, turn=IDLE_R['turn'] - 6.0)
+                        hit_k = cl(U_*.36 + V_*.20 + Vector((0, 0, .62)), U_*.85 + V_*.42 + Vector((0, 0, -.14)),
+                                   ce=.38, pitch=24.0, hunch=13.0, turn=IDLE_R['turn'] - 18.0)
+                        follow_k = cl(U_*.34 + V_*.10 + Vector((0, 0, .60)), U_*.72 - to_cam*.35 + Vector((0, 0, -.12)),
+                                      ce=.39, pitch=32.0, hunch=14.0, turn=IDLE_R['turn'] - 22.0)
+                        back1 = cl(cr_hand.lerp(follow_k['hand'], .5), (-U_*.30 + V_*.40 + Vector((0, 0, -.08))),
+                                   ce=.35, pitch=18.0, hunch=11.0, turn=IDLE_R['turn'] - 8.0)
+                        back2 = cl(cr_hand.lerp(follow_k['hand'], .15), (Vector(follow_k['blade_dir'])*.15 + cr_blade),
+                                   ce=.32, turn=IDLE_R['turn'])
+                        for k_, tw_ in ((draw_k, -6.0), (sweep_k, 6.0), (hit_k, 12.0), (follow_k, 16.0), (back1, 6.0)):
+                            k_['twist'] = tw_
+                        hit_k['offset_px'] = (-40, 0)
+                        follow_k['offset_px'] = (-30, 0)
+                        # the draw-back is now high, so the draw -> sweep arc no longer runs along the floor: smear it too
+                        sweep_k['smear'] = 1; hit_k['smear'] = 1; follow_k['smear'] = 1
+                        if not HURT.endswith('_v9'):
+                            # v10: v9's draw -> sweep smear covered his face and the steep sweep blade turned the hit
+                            # smear into an upright fin; no smear on the sweep, its blade nearly level.
+                            sweep_k['blade_dir'] = tuple((U_*.80 + V_*.45 + Vector((0, 0, .08))).normalized())
+                            sweep_k['smear'] = 0
+                        if not HURT.endswith(('_v9', '_v10')):
+                            # v11: the low-swing bow turned v10's sweep -> hit smear (a downward chop) into a dome; keep
+                            # the tip's real path instead.
+                            hit_k['smear_bow'] = False
                     RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
@@ -3703,6 +3737,8 @@ if LOOP:
                               'offset_px': list(RUN_KEYS[i].get('offset_px') or (0, 0)),
                               'lgrip_world': [round(c_, 5) for c_ in hand_point('L')],
                               'smear_style': RUN_KEYS[i].get('smear_style', 'arc')})
+            if 'smear_bow' in RUN_KEYS[i]:
+                KEY_TRACK[-1]['smear_bow'] = RUN_KEYS[i]['smear_bow']
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),
                        'lag': round(lag, 4),
                        'grip_error_L_m': round((hand_point('L')

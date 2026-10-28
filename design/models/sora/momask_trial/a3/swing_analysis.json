@@ -1,0 +1,538 @@
+{
+ "source": "C:/Users/kvong/OneDrive/Documents/Game Design Class/Temp KHFG folder/KH-Fighting-Game/design/models/sora/momask_trial/a3/sample_repeat0.bvh",
+ "fps": 20,
+ "frames": [
+  {
+   "frame": 1,
+   "hips_z": 0.882,
+   "pitch": 6.1,
+   "hip_turn": 0.0,
+   "shoulder_twist": 8.5,
+   "hand": [
+    0.246,
+    0.349,
+    0.835
+   ],
+   "hand_rel_z": -0.047,
+   "forearm": [
+    0.68,
+    0.29,
+    -0.68
+   ],
+   "hand_speed": 0.0
+  },
+  {
+   "frame": 2,
+   "hips_z": 0.87,
+   "pitch": 8.5,
+   "hip_turn": -1.0,
+   "shoulder_twist": 8.0,
+   "hand": [
+    0.263,
+    0.341,
+    0.816
+   ],
+   "hand_rel_z": -0.054,
+   "forearm": [
+    0.7,
+    0.27,
+    -0.66
+   ],
+   "hand_speed": 0.53
+  },
+  {
+   "frame": 3,
+   "hips_z": 0.852,
+   "pitch": 12.4,
+   "hip_turn": -2.1,
+   "shoulder_twist": 6.5,
+   "hand": [
+    0.297,
+    0.335,
+    0.788
+   ],
+   "hand_rel_z": -0.064,
+   "forearm": [
+    0.74,
+    0.24,
+    -0.63
+   ],
+   "hand_speed": 0.89
+  },
+  {
+   "frame": 4,
+   "hips_z": 0.83,
+   "pitch": 15.9,
+   "hip_turn": -4.0,
+   "shoulder_twist": 6.1,
+   "hand": [
+    0.327,
+    0.328,
+    0.76
+   ],
+   "hand_rel_z": -0.071,
+   "forearm": [
+    0.77,
+    0.2,
+    -0.6
+   ],
+   "hand_speed": 0.83
+  },
+  {
+   "frame": 5,
+   "hips_z": 0.805,
+   "pitch": 19.9,
+   "hip_turn": -6.5,
+   "shoulder_twist": 5.8,
+   "hand": [
+    0.361,
+    0.318,
+    0.723
+   ],
+   "hand_rel_z": -0.081,
+   "forearm": [
+    0.8,
+    0.15,
+    -0.57
+   ],
+   "hand_speed": 1.02
+  },
+  {
+   "frame": 6,
+   "hips_z": 0.776,
+   "pitch": 23.8,
+   "hip_turn": -7.5,
+   "shoulder_twist": 4.3,
+   "hand": [
+    0.394,
+    0.307,
+    0.685
+   ],
+   "hand_rel_z": -0.091,
+   "forearm": [
+    0.84,
+    0.11,
+    -0.54
+   ],
+   "hand_speed": 1.03
+  },
+  {
+   "frame": 7,
+   "hips_z": 0.747,
+   "pitch": 26.9,
+   "hip_turn": -9.1,
+   "shoulder_twist": 4.6,
+   "hand": [
+    0.44,
+    0.297,
+    0.669
+   ],
+   "hand_rel_z": -0.078,
+   "forearm": [
+    0.89,
+    0.06,
+    -0.46
+   ],
+   "hand_speed": 0.99
+  },
+  {
+   "frame": 8,
+   "hips_z": 0.727,
+   "pitch": 30.2,
+   "hip_turn": -7.4,
+   "shoulder_twist": 3.9,
+   "hand": [
+    0.497,
+    0.273,
+    0.667
+   ],
+   "hand_rel_z": -0.061,
+   "forearm": [
+    0.93,
+    -0.01,
+    -0.36
+   ],
+   "hand_speed": 1.24
+  },
+  {
+   "frame": 9,
+   "hips_z": 0.72,
+   "pitch": 32.6,
+   "hip_turn": -9.1,
+   "shoulder_twist": 8.1,
+   "hand": [
+    0.56,
+    0.248,
+    0.688
+   ],
+   "hand_rel_z": -0.031,
+   "forearm": [
+    0.96,
+    -0.1,
+    -0.24
+   ],
+   "hand_speed": 1.42
+  },
+  {
+   "frame": 10,
+   "hips_z": 0.718,
+   "pitch": 33.3,
+   "hip_turn": -11.5,
+   "shoulder_twist": 14.4,
+   "hand": [
+    0.595,
+    0.241,
+    0.787
+   ],
+   "hand_rel_z": 0.068,
+   "forearm": [
+    0.99,
+    -0.16,
+    0.01
+   ],
+   "hand_speed": 2.1
+  },
+  {
+   "frame": 11,
+   "hips_z": 0.725,
+   "pitch": 30.4,
+   "hip_turn": -8.4,
+   "shoulder_twist": 14.1,
+   "hand": [
+    0.585,
+    0.227,
+    0.94
+   ],
+   "hand_rel_z": 0.215,
+   "forearm": [
+    0.9,
+    -0.34,
+    0.29
+   ],
+   "hand_speed": 3.08
+  },
+  {
+   "frame": 12,
+   "hips_z": 0.73,
+   "pitch": 25.2,
+   "hip_turn": -7.6,
+   "shoulder_twist": 14.1,
+   "hand": [
+    0.472,
+    0.26,
+    1.136
+   ],
+   "hand_rel_z": 0.406,
+   "forearm": [
+    0.72,
+    -0.41,
+    0.56
+   ],
+   "hand_speed": 4.57
+  },
+  {
+   "frame": 13,
+   "hips_z": 0.731,
+   "pitch": 18.0,
+   "hip_turn": -10.6,
+   "shoulder_twist": 17.4,
+   "hand": [
+    0.32,
+    0.302,
+    1.308
+   ],
+   "hand_rel_z": 0.577,
+   "forearm": [
+    0.63,
+    -0.36,
+    0.69
+   ],
+   "hand_speed": 4.67
+  },
+  {
+   "frame": 14,
+   "hips_z": 0.724,
+   "pitch": 11.1,
+   "hip_turn": -9.2,
+   "shoulder_twist": 16.1,
+   "hand": [
+    0.173,
+    0.409,
+    1.454
+   ],
+   "hand_rel_z": 0.73,
+   "forearm": [
+    0.53,
+    0.1,
+    0.84
+   ],
+   "hand_speed": 4.66
+  },
+  {
+   "frame": 15,
+   "hips_z": 0.716,
+   "pitch": 4.3,
+   "hip_turn": -7.6,
+   "shoulder_twist": 15.4,
+   "hand": [
+    0.016,
+    0.455,
+    1.518
+   ],
+   "hand_rel_z": 0.802,
+   "forearm": [
+    0.25,
+    0.35,
+    0.9
+   ],
+   "hand_speed": 3.51
+  },
+  {
+   "frame": 16,
+   "hips_z": 0.699,
+   "pitch": -0.0,
+   "hip_turn": -7.1,
+   "shoulder_twist": 16.4,
+   "hand": [
+    -0.101,
+    0.467,
+    1.503
+   ],
+   "hand_rel_z": 0.804,
+   "forearm": [
+    0.05,
+    0.44,
+    0.9
+   ],
+   "hand_speed": 2.37
+  },
+  {
+   "frame": 17,
+   "hips_z": 0.669,
+   "pitch": -3.0,
+   "hip_turn": -4.8,
+   "shoulder_twist": 14.1,
+   "hand": [
+    -0.161,
+    0.506,
+    1.434
+   ],
+   "hand_rel_z": 0.765,
+   "forearm": [
+    -0.06,
+    0.56,
+    0.83
+   ],
+   "hand_speed": 1.99
+  },
+  {
+   "frame": 18,
+   "hips_z": 0.614,
+   "pitch": -6.5,
+   "hip_turn": -4.6,
+   "shoulder_twist": 16.7,
+   "hand": [
+    -0.141,
+    0.536,
+    1.326
+   ],
+   "hand_rel_z": 0.711,
+   "forearm": [
+    0.05,
+    0.63,
+    0.78
+   ],
+   "hand_speed": 2.28
+  },
+  {
+   "frame": 19,
+   "hips_z": 0.553,
+   "pitch": -7.5,
+   "hip_turn": -2.0,
+   "shoulder_twist": 16.2,
+   "hand": [
+    -0.022,
+    0.553,
+    1.198
+   ],
+   "hand_rel_z": 0.645,
+   "forearm": [
+    0.28,
+    0.6,
+    0.74
+   ],
+   "hand_speed": 3.51
+  },
+  {
+   "frame": 20,
+   "hips_z": 0.501,
+   "pitch": -5.1,
+   "hip_turn": -2.0,
+   "shoulder_twist": 18.9,
+   "hand": [
+    0.13,
+    0.562,
+    1.048
+   ],
+   "hand_rel_z": 0.547,
+   "forearm": [
+    0.46,
+    0.65,
+    0.6
+   ],
+   "hand_speed": 4.27
+  },
+  {
+   "frame": 21,
+   "hips_z": 0.473,
+   "pitch": 3.5,
+   "hip_turn": -2.1,
+   "shoulder_twist": 19.5,
+   "hand": [
+    0.298,
+    0.504,
+    0.945
+   ],
+   "hand_rel_z": 0.472,
+   "forearm": [
+    0.69,
+    0.52,
+    0.5
+   ],
+   "hand_speed": 4.11
+  },
+  {
+   "frame": 22,
+   "hips_z": 0.476,
+   "pitch": 12.7,
+   "hip_turn": -5.7,
+   "shoulder_twist": 21.4,
+   "hand": [
+    0.416,
+    0.455,
+    0.908
+   ],
+   "hand_rel_z": 0.432,
+   "forearm": [
+    0.79,
+    0.41,
+    0.46
+   ],
+   "hand_speed": 2.66
+  },
+  {
+   "frame": 23,
+   "hips_z": 0.487,
+   "pitch": 25.1,
+   "hip_turn": -10.7,
+   "shoulder_twist": 24.3,
+   "hand": [
+    0.51,
+    0.413,
+    0.881
+   ],
+   "hand_rel_z": 0.394,
+   "forearm": [
+    0.88,
+    0.28,
+    0.38
+   ],
+   "hand_speed": 2.13
+  },
+  {
+   "frame": 24,
+   "hips_z": 0.501,
+   "pitch": 36.5,
+   "hip_turn": -14.1,
+   "shoulder_twist": 25.3,
+   "hand": [
+    0.58,
+    0.388,
+    0.88
+   ],
+   "hand_rel_z": 0.378,
+   "forearm": [
+    0.92,
+    0.16,
+    0.36
+   ],
+   "hand_speed": 1.49
+  },
+  {
+   "frame": 25,
+   "hips_z": 0.517,
+   "pitch": 46.6,
+   "hip_turn": -16.1,
+   "shoulder_twist": 23.1,
+   "hand": [
+    0.602,
+    0.385,
+    0.895
+   ],
+   "hand_rel_z": 0.378,
+   "forearm": [
+    0.94,
+    0.11,
+    0.33
+   ],
+   "hand_speed": 0.54
+  },
+  {
+   "frame": 26,
+   "hips_z": 0.529,
+   "pitch": 54.1,
+   "hip_turn": -17.6,
+   "shoulder_twist": 21.7,
+   "hand": [
+    0.612,
+    0.371,
+    0.878
+   ],
+   "hand_rel_z": 0.349,
+   "forearm": [
+    0.97,
+    0.05,
+    0.23
+   ],
+   "hand_speed": 0.48
+  },
+  {
+   "frame": 27,
+   "hips_z": 0.544,
+   "pitch": 57.4,
+   "hip_turn": -24.2,
+   "shoulder_twist": 25.0,
+   "hand": [
+    0.587,
+    0.356,
+    0.849
+   ],
+   "hand_rel_z": 0.305,
+   "forearm": [
+    0.99,
+    -0.04,
+    0.13
+   ],
+   "hand_speed": 0.82
+  },
+  {
+   "frame": 28,
+   "hips_z": 0.555,
+   "pitch": 58.8,
+   "hip_turn": -23.3,
+   "shoulder_twist": 21.5,
+   "hand": [
+    0.565,
+    0.331,
+    0.801
+   ],
+   "hand_rel_z": 0.246,
+   "forearm": [
+    0.99,
+    -0.14,
+    0.04
+   ],
+   "hand_speed": 1.17
+  }
+ ]
+}

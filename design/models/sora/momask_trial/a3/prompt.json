@@ -1,0 +1,7 @@
+{
+  "prompt": "while crouching, a person pulls the right arm back and quickly swipes it forward low near the ground.",
+  "seconds": "1.5",
+  "postprocess": "IK",
+  "space": "MeYourHint/MoMask",
+  "when": "2026-10-28T12:29:15.960Z"
+}

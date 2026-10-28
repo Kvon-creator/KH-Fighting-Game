@@ -7,6 +7,7 @@
 - [Local AI Art Workflow](Local_AI_Art_Workflow.md): October19 pilot approval and two adjacent flat refinements, three-pose once-only preview and verified source/weapon/export checks. Full run/stop remains unfinished.
 
 - [Art Workstation Transfer](Art_Workstation_Transfer.md): October12 transfer plan for free local AI art, exact original-sheet correction requirements, unfinished checkpoints and machine-specific setup to recheck.
+- [Clickable file links](Clickable_File_Links.md): Give clickable workspace links, not typed paths; keep files he must open inside the project.
 - [Prompt handling](Prompt_Handling_Preference.md): Pasted prompts/specs are instructions for me; don't forward them to Gemini unless told to.
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
@@ -28,7 +29,7 @@
 - [Sora Standing Light](Sora_Standing_Light.md): Guard bash like a bunt - Key level across his body, guard pushed into the opponent (replaced the thrust October27).
 - [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
-- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash.
+- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash; v8 on the kneel pending review; October28 MoMask trial (a3 best, reference only).
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): Approved wide low Kingdom Key sweep.
 - [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.
 
