@@ -2339,6 +2339,13 @@ if LOOP:
                             back1['hand'] = cr_hand.lerp(follow_k['hand'], .5)
                             if not HURT.endswith('_v13'):
                                 back1['hand'] = back1['hand'] + V_*.12  # v14: v13's return guard still sat on his thigh
+                            if not HURT.endswith(('_v13', '_v14')):
+                                # v15 (Kvon: he leans over too much - rotate the torso toward the attack, only a small
+                                # lean): MoMask's forward pitch (hit 24 / follow 32) back near the crouch's own 10/9; the
+                                # rotation toward the opponent carries the swing (twist +5 on hit and follow).
+                                for k_, p_, h_, tw_ in ((sweep_k, 6.0, 9.0, 35.0), (hit_k, 13.0, 9.0, 45.0),
+                                                        (follow_k, 14.0, 9.0, 50.0), (back1, 11.0, 9.0, 20.0)):
+                                    k_.update(pitch=p_, hunch=h_, twist=tw_)
                     RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one

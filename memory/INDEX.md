@@ -29,7 +29,7 @@
 - [Sora Standing Light](Sora_Standing_Light.md): Guard bash like a bunt - Key level across his body, guard pushed into the opponent (replaced the thrust October27).
 - [Sora Standing Medium](Sora_Standing_Medium.md): Approved horizontal Kingdom Key slash across his body.
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
-- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash; v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14 pending review.
+- [Sora Crouching Light](Sora_Crouching_Light.md): Approved quick low Kingdom Key slash; v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14, small-lean v15 pending review (rotate toward the attack, little lean).
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): Approved wide low Kingdom Key sweep.
 - [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.
 
