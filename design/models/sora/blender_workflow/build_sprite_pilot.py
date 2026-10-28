@@ -55,7 +55,8 @@ if GLIDE:
 JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_v', 'jump_fall_v', 'jump_land_v',
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
-                                      'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v')) else None
+                                      'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
+                                      'atk_clight_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -647,7 +648,8 @@ if RUN:
                        'hurt_getup': [5, 4, 4, 4, 4], 'atk_slight': [2, 4, 3, 3],
                        'atk_smed': [2, 2, 3, 3, 2, 3, 4, 4, 4],
                        # Standing Heavy: Ekko's heavy timing - startup 13 (7 drawings), active 3, recovery 21.
-                       'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
+                       'atk_clight': [2, 3, 3, 4, 4, 4]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2207,6 +2209,58 @@ if LOOP:
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
+                elif jpart == 'atk_clight':
+                    # Crouching Light (Kvon, October 27; posture after Ky's 2S in Guilty Gear Strive): from the approved
+                    # crouch (crouch_hold_v4: sunk .32, hunch 9, pitch 10, neck -12, knees splayed .6, right fist low behind
+                    # him with the blade trailing back, left fist up at the chest) a small draw-back, a quick one-handed
+                    # forehand slash that sweeps the Key forward low, ending at shin height in front of him, then back.
+                    tc_ = Matrix.Rotation(math.radians(IDLE_R['turn']), 3, 'Z')
+                    cr_hand = tc_ @ Vector((-.36, .10, .82))
+                    cr_guard = tc_ @ Vector((.10, -.30, .98))
+                    cr_blade = (-U_*.55 + -to_cam*.75 + Vector((0, 0, -.38))).normalized()   # trailing back, behind him
+
+                    def cl(hand, blade, ce=.32, hunch=9.0, pitch=10.0, turn=None, l_hand=None, feet=None):
+                        k_ = hurt(feet or stand, ce, hunch, pitch, -12.0, hand, Vector(blade).normalized(),
+                                  l_hand if l_hand is not None else cr_guard, ground=True)
+                        k_.update(no_center=True, look=8.0, knee_splay=.6, release=1.0)
+                        if turn is not None:
+                            k_['turn'] = turn
+                        return k_
+                    draw_k = cl(cr_hand + U_*-.08 + Vector((0, 0, .06)), -U_*.70 + -to_cam*.55 + Vector((0, 0, -.20)),
+                                turn=IDLE_R['turn'] + 12.0)
+                    sweep_k = cl(U_*.02 + V_*.24 + Vector((0, 0, .66)), V_*.95 + U_*.10 + Vector((0, 0, -.30)),
+                                 ce=.36, pitch=14.0, turn=IDLE_R['turn'] - 6.0)
+                    hit_k = cl(U_*.30 + V_*.18 + Vector((0, 0, .58)), U_*.80 + V_*.45 + Vector((0, 0, -.40)),
+                               ce=.38, pitch=18.0, hunch=12.0, turn=IDLE_R['turn'] - 18.0)
+                    follow_k = cl(U_*.26 + V_*.08 + Vector((0, 0, .60)), U_*.55 - to_cam*.20 + Vector((0, 0, -.45)),
+                                  ce=.37, pitch=16.0, hunch=11.0, turn=IDLE_R['turn'] - 22.0)
+                    back1 = cl(cr_hand.lerp(follow_k['hand'], .5), (Vector(follow_k['blade_dir']) + cr_blade).normalized(),
+                               ce=.34, pitch=12.0, turn=IDLE_R['turn'] - 8.0)
+                    back2 = cl(cr_hand.lerp(follow_k['hand'], .15), (Vector(follow_k['blade_dir'])*.15 + cr_blade).normalized(),
+                               ce=.32, turn=IDLE_R['turn'])
+                    if not HURT.endswith('_v1'):
+                        # v2: v1's draw-back blade left the frame, the sweep pointed end-on at the camera and the hit /
+                        # follow-through tips went through the floor - a low but nearly level forehand arc.
+                        draw_k['blade_dir'] = tuple((-U_*.40 - to_cam*.85 + Vector((0, 0, -.12))).normalized())
+                        sweep_k.update(hand=U_*.04 + V_*.24 + Vector((0, 0, .70)),
+                                       blade_dir=tuple((V_*.80 + U_*.45 + Vector((0, 0, -.08))).normalized()))
+                        hit_k.update(hand=U_*.30 + V_*.18 + Vector((0, 0, .66)),
+                                     blade_dir=tuple((U_*.85 + V_*.42 + Vector((0, 0, -.14))).normalized()))
+                        follow_k.update(hand=U_*.24 + V_*.06 + Vector((0, 0, .68)),
+                                        blade_dir=tuple((U_*.55 - to_cam*.55 + Vector((0, 0, -.14))).normalized()))
+                        back1['hand'] = cr_hand.lerp(follow_k['hand'], .5)
+                        back1['blade_dir'] = tuple((Vector(follow_k['blade_dir']) + cr_blade).normalized())
+                        back2['blade_dir'] = tuple((Vector(follow_k['blade_dir'])*.15 + cr_blade).normalized())
+                    if not HURT.endswith(('_v1', '_v2')):
+                        hit_k['offset_px'] = (-40, 0)  # v3: v2's tip touched the right edge (Godot shifts back)
+                        follow_k['blade_dir'] = tuple((U_*.72 - to_cam*.35 + Vector((0, 0, -.12))).normalized())  # v2 end-on
+                        back1['blade_dir'] = tuple((Vector(follow_k['blade_dir']) + cr_blade).normalized())
+                        back2['blade_dir'] = tuple((Vector(follow_k['blade_dir'])*.15 + cr_blade).normalized())
+                    sweep_k['smear'] = 1; hit_k['smear'] = 2
+                    RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
+                    if OUT_NAME.endswith('_crouchcheck'):
+                        RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
+                        GAME_FRAMES = [6]; DURATIONS_MS = [100.0]; n = 1
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
@@ -2894,7 +2948,8 @@ if LOOP:
             POSE['ankle_deg'] = k_.get('ankle_deg')
             POSE['hip_back_deg'] = k_.get('hip_back_deg')
             if HURT:
-                POSE['knee_in'] = dict(k_.get('knee_in') or {})  # Standing Medium v13+: back knee turns in on the pivot
+                POSE['knee_in'] = dict(k_.get('knee_in') or {})
+                POSE['knee_splay'] = k_.get('knee_splay')  # crouching attacks: knees wide like the crouch  # Standing Medium v13+: back knee turns in on the pivot
             POSE['screen_head_deg'] = k_.get('head_cam', 0.0)
             POSE['L_elbow_hint_world'] = k_.get('l_elbow_hint', (1, .4, -.3))
             POSE['L_shrug_deg'] = k_.get('l_shrug', 0.0)
