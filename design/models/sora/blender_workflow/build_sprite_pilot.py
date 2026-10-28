@@ -3136,6 +3136,8 @@ if LOOP:
         CR_KNEEL_DEPTH = .14 if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 12))) else 0.0
         if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 13))):
             CR_KNEEL_DEPTH = .28  # v13 (Kvon: increase the turn)
+        if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 14))):
+            CR_KNEEL_DEPTH = .42  # v14 (Kvon: more turn than v13)
         # v6: (slide left, lift, pitch, sink); v7: v6's shin/foot hid behind the guard and the knee dipped below the
         # floor - foot further left so the shin shows along the floor, a little less sink.
     V12 = GAIT and globals().get('V12')
