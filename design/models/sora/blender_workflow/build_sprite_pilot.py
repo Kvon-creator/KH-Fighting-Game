@@ -2387,6 +2387,43 @@ if LOOP:
                             for k_ in (draw_k, sweep_k, hit_k, follow_k):
                                 k_['l_hand'] = tuple(l_tuck)
                             back1['l_hand'] = tuple(l_tuck.lerp(cr_guard, .5))
+                        if not HURT.endswith(('_v16', '_v17', '_v18')):
+                            # v19 (Kvon chose the 68 deg C2 free hand for the chamber and asked to match the rest): the
+                            # left fist in front of his lower chest toward the camera, elbow out to his side; through the
+                            # drive / hit / hold it rotates about his spine with the torso twist so the arm keeps its shape;
+                            # halfway to the guard on the first return drawing. The v18 hit/hold/drive Key teeth ran off
+                            # the frame's right edge: shifted further left in-frame (Godot shifts back).
+                            c2_ = tc_ @ Vector((.12, -.10, .82)) + V_*.32
+                            for k_ in (draw_k, sweep_k, hit_k, follow_k):
+                                rot_ = Matrix.Rotation(math.radians(k_['twist'] - draw_k['twist']), 3, 'Z')
+                                k_['l_hand'] = tuple(rot_ @ Vector((c2_.x, c2_.y, 0)) + Vector((0, 0, c2_.z)))
+                            back1['l_hand'] = tuple(Vector(follow_k['l_hand']).lerp(cr_guard, .5))
+                            sweep_k['offset_px'] = (-60, 0)
+                            hit_k['offset_px'] = (-110, 0)
+                            follow_k['offset_px'] = (-100, 0)
+                            if HURT.endswith(tuple(f'_v{n_}' for n_ in range(21, 100))):
+                                # v21: what sets the bend is the shoulder-to-fist distance (v19: chamber .277 m = 68 deg,
+                                # hit / hold .356 m = 47 / 46 deg). Keep v19's directions; pull the hit and hold fists
+                                # ~.08 m toward the measured shoulder (elbow_angles / shfist on v19).
+                                # v22: v21's full .08 m overshot (96 deg; the shoulder also follows the fist) - .43 of it.
+                                # v23: .43 gave 80 / 81 deg; measured 0 -> 47, .43 -> 80, 1 -> 96: 68 deg at ~.27.
+                                # v24: .27 gave hit 51 / hold 77 (the solver is not smooth) - tuned separately from each
+                                # drawing's own measurements: hit .36, hold .19.
+                                pull_ = {'_v21': 1.0, '_v22': .43, '_v23': .27}.get(HURT[HURT.rindex('_v'):])
+                                # v25: the solver jumps between ~50 and ~78 deg (hit .27 -> 51, .36 -> 78; hold .19 -> 52,
+                                # .27 -> 77), so 68 itself isn't reachable; use the bent branch on both: hit .36, hold .27.
+                                pull_h, pull_f = ((pull_, pull_) if pull_ is not None else
+                                                  (.36, .19) if HURT.endswith('_v24') else (.36, .27))
+                                hit_k['l_hand'] = tuple(Vector(hit_k['l_hand']) + Vector((-.047, .042, .046))*pull_h)
+                                follow_k['l_hand'] = tuple(Vector(follow_k['l_hand']) + Vector((-.041, .044, .046))*pull_f)
+                                back1['l_hand'] = tuple(Vector(follow_k['l_hand']).lerp(cr_guard, .5))
+                            elif not HURT.endswith('_v19'):
+                                # v20: v19's full-twist rotation swung the fist past where the chest turns (bends 68 / 73 /
+                                # 47 / 46 deg); the chest takes ~60% of the twist, so the fist follows by that much.
+                                for k_ in (sweep_k, hit_k, follow_k):
+                                    rot_ = Matrix.Rotation(math.radians(.6*(k_['twist'] - draw_k['twist'])), 3, 'Z')
+                                    k_['l_hand'] = tuple(rot_ @ Vector((c2_.x, c2_.y, 0)) + Vector((0, 0, c2_.z)))
+                                back1['l_hand'] = tuple(Vector(follow_k['l_hand']).lerp(cr_guard, .5))
                     if OUT_NAME.endswith('_lhandcheck6'):
                         # review 6 (Kvon: take the new C2, pivot the shoulder so the elbow moves further toward his back):
                         # lhandcheck5's C2 fist unchanged; the left elbow hint swings from the default toward his back

@@ -115,17 +115,17 @@ def thrust(draw, a, b, width_px, tone):
     draw.ellipse([end[0] - w, end[1] - w, end[0] + w, end[1] + w], fill=tone)
 
 
-def dash_lines(draw, a, b):
+def dash_lines(draw, a, b, head_frac=.80, len_scale=1.0):
     a, b = np.array(a), np.array(b)
     d = b - a
     ln = float(np.linalg.norm(d))
     if ln < 1e-6:
         return
     u = d/ln; nrm = np.array([-u[1], u[0]])
-    head = a + d*.80                                   # lines end a little behind the guard
+    head = a + d*head_frac                             # lines end a little behind the guard
     for off_px, len_k, w_px in ((-14, .70, 3), (0, 1.0, 3), (13, .55, 2)):
         front = head + nrm*off_px*SS
-        back = front - u*ln*len_k
+        back = front - u*ln*len_k*len_scale
         steps = 6
         for k in range(steps):                         # thin toward the back end, fully opaque only at the front
             p0 = back + (front - back)*k/steps; p1 = back + (front - back)*(k + 1)/steps
@@ -149,7 +149,8 @@ for i, fr in enumerate(track):
         draw = ImageDraw.Draw(img, 'RGBA')
         # Kvon: subtle dash lines instead of a smear - three thin gold lines trailing behind the guard along the
         # push, offset across it, different lengths, thinning toward their back ends.
-        dash_lines(draw, screen(pa), screen(pb))
+        # Right-fist lines (Crouching Light jab): the Key's guard covers the fist, so end them further back, longer.
+        dash_lines(draw, screen(pa), screen(pb), *((.35, 1.5) if gk_ == 'grip_world' else ()))
         report.append({'drawing': i, 'from_drawing': i - back, 'style': 'thrust',
                        'length_px': round(float(np.linalg.norm(np.array(screen(pb)) - np.array(screen(pa))))/SS, 1)})
     elif back and i - back >= 0:
