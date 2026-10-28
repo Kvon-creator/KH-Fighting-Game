@@ -1,0 +1,20 @@
+{
+  "source": "atk_sheavy_v7",
+  "smears": [
+    {
+      "drawing": 3,
+      "from_drawing": 1,
+      "sweep_deg": 80.7
+    },
+    {
+      "drawing": 4,
+      "from_drawing": 2,
+      "sweep_deg": 128.6
+    },
+    {
+      "drawing": 5,
+      "from_drawing": 4,
+      "sweep_deg": 11.8
+    }
+  ]
+}

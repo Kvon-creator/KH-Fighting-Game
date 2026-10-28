@@ -2354,6 +2354,15 @@ if LOOP:
                                 keys_[j_]['ce'] = min(keys_[j_]['ce'], .14)
                         if not HURT.endswith(('_v4', '_v5')):
                             keys_[4]['offset_px'] = (-48, 0)  # v6: v5's impact tip touched the right edge (Godot shifts back)
+                        if not HURT.endswith(('_v4', '_v5', '_v6')):
+                            # v7 (Kvon: extend the Keyblade forward slightly more): hands further toward the opponent, blade
+                            # a little less steep; bigger in-frame shift so the tip stays inside.
+                            keys_[4]['hand'] = U_*.50 + V_*.14 + Vector((0, 0, .84))
+                            keys_[4]['blade_dir'] = tuple((U_*.72 + V_*.55 + Vector((0, 0, -.28))).normalized())
+                            keys_[5]['hand'] = U_*.44 + V_*.16 + Vector((0, 0, .74))
+                            keys_[5]['blade_dir'] = tuple((U_*.60 + V_*.62 + Vector((0, 0, -.42))).normalized())
+                            keys_[4]['offset_px'] = (-96, 0)
+                            keys_[5]['offset_px'] = (-40, 0)
                         keys_[3]['smear'] = 2; keys_[4]['smear'] = 2; keys_[5]['smear'] = 1
                         RUN_KEYS = keys_
                         GAME_FRAMES = [2, 4, 3, 4, 3, 5, 6, 5, 5]   # startup 13, active 3, recovery 21 (Ekko's heavy)
