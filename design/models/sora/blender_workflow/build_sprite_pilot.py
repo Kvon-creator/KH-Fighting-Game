@@ -2322,6 +2322,23 @@ if LOOP:
                             # v11: the low-swing bow turned v10's sweep -> hit smear (a downward chop) into a dome; keep
                             # the tip's real path instead.
                             hit_k['smear_bow'] = False
+                        if not HURT.endswith(('_v9', '_v10', '_v11')):
+                            # v12 (Kvon: the arm clipped through him - turn his torso): v9-v11 turned him toward the
+                            # camera through the swing, so the right arm reached across his chest and the guard sat on his
+                            # front thigh. Hips stay at the crouch turn; the upper body twists toward the opponent so the
+                            # right shoulder leads. Hands and blades unchanged (same range).
+                            for k_, tw_ in ((sweep_k, 25.0), (hit_k, 40.0), (follow_k, 45.0), (back1, 20.0)):
+                                k_.update(turn=IDLE_R['turn'], twist=tw_)
+                        if not HURT.endswith(('_v9', '_v10', '_v11', '_v12')):
+                            # v13: v12's sweep forearm still crossed his chest and the hit/follow guard sat in his front
+                            # shin. Hands move straight toward the camera (V_ is the view axis of this orthographic
+                            # camera, so the on-screen path and reach are unchanged) and the sweep twists further.
+                            for k_, dv_ in ((sweep_k, .14), (hit_k, .14), (follow_k, .16)):
+                                k_['hand'] = k_['hand'] + V_*dv_
+                            sweep_k['twist'] = 35.0
+                            back1['hand'] = cr_hand.lerp(follow_k['hand'], .5)
+                            if not HURT.endswith('_v13'):
+                                back1['hand'] = back1['hand'] + V_*.12  # v14: v13's return guard still sat on his thigh
                     RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
