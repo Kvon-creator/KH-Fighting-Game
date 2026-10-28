@@ -2227,11 +2227,17 @@ if LOOP:
                         # back (right) knee straight down to the floor, the shin turned .50 m toward the background, the
                         # foot on its toes (pitch 25, ankle .11 up).
                         kneel_R = (R0[0], R0[1] - .50, .11 - TOE_D*math.sin(math.radians(25.0)), 25.0)
+                        kneel_L = stand['L']
+                        if not HURT.endswith('_v7'):
+                            # v8 (final crouch v18): back foot .24 toward his centre and .57 into the background, front
+                            # foot .14 in under his torso.
+                            kneel_R = (R0[0] + .24, R0[1] - .57, .11 - TOE_D*math.sin(math.radians(25.0)), 25.0)
+                            kneel_L = (L0[0] - .14, L0[1], 0.0, 0.0)
 
                     def cl(hand, blade, ce=.32, hunch=9.0, pitch=10.0, turn=None, l_hand=None, feet=None):
                         if KNEEL_CL:
                             ce -= .08
-                            feet = feet or {'L': stand['L'], 'R': kneel_R}
+                            feet = feet or {'L': kneel_L, 'R': kneel_R}
                         k_ = hurt(feet or stand, ce, hunch, pitch, -12.0, hand, Vector(blade).normalized(),
                                   l_hand if l_hand is not None else cr_guard, ground=True)
                         k_.update(no_center=True, look=8.0, knee_splay=.6, release=1.0)
