@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = fs.realpathSync(path.resolve(here, '../../../../../..'));
-if (root.toLowerCase() !== 'd:\\kh fighting game') throw Error(`Unexpected workspace: ${root}`);
+if (!fs.existsSync(path.join(root, 'KingdomArena', 'project.godot'))) throw Error(`Unexpected workspace: ${root}`);  // project root (any clone)
 const argv = process.argv.slice(2);
 const command = argv.shift() || 'inspect';
 const options = {};
@@ -99,7 +99,12 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'standing-heavy-downslash': [
+const referenceSets = {'crouching-medium-concept': [
+  // Kvon: a full Crouching Medium pose sheet from Sora's existing 3D renders, active frame matching Ky's GGST 2S.
+  'design/models/sora/crouch_hold2d_v18/frames_512/sora_idle3d_00.png',
+  'design/models/sora/atk_clight2d_v30/Crouching_Light_Sheet.png',
+  'design/references/ky_ggst_2s_active_kvon.png'
+], 'standing-heavy-downslash': [
   // Kvon: the Standing Heavy becomes an advancing downward slash (step forward with the back foot for range).
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/atk_smed2d_v15/Standing_Medium_Sheet.png'

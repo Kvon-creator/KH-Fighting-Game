@@ -5,7 +5,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../../../../..'))
-if ($workspaceRoot.TrimEnd('\') -ine 'D:\KH Fighting Game') {
+if (-not (Test-Path -LiteralPath (Join-Path $workspaceRoot 'KingdomArena\project.godot') -PathType Leaf)) {  # project root (any clone)
     throw "Unexpected workspace: $workspaceRoot. Check paths before launching."
 }
 $profilePath = [IO.Path]::GetFullPath((Join-Path $workspaceRoot ".local/browser-agent/brave-$Port"))
