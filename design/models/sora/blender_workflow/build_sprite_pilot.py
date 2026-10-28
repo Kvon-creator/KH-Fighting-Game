@@ -3132,6 +3132,7 @@ if LOOP:
             POSE.pop(k_, None)
         CR_LOG = []
         CR_RFOOT0 = tuple(POSE['R_foot'][:2]) + (0.0,)
+        CR_LFOOT0 = tuple(POSE['L_foot'][:2])
         CR_TOE = 1.5*(pose_world('L_ashi2').translation - pose_world('L_ashi1').translation).length
         # (back-foot slide behind in body frame +y, ankle lift, toe pitch deg, extra hip sink)
         CR_KNEEL = None if CROUCH.endswith(('_v1', '_v2', '_v3', '_v4')) else (
@@ -3161,6 +3162,7 @@ if LOOP:
         if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 17))):
             CR_KNEEL = (-.24, .11, 25.0, -.08)  # v17 (Kvon: a tiny bit back the opposite way)
             CR_KNEEL_DEPTH = .57
+        CR_FRONT_IN = .14 if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 18))) else 0.0  # v18: front foot in (m)
         # v6: (slide left, lift, pitch, sink); v7: v6's shin/foot hid behind the guard and the knee dipped below the
         # floor - foot further left so the shin shows along the floor, a little less sink.
     V12 = GAIT and globals().get('V12')
@@ -3435,6 +3437,12 @@ if LOOP:
                 POSE['knee_hint_world'] = {'R': tuple(-right_*.45 + Vector((0, 0, -.90)))}
                 if not CROUCH.endswith('_v9'):
                     POSE['knee_hint_world'] = {'R': tuple(right_*.15 + Vector((0, 0, -1.0)))}  # v10: knee straight down
+                if CR_FRONT_IN:
+                    # v18+ (Kvon: more bend in the front knee, foot toward the middle of his torso): the front (left) foot
+                    # slides toward screen left, under his body; the hips stay, so the knee bends more.
+                    d2_ = tb_ @ (right_*-CR_FRONT_IN)
+                    lx_, ly_ = CR_LFOOT0
+                    POSE['L_foot'] = (lx_ + d2_.x*w_, ly_ + d2_.y*w_, POSE['L_foot'][2] if len(POSE['L_foot']) > 2 else None)
                 POSE['knee_hint_w'] = w_
             elif CR_KNEEL:
                 # v6+: kneel seen side-on - the back foot slides toward screen left onto its toes (shin back along the

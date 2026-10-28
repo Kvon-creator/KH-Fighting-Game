@@ -1,0 +1,15 @@
+{
+  "source": "crouch_hold_v18/sora_idle_loop.blend",
+  "version": "crouch_hold2d_v18",
+  "frames": [
+    "sora_idle3d_00.png",
+    "sora_idle3d_01.png",
+    "sora_idle3d_02.png",
+    "sora_idle3d_03.png",
+    "sora_idle3d_04.png",
+    "sora_idle3d_05.png",
+    "sora_idle3d_06.png",
+    "sora_idle3d_07.png"
+  ],
+  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
+}
