@@ -869,6 +869,9 @@ def solve_pose(breath=0.0, lag=None):
             # Swing the knee in toward the middle of the torso (walk v6+), then back out.
             knee_hint = knee_hint.lerp(Vector((-sign*.6, -1, 0)), knee_in)
         knee = turn_m @ knee_hint
+        if POSE.get('knee_hint_world', {}).get(s) is not None:
+            # Kneeling crouch (v6+): this knee points where given in world terms (down and forward to the floor).
+            knee = knee.lerp(Vector(POSE['knee_hint_world'][s]), POSE.get('knee_hint_w', 1.0))
         lift = foot[2] or 0  # walk gait raises the swinging foot
         foot_t = turn_m @ Vector((foot[0], foot[1], ankle_z + lift))
         if POSE.get('leg_reach'):
@@ -3115,6 +3118,22 @@ if LOOP:
         for k_ in ('crouch_extra', 'hunch_extra', 'pitch_extra', 'neck_extra', 'knee_splay', 'grip_offset_world'):
             POSE.pop(k_, None)
         CR_LOG = []
+        CR_RFOOT0 = tuple(POSE['R_foot'][:2]) + (0.0,)
+        CR_TOE = 1.5*(pose_world('L_ashi2').translation - pose_world('L_ashi1').translation).length
+        # (back-foot slide behind in body frame +y, ankle lift, toe pitch deg, extra hip sink)
+        CR_KNEEL = None if CROUCH.endswith(('_v1', '_v2', '_v3', '_v4')) else (
+            (.30, .06, 60.0, .06) if CROUCH.endswith('_v5') else
+            ((.08, .08, 65.0, .12) if CROUCH.endswith('_v6') else (.24, .07, 70.0, .10)))
+        if CROUCH.endswith(('_v8',)) or not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 8))):
+            CR_KNEEL = (.24, .02, 70.0, .10)  # v8: ankle lifted only by the toe pitch
+        if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))):
+            CR_KNEEL = (.28, .03, 40.0, -.08)  # v9: (slide left, ankle lift, toe pitch, sink: negative = hips HIGHER)
+        if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 10))):
+            CR_KNEEL = (0.0, .03, 40.0, -.08)  # v10: v9's foot sat too far back (leg straight, knee off the floor)
+        if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 11))):
+            CR_KNEEL = (0.0, .11, 25.0, -.08)  # v11: v10's toe went ~10 cm through the floor - ankle up, less pitch
+        # v6: (slide left, lift, pitch, sink); v7: v6's shin/foot hid behind the guard and the knee dipped below the
+        # floor - foot further left so the shin shows along the floor, a little less sink.
     V12 = GAIT and globals().get('V12')
     if V12:
         BASE_BLADE = blade.copy()
@@ -3363,6 +3382,45 @@ if LOOP:
                 breath = 0.0
                 lag = (1 - math.cos(2*math.pi*(0 - .12))) / 2  # idle frame 1, as the shuffle starts
             POSE.update({k_: CR[k_]*w_ for k_ in ('crouch_extra', 'hunch_extra', 'pitch_extra', 'neck_extra', 'knee_splay')})
+            if CR_KNEEL and CROUCH.endswith('_v5'):
+                # v5 (Kvon: the back leg kneels): back foot further behind him onto its toes - but "behind" in his body
+                # frame points into the screen from this camera, so the leg hid behind him (replaced by v6).
+                kb_, kl_, kp_, kc_ = CR_KNEEL
+                fx_, fy_, _ = CR_RFOOT0
+                POSE['R_foot'] = (fx_, fy_ + kb_*w_, kl_*w_ + CR_TOE*math.sin(math.radians(kp_*w_)))
+                POSE['foot_pitch'] = {'R': kp_*w_}
+                POSE['crouch_extra'] = POSE['crouch_extra'] + kc_*w_
+            elif CR_KNEEL and not CROUCH.endswith(('_v6', '_v7', '_v8')):
+                # v9+: a real kneel. v6-v8 kept the crouch's very low hips (~.23 m), so the back leg could not fold
+                # under him and stretched out sideways with the ankle raised. Hips higher (less sink), the back knee
+                # on the floor a little behind the hips, the shin back along the floor to the foot on its toes; ankle
+                # target low and the knee pointing down and back.
+                ks_, ka_, kp_, kc_ = CR_KNEEL
+                tb_ = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z').inverted()
+                right_ = Vector((math.cos(t), math.sin(t), 0))
+                d_ = tb_ @ (right_*-ks_)
+                fx_, fy_, _ = CR_RFOOT0
+                POSE['R_foot'] = (fx_ + d_.x*w_, fy_ + d_.y*w_, ka_*w_)
+                POSE['foot_pitch'] = {'R': kp_*w_}
+                POSE['crouch_extra'] = POSE['crouch_extra'] + kc_*w_
+                POSE['knee_hint_world'] = {'R': tuple(-right_*.45 + Vector((0, 0, -.90)))}
+                if not CROUCH.endswith('_v9'):
+                    POSE['knee_hint_world'] = {'R': tuple(right_*.15 + Vector((0, 0, -1.0)))}  # v10: knee straight down
+                POSE['knee_hint_w'] = w_
+            elif CR_KNEEL:
+                # v6+: kneel seen side-on - the back foot slides toward screen left onto its toes (shin back along the
+                # floor), the hips sink so the knee reaches the floor, and that knee points down and forward.
+                ks_, kl_, kp_, kc_ = CR_KNEEL
+                tb_ = Matrix.Rotation(math.radians(POSE.get('body_turn_deg', 0)), 3, 'Z').inverted()
+                d_ = tb_ @ (Vector((math.cos(t), math.sin(t), 0))*-ks_)
+                fx_, fy_, _ = CR_RFOOT0
+                POSE['R_foot'] = (fx_ + d_.x*w_, fy_ + d_.y*w_, kl_*w_ + CR_TOE*math.sin(math.radians(kp_*w_)))
+                # v8: v7's foot tipped toes-UP (the pitch sign comes out reversed for this crouch's turned back foot).
+                POSE['foot_pitch'] = {'R': (kp_ if CROUCH.endswith(('_v6', '_v7')) else -kp_)*w_}
+                POSE['crouch_extra'] = POSE['crouch_extra'] + kc_*w_
+                POSE['knee_hint_world'] = {'R': tuple(Vector((math.cos(t), math.sin(t), 0))*.55 + to_cam*.15
+                                                      + Vector((0, 0, -.82)))}
+                POSE['knee_hint_w'] = w_
             # Blade: yaw round behind him (away from the camera) and tilt down, s = blade progress.
             s_ = w_
             yaw_ = CR_YAW0 + CR_DYAW*s_
@@ -3377,6 +3435,10 @@ if LOOP:
             # Left hand: on the handle for the first part of the move, then off to the guard.
             l_w = min(1.0, max(0.0, (w_ - .1)/.6)); l_w = l_w*l_w*(3 - 2*l_w)
             POSE['L_free'] = (tuple(CR_GUARD), l_w)
+            if OUT_NAME.endswith('_dbg'):
+                solve_pose(0.0, lag)
+                print('KNEEDBG', {b_: [round(c_, 3) for c_ in pose_world(b_).translation] for b_ in ('R_momo', 'R_sune', 'R_ashi1', 'R_ashi2', 'L_sune', 'hara')},
+                      'floor', round(world_bounds(body)[0].z, 3), 'R_foot', POSE['R_foot'], 'cam_right', [round(math.cos(t), 3), round(math.sin(t), 3)])
             CR_LOG.append({'t': round(w_, 3), 'left_release': round(l_w, 3),
                            'blade_yaw_deg': round(math.degrees(yaw_), 1), 'blade_el_deg': round(math.degrees(el_), 1)})
         elif GAIT and IDLE_SHUFFLE:
