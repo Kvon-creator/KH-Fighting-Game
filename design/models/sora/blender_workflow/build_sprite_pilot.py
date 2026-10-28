@@ -2379,6 +2379,14 @@ if LOOP:
                             hit_k['hand'] = U_*.30 + V_*.18 + Vector((0, 0, .66))
                             follow_k['hand'] = U_*.22 + V_*.20 + Vector((0, 0, .67))
                             back1['blade_dir'] = tuple((-U_*.30 + V_*.40 + Vector((0, 0, -.08))).normalized())
+                        if not HURT.endswith(('_v16', '_v17')):
+                            # v18 (Kvon: tuck the non-sword hand at his side, still bent): the left fist leaves the chest
+                            # guard for his left side at the waist, a little behind the hip, elbow bent, through the jab;
+                            # halfway back on the first return drawing, the crouch guard again on the last.
+                            l_tuck = tc_ @ Vector((.22, .06, .80))
+                            for k_ in (draw_k, sweep_k, hit_k, follow_k):
+                                k_['l_hand'] = tuple(l_tuck)
+                            back1['l_hand'] = tuple(l_tuck.lerp(cr_guard, .5))
                     RUN_KEYS = [draw_k, sweep_k, hit_k, follow_k, back1, back2]
                     if OUT_NAME.endswith('_crouchcheck'):
                         RUN_KEYS = [cl(cr_hand, cr_blade)]  # review: the rebuilt crouch next to the approved one
