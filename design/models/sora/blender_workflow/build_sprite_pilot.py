@@ -3158,6 +3158,9 @@ if LOOP:
             # so the foot also slides toward his body centre (negative slide = toward screen right).
             CR_KNEEL = (-.30, .11, 25.0, -.08)
             CR_KNEEL_DEPTH = .60
+        if not CROUCH.endswith(tuple(f'_v{n_}' for n_ in range(1, 17))):
+            CR_KNEEL = (-.24, .11, 25.0, -.08)  # v17 (Kvon: a tiny bit back the opposite way)
+            CR_KNEEL_DEPTH = .57
         # v6: (slide left, lift, pitch, sink); v7: v6's shin/foot hid behind the guard and the knee dipped below the
         # floor - foot further left so the shin shows along the floor, a little less sink.
     V12 = GAIT and globals().get('V12')
