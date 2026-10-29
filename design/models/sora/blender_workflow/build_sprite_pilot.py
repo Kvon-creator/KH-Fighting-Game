@@ -2718,6 +2718,8 @@ if LOOP:
                                         if not HURT.endswith(('_v15', '_v16', '_v17')):
                                             # v18 (Kvon): front foot further forward (v17's thigh pressed into his torso).
                                             act_k['feet'] = {'L': (.36, L0[1], 0.0, 25.0), 'R': act_k['feet']['R']}
+                                            if not HURT.endswith('_v18'):
+                                                act_k['offset_px'] = (80, 0)  # v19: v18's front foot touched the right edge
                                     if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(11, 18))):
                                         # v18 (Kvon: he looks forward for the whole animation): the head turns back against
                                         # the chest twist so the face stays on the opponent at screen right.
