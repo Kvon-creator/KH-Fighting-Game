@@ -17,7 +17,8 @@ extends Node2D
 ## U = Standing Light (a guard bash), I = Standing Medium (a batter-style slash with Keyblade smears),
 ## O = Standing Heavy (an advancing downward slash); while standing or walking.
 ## U while holding S or Down = Crouching Light (a low jab from the kneel); I while holding S or Down =
-## Crouching Medium (a lunging low sweep).
+## Crouching Medium (a lunging low sweep); O while holding S or Down = Crouching Heavy (an overhead Keyblade
+## thrust that launches).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
@@ -36,6 +37,9 @@ extends Node2D
 const FLOOR_Y := 600.0
 ## Pixel in each 384 x 384 frame that sits on the floor (shared by every Sora animation).
 const FEET := Vector2(192, 354)
+## Animations drawn on taller 384 x 576 frames (the Crouching Heavy's overhead thrust): the extra 192 px are
+## added above him, so his feet sit 192 px lower in the frame.
+const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192)}
 ## How far he may walk toward either screen edge.
 const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
@@ -174,6 +178,11 @@ const ANIMATIONS := {
 	# the chin, he lunges out, the Key circles level over his head, comes round flat at waist height and sweeps low
 	# behind him, then he draws back into the crouch guard. Startup 9, active 3, recovery 17.
 	&"attack_cmedium": ["res://assets/sora/attack_cmedium_384/", "sora_attack_cmedium_", [2, 3, 2, 2, 3, 5, 12], []],
+	# Crouching Heavy (O while crouching; Kvon liked v8, after Sora's SSBU up smash): a grounded upward launcher -
+	# gather low with the Key upright, rise while turning away, thrust it straight up overhead one-handed with his
+	# chest to the background (the hit), hold with the knee up, tip it back and settle into the crouch guard.
+	# Startup 11, active 4, recovery 22. Drawn on taller 384 x 576 frames (see TALL_FEET).
+	&"attack_cheavy": ["res://assets/sora/attack_cheavy_384/", "sora_attack_cheavy_", [6, 5, 4, 8, 5, 4, 5], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -187,7 +196,8 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
 	&"attack_heavy": ["res://assets/sora/attack_heavy_smear_384/", "sora_attack_heavy_smear_"],  # Kvon: a small streak on the bash
 	&"attack_clight": ["res://assets/sora/attack_clight_smear_384/", "sora_attack_clight_smear_"],
-	&"attack_cmedium": ["res://assets/sora/attack_cmedium_smear_384/", "sora_attack_cmedium_smear_"]}
+	&"attack_cmedium": ["res://assets/sora/attack_cmedium_smear_384/", "sora_attack_cmedium_smear_"],
+	&"attack_cheavy": ["res://assets/sora/attack_cheavy_smear_384/", "sora_attack_cheavy_smear_"]}
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -466,6 +476,11 @@ func _physics_process(_delta: float) -> void:
 		_sprite.position.y = FLOOR_Y
 		_show(&"attack_medium")
 		return
+	# Crouching Heavy (O while crouching): same rules as the Crouching Light.
+	if heavy_pressed and not back_dashing and crouch and anim in GROUND_CANCEL:
+		_sprite.position.y = FLOOR_Y
+		_show(&"attack_cheavy")
+		return
 	# Standing Heavy (O): same rules.
 	if heavy_pressed and not back_dashing and not crouch and anim in GROUND_CANCEL:
 		_sprite.position.y = FLOOR_Y
@@ -532,7 +547,7 @@ func _physics_process(_delta: float) -> void:
 			_show(&"idle")
 		elif anim == &"crouch_down" or anim == &"crouch_hold":
 			_show(&"crouch_hold")
-		elif anim == &"attack_clight" or anim == &"attack_cmedium":
+		elif anim in [&"attack_clight", &"attack_cmedium", &"attack_cheavy"]:
 			# It ends in the crouch guard: stay down, or stand up from the full crouch.
 			_show(&"crouch_hold" if crouch else &"crouch_up")
 		else:
@@ -720,7 +735,7 @@ func _show(anim: StringName, drawing: int = 0) -> void:
 	_sprite.frame = drawing
 	_hold = 0
 	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
-	_sprite.offset = -FEET + Vector2(shift, 0)
+	_sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, 0)
 	_smear.visible = _smear_frames.has(anim)
 	if _smear.visible:
 		_smear.texture = _smear_frames[anim][drawing]
