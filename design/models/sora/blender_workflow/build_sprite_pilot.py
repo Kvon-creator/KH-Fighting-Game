@@ -2686,6 +2686,12 @@ if LOOP:
                                         k_.update(feet=lunge_f, ankle_deg={'R': 15.0}, toe_bend={'L': 25.0},
                                                   pitch=k_['pitch'] + (14.0 if HURT.endswith('_v11') else 10.0),
                                                   hunch=k_['hunch'] + (6.0 if HURT.endswith('_v11') else 4.0))
+                                    if not HURT.endswith(('_v11', '_v12', '_v13')):
+                                        # v14 (Kvon: orient the straight leg so the foot touches the ground): v13's back leg
+                                        # rose to hip height (ankle target lifted by the toe pitch). Ankle aimed low at the
+                                        # floor so the straight leg slopes down and the pointed foot reaches the ground.
+                                        for k_ in (windup_k, sweep_k, round_k, act_k):
+                                            k_['feet'] = {'L': lunge_f['L'], 'R': (-.70, R0[1], 0.0, 0.0)}
                                     if not HURT.endswith('_v11'):
                                         # v12: v11 hid his face and pushed the pointed back foot / low blades past the left
                                         # edge and the floor: a little less lean, frames drawn right, blades raised.
@@ -4010,6 +4016,10 @@ if LOOP:
             POSE['wrist_roll'] = float(best_g[1])
             print('SHAFT_GRIP', i, best_g)
         solve_pose(breath, lag)
+        if HURT and OUT_NAME.endswith('_footdbg'):
+            dg_ = bpy.context.evaluated_depsgraph_get()
+            print('FOOTDBG', i, {b_: [round(c_, 3) for c_ in pose_world(b_).translation] for b_ in ('R_momo', 'R_sune', 'R_ashi1', 'R_ashi2', 'hara')},
+                  'R_foot_target', POSE.get('R_foot'))
         if HURT and OUT_NAME.endswith('_dbg'):
             sh_ = pose_world('L_ude1').translation; el_ = pose_world('L_ude2').translation; wr_ = pose_world('L_te').translation
             print('DBG', i, 'R', [round(c_, 3) for c_ in hand_point('R')], 'L', [round(c_, 3) for c_ in hand_point('L')],
