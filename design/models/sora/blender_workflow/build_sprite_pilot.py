@@ -2736,6 +2736,23 @@ if LOOP:
                                         sweep_k['blade_dir'] = tuple(((U_*.80 + V_*.45) if HURT.endswith('_v12') else
                                                                       (U_*.55 + V_*.80) + Vector((0, 0, -.04))).normalized())
                                         round_k['blade_dir'] = tuple((V_*.85 - U_*.20 + Vector((0, 0, -.06))).normalized())
+                            if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(3, 20))):
+                                # v20 (Kvon's Ky 2S GIFs, references/Ky_2S.gif frames 23-37): after the wind-up the blade
+                                # circles LEVEL over his head (pointing back), then comes round flat at waist height in
+                                # front of him (pointing forward) and carries on past the camera side into the active pose
+                                # (low behind). The body drops as it goes: the round drawing already takes the active
+                                # pose's low bent back leg (Ky's knee is near the floor from frame 33).
+                                sweep_k.update(hand=U_*.04 + V_*.12 + Vector((0, 0, 1.28)),
+                                               blade_dir=tuple((-U_*.85 - V_*.30 + Vector((0, 0, .10))).normalized()),
+                                               twist=-10.0, offset_px=(40, 0))
+                                round_k.update(hand=U_*.30 + V_*.30 + Vector((0, 0, .62)),
+                                               blade_dir=tuple((U_*.80 + V_*.55 + Vector((0, 0, -.04))).normalized()),
+                                               twist=20.0, offset_px=(-60, 0),
+                                               feet={'L': (.30, L0[1], 0.0, 25.0), 'R': act_k['feet']['R']},
+                                               knee_hint_world=act_k['knee_hint_world'], ankle_deg=None,
+                                               toe_bend={'L': 25.0}, ce=act_k['ce'], lean_cam=-14.0)
+                                for k_ in (sweep_k, round_k):
+                                    k_['look'] = 8.0 + CM_LOOK_SIGN*k_['twist']
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
                             RUN_KEYS = [in_k, windup_k, sweep_k, round_k, act_k, recover_k, crouch_k]
                             GAME_FRAMES = [2, 3, 2, 2, 3, 5, 12]
