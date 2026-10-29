@@ -2591,6 +2591,35 @@ if LOOP:
                                           blade_dir=tuple(trail_.normalized()), offset_px=(100, 0))
                         RUN_KEYS = [cm_a, cm_b, cm_c]
                         GAME_FRAMES = [6]*3; DURATIONS_MS = [100.0]*3; n = 3
+                        if not HURT.endswith(('_v1', '_v2')):
+                            # v3 (Kvon, October 29: "Use these poses for now" - Gemini round 51, active pose A): from the
+                            # kneel, the Key rises up and back over his rear shoulder (wind-up), sweeps forward low near
+                            # the floor in front of him, swings round toward the camera (in-between Gemini skips), reaches
+                            # pose A (arm back, Key trailing low behind), then comes back low in front and into the kneel.
+                            # Startup 9 (in, wind-up, sweep, round), active 3, recovery 17 - like the Standing Medium.
+                            crouch_k = cl(cr_hand, cr_blade)
+                            windup_k = cl(U_*-.30 + V_*.18 + Vector((0, 0, 1.10)), -U_*.55 + V_*.35 + Vector((0, 0, .75)),
+                                          ce=.30, hunch=4.0, pitch=4.0, turn=IDLE_R['turn'] + 10.0)
+                            windup_k['twist'] = -15.0
+                            in_k = cl(cr_hand.lerp(windup_k['hand'], .5),
+                                      (cr_blade + Vector(windup_k['blade_dir'])).normalized(), ce=.31, turn=IDLE_R['turn'] + 5.0)
+                            sweep_k = cl(U_*.26 + V_*.30 + Vector((0, 0, .56)), U_*.80 + V_*.40 + Vector((0, 0, -.18)),
+                                         ce=.36, hunch=10.0, pitch=16.0, turn=IDLE_R['turn'])
+                            sweep_k.update(twist=30.0, offset_px=(-60, 0))
+                            round_k = cl(U_*-.02 + V_*.36 + Vector((0, 0, .56)), V_*.85 - U_*.20 + Vector((0, 0, -.20)),
+                                         ce=.36, hunch=11.0, pitch=20.0, turn=IDLE_R['turn'])
+                            round_k['twist'] = 5.0
+                            act_k = dict(cm_a)
+                            recover_k = cl(U_*.10 + V_*.30 + Vector((0, 0, .62)), U_*.45 + V_*.55 + Vector((0, 0, -.45)),
+                                           ce=.34, hunch=8.0, pitch=10.0, turn=IDLE_R['turn'])
+                            if not HURT.endswith('_v3'):
+                                # v4: v3's in-between blade ran off the left edge and the recovery tip went through the floor.
+                                in_k['blade_dir'] = tuple((-U_*.30 + V_*.75 + Vector((0, 0, .45))).normalized())
+                                recover_k['blade_dir'] = tuple((U_*.55 + V_*.70 + Vector((0, 0, -.22))).normalized())
+                            sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
+                            RUN_KEYS = [in_k, windup_k, sweep_k, round_k, act_k, recover_k, crouch_k]
+                            GAME_FRAMES = [2, 3, 2, 2, 3, 5, 12]
+                            DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
