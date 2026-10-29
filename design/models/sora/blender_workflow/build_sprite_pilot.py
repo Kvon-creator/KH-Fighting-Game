@@ -2878,6 +2878,12 @@ if LOOP:
                                             wv_ = rz_ @ (U_*fs_ + V_*fl_)
                                             feet_[sd_] = (wv_.dot(U_), wv_.dot(V_), *rest_)
                                         k_['feet'] = feet_
+                            if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                                # v5 (Kvon: angle the free arm downward during the attack, same direction as now): the
+                                # free hand keeps its place behind and to the side but drops .45 m, so the arm slopes
+                                # down from the shoulder.
+                                for k_ in (thrust_k, hold_k):
+                                    k_['l_hand'] = tuple(Vector(k_['l_hand']) + Vector((0, 0, -.45)))
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)

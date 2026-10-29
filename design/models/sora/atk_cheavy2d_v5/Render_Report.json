@@ -1,0 +1,14 @@
+{
+  "source": "atk_cheavy_v5/sora_idle_loop.blend",
+  "version": "atk_cheavy2d_v5",
+  "frames": [
+    "sora_idle3d_00.png",
+    "sora_idle3d_01.png",
+    "sora_idle3d_02.png",
+    "sora_idle3d_03.png",
+    "sora_idle3d_04.png",
+    "sora_idle3d_05.png",
+    "sora_idle3d_06.png"
+  ],
+  "style": "cool two-tone cel (shadow .52/.54/.70 at .42), navy ink, outer 3.0 / inner 1.1"
+}

@@ -1,0 +1,11 @@
+{
+  "source": "atk_cheavy_v5",
+  "smears": [
+    {
+      "drawing": 2,
+      "from_drawing": 1,
+      "style": "thrust",
+      "length_px": 215.7
+    }
+  ]
+}
