@@ -18,7 +18,7 @@ extends Node2D
 ## O = Standing Heavy (an advancing downward slash); while standing or walking.
 ## U while holding S or Down = Crouching Light (a low jab from the kneel); I while holding S or Down =
 ## Crouching Medium (a lunging low sweep); O while holding S or Down = Crouching Heavy (an overhead Keyblade
-## thrust that launches).
+## thrust that launches). U in the air = Jumping Light (a quick level Keyblade slash).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
@@ -184,6 +184,10 @@ const ANIMATIONS := {
 	# chest to the background (the hit), hold with the knee up, tip it back and settle into the crouch guard.
 	# Startup 11, active 4, recovery 22. Drawn on taller 384 x 576 frames (see TALL_FEET).
 	&"attack_cheavy": ["res://assets/sora/attack_cheavy_384/", "sora_attack_cheavy_", [6, 5, 4, 8, 5, 4, 5], []],
+	# Jumping Light (U in the air; Kvon approved v7, after Ky's GGST j.S): from the jump tuck the Key draws back over
+	# his shoulder, a quick level slash at chest height with the front knee up, follow-through, back to the tuck.
+	# Startup 5, active 3, recovery 9; the jump keeps moving him meanwhile (timed in _air_step).
+	&"attack_jlight": ["res://assets/sora/attack_jlight_384/", "sora_attack_jlight_", [2, 3, 3, 4, 5], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -191,14 +195,16 @@ const ANIMATIONS := {
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
-	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0]}
+	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
+	&"attack_jlight": [0, 0, 45, 0, 0]}
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
 	&"attack_heavy": ["res://assets/sora/attack_heavy_smear_384/", "sora_attack_heavy_smear_"],  # Kvon: a small streak on the bash
 	&"attack_clight": ["res://assets/sora/attack_clight_smear_384/", "sora_attack_clight_smear_"],
 	&"attack_cmedium": ["res://assets/sora/attack_cmedium_smear_384/", "sora_attack_cmedium_smear_"],
-	&"attack_cheavy": ["res://assets/sora/attack_cheavy_smear_384/", "sora_attack_cheavy_smear_"]}
+	&"attack_cheavy": ["res://assets/sora/attack_cheavy_smear_384/", "sora_attack_cheavy_smear_"],
+	&"attack_jlight": ["res://assets/sora/attack_jlight_smear_384/", "sora_attack_jlight_smear_"]}
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -219,6 +225,8 @@ var _demo_dash_at := -1
 ## Second jump: whether it has been used in this jump, and game frames into its spin (-1 = not spinning).
 var _jump2_used := false
 var _spin_tick := -1
+## Game frames into the air attack being played (-1 = none); the jump keeps moving him meanwhile.
+var _air_atk_tick := -1
 ## Forward air-dash: whether it has been used in this jump, game frames into it (-1 = not dashing),
 ## and whether he is falling after one (the falling drawing then skips the swing-up).
 var _dash_used := false
@@ -426,13 +434,17 @@ func _physics_process(_delta: float) -> void:
 		return
 	if _air:
 		_air_input = (1.0 if forward and not back else 0.0) - (1.0 if back and not forward else 0.0)
-		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0:
+		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0 and _air_atk_tick < 0:
 			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
 			_dash_back = back_tap and not double_tap
 			_dash_tick = 0
 			_after_dash = false
+		elif light_pressed and _dash_tick < 0 and _air_atk_tick < 0:
+			_air_atk_tick = 0  # Jumping Light: plays over the jump (no air-dash during it)
+			_spin_tick = -1
 		elif jump_pressed and not _jump2_used and _dash_tick < 0:
 			_jump2_used = true  # second jump: a new upward burst and the spin
+			_air_atk_tick = -1
 			_vy = -JUMP2_SPEED
 			if _air_input != 0.0 and absf(_vx) < JUMP2_VX:
 				_vx = _air_input * JUMP2_VX
@@ -602,10 +614,21 @@ func _air_step() -> void:
 		_air = false
 		_spin_tick = -1
 		_dash_tick = -1
+		_air_atk_tick = -1  # landing cuts an air attack short
 		_after_dash = false
 		_vx = 0.0
 		_show(&"jump_land")
 		return
+	if _air_atk_tick >= 0:
+		# Air attack: its drawings by its own holds while the jump carries on; then the speed-picked air drawing.
+		var holds_a: Array = ANIMATIONS[&"attack_jlight"][2]
+		var step_a := _step_of(_air_atk_tick, holds_a)
+		_air_atk_tick += 1
+		if step_a < holds_a.size():
+			if _sprite.animation != &"attack_jlight" or _sprite.frame != step_a:
+				_show(&"attack_jlight", step_a)
+			return
+		_air_atk_tick = -1
 	if _spin_tick >= 0:
 		# Second-jump spin: one drawing every 2 game frames, then back to the speed-picked air drawing.
 		var spin_drawing := _spin_tick / 2
@@ -686,6 +709,7 @@ func _start_knockdown(airborne: bool) -> void:
 	_air = false  # the jump logic stays off; _hurt_air_step moves him instead
 	_dash_tick = -1
 	_spin_tick = -1
+	_air_atk_tick = -1
 	_bd_tick = -1
 	_after_dash = false
 	_vy = -KNOCK_SPEED * (0.5 if airborne else 1.0)
