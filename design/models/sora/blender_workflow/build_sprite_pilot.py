@@ -56,7 +56,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
-                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v')) else None
+                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -655,7 +655,7 @@ if RUN:
                        # Standing Heavy: Ekko's heavy timing - startup 13 (7 drawings), active 3, recovery 21.
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
                        'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
-                       'atk_cheavy': [6, 5, 4, 8, 5, 4, 5]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2911,6 +2911,35 @@ if LOOP:
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
+                elif jpart == 'atk_jlight':
+                    # Jumping Light (Kvon, October 29: "a quick midair Kingdom Key slash", designed from that with other
+                    # fighting games as reference - Ky's GGST j.S, design/references/ky_ggst_js_reference.png): out of the
+                    # jump's apex tuck the Key lifts and draws back over his rear shoulder, then a quick level swipe forward
+                    # at chest height with the body leaning in, front knee tucked up and back leg trailing down (Ky's legs),
+                    # follows through across the camera side and returns to the apex tuck. Not grounded: the hips stay
+                    # where the jump drawings have them (the game moves him through the air). Startup 5, active 3,
+                    # recovery 9.
+                    apex_f = {'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}
+                    # Ky's legs: front knee pulled well up, back leg trailing down and back
+                    ky_f = {'L': (.30, LAT['L'], .58, 30.0), 'R': (-.26, LAT['R'], .22, 50.0)}
+
+                    def jl(feet, hunch, pitch, neck, hand, blade, l_hand, twist):
+                        k_ = hurt(feet, -.12, hunch, pitch, neck, hand, Vector(blade).normalized(), l_hand)
+                        k_.update(twist=twist, look=8.0 + twist, release=1.0)
+                        return k_
+                    lift_k = jl(apex_f, 5.0, 3.0, -7.0, U_*-.24 + V_*.23 + Vector((0, 0, .92)),
+                                -U_*.60 + V_*.50 + Vector((0, 0, .15)), B_(.15, -.28, .92), -10.0)
+                    draw_k = jl(apex_f, 6.0, 4.0, -8.0, U_*-.22 + V_*.20 + Vector((0, 0, 1.05)),
+                                -U_*.75 + V_*.45 + Vector((0, 0, .40)), B_(.20, -.30, .95), -20.0)  # inside the top edge
+                    slash_k = jl(ky_f, 10.0, 12.0, -14.0, U_*.38 + V_*.22 + Vector((0, 0, .98)),
+                                 U_*.85 + V_*.50 + Vector((0, 0, .02)), B_(.30, .05, 1.00), 25.0)
+                    slash_k.update(lean_cam=-10.0, head_cam=12.0, neck=-22.0, smear=1, offset_px=(-60, 0))
+                    follow_k = jl(ky_f, 9.0, 10.0, -12.0, U_*.20 + V_*.38 + Vector((0, 0, .85)),
+                                  U_*.15 + V_*.95 + Vector((0, 0, -.25)), B_(.28, .02, .95), 30.0)
+                    follow_k.update(lean_cam=-6.0, head_cam=10.0, neck=-20.0, smear=1)
+                    back_k = jl(apex_f, 6.0, 3.0, -8.0, U_*-.10 + V_*.26 + Vector((0, 0, .82)),
+                                -U_*.62 + V_*.55 + Vector((0, 0, -.45)), B_(.20, -.25, .95), 5.0)
+                    RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
