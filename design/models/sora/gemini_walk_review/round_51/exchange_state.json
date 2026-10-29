@@ -1,0 +1,39 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "E173063FFB82DB21AE172D4BFF101A78",
+  "chatUrl": "https://gemini.google.com/app/1f4e9f7bb4d847b8",
+  "referenceSet": "crouching-medium-own-renders",
+  "promptSha256": "ea3e7bd07aeee2c986db9a95a84ef5c57cc94e8fce83dbc20c8ba54ba153e1ea",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\CROUCHING_MEDIUM_CONCEPT_ROUND_49.txt",
+  "mode": "Pro",
+  "createdAt": "2026-10-29T13:47:14.295Z",
+  "baselineImages": [
+    "f7979684e6506f0ce79a3d9ab76688f6f5b72576db791ddb960cb5b480841477",
+    "91c3b2bf343f0358a101fe09441f15c79bf2a41d82d71e70f5753a6bd93f64c6",
+    "0ffbeea206b3fc10d9861cece653f59948a94f40cf4ccffae442f4a1f0e77f2b",
+    "d016d30faa67102271d3c03816e96de3f2c601e0cfe804511d5515dec35b7812",
+    "625bea0bfd3d5d9c4cd5a7f33850b5506ff310ff95300768a38d83b8848c57fd"
+  ],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\crouch_hold2d_v18\\frames_512\\sora_idle3d_00.png",
+      "sha256": "78892f53df791a18bd606f7ecd379c932304c69b13e5e947ba1562676f2eb442"
+    },
+    {
+      "file": "design\\models\\sora\\atk_cmed2d_v2\\frames_512\\sora_idle3d_00.png",
+      "sha256": "964ee0c7b2f6d57e71184b66df304b57aecb3d4ec599f261171c2912cfa0b508"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-10-29T13:48:33.405Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_51\\gemini_original_preview.jpg",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_51\\Gemini_Generated_Image_etz7p2etz7p2etz7.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "jpg",
+  "review": "pending"
+}
