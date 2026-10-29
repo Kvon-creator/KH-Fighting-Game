@@ -2950,6 +2950,11 @@ if LOOP:
                         # v3 (Kvon: pivot the hip so the knee is more visible in pose 4): the front thigh swings out
                         # toward the camera at the hip - knee aimed forward, up AND toward the viewer; foot unchanged.
                         slash_k['knee_hint_world'] = {'L': tuple(U_*.60 + to_cam*.65 + Vector((0, 0, .45)))}
+                    if not HURT.endswith(('_v1', '_v2', '_v3')):
+                        # v4 (Kvon: slightly more pivot on poses 4 and 5): toward-camera share .65 -> .90, on the
+                        # follow-through too.
+                        for k_ in (slash_k, follow_k):
+                            k_['knee_hint_world'] = {'L': tuple(U_*.60 + to_cam*.90 + Vector((0, 0, .45)))}
                     RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
