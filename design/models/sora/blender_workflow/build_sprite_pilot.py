@@ -2859,8 +2859,15 @@ if LOOP:
                                 # far side that is the whole body turned 120 deg from the idle (back to the viewer, chest
                                 # still angled 30 deg toward the opponent). The hold continues the active pose, so it turns
                                 # too; the feet pivot with him so the legs don't twist.
-                                for k_ in (thrust_k, hold_k):
-                                    k_['turn'] = k_['turn'] + 120.0
+                                turn_add = {id(thrust_k): 120.0, id(hold_k): 120.0}
+                                if not HURT.endswith('_v2'):
+                                    # v3 (Kvon: the poses should gradually twist his body until it reaches the active
+                                    # frames' angle): a third of the turn per drawing on the way up, unwound the same way
+                                    # on the way back down into the crouch guard.
+                                    turn_add.update({id(gather_k): 40.0, id(rise_k): 80.0, id(tip_k): 80.0,
+                                                     id(lower_k): 40.0})
+                                for k_ in (gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k):
+                                    k_['turn'] = k_['turn'] + turn_add.get(id(k_), 0.0)
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
