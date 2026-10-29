@@ -2853,6 +2853,14 @@ if LOOP:
                             lower_k['feet'] = {'L': (L0[0] - .08, L0[1], 0.0, 0.0), 'R': (R0[0] + .12, R0[1] - .35, .06, 20.0)}
                             for k_ in (gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k):
                                 k_['look'] = 8.0 + k_.get('twist', 0.0)
+                            if not HURT.endswith('_v1'):
+                                # v2 (Kvon: on the active frames his chest faces the background at the same angle as the
+                                # idle's): the idle's chest is 30 deg off the camera toward the opponent; mirrored to the
+                                # far side that is the whole body turned 120 deg from the idle (back to the viewer, chest
+                                # still angled 30 deg toward the opponent). The hold continues the active pose, so it turns
+                                # too; the feet pivot with him so the legs don't twist.
+                                for k_ in (thrust_k, hold_k):
+                                    k_['turn'] = k_['turn'] + 120.0
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
