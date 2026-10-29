@@ -2946,6 +2946,10 @@ if LOOP:
                         for k_ in (slash_k, follow_k):
                             k_['feet'] = {'L': (.18, LAT['L'], .32, 30.0), 'R': k_['feet']['R']}
                             k_['knee_hint_world'] = {'L': tuple(U_*.80 + Vector((0, 0, .60)))}
+                    if not HURT.endswith(('_v1', '_v2')):
+                        # v3 (Kvon: pivot the hip so the knee is more visible in pose 4): the front thigh swings out
+                        # toward the camera at the hip - knee aimed forward, up AND toward the viewer; foot unchanged.
+                        slash_k['knee_hint_world'] = {'L': tuple(U_*.60 + to_cam*.65 + Vector((0, 0, .45)))}
                     RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
