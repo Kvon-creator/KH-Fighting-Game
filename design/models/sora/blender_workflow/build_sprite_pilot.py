@@ -3071,6 +3071,41 @@ if LOOP:
                         RUN_KEYS = [coil1_k, coil2_k, strike_k, extend_k, level_k, overh_k, back_k]
                         GAME_FRAMES = [3, 5, 3, 3, 3, 3, 3]
                         DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
+                        if not HURT.endswith('_v2'):
+                            # v3 (Kvon: "He needs to spin his body clockwise before throwing that momentum into that
+                            # forward strike", second reference design/references/Another_Simon_BAir.gif; his answers:
+                            # clockwise seen from above = chest to the viewer first, a partial ~3/4 wind-up turn, the
+                            # strike diagonal down, the Key raised overhead through the turn). Turning -270 from the
+                            # idle lands at v2's twisted strike angle (back partly to the viewer, like Simon), so the
+                            # turn feeds straight into the strike; the recovery finishes the last quarter back to
+                            # the front. Key trailing behind him over his head while he turns (body frame, turned
+                            # with him).
+                            bk_ = lambda add_, x_, y_, z_: (Matrix.Rotation(math.radians(J_TURN + add_), 3, 'Z')
+                                                            @ Vector((x_, y_, z_)))
+                            ov_hand = U_*.00 + V_*.05 + Vector((0, 0, 1.08))
+                            gath_k = sm(apex_f, -30.0, 6.0, 2.0, -8.0, U_*-.05 + V_*.15 + Vector((0, 0, 1.02)),
+                                        bk_(-30.0, 0.0, .75, .55), B_(.20, -.25, .95))
+                            spin1_k = sm(curl_f, -110.0, 8.0, 4.0, -8.0, ov_hand, bk_(-110.0, 0.0, .85, .35),
+                                         B_(.20, -.25, .95))
+                            spin2_k = sm(curl_f, -200.0, 10.0, 6.0, -10.0, ov_hand, bk_(-200.0, 0.0, .85, .35),
+                                         B_(.20, -.25, .95))
+                            spin2_k.update(smear=1, smear_bow=False)
+                            for k_ in (gath_k, spin1_k, spin2_k):
+                                k_['look'] = 8.0   # mid-spin the head turns with the body
+                            strike_k = sm(reach_f, -290.0, 6.0, 10.0, -16.0, U_*.45 + V_*.10 + Vector((0, 0, .60)),
+                                          U_*.65 + V_*.10 + Vector((0, 0, -.75)), B_(.22, -.20, .95))
+                            strike_k.update(lean_cam=-15.0, head_cam=12.0, smear=1, smear_bow=False, offset_px=(-70, 0),
+                                            look=8.0 - 70.0*.5)
+                            strike_k['smear_via'] = [list((U_*.20 + Vector((0, 0, 1.0))).normalized())]
+                            extend_k = sm(reach_f, -300.0, 6.0, 10.0, -14.0, U_*.48 + V_*.10 + Vector((0, 0, .55)),
+                                          U_*.62 + V_*.10 + Vector((0, 0, -.78)), B_(.22, -.20, .95))
+                            extend_k.update(lean_cam=-12.0, head_cam=10.0, offset_px=(-70, 0), look=8.0 - 60.0*.5)
+                            level_k = sm(curl_f, -330.0, 4.0, 4.0, -8.0, U_*.40 + V_*.15 + Vector((0, 0, .95)),
+                                         U_*.90 + V_*.15 + Vector((0, 0, .10)), B_(.20, -.25, .95))
+                            level_k.update(offset_px=(-110, 0), look=8.0 - 30.0*.5)
+                            RUN_KEYS = [gath_k, spin1_k, spin2_k, strike_k, extend_k, level_k, back_k]
+                            GAME_FRAMES = [2, 3, 3, 3, 3, 4, 5]
+                            DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
