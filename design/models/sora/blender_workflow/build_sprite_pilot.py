@@ -2616,6 +2616,53 @@ if LOOP:
                                 # v4: v3's in-between blade ran off the left edge and the recovery tip went through the floor.
                                 in_k['blade_dir'] = tuple((-U_*.30 + V_*.75 + Vector((0, 0, .45))).normalized())
                                 recover_k['blade_dir'] = tuple((U_*.55 + V_*.70 + Vector((0, 0, -.22))).normalized())
+                            if not HURT.endswith(('_v3', '_v4')):
+                                # v5 (Kvon): a lunge from the wind-up to the hit - front knee fully bent over the front foot,
+                                # back leg stretched straight behind on its toes; wind-up with the right forearm across the
+                                # chest under the chin and the Key over his FRONT shoulder; then a backhand sweep into pose A.
+                                lunge_f = {'L': (L0[0] + .16, L0[1], 0.0, 0.0), 'R': (R0[0] - .42, R0[1], .02, 45.0)}
+                                half_f = {'L': (L0[0] + .08, L0[1], 0.0, 0.0), 'R': (R0[0] - .20, R0[1], .02, 30.0)}
+                                back_hint = {'R': tuple(-U_*.6 + Vector((0, 0, -.8)))}
+                                windup_k = cl(tc_ @ Vector((.14, -.24, 1.06)), U_*.50 - to_cam*.45 + Vector((0, 0, .70)),
+                                              ce=.40, hunch=10.0, pitch=18.0, turn=IDLE_R['turn'] + 10.0,
+                                              l_hand=tc_ @ Vector((.24, -.30, .86)), feet=lunge_f)
+                                windup_k['twist'] = -10.0
+                                in_k = cl(cr_hand.lerp(windup_k['hand'], .5),
+                                          (cr_blade + Vector(windup_k['blade_dir'])).normalized(), ce=.34, hunch=9.0,
+                                          pitch=12.0, turn=IDLE_R['turn'] + 5.0, feet=half_f)
+                                for k_, (ce_, pt_) in ((sweep_k, (.42, 22.0)), (round_k, (.42, 24.0)), (act_k, (.42, 26.0))):
+                                    k_['feet'] = lunge_f
+                                    k_['ce'] = ce_ - .08 + .08  # same sink as the wind-up
+                                    k_['pitch'] = pt_
+                                recover_k['feet'] = half_f
+                                for k_ in (in_k, windup_k, sweep_k, round_k, act_k, recover_k):
+                                    k_['knee_hint_world'] = back_hint
+                                if not HURT.endswith('_v5'):
+                                    # v6: v5 sank into a split (hips centred between the feet and far too low, legs through
+                                    # the floor) so the front knee could not bend: hips forward over the front foot (front
+                                    # foot under him, back foot far behind), less sink, front knee pointing forward.
+                                    lunge_f = {'L': (L0[0] - .04, L0[1], 0.0, 0.0), 'R': (R0[0] - .55, R0[1], .02, 50.0)}
+                                    half_f = {'L': (L0[0] - .02, L0[1], 0.0, 0.0), 'R': (R0[0] - .28, R0[1], .02, 35.0)}
+                                    hints_ = {'R': tuple(-U_*.6 + Vector((0, 0, -.8))), 'L': tuple(U_*.9 + Vector((0, 0, .1)))}
+                                    for k_, ce_, ft_ in ((in_k, .34, half_f), (windup_k, .36, lunge_f), (sweep_k, .37, lunge_f),
+                                                         (round_k, .37, lunge_f), (act_k, .37, lunge_f), (recover_k, .34, half_f)):
+                                        k_.update(feet=ft_, ce=ce_, knee_hint_world=hints_)
+                                    sweep_k['offset_px'] = (0, 0)
+                                if not HURT.endswith(('_v5', '_v6')):
+                                    # v7: v6's back foot sat 1.0 m behind the hips - longer than the leg (.69 m) - forcing
+                                    # a split. Back foot ~.55 m behind, front foot ~.20 m ahead under the bent knee, and the
+                                    # hips at the height that leaves the back leg almost straight.
+                                    lunge_f = {'L': (.20, L0[1], 0.0, 0.0), 'R': (-.55, R0[1], .02, 50.0)}
+                                    half_f = {'L': (.30, L0[1], 0.0, 0.0), 'R': (-.50, R0[1], .02, 35.0)}
+                                    for k_, ce_, ft_ in ((in_k, .30, half_f), (windup_k, .32, lunge_f), (sweep_k, .33, lunge_f),
+                                                         (round_k, .33, lunge_f), (act_k, .33, lunge_f), (recover_k, .30, half_f)):
+                                        k_.update(feet=ft_, ce=ce_)
+                                if not HURT.endswith(('_v5', '_v6', '_v7')):
+                                    # v8: back leg straighter (foot further behind), sweep drawn left so its tip stays inside.
+                                    lunge_f = {'L': (.20, L0[1], 0.0, 0.0), 'R': (-.66, R0[1], .02, 55.0)}
+                                    for k_ in (windup_k, sweep_k, round_k, act_k):
+                                        k_['feet'] = lunge_f
+                                    sweep_k['offset_px'] = (-50, 0)
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
                             RUN_KEYS = [in_k, windup_k, sweep_k, round_k, act_k, recover_k, crouch_k]
                             GAME_FRAMES = [2, 3, 2, 2, 3, 5, 12]
