@@ -176,8 +176,9 @@ const ANIMATIONS := {
 	&"attack_clight": ["res://assets/sora/attack_clight_384/", "sora_attack_clight_", [2, 3, 3, 4, 4, 4], []],
 	# Crouching Medium (I while crouching; Kvon approved v23, after Ky's 2S): from the kneel the forearm tucks under
 	# the chin, he lunges out, the Key circles level over his head, comes round flat at waist height and sweeps low
-	# behind him, then he draws back into the crouch guard. Startup 9, active 3, recovery 17.
-	&"attack_cmedium": ["res://assets/sora/attack_cmedium_384/", "sora_attack_cmedium_", [2, 3, 2, 2, 3, 5, 12], []],
+	# behind him, then he draws back into the crouch guard. Kvon: too fast to see the details - startup 13,
+	# active 4, recovery 18 (was 9 / 3 / 17).
+	&"attack_cmedium": ["res://assets/sora/attack_cmedium_384/", "sora_attack_cmedium_", [3, 4, 3, 3, 4, 6, 12], []],
 	# Crouching Heavy (O while crouching; Kvon liked v8, after Sora's SSBU up smash): a grounded upward launcher -
 	# gather low with the Key upright, rise while turning away, thrust it straight up overhead one-handed with his
 	# chest to the background (the hit), hold with the knee up, tip it back and settle into the crouch guard.
