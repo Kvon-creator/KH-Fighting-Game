@@ -2939,6 +2939,13 @@ if LOOP:
                     follow_k.update(lean_cam=-6.0, head_cam=10.0, neck=-20.0, smear=1)
                     back_k = jl(apex_f, 6.0, 3.0, -8.0, U_*-.10 + V_*.26 + Vector((0, 0, .82)),
                                 -U_*.62 + V_*.55 + Vector((0, 0, -.45)), B_(.20, -.25, .95), 5.0)
+                    if not HURT.endswith('_v1'):
+                        # v2 (Kvon: the front leg bends the wrong way in pose 4, the slash): v1's front foot sat high in
+                        # front of a knee that pointed down, so the shin folded back up. Knee aimed forward and up, foot
+                        # lower so the shin hangs down from the raised knee.
+                        for k_ in (slash_k, follow_k):
+                            k_['feet'] = {'L': (.18, LAT['L'], .32, 30.0), 'R': k_['feet']['R']}
+                            k_['knee_hint_world'] = {'L': tuple(U_*.80 + Vector((0, 0, .60)))}
                     RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
