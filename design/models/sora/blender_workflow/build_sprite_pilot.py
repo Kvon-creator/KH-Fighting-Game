@@ -2968,6 +2968,10 @@ if LOOP:
                         m_hp = re_hp.search(r'_hp(-?\d+)$', OUT_NAME)
                         for k_ in (slash_k, follow_k):
                             k_['hip_pivot'] = {'L': (tuple(to_cam), float(m_hp.group(1)) if m_hp else -20.0)}  # -20 checked against +20
+                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 6))):
+                        # v6 (Kvon: more pivot): -20 -> -35 deg.
+                        for k_ in (slash_k, follow_k):
+                            k_['hip_pivot'] = {'L': (tuple(to_cam), float(m_hp.group(1)) if m_hp else -35.0)}
                     RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
