@@ -3020,6 +3020,57 @@ if LOOP:
                     over_k['hand'] = Vector(over_k['hand']) + Vector((0, 0, -.16))
                     hit_k['offset_px'] = (-60, 0)
                     RUN_KEYS = [lift_k, wind_k, over_k, hit_k, follow_k, back_k]
+                    if not HURT.endswith('_v1'):
+                        # v2 (Kvon added design/references/Simon_BAir.gif - Simon's back air in SSBU - "for how I want the
+                        # attack to look", mirrored to strike toward the opponent): he coils (turning away, both knees
+                        # high, Key cocked up behind the far shoulder), whips the arm diagonally DOWN in front at full
+                        # reach with the Key in line with it (body twisted, back partly to the viewer, back leg stretched
+                        # the other way), holds the reach, raises the arm level, sweeps it up over his head and returns
+                        # to the apex tuck. Feet turned with the body (stage-terms feet would cross the legs).
+                        def rot_f(feet_, deg_):
+                            rz_ = Matrix.Rotation(math.radians(deg_), 3, 'Z')
+                            out_ = {}
+                            for sd_, (fs_, fl_, *rest_) in feet_.items():
+                                wv_ = rz_ @ (U_*fs_ + V_*fl_)
+                                out_[sd_] = (wv_.dot(U_), wv_.dot(V_), *rest_)
+                            return out_
+
+                        def sm(feet, turn_add, hunch, pitch, neck, hand, blade, l_hand, twist=0.0):
+                            k_ = jm(rot_f(feet, turn_add), hunch, pitch, neck, hand, blade, l_hand, twist)
+                            k_['turn'] = k_['turn'] + turn_add
+                            k_['look'] = 8.0 - turn_add*.5   # the head stays on the opponent while the body turns away
+                            return k_
+                        curl_f = {'L': (.20, LAT['L'], .50, 30.0), 'R': (.00, LAT['R'], .42, 40.0)}
+                        reach_f = {'L': (.20, LAT['L'], .45, 30.0), 'R': (-.24, LAT['R'], .00, 55.0)}
+                        coil1_k = sm(apex_f, 35.0, 8.0, 4.0, -8.0, U_*.05 + V_*.10 + Vector((0, 0, 1.00)),
+                                     -U_*.50 + V_*.20 + Vector((0, 0, .60)), B_(.20, -.25, .95))
+                        coil2_k = sm(curl_f, 70.0, 14.0, 6.0, -10.0, U_*-.10 + V_*-.05 + Vector((0, 0, 1.10)),
+                                     -U_*.35 - V_*.20 + Vector((0, 0, .85)), B_(.20, -.25, .95))
+                        strike_k = sm(reach_f, 70.0, 6.0, 10.0, -16.0, U_*.45 + V_*.10 + Vector((0, 0, .60)),
+                                      U_*.65 + V_*.10 + Vector((0, 0, -.75)), B_(.22, -.20, .95))
+                        strike_k.update(lean_cam=-15.0, head_cam=12.0, smear=1, smear_bow=False)
+                        # the cocked Key (back-up) -> the strike (down-forward) comes over the top, not under him
+                        strike_k['smear_via'] = [list(Vector((0, 0, 1.0)) - U_*.10),
+                                                 list((U_*.75 + Vector((0, 0, .45))).normalized())]
+                        extend_k = sm(reach_f, 60.0, 6.0, 10.0, -14.0, U_*.48 + V_*.10 + Vector((0, 0, .55)),
+                                      U_*.62 + V_*.10 + Vector((0, 0, -.78)), B_(.22, -.20, .95))
+                        extend_k.update(lean_cam=-12.0, head_cam=10.0)
+                        level_k = sm(curl_f, 35.0, 4.0, 4.0, -8.0, U_*.40 + V_*.15 + Vector((0, 0, .95)),
+                                     U_*.90 + V_*.15 + Vector((0, 0, .10)), B_(.20, -.25, .95))
+                        overh_k = sm(apex_f, 10.0, 0.0, 0.0, -4.0, U_*.10 + V_*.15 + Vector((0, 0, 1.10)),
+                                     -U_*.50 + V_*.40 + Vector((0, 0, .50)), B_(.20, -.25, .95))
+                        # inside the frame: raised Keys angled back / toward the camera (they ran off the top), the
+                        # reaching drawings drawn left (their tips touched the right edge)
+                        coil1_k['blade_dir'] = tuple((-U_*.60 + V_*.45 + Vector((0, 0, .40))).normalized())
+                        coil2_k['blade_dir'] = tuple((-U_*.75 + V_*.30 + Vector((0, 0, .35))).normalized())
+                        coil2_k['hand'] = Vector(coil2_k['hand']) + Vector((0, 0, -.15))
+                        overh_k['blade_dir'] = tuple((-U_*.60 + V_*.55 + Vector((0, 0, .28))).normalized())
+                        for k_ in (strike_k, extend_k):
+                            k_['offset_px'] = (-70, 0)
+                        level_k['offset_px'] = (-110, 0)
+                        RUN_KEYS = [coil1_k, coil2_k, strike_k, extend_k, level_k, overh_k, back_k]
+                        GAME_FRAMES = [3, 5, 3, 3, 3, 3, 3]
+                        DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
