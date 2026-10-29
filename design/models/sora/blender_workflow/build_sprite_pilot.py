@@ -3103,6 +3103,20 @@ if LOOP:
                             level_k = sm(curl_f, -330.0, 4.0, 4.0, -8.0, U_*.40 + V_*.15 + Vector((0, 0, .95)),
                                          U_*.90 + V_*.15 + Vector((0, 0, .10)), B_(.20, -.25, .95))
                             level_k.update(offset_px=(-110, 0), look=8.0 - 30.0*.5)
+                            if not HURT.endswith('_v3'):
+                                # v4 (Kvon: focus on pose 5, the strike - turn his back to the camera): his back faces
+                                # the viewer squarely at -210 from the idle (chest straight away from the camera). The
+                                # spin before it was already at -200, so the turns are re-spaced to keep the clockwise
+                                # momentum: -30 / -95 / -160 / -210 strike / -240 / -300 / front.
+                                for k_, add_ in ((spin1_k, -95.0), (spin2_k, -160.0), (strike_k, -210.0),
+                                                 (extend_k, -240.0), (level_k, -300.0)):
+                                    old_ = k_['turn'] - J_TURN
+                                    k_['turn'] = J_TURN + add_
+                                    k_['feet'] = rot_f(rot_f(k_['feet'], -old_), add_)
+                                spin1_k['blade_dir'] = tuple(bk_(-95.0, 0.0, .85, .35))
+                                spin2_k['blade_dir'] = tuple(bk_(-160.0, 0.0, .85, .35))
+                                for k_, add_ in ((strike_k, -210.0), (extend_k, -240.0), (level_k, -300.0)):
+                                    k_['look'] = 8.0 - (360.0 + add_)*.5
                             RUN_KEYS = [gath_k, spin1_k, spin2_k, strike_k, extend_k, level_k, back_k]
                             GAME_FRAMES = [2, 3, 3, 3, 3, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
