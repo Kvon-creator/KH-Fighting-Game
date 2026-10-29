@@ -2868,6 +2868,16 @@ if LOOP:
                                                      id(lower_k): 40.0})
                                 for k_ in (gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k):
                                     k_['turn'] = k_['turn'] + turn_add.get(id(k_), 0.0)
+                                    if not HURT.endswith(('_v2', '_v3')) and turn_add.get(id(k_)):
+                                        # v4 (Kvon: uncross his legs in the active frames): feet are placed in stage
+                                        # terms (along travel, across), so turning the hips left them behind and the
+                                        # legs crossed. Turn the foot spots about the hips by the same amount.
+                                        rz_ = Matrix.Rotation(math.radians(turn_add[id(k_)]), 3, 'Z')
+                                        feet_ = {}
+                                        for sd_, (fs_, fl_, *rest_) in k_['feet'].items():
+                                            wv_ = rz_ @ (U_*fs_ + V_*fl_)
+                                            feet_[sd_] = (wv_.dot(U_), wv_.dot(V_), *rest_)
+                                        k_['feet'] = feet_
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
