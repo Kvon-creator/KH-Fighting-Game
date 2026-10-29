@@ -2692,6 +2692,28 @@ if LOOP:
                                         # floor so the straight leg slopes down and the pointed foot reaches the ground.
                                         for k_ in (windup_k, sweep_k, round_k, act_k):
                                             k_['feet'] = {'L': lunge_f['L'], 'R': (-.70, R0[1], 0.0, 0.0)}
+                                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(11, 15))):
+                                        # v15 (Kvon: step 1 - lock the active pose toward Ky's 2S, with Ky's lower bent back
+                                        # leg): back knee low near the floor (kneel-style, shin back), front knee deeply bent
+                                        # over the front foot, chest up and opened to the camera, head lifted toward the
+                                        # opponent, sword arm reaching back at shoulder height, blade sloping down to the
+                                        # floor behind him, free fist at the chest.
+                                        act_k.update(feet={'L': (.22, L0[1], 0.0, 25.0),
+                                                           'R': (R0[0] + .10, R0[1] - .40, .11 - TOE_D*math.sin(math.radians(25.0)), 25.0)},
+                                                     ce=.36, pitch=10.0, hunch=-2.0, neck=-26.0, twist=-28.0,
+                                                     hand=U_*-.48 + V_*.30 + Vector((0, 0, 1.00)),
+                                                     blade_dir=tuple((-U_*.70 + V_*.40 + Vector((0, 0, -.60))).normalized()),
+                                                     knee_hint_world={'R': tuple(U_*.15 + Vector((0, 0, -1.0))),
+                                                                      'L': tuple(U_*.9 + Vector((0, 0, .1)))},
+                                                     ankle_deg=None, toe_bend={'L': 25.0}, offset_px=(110, 0))
+                                        if not HURT.endswith('_v15'):
+                                            # v16: lean forward from the hips like Ky; neck tilted back so the head stays up.
+                                            act_k.update(pitch=22.0, neck=-38.0)
+                                        if not HURT.endswith(('_v15', '_v16')):
+                                            # v17: v16's pitch went mostly into the screen from this camera; lean the upper
+                                            # body toward the opponent in the screen plane (as the hurt poses do), head
+                                            # turned back up.
+                                            act_k.update(pitch=12.0, neck=-28.0, lean_cam=-24.0, head_cam=16.0)
                                     if not HURT.endswith('_v11'):
                                         # v12: v11 hid his face and pushed the pointed back foot / low blades past the left
                                         # edge and the floor: a little less lean, frames drawn right, blades raised.
