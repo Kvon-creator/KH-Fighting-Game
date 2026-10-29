@@ -56,7 +56,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
-                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v')) else None
+                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -655,7 +655,8 @@ if RUN:
                        # Standing Heavy: Ekko's heavy timing - startup 13 (7 drawings), active 3, recovery 21.
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
                        'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
-                       'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5],
+                       'atk_jmed': [2, 3, 3, 3, 5, 7]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2977,6 +2978,48 @@ if LOOP:
                         for k_ in (slash_k, follow_k):
                             k_['hip_pivot'] = {'L': (tuple(to_cam), float(m_hp.group(1)) if m_hp else -55.0)}
                     RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
+                elif jpart == 'atk_jmed':
+                    # Jumping Medium (Kvon: "a broad diagonal Kingdom Key slash"; reference Ky's GGST j.H,
+                    # design/references/ky_ggst_jh_reference.png - a big one-handed slash from high behind down to low in
+                    # front, both knees tucked high): out of the apex tuck the Key lifts, winds up high over his rear
+                    # shoulder (leaning back a little), comes over the top, cuts diagonally down in front with the arm
+                    # extended and the body curled forward (the hit), carries on down past his legs and returns to the
+                    # tuck. Front knee turned out at the hip like the approved Jumping Light (hip_pivot). Not grounded.
+                    # Startup 8, active 3, recovery 12.
+                    apex_f = {'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}
+                    tuck_f = {'L': (.24, LAT['L'], .45, 30.0), 'R': (-.08, LAT['R'], .30, 40.0)}   # both knees high
+                    knee_out = {'L': tuple(U_*.60 + to_cam*.90 + Vector((0, 0, .45)))}
+
+                    def jm(feet, hunch, pitch, neck, hand, blade, l_hand, twist):
+                        k_ = hurt(feet, -.12, hunch, pitch, neck, hand, Vector(blade).normalized(), l_hand)
+                        k_.update(twist=twist, look=8.0 + twist, release=1.0)
+                        return k_
+                    lift_k = jm(apex_f, 4.0, 2.0, -6.0, U_*-.22 + V_*.22 + Vector((0, 0, .98)),
+                                -U_*.55 + V_*.45 + Vector((0, 0, .45)), B_(.15, -.28, .95), -10.0)
+                    wind_k = jm(apex_f, -2.0, -6.0, -2.0, U_*-.15 + V_*.20 + Vector((0, 0, 1.20)),
+                                -U_*.45 + V_*.20 + Vector((0, 0, .87)), B_(.22, -.30, 1.00), -18.0)
+                    over_k = jm(tuck_f, 4.0, 4.0, -8.0, U_*.05 + V_*.20 + Vector((0, 0, 1.22)),
+                                U_*.45 + V_*.25 + Vector((0, 0, .85)), B_(.25, -.20, 1.00), 5.0)
+                    over_k['smear'] = 1
+                    hit_k = jm(tuck_f, 12.0, 14.0, -18.0, U_*.40 + V_*.25 + Vector((0, 0, .85)),
+                               U_*.70 + V_*.35 + Vector((0, 0, -.62)), B_(.30, .05, .98), 22.0)
+                    hit_k.update(lean_cam=-12.0, head_cam=12.0, smear=1)
+                    follow_k = jm(tuck_f, 10.0, 12.0, -14.0, U_*.15 + V_*.30 + Vector((0, 0, .62)),
+                                  -U_*.15 + V_*.60 + Vector((0, 0, -.80)), B_(.28, .02, .95), 25.0)
+                    follow_k.update(lean_cam=-8.0, head_cam=10.0, smear=1)
+                    back_k = jm(apex_f, 5.0, 3.0, -8.0, U_*-.10 + V_*.26 + Vector((0, 0, .82)),
+                                -U_*.62 + V_*.55 + Vector((0, 0, -.45)), B_(.20, -.25, .95), 5.0)
+                    for k_ in (over_k, hit_k, follow_k):
+                        k_['knee_hint_world'] = knee_out
+                        k_['hip_pivot'] = {'L': (tuple(to_cam), -40.0)}
+                    # inside the frame: the raised Keys tipped back / toward the camera (they ran off the top edge),
+                    # the hit drawn 60 px left (its tip touched the right edge)
+                    wind_k['blade_dir'] = tuple((-U_*.75 + V_*.40 + Vector((0, 0, .42))).normalized())
+                    over_k['blade_dir'] = tuple((U_*.55 + V_*.60 + Vector((0, 0, .45))).normalized())
+                    wind_k['hand'] = Vector(wind_k['hand']) + Vector((0, 0, -.16))
+                    over_k['hand'] = Vector(over_k['hand']) + Vector((0, 0, -.16))
+                    hit_k['offset_px'] = (-60, 0)
+                    RUN_KEYS = [lift_k, wind_k, over_k, hit_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
