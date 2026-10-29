@@ -1,5 +1,11 @@
 # Sora Crouching Heavy
 
+**Fact or rule:** Sora's crouching Heavy (Down + Heavy launcher) is an upward Kingdom Key swing while Sora stays grounded. This supersedes the previously selected small jumping uppercut. The opponent is launched; Sora does not automatically jump during the attack.
+
+**Why:** K'von revised the move to keep Sora grounded. No further reason was provided.
+
+## Build (October 29, after Sora's SSBU up smash - fits the grounded upward launcher above)
+
 - October 29, Kvon: "Next is the crouching heavy. I've added a reference of what I want it to look like, basing it off of Sora's up smash in SSBU" - `design/references/Sora_Up_Smash.gif` (468x528, 127 frames at 40 ms, hitbox-viewer footage). Beats read from it: 0-13 gather low (wide stance, Key upright in front, both hands) -> 21 rise (Key in front of the chest) -> 24-34 hit: Key thrust straight up overhead one-handed, body stretched tall on the toes, free arm out behind -> 41-82 hold, Key up, one knee lifting -> 91-122 the Key tips and comes down past the shoulder.
 - Pipeline: `atk_cheavy_vN` in build_sprite_pilot.py, built in the Crouching Light/Medium section (CM_HURT) so it starts and ends in the approved kneel crouch guard. The thrust is ~2.9 m tall, more than the 512 frame (~1.96 m above the floor), so this attack renders on a **512 x 768 canvas** (`CANVAS_H`, keyed on the output name; same px per metre, soles 42 px above the bottom edge = row 726). make_smears.py and stylize_2d_frames.py read the canvas size; everything else keeps 512 x 512. Godot will need a per-animation feet point (FEET.y + 192 at 384 scale).
 - v1 (proposal, pending Kvon): gather (deeper kneel, Key upright in front, two hands) / rise (half stand, Key at the chest) / thrust = hit (hand overhead 1.85, Key straight up, hips raised .26 over the idle, feet at half the idle width on the toes, free arm out behind, gold dash lines trailing the right fist) / hold (back knee lifted) / tip (Key tipping back over the shoulder) / lower / crouch guard. Holds [6,5,4,8,5,4,5] = startup 11, active 4, recovery 22 (proposed). Free arm first went forward: body-frame +y is not "behind" for the left hand - free arm target given in world terms (-U .50). `atk_cheavy2d_v1/`: Crouching_Heavy_Sheet.png, Crouching_Heavy_slow.gif, Sequence_vs_UpSmash.png.

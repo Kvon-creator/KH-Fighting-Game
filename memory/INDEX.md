@@ -31,8 +31,7 @@
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
 - [Sora Crouching Light](Sora_Crouching_Light.md): Now a quick low Kingdom Key jab; final chamber free hand = C2, tucked at his side poses 1-4 with the elbow folding more after pose 2 (v30, pending review); earlier slash history: v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14, small-lean v15 pending review (rotate toward the attack, little lean).
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): FINAL v23 in the game (I while crouching) - lunging low sweep after Ky's GGST 2S (reference image + GIFs).
-- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): In progress - overhead Keyblade thrust from the kneel after Sora's SSBU up smash; 512 x 768 canvas.
-- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut.
+- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher; supersedes jumping uppercut. In progress (v1): overhead thrust from the kneel after Sora's SSBU up smash, 512 x 768 canvas.
 
 - [Sora Jumping Light](Sora_Jumping_Light.md): Approved quick midair Kingdom Key slash.
 - [Sora Jumping Medium](Sora_Jumping_Medium.md): Approved broad diagonal midair Kingdom Key slash.
