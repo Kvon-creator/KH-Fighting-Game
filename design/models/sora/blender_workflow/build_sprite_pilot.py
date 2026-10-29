@@ -2898,6 +2898,16 @@ if LOOP:
                                 # sat at the bottom of the handle against the guard's lower bar.
                                 for k_ in (thrust_k, hold_k):
                                     k_['grip_slide'] = .10
+                            if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 8))):
+                                # v8 (Kvon: bring the Keyblade forward a little more, pivoting the wrist so the tip
+                                # points straight up): sword-hand target another .15 toward the opponent; the Key itself
+                                # straight up, so the wrist bends back while the arm angles forward.
+                                for k_ in (thrust_k, hold_k):
+                                    k_['hand'] = Vector(k_['hand']) + U_*.15
+                                    k_['blade_dir'] = (0.0, 0.0, 1.0)
+                                    # the pivot left the guard edge-on to the camera; -45 about the handle (checked
+                                    # against 0 / +45 / +90) shows its face again, teeth still pointing back
+                                    k_['key_roll'] = float(OUT_NAME.split('_roll')[1]) if '_roll' in OUT_NAME else -45.0
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
@@ -4281,6 +4291,13 @@ if LOOP:
                 # grip, the Key moved back along its own line (toward the pommel) by this many metres.
                 key.matrix_world = (Matrix.Translation(-key.matrix_world.to_3x3().normalized().col[2]*RUN_KEYS[i]['grip_slide'])
                                     @ key.matrix_world)
+            if RUN and RUN_KEYS[i].get('key_roll'):
+                # Crouching Heavy v8+: spin the Key about its own handle line through the fist (tip and grip stay put),
+                # e.g. to turn the guard back to the camera after a wrist pivot left it edge-on.
+                ax_r = key.matrix_world.to_3x3().normalized().col[2]
+                g_r = hand_point('R')
+                key.matrix_world = (Matrix.Translation(g_r) @ Matrix.Rotation(math.radians(RUN_KEYS[i]['key_roll']), 4, ax_r)
+                                    @ Matrix.Translation(-g_r) @ key.matrix_world)
             if RUN and RUN_KEYS[i].get('key_in_left') and HURT.endswith('_v3'):
                 # Standing Light v3: same Key angle, slid along its line so the handle sits in the left fist.
                 key.matrix_world = Matrix.Translation(hand_point('L') - hand_point('R')) @ key.matrix_world
