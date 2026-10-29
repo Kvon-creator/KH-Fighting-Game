@@ -888,6 +888,15 @@ def solve_pose(breath=0.0, lag=None):
         # Hurt (Kvon): swing both legs backward at the hip joints about his side-to-side axis.
         for s_h in ('L', 'R'):
             rotate_world(f'{s_h}_momo', (turn_m @ Vector((1, 0, 0))).normalized(), POSE['hip_back_deg'])
+    for s_d, dir_d in (POSE.get('foot_dir_world') or {}).items():
+        # Crouching Medium v22 (Kvon: the back foot should point toward the player): turn this foot about the vertical
+        # so its toes point along the given world direction (a lunge's back foot turned out toward the camera).
+        ank_ = pose_world(f'{s_d}_ashi1').translation
+        cur_ = pose_world(f'{s_d}_ashi2').translation - ank_; cur_.z = 0
+        want_ = Vector(dir_d); want_.z = 0
+        if cur_.length > 1e-4 and want_.length > 1e-4:
+            ang_ = math.degrees(math.atan2(cur_.x*want_.y - cur_.y*want_.x, cur_.dot(want_)))
+            rotate_world(f'{s_d}_ashi1', 'Z', ang_)
     for side, deg in POSE.get('foot_pitch', {}).items():
         if deg:
             # Heel up about the ankle, toes down (the ankle target was raised to keep toes on the floor).
@@ -2759,6 +2768,32 @@ if LOOP:
                                                    lean_cam=-34.0, head_cam=26.0, neck=-28.0)
                                     round_k.update(hand=U_*.52 + V_*.28 + Vector((0, 0, .66)), lean_cam=-42.0,
                                                    head_cam=30.0, neck=-28.0, pitch=12.0, offset_px=(-110, 0))
+                                if not HURT.endswith(('_v20', '_v21')):
+                                    # v22 (Kvon: limbs look disjointed; the back leg bends the wrong way and its foot
+                                    # should point toward the player; on the wind-up the arm goes behind him instead of
+                                    # tucking in front). The bent back leg had its foot under/ahead of the knee, so the
+                                    # shin folded forward under him: foot now far behind with the knee pointing down, so
+                                    # the shin trails back from a knee near the floor (Ky 33/37). Every lunge back foot
+                                    # turns out with its toes toward the camera (resting flat, no pointed ankle).
+                                    # Wind-up arm: elbow down and toward the camera, fist a little forward, so the
+                                    # forearm lies across the front of his chest.
+                                    toes_cam = tuple(to_cam*.90 + U_*.25)
+                                    bent_hint = {'R': tuple(U_*.25 + V_*.20 + Vector((0, 0, -1.0))),
+                                                 'L': tuple(U_*.9 + Vector((0, 0, .1)))}
+                                    for k_ in (round_k, act_k):
+                                        k_.update(feet={'L': k_['feet']['L'], 'R': (-.55, R0[1] - .10, 0.0, 0.0)},
+                                                  knee_hint_world=bent_hint, ankle_deg=None)
+                                    for k_ in (windup_k, sweep_k, round_k, act_k):
+                                        k_['foot_dir_world'] = {'R': toes_cam}
+                                        k_['ankle_deg'] = None
+                                    # elbow at chest height on his back side, forearm level across the chest
+                                    tuck_ = tuple(-U_*.45 + to_cam*.85 + Vector((0, 0, -.15)))
+                                    for k_ in (in_k, windup_k):
+                                        k_['hand'] = Vector(k_['hand']) + to_cam*.10
+                                        k_['r_elbow_hint'] = tuck_
+                                    # the wind-up fist sat at his face (forearm hidden behind the head and guard): under
+                                    # the chin and a little nearer the camera so the forearm shows across the chest
+                                    windup_k['hand'] = Vector(windup_k['hand']) + to_cam*.08 + U_*.04 + Vector((0, 0, -.12))
                                 for k_ in (sweep_k, round_k):
                                     k_['look'] = 8.0 + CM_LOOK_SIGN*k_['twist']
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
@@ -3451,6 +3486,7 @@ if LOOP:
             POSE['leg_reach'] = k_.get('leg_reach')
             POSE['ankle_deg'] = k_.get('ankle_deg')
             POSE['toe_bend'] = k_.get('toe_bend')
+            POSE['foot_dir_world'] = k_.get('foot_dir_world')
             POSE['hip_back_deg'] = k_.get('hip_back_deg')
             if HURT:
                 POSE['knee_in'] = dict(k_.get('knee_in') or {})
