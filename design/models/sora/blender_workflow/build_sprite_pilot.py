@@ -2663,6 +2663,13 @@ if LOOP:
                                     for k_ in (windup_k, sweep_k, round_k, act_k):
                                         k_['feet'] = lunge_f
                                     sweep_k['offset_px'] = (-50, 0)
+                                if not HURT.endswith(('_v5', '_v6', '_v7', '_v8')):
+                                    # v9 (Kvon: straighten the back knee on the wind-up, sweep, round and active poses).
+                                    lunge_f = {'L': (.20, L0[1], 0.0, 0.0), 'R': (-.78, R0[1], .02, 60.0)}
+                                    for k_ in (windup_k, sweep_k, round_k, act_k):
+                                        k_['feet'] = lunge_f
+                                    if not HURT.endswith('_v9'):
+                                        sweep_k['offset_px'] = (-30, 0)  # v10: v9's back foot touched the left edge
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
                             RUN_KEYS = [in_k, windup_k, sweep_k, round_k, act_k, recover_k, crouch_k]
                             GAME_FRAMES = [2, 3, 2, 2, 3, 5, 12]
