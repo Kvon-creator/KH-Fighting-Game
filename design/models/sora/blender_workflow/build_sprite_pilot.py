@@ -2794,6 +2794,14 @@ if LOOP:
                                     # the wind-up fist sat at his face (forearm hidden behind the head and guard): under
                                     # the chin and a little nearer the camera so the forearm shows across the chest
                                     windup_k['hand'] = Vector(windup_k['hand']) + to_cam*.08 + U_*.04 + Vector((0, 0, -.12))
+                                if not HURT.endswith(('_v20', '_v21', '_v22')):
+                                    # v23 (Kvon: the smear in pose 5 goes the wrong way): overhead (blade back) -> waist
+                                    # (blade forward) is ~150 degrees, and the smear's shortest turn ran it under, through
+                                    # his body. Like Ky's, it now goes up and over his head (blade pointing up, then
+                                    # forward-up) before coming down to the front; the tip's real path, not bowed.
+                                    round_k['smear_via'] = [list(Vector((0, 0, 1.0)) - U_*.10),
+                                                            list((U_*.70 + Vector((0, 0, .70))).normalized())]
+                                    round_k['smear_bow'] = False
                                 for k_ in (sweep_k, round_k):
                                     k_['look'] = 8.0 + CM_LOOK_SIGN*k_['twist']
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
@@ -4218,7 +4226,7 @@ if LOOP:
                               'offset_px': list(RUN_KEYS[i].get('offset_px') or (0, 0)),
                               'lgrip_world': [round(c_, 5) for c_ in hand_point('L')],
                               'smear_style': RUN_KEYS[i].get('smear_style', 'arc')})
-            for opt_ in ('smear_bow', 'smear_grip'):
+            for opt_ in ('smear_bow', 'smear_grip', 'smear_via'):
                 if opt_ in RUN_KEYS[i]:
                     KEY_TRACK[-1][opt_] = RUN_KEYS[i][opt_]
         frames.append({'filename': path512.name, 'duration_ms': DURATIONS_MS[i], 'breath': round(breath, 4),

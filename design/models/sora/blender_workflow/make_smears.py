@@ -164,11 +164,16 @@ for i, fr in enumerate(track):
             da, db = np.array(a['dir_world']), np.array(b['dir_world'])
             sweep += math.degrees(math.acos(max(-1.0, min(1.0, float(da.dot(db)/np.linalg.norm(da)/np.linalg.norm(db))))))
             last = s_ == i - 1
-            for j in range(STEPS + 1):
+            # smear_via (Crouching Medium v23+): blade directions the swing passes through on the way into this drawing,
+            # so a big turn goes the way the swing does instead of the shortest way (the grip moves evenly meanwhile).
+            dirs_ = [da] + ([np.array(v_, float) for v_ in fr['smear_via']] if last and fr.get('smear_via') else []) + [db]
+            legs_ = len(dirs_) - 1
+            for j in range(STEPS*legs_ + 1):
                 if j == 0 and path:
                     continue
-                u = (STOP if last else 1.0)*j/STEPS
-                path.append((ga + (gb - ga)*u, slerp(da, db, u)))
+                u = (STOP if last else 1.0)*j/(STEPS*legs_)
+                leg_ = min(int(u*legs_), legs_ - 1)
+                path.append((ga + (gb - ga)*u, slerp(dirs_[leg_], dirs_[leg_ + 1], u*legs_ - leg_)))
         draw = ImageDraw.Draw(img, 'RGBA')
         # smear_bow False (Crouching Light v11+): a chop's tip path already curves; don't bow it.
         sag = sag_offsets(path) if fr.get('smear_bow', True) else [0.0]*len(path)

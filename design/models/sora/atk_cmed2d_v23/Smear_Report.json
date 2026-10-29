@@ -1,0 +1,20 @@
+{
+  "source": "atk_cmed_v23",
+  "smears": [
+    {
+      "drawing": 2,
+      "from_drawing": 1,
+      "sweep_deg": 104.5
+    },
+    {
+      "drawing": 3,
+      "from_drawing": 2,
+      "sweep_deg": 164.5
+    },
+    {
+      "drawing": 4,
+      "from_drawing": 3,
+      "sweep_deg": 108.9
+    }
+  ]
+}
