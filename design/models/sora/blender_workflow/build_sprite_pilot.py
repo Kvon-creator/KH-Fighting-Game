@@ -56,7 +56,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
-                                      'atk_clight_v', 'atk_cmed_v')) else None
+                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -99,6 +99,10 @@ if OUT.exists():
 assert bpy.app.version[:2] == (5, 2), bpy.app.version_string
 IDLE = ROOT / 'design/sprites/smooth/sora/replacement_work/ready/standing_idle/sora_stand_idle_00.png'
 HEIGHT = 1.6          # meters, T-pose top of hair to sole
+# Crouching Heavy (an overhead Keyblade thrust, ~2.9 m tall): a taller 512 x 768 canvas at the same scale, with the
+# soles the same 42 px above the bottom edge; everything else keeps the 512 x 512 frame.
+CANVAS_H = 768 if OUT_NAME.startswith('atk_cheavy_v') else 512
+FLOOR_ROW = CANVAS_H - 42
 # Grip-to-tip length: approved idle's proportion; v8+ reference shows a longer Key (tip near head height).
 KEY_REACH = 1.0 if REF_POSE and version != 'idle_loop_v7' else .92
 CAM_YAW = -40         # sprite three-quarter view; Sora faces screen right
@@ -111,7 +115,8 @@ scene.render.engine = 'CYCLES'
 scene.cycles.device = 'CPU'
 scene.cycles.samples = 16
 scene.render.film_transparent = True
-scene.render.resolution_x = scene.render.resolution_y = 512
+scene.render.resolution_x = 512
+scene.render.resolution_y = CANVAS_H
 scene.render.image_settings.file_format = 'PNG'
 scene.render.image_settings.color_mode = 'RGBA'
 scene.view_settings.view_transform = 'Standard'
@@ -649,7 +654,8 @@ if RUN:
                        'atk_smed': [2, 2, 3, 3, 2, 3, 4, 4, 4],
                        # Standing Heavy: Ekko's heavy timing - startup 13 (7 drawings), active 3, recovery 21.
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
-                       'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
+                       'atk_cheavy': [6, 5, 4, 8, 5, 4, 5]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -1288,10 +1294,10 @@ if not LOOP:
 # 5. Fixed sprite camera framed like the approved idle: about 385px tall, soles at y=470 of 512.
 lo, hi = world_bounds(body)
 cam_data = bpy.data.cameras.new('sprite_camera'); cam_data.type = 'ORTHO'
-cam_data.ortho_scale = HEIGHT * 512 / 385
+cam_data.ortho_scale = HEIGHT * 512 / 385 * CANVAS_H / 512  # ortho spans the taller side; same px per metre
 cam = bpy.data.objects.new('sprite_camera', cam_data); scene.collection.objects.link(cam)
 ground = lo.z
-center_z = ground + (470 - 256) / 512 * cam_data.ortho_scale
+center_z = ground + (FLOOR_ROW - CANVAS_H/2) / CANVAS_H * cam_data.ortho_scale
 cam.location = Vector((0, 0, center_z)) + to_cam*6
 cam.rotation_euler = (math.radians(90), 0, t)
 scene.camera = cam
@@ -2243,10 +2249,10 @@ if LOOP:
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
-                elif jpart in ('atk_clight', 'atk_cmed'):
+                elif jpart in ('atk_clight', 'atk_cmed', 'atk_cheavy'):
                     # The Crouching Medium (atk_cmed) reuses this section's kneel, crouch guard and cl() keys: build the
                     # approved Crouching Light (v30) first, then replace its drawings below.
-                    CM_HURT = HURT if jpart == 'atk_cmed' else None
+                    CM_HURT = HURT if jpart in ('atk_cmed', 'atk_cheavy') else None
                     if CM_HURT:
                         HURT = 'atk_clight_v30'
                     # Crouching Light (Kvon, October 27; posture after Ky's 2S in Guilty Gear Strive): from the approved
@@ -2807,6 +2813,48 @@ if LOOP:
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
                             RUN_KEYS = [in_k, windup_k, sweep_k, round_k, act_k, recover_k, crouch_k]
                             GAME_FRAMES = [2, 3, 2, 2, 3, 5, 12]
+                            DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
+                        if jpart == 'atk_cheavy':
+                            # Crouching Heavy (Kvon, October 29: like Sora's up smash in SSBU, his reference
+                            # design/references/Sora_Up_Smash.gif): from the kneel he gathers lower with the Key upright in
+                            # front in both hands (gif 0-13), rises with it in front of the chest (21), thrusts it straight
+                            # up overhead one-handed, stretched tall on his toes with the free arm out behind (24-34, the
+                            # hit), holds it up with the back knee lifted (41-82), tips the Key back over his shoulder
+                            # (91-110) and settles back into the crouch guard. Drawn on the 512 x 768 canvas (CANVAS_H).
+                            # Startup 11, active 4, recovery 22.
+                            up_ = Vector((0, 0, 1))
+
+                            def stand_up(k_, feet_):
+                                k_.update(feet=feet_, knee_hint_world={}, knee_splay=0.0)
+                                return k_
+                            crouch_k = cl(cr_hand, cr_blade)
+                            gather_k = cl(U_*.22 + V_*.26 + Vector((0, 0, .52)), U_*.15 + up_, ce=.40, hunch=14.0, pitch=16.0)
+                            gather_k.update(release=0.0, twist=10.0)
+                            rise_k = stand_up(cl(U_*.16 + V_*.24 + Vector((0, 0, .92)), U_*.08 + up_, ce=.16, hunch=4.0,
+                                                 pitch=4.0),
+                                              {'L': (L0[0] - .06, L0[1], 0.0, 0.0), 'R': (R0[0] + .10, R0[1] - .28, .04, 20.0)})
+                            rise_k.update(release=0.0, twist=5.0)
+                            # stretched tall: feet in under him (half the idle's width), hips raised above the idle's
+                            free_back = -U_*.50 + V_*.10 + Vector((0, 0, 1.20))   # free arm out behind (screen left)
+                            toes_ = {'L': (L0[0]*.5, L0[1]*.5, .05, 30.0), 'R': (R0[0]*.5, R0[1]*.5 - .05, .05, 30.0)}
+                            thrust_k = stand_up(cl(U_*.06 + V_*.12 + Vector((0, 0, 1.85)), U_*.08 + up_, ce=-.26 + .08,
+                                                   hunch=-6.0, pitch=-4.0, l_hand=free_back),
+                                                toes_)
+                            thrust_k.update(neck=-10.0, lean_cam=6.0, smear=1, smear_style='thrust', smear_grip='R')
+                            hold_k = dict(thrust_k)
+                            hold_k.update(feet={'L': (L0[0]*.5, L0[1]*.5, 0.0, 0.0), 'R': (R0[0]*.5 + .12, R0[1]*.5, .28, 0.0)},
+                                          knee_hint_world={'R': tuple(U_ + Vector((0, 0, .2)))}, lean_cam=8.0, smear=0)
+                            tip_k = stand_up(cl(U_*.02 + V_*.14 + Vector((0, 0, 1.45)), -U_*.55 + Vector((0, 0, .85)),
+                                                ce=.04 + .08, hunch=0.0, pitch=0.0, l_hand=tc_ @ Vector((.30, .10, 1.05))),
+                                             {'L': (L0[0], L0[1], 0.0, 0.0), 'R': (R0[0] + .06, R0[1] - .15, .16, 0.0)})
+                            tip_k['knee_hint_world'] = {'R': tuple(U_ + Vector((0, 0, .2)))}
+                            lower_k = cl(U_*-.10 + V_*.15 + Vector((0, 0, .95)), -U_*.60 - to_cam*.30 + Vector((0, 0, .30)),
+                                         ce=.16 + .08, hunch=5.0, pitch=5.0)
+                            lower_k['feet'] = {'L': (L0[0] - .08, L0[1], 0.0, 0.0), 'R': (R0[0] + .12, R0[1] - .35, .06, 20.0)}
+                            for k_ in (gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k):
+                                k_['look'] = 8.0 + k_.get('twist', 0.0)
+                            RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
+                            GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
@@ -3706,7 +3754,7 @@ if LOOP:
             POSE['grip_offset_world'] = tuple(to_chest*GUARD_IN)
             GUARD_VEC = tuple(to_chest*GUARD_IN)
         cam_right = Vector((math.cos(t), math.sin(t), 0))
-        PX = 512 / cam_data.ortho_scale
+        PX = CANVAS_H / cam_data.ortho_scale
         FRONT = max(('R', 'L'), key=lambda sd: pose_world(f'{sd}_ude2').translation.dot(to_cam))
 
         def arm_gap_px(side):
@@ -3784,7 +3832,7 @@ if LOOP:
 
             def to_img(p_):
                 return (256 + (p_.dot(cam_right) - cam.location.dot(cam_right))*PX,
-                        256 - (p_.z - cam.location.z)*PX)
+                        CANVAS_H/2 - (p_.z - cam.location.z)*PX)
 
             def silhouette():
                 eng, fs = scene.render.engine, scene.render.use_freestyle
@@ -4173,7 +4221,7 @@ if LOOP:
                 update()
             if hk_.get('offset_px'):
                 # v4+: straight legs reach further - nudge an air drawing back inside the frame (screen px, x right/y up).
-                px_m_ = cam_data.ortho_scale/512
+                px_m_ = cam_data.ortho_scale/CANVAS_H
                 arm.matrix_world = (Matrix.Translation(cam_r_*hk_['offset_px'][0]*px_m_
                                                        + Vector((0, 0, hk_['offset_px'][1]*px_m_))) @ arm.matrix_world)
                 update()
@@ -4215,7 +4263,7 @@ if LOOP:
         scene.render.filepath = str(path512)
         bpy.ops.render.render(write_still=True)
         img = bpy.data.images.load(str(path512))
-        small = img.copy(); small.scale(128, 128)
+        small = img.copy(); small.scale(128, 128*CANVAS_H//512)
         small.filepath_raw = str(OUT / 'frames_128' / path512.name); small.file_format = 'PNG'; small.save()
         if HURT:
             # Smear data (Standing Medium v3+): the Key's grip point and blade direction in this drawing, so
@@ -4260,7 +4308,7 @@ if LOOP:
     report = {
         'version': version, 'blender': bpy.app.version_string, 'animation': 'standing_breathing_idle',
         'source': 'downloads/p_ex150.fbx + downloads/Kingdom Key/Kingdom Key.obj', 'loop': True,
-        'canvas_size': [512, 512], 'ground_baseline_y': 470, 'body_anchor': [256, 470],
+        'canvas_size': [512, CANVAS_H], 'ground_baseline_y': FLOOR_ROW, 'body_anchor': [256, FLOOR_ROW],
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'camera_location': [round(c_, 5) for c_ in cam.location], 'key_reach_m': KEY_REACH,

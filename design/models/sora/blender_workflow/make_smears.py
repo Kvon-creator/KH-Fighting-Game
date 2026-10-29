@@ -29,7 +29,8 @@ OUT = SORA / dst / 'frames_smear_512'
 OUT.mkdir(parents=True, exist_ok=True)
 
 SS = 4                                    # supersampling
-PX = 512 / rep['ortho_scale']             # pixels per metre
+W_, H_ = rep.get('canvas_size', [512, 512])   # Crouching Heavy: 512 x 768
+PX = max(W_, H_) / rep['ortho_scale']     # pixels per metre (ortho spans the longer side)
 t = math.radians(rep['camera_yaw_deg'])
 RIGHT = np.array([math.cos(t), math.sin(t), 0.0])
 CAM = np.array(rep['camera_location'])
@@ -47,7 +48,7 @@ GUARD_CORE = (255, 214, 96, 240)
 
 def screen(p):
     d = p - CAM
-    return ((256 + d.dot(RIGHT)*PX)*SS, (256 - d[2]*PX)*SS)
+    return ((W_/2 + d.dot(RIGHT)*PX)*SS, (H_/2 - d[2]*PX)*SS)
 
 
 def slerp(a, b, u):
@@ -73,7 +74,7 @@ def sag_offsets(path):
     need = max(0.0, .20*length - dev)
     n = len(path) - 1
     # A low swing (its path in the bottom third of the frame) bows UP so the crescent stays above the floor.
-    sign = -1.0 if float(outer[:, 1].mean()) > 512*SS*.62 else 1.0
+    sign = -1.0 if float(outer[:, 1].mean()) > H_*SS*.62 else 1.0
     return [sign*need*math.sin(math.pi*k/n) for k in range(n + 1)]
 
 
@@ -136,7 +137,7 @@ def dash_lines(draw, a, b, head_frac=.80, len_scale=1.0):
 
 report = []
 for i, fr in enumerate(track):
-    img = Image.new('RGBA', (512*SS, 512*SS), (0, 0, 0, 0))
+    img = Image.new('RGBA', (W_*SS, H_*SS), (0, 0, 0, 0))
     back = int(fr.get('smear') or 0)
     if back and i - back >= 0 and fr.get('smear_style') == 'thrust':
         # Guard point = the leading (left) fist for the Light; earlier drawing moved into this drawing's frame.
@@ -182,8 +183,8 @@ for i, fr in enumerate(track):
         report.append({'drawing': i, 'from_drawing': i - back, 'sweep_deg': round(sweep, 1)})
     # Smears never go below the floor (low slashes bowed downward would): clear everything under the floor line.
     floor_y = int(rep.get('ground_baseline_y', 470)*SS)
-    ImageDraw.Draw(img).rectangle([0, floor_y, 512*SS, 512*SS], fill=(0, 0, 0, 0))
-    img.resize((512, 512), Image.LANCZOS).save(OUT / f'sora_smear_{i:02d}.png')
+    ImageDraw.Draw(img).rectangle([0, floor_y, W_*SS, H_*SS], fill=(0, 0, 0, 0))
+    img.resize((W_, H_), Image.LANCZOS).save(OUT / f'sora_smear_{i:02d}.png')
 (SORA / dst / 'Smear_Report.json').write_text(json.dumps({'source': src, 'smears': report}, indent=2) + '\n',
                                              encoding='utf-8')
 print('SMEARS_OK', report)

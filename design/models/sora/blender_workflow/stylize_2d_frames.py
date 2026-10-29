@@ -94,7 +94,7 @@ for entry in src_report['frames']:
         INK_LOG.append(stats)
     out = Image.fromarray(np.dstack([rgb, a]).astype(np.uint8), 'RGBA')
     out.save(OUT / 'frames_512' / entry['filename'])
-    out.resize((128, 128), Image.LANCZOS).save(OUT / 'frames_128' / entry['filename'])
+    out.resize((128, 128*out.height//out.width), Image.LANCZOS).save(OUT / 'frames_128' / entry['filename'])
     frames.append({**entry})
 report = {**src_report, 'version': version, 'frames': frames,
           'style_2d': {'source_loop': source, 'palette_from': 'design/references/sora_kh2_pose_sheet.png top-right',
