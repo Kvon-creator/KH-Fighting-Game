@@ -2605,6 +2605,7 @@ if LOOP:
                             # pose A (arm back, Key trailing low behind), then comes back low in front and into the kneel.
                             # Startup 9 (in, wind-up, sweep, round), active 3, recovery 17 - like the Standing Medium.
                             crouch_k = cl(cr_hand, cr_blade)
+                            CM_LOOK_SIGN = -1.0 if OUT_NAME.endswith('_lookneg') else 1.0
                             windup_k = cl(U_*-.30 + V_*.18 + Vector((0, 0, 1.10)), -U_*.55 + V_*.35 + Vector((0, 0, .75)),
                                           ce=.30, hunch=4.0, pitch=4.0, turn=IDLE_R['turn'] + 10.0)
                             windup_k['twist'] = -15.0
@@ -2714,6 +2715,17 @@ if LOOP:
                                             # body toward the opponent in the screen plane (as the hurt poses do), head
                                             # turned back up.
                                             act_k.update(pitch=12.0, neck=-28.0, lean_cam=-24.0, head_cam=16.0)
+                                        if not HURT.endswith(('_v15', '_v16', '_v17')):
+                                            # v18 (Kvon): front foot further forward (v17's thigh pressed into his torso).
+                                            act_k['feet'] = {'L': (.36, L0[1], 0.0, 25.0), 'R': act_k['feet']['R']}
+                                    if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(11, 18))):
+                                        # v18 (Kvon: he looks forward for the whole animation): the head turns back against
+                                        # the chest twist so the face stays on the opponent at screen right.
+                                        for k_ in (in_k, windup_k, sweep_k, round_k, act_k, recover_k):
+                                            k_['look'] = 8.0 + CM_LOOK_SIGN*k_.get('twist', 0.0)
+                                        for k_ in (windup_k, sweep_k, round_k):
+                                            # the lunge's forward lean tipped the face down: neck back and head up on screen
+                                            k_.update(neck=-30.0, head_cam=-18.0 if OUT_NAME.endswith('_hcneg') else 18.0)
                                     if not HURT.endswith('_v11'):
                                         # v12: v11 hid his face and pushed the pointed back foot / low blades past the left
                                         # edge and the floor: a little less lean, frames drawn right, blades raised.
