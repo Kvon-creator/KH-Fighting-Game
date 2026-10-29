@@ -2884,6 +2884,15 @@ if LOOP:
                                 # down from the shoulder.
                                 for k_ in (thrust_k, hold_k):
                                     k_['l_hand'] = tuple(Vector(k_['l_hand']) + Vector((0, 0, -.45)))
+                            if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 6))):
+                                # v6 (Kvon: angle it down a little more, move the Keyblade forward some during the
+                                # attack): free hand another .15 lower; sword arm angled toward the opponent.
+                                for k_ in (thrust_k, hold_k):
+                                    k_['l_hand'] = tuple(Vector(k_['l_hand']) + Vector((0, 0, -.15)))
+                                    # the arm is already at full stretch, so the target goes well forward (and a
+                                    # little lower) to angle the arm, with the Key leaning forward a little with it
+                                    k_['hand'] = Vector(k_['hand']) + U_*.35 + Vector((0, 0, -.10))
+                                    k_['blade_dir'] = tuple((U_*.22 + Vector((0, 0, 1))).normalized())
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
