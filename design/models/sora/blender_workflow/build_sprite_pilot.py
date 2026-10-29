@@ -897,14 +897,21 @@ def solve_pose(breath=0.0, lag=None):
     if POSE.get('ankle_deg') is not None:
         # Hurt (Kvon: straighten the ankles): turn each foot in the shin/foot plane so the foot leaves the shin's line
         # at this angle (0 = fully pointed in line with the shin, 90 = a neutral right-angle ankle).
-        for s_a in ('L', 'R'):
+        # A dict gives a per-side angle (Crouching Medium: only the back foot).
+        ad_ = POSE['ankle_deg'] if isinstance(POSE['ankle_deg'], dict) else {'L': POSE['ankle_deg'], 'R': POSE['ankle_deg']}
+        for s_a, deg_a in ad_.items():
             ank_ = pose_world(f'{s_a}_ashi1').translation
             shin_ = (ank_ - pose_world(f'{s_a}_sune').translation).normalized()
             foot_ = (pose_world(f'{s_a}_ashi2').translation - ank_).normalized()
             ax_a = shin_.cross(foot_)
             if ax_a.length > 1e-4:
-                rotate_world(f'{s_a}_ashi1', ax_a.normalized(),
-                             POSE['ankle_deg'] - math.degrees(shin_.angle(foot_)))
+                rotate_world(f'{s_a}_ashi1', ax_a.normalized(), deg_a - math.degrees(shin_.angle(foot_)))
+    for s_t, deg_t in (POSE.get('toe_bend') or {}).items():
+        # Crouching Medium (Kvon: a bend in the front foot's toes): the toe bone turns back flat onto the floor after
+        # the heel was lifted by foot_pitch, so the foot bends at the ball.
+        ank_ = pose_world(f'{s_t}_ashi1').translation
+        fwd_ = pose_world(f'{s_t}_ashi2').translation - ank_; fwd_.z = 0; fwd_.normalize()
+        rotate_world(f'{s_t}_ashi2', fwd_.cross(Vector((0, 0, 1))).normalized(), deg_t)
     if POSE.get('head_yaw_cancel') and POSE.get('chest_twist_deg'):
         rotate_world('kubi', 'Z', -POSE['chest_twist_deg'])  # v19+: face stays on the opponent
     if POSE.get('L_shrug_deg'):
@@ -2670,6 +2677,23 @@ if LOOP:
                                         k_['feet'] = lunge_f
                                     if not HURT.endswith('_v9'):
                                         sweep_k['offset_px'] = (-30, 0)  # v10: v9's back foot touched the left edge
+                                if not HURT.endswith(('_v5', '_v6', '_v7', '_v8', '_v9', '_v10')):
+                                    # v11 (Kvon: straighten the ankle too, bend the front foot's toes, lean the torso
+                                    # forward): back foot pointed in line with the straight leg; front heel lifted with the
+                                    # toes bent flat on the floor; more forward lean (pitch +14, hunch +6).
+                                    lunge_f = {'L': (.20, L0[1], 0.0, 25.0), 'R': (-.78, R0[1], .02, 60.0)}
+                                    for k_ in (windup_k, sweep_k, round_k, act_k):
+                                        k_.update(feet=lunge_f, ankle_deg={'R': 15.0}, toe_bend={'L': 25.0},
+                                                  pitch=k_['pitch'] + (14.0 if HURT.endswith('_v11') else 10.0),
+                                                  hunch=k_['hunch'] + (6.0 if HURT.endswith('_v11') else 4.0))
+                                    if not HURT.endswith('_v11'):
+                                        # v12: v11 hid his face and pushed the pointed back foot / low blades past the left
+                                        # edge and the floor: a little less lean, frames drawn right, blades raised.
+                                        windup_k['offset_px'] = (30, 0); sweep_k['offset_px'] = (10, 0)
+                                        round_k['offset_px'] = (30, 0)
+                                        sweep_k['blade_dir'] = tuple(((U_*.80 + V_*.45) if HURT.endswith('_v12') else
+                                                                      (U_*.55 + V_*.80) + Vector((0, 0, -.04))).normalized())
+                                        round_k['blade_dir'] = tuple((V_*.85 - U_*.20 + Vector((0, 0, -.06))).normalized())
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
                             RUN_KEYS = [in_k, windup_k, sweep_k, round_k, act_k, recover_k, crouch_k]
                             GAME_FRAMES = [2, 3, 2, 2, 3, 5, 12]
@@ -3359,6 +3383,7 @@ if LOOP:
             POSE['screen_lean_deg'] = k_.get('lean_cam', 0.0)
             POSE['leg_reach'] = k_.get('leg_reach')
             POSE['ankle_deg'] = k_.get('ankle_deg')
+            POSE['toe_bend'] = k_.get('toe_bend')
             POSE['hip_back_deg'] = k_.get('hip_back_deg')
             if HURT:
                 POSE['knee_in'] = dict(k_.get('knee_in') or {})
