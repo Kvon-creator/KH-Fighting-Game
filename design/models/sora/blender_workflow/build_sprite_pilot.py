@@ -3117,6 +3117,13 @@ if LOOP:
                                 spin2_k['blade_dir'] = tuple(bk_(-160.0, 0.0, .85, .35))
                                 for k_, add_ in ((strike_k, -210.0), (extend_k, -240.0), (level_k, -300.0)):
                                     k_['look'] = 8.0 - (360.0 + add_)*.5
+                            if not HURT.endswith(('_v3', '_v4')):
+                                # v5 (Kvon, pose 5: remove the smear and move the Keyblade up more): no smear on the
+                                # strike; the Key angled up (steep -.75 -> shallower -.35 diagonal) with the hand .12 higher.
+                                strike_k['smear'] = 0
+                                strike_k['hand'] = Vector(strike_k['hand']) + Vector((0, 0, .12))
+                                strike_k['blade_dir'] = tuple((U_*.85 + V_*.10 + Vector((0, 0, -.35))).normalized())
+                                strike_k['offset_px'] = (-120, 0)  # the raised tip reaches further right
                             RUN_KEYS = [gath_k, spin1_k, spin2_k, strike_k, extend_k, level_k, back_k]
                             GAME_FRAMES = [2, 3, 3, 3, 3, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)

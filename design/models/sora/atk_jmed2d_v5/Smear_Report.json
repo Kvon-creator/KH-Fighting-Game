@@ -1,0 +1,10 @@
+{
+  "source": "atk_jmed_v5",
+  "smears": [
+    {
+      "drawing": 2,
+      "from_drawing": 1,
+      "sweep_deg": 59.6
+    }
+  ]
+}
