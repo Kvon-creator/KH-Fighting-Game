@@ -890,6 +890,10 @@ def solve_pose(breath=0.0, lag=None):
         two_bone(f'{s}_momo', f'{s}_sune', f'{s}_ashi1', foot_t, knee)
         if toe or turn:
             rotate_world(f'{s}_ashi1', 'Z', sign*toe + turn)  # feet don't inherit the body turn
+    for s_p, (ax_p, deg_p) in (POSE.get('hip_pivot') or {}).items():
+        # Jumping Light v5+ (Kvon: pivot the hip joint so the knee shows): turn the whole leg (thigh, knee, shin, foot)
+        # at the hip about a world axis.
+        rotate_world(f'{s_p}_momo', Vector(ax_p).normalized(), deg_p)
     if POSE.get('hip_back_deg'):
         # Hurt (Kvon): swing both legs backward at the hip joints about his side-to-side axis.
         for s_h in ('L', 'R'):
@@ -2955,6 +2959,15 @@ if LOOP:
                         # follow-through too.
                         for k_ in (slash_k, follow_k):
                             k_['knee_hint_world'] = {'L': tuple(U_*.60 + to_cam*.90 + Vector((0, 0, .45)))}
+                    if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                        # v5 (Kvon: more pivot): v4's knee aim was near its limit with the foot fixed, and swinging the
+                        # foot toward the camera foreshortened the thigh (knee hidden). v2 -> v4 each brought the thigh
+                        # further forward out from under the torso, so the whole leg now pivots on at the hip, in the
+                        # screen plane, knee forward/up (v4's leg otherwise).
+                        import re as re_hp
+                        m_hp = re_hp.search(r'_hp(-?\d+)$', OUT_NAME)
+                        for k_ in (slash_k, follow_k):
+                            k_['hip_pivot'] = {'L': (tuple(to_cam), float(m_hp.group(1)) if m_hp else -20.0)}  # -20 checked against +20
                     RUN_KEYS = [lift_k, draw_k, slash_k, follow_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
@@ -3644,6 +3657,7 @@ if LOOP:
             POSE['toe_bend'] = k_.get('toe_bend')
             POSE['foot_dir_world'] = k_.get('foot_dir_world')
             POSE['hip_back_deg'] = k_.get('hip_back_deg')
+            POSE['hip_pivot'] = k_.get('hip_pivot')
             if HURT:
                 POSE['knee_in'] = dict(k_.get('knee_in') or {})
                 POSE['knee_splay'] = k_.get('knee_splay')  # crouching attacks: knees wide like the crouch
