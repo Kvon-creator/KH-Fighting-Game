@@ -2751,6 +2751,14 @@ if LOOP:
                                                feet={'L': (.30, L0[1], 0.0, 25.0), 'R': act_k['feet']['R']},
                                                knee_hint_world=act_k['knee_hint_world'], ankle_deg=None,
                                                toe_bend={'L': 25.0}, ce=act_k['ce'], lean_cam=-14.0)
+                                if not HURT.endswith('_v20'):
+                                    # v21 (Kvon: more refinement): Ky leans his whole upper body toward the opponent in
+                                    # both drawings - overhead with the sword hand out in front of his face (not straight
+                                    # above it), sweep stretched far over the front knee with the arm reaching ahead.
+                                    sweep_k.update(hand=U_*.20 + V_*.14 + Vector((0, 0, 1.16)), ce=act_k['ce'] - .02,
+                                                   lean_cam=-34.0, head_cam=26.0, neck=-28.0)
+                                    round_k.update(hand=U_*.52 + V_*.28 + Vector((0, 0, .66)), lean_cam=-42.0,
+                                                   head_cam=30.0, neck=-28.0, pitch=12.0, offset_px=(-110, 0))
                                 for k_ in (sweep_k, round_k):
                                     k_['look'] = 8.0 + CM_LOOK_SIGN*k_['twist']
                             sweep_k['smear'] = 1; round_k['smear'] = 1; act_k['smear'] = 1
