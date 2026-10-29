@@ -2893,6 +2893,11 @@ if LOOP:
                                     # little lower) to angle the arm, with the Key leaning forward a little with it
                                     k_['hand'] = Vector(k_['hand']) + U_*.35 + Vector((0, 0, -.10))
                                     k_['blade_dir'] = tuple((U_*.22 + Vector((0, 0, 1))).normalized())
+                            if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 7))):
+                                # v7 (Kvon: slide the Keyblade down so the hand is in the middle of the handle): v6's fist
+                                # sat at the bottom of the handle against the guard's lower bar.
+                                for k_ in (thrust_k, hold_k):
+                                    k_['grip_slide'] = .10
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
@@ -4271,6 +4276,11 @@ if LOOP:
                 arm.keyframe_insert(path, frame=i + 1)
         if CROUCH or RUN:
             key.matrix_world = pose_world('R_te') @ CR_KEY_IN_TE
+            if RUN and RUN_KEYS[i].get('grip_slide'):
+                # Crouching Heavy v7+ (Kvon: slide the Key down so the hand is in the middle of the handle): one-handed
+                # grip, the Key moved back along its own line (toward the pommel) by this many metres.
+                key.matrix_world = (Matrix.Translation(-key.matrix_world.to_3x3().normalized().col[2]*RUN_KEYS[i]['grip_slide'])
+                                    @ key.matrix_world)
             if RUN and RUN_KEYS[i].get('key_in_left') and HURT.endswith('_v3'):
                 # Standing Light v3: same Key angle, slid along its line so the handle sits in the left fist.
                 key.matrix_world = Matrix.Translation(hand_point('L') - hand_point('R')) @ key.matrix_world
