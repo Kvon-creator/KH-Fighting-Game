@@ -47,7 +47,11 @@ ATTACKS = [
 SWEEP_FROM = .5            # a 'key' hitbox covers the Key's path over the last half of the swing into the hit
 # ... except: the Crouching Medium's last half swings round behind him (its hit is the whole low sweep from the
 # front), and the Jumping Medium's spin brings the Key down from high over his head (only the end of it strikes).
-SWEEP_FROM_BY = {'attack_cmedium': 0.0, 'attack_jmedium': .8}
+SWEEP_FROM_BY = {'attack_cmedium': 0.0, 'attack_jmedium': .8, 'attack_cheavy': 0.0}
+# Extra forward reach (px, 384 scale) on top of the drawing: the launcher's Key points straight up, so on its own it
+# could never touch an opponent pushed up against Sora (the middle hurtboxes keep them ~178 px apart); its hitbox
+# covers the whole upward swing from chest height and reaches this far further forward.
+FORWARD_PX = {'attack_cheavy': 110}
 
 
 def alpha_mask(path):
@@ -61,7 +65,14 @@ def body_mask(path):
     r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
     mx, mn = np.maximum(np.maximum(r, g), b), np.minimum(np.minimum(r, g), b)
     silver = (mx > 95) & (mx - mn < 28)
-    return (al > 127) & ~silver
+    # Its gold guard too, but only above his shoes (also gold): the bottom 35% of the figure keeps its gold. The
+    # guard is held out in front, so leaving it in widened the middle (push) box past his body.
+    gold = (r > 170) & (g > 95) & (g < 215) & (b < 100) & (r > g + 25)
+    ys = np.nonzero((al > 127).any(1))[0]
+    if len(ys):
+        cut = int(ys[0] + (ys[-1] - ys[0])*.65)
+        gold[cut:] = False
+    return (al > 127) & ~silver & ~gold
 
 
 def hurtboxes(mask):
@@ -157,6 +168,8 @@ def main():
             name = f'{anim}_384/sora_{anim}_{i:02d}.png'
             mask = alpha_mask(ASSETS / name)
             box = hitbox(mask, rep, i, style, slide, SWEEP_FROM_BY.get(anim, SWEEP_FROM))
+            if anim in FORWARD_PX:
+                box = (box[0], box[1], min(mask.shape[1] - box[0], box[2] + FORWARD_PX[anim]), box[3])
             assert box, (anim, i)
             hit[name] = [box]
             # preview: drawing + hurt (blue) + hit (red)

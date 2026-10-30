@@ -235,6 +235,17 @@ const DUMMY_X := 860.0
 ## Game frames the red "just lost" part of a health bar waits before draining, and how fast it drains (HP/frame).
 const LOST_HP_DELAY := 30
 const LOST_HP_DRAIN := 120.0
+## Per attack strength (Kvon): damage, hit-freeze (both fighters stop, game frames) and hitstun (game frames the one
+## hit is stuck reeling; its hurt animation is stretched to it).
+const DAMAGE := {&"light": 300, &"medium": 500, &"heavy": 800}
+const HIT_FREEZE := {&"light": 11, &"medium": 13, &"heavy": 16}
+const HITSTUN := {&"light": 15, &"medium": 19, &"heavy": 23}
+## Launcher (the Crouching Heavy; Kvon: launch + air juggle): the one launched flies up about 250 px under a light
+## gravity (Sora's jump gravity, so he can jump after it); every hit while it is airborne pops it up a little; it
+## drifts away from the attacker, then lands into the knockdown (lie down, get up), untouchable until it stands.
+const LAUNCH_SPEED := 17.2
+const JUGGLE_SPEED := 7.0
+const LAUNCH_VX := 1.5
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -312,6 +323,20 @@ var _trace := false
 ## whether the current attack has already hit, and the box view.
 var _dummy: AnimatedSprite2D
 var _dummy_hold := 0
+## Dummy state: &"idle", &"stun" (reeling for _dummy_stun frames), &"air" (launched / juggled), &"down" (knocked
+## down: lying, then getting up).
+var _dummy_state := &"idle"
+var _dummy_stun := 0
+var _dummy_stun_len := 1
+var _dummy_tick := 0
+var _dummy_vx := 0.0
+var _dummy_vy := 0.0
+## Game frames the launched dummy has been coming down (its head-first fall is timed from the top of the arc).
+var _dummy_fall := 0
+## Hit-freeze frames left (both fighters stop while it counts down).
+var _freeze := 0
+## Real game frames run (counts through hit-freeze too; _tick is Sora's own clock and pauses).
+var _frames := 0
 var _hp := [MAX_HP, MAX_HP]
 var _lost_hp := [float(MAX_HP), float(MAX_HP)]
 var _lost_wait := [0, 0]
@@ -425,6 +450,8 @@ func _ready() -> void:
 			_demo_jump_at = int(arg.trim_prefix("--jump-demo-at="))
 		elif arg == "--trace":
 			_trace = true
+		elif arg.begins_with("--dummy-x="):
+			_dummy.position.x = float(arg.trim_prefix("--dummy-x="))  # tests: start the dummy elsewhere
 		elif arg == "--show-boxes":
 			_show_boxes = true  # the F1 box view on from the start (recordings)
 		elif arg.begins_with("--capture="):
@@ -432,12 +459,21 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	_sora_step()
-	_dummy_step()
-	_check_hits()
+	if _freeze > 0:
+		_freeze -= 1  # hit-freeze: everyone holds still (the bars still drain)
+	else:
+		_sora_step()
+		_dummy_step()
+		_push_apart()
+		_check_hits()
 	_drain_lost_hp()
 	_box_view.queue_redraw()
 	_bars.queue_redraw()
+	_frames += 1
+	if _trace and _frames % 4 == 0:
+		print("POS ", _frames, " sora=", snappedf(_sprite.position.x, 0.1), " dummy=",
+			snappedf(_dummy.position.x, 0.1), ",", snappedf(_dummy.position.y, 0.1), " ", _dummy_state,
+			" freeze=", _freeze)
 
 
 ## One game frame of Sora: read the input and move him / pick his drawing.
@@ -858,30 +894,116 @@ func _show(anim: StringName, drawing: int = 0) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_R:
 		_sprite.position.x = _start_x
-		_hp = [MAX_HP, MAX_HP]  # reset also refills both health bars
+		_hp = [MAX_HP, MAX_HP]  # reset also refills both health bars and stands the dummy back up
 		_lost_hp = [float(MAX_HP), float(MAX_HP)]
+		_dummy.position = Vector2(DUMMY_X, FLOOR_Y)
+		_dummy_state = &"idle"
+		_dummy_show(&"idle", 0)
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_F1:
 		_show_boxes = not _show_boxes
 
 
-## Shows a dummy drawing, placed like Sora's (feet on its position).
+## Shows a dummy drawing, placed like Sora's (feet on its position). Its root motion is mirrored (it faces left).
 func _dummy_show(anim: StringName, drawing: int) -> void:
 	_dummy.animation = anim
 	_dummy.frame = drawing
 	_dummy_hold = 0
 	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
 	_dummy.offset = -FEET + Vector2(shift, 0)
+	var motion: Array = ANIMATIONS[anim][3]
+	if drawing < motion.size():
+		_dummy.position.x = clampf(_dummy.position.x - motion[drawing], LEFT_LIMIT, RIGHT_LIMIT)
 
 
-## One game frame of the dummy: loop the idle; after a hit, play the ground hit once, then back to the idle.
+## One game frame of the dummy.
 func _dummy_step() -> void:
+	if _dummy_state == &"stun":
+		# Reeling: the ground hit animation stretched over the hitstun, then back to the idle.
+		_dummy_stun -= 1
+		if _dummy_stun <= 0:
+			_dummy_state = &"idle"
+			_dummy_show(&"idle", 0)
+			return
+		var holds_h: Array = ANIMATIONS[&"hurt_ground"][2]
+		var total := 0
+		for h: int in holds_h:
+			total += h
+		var elapsed := int(float(_dummy_stun_len - _dummy_stun) * total / _dummy_stun_len)
+		var step := mini(_step_of(elapsed, holds_h), holds_h.size() - 1)
+		if _dummy.animation != &"hurt_ground" or _dummy.frame != step:
+			_dummy_show(&"hurt_ground", step)
+		return
+	if _dummy_state == &"air":
+		# Launched: Sora's knockdown drawings under the jump's gravity - the air hit and drift while it rises, the
+		# head-first fall (timed from the top) once it comes down.
+		var step_a := 0 if _dummy_tick < HURT_AIR_HOLDS[0] else 1
+		if _dummy_vy >= 0.0:
+			_dummy_fall += 1
+			step_a = 2 + _step_of(_dummy_fall, HURT_AIR_HOLDS.slice(2))
+		_dummy_tick += 1
+		_dummy_vx *= AIR_COAST
+		_dummy.position.x = clampf(_dummy.position.x + _dummy_vx, LEFT_LIMIT, RIGHT_LIMIT)
+		_dummy.position.y += _dummy_vy
+		_dummy_vy += JUMP_GRAVITY
+		if _dummy.position.y >= FLOOR_Y:
+			_dummy.position.y = FLOOR_Y
+			_dummy_state = &"down"
+			_dummy_tick = 0
+			_dummy_show(&"hurt_down", 0)
+			return
+		var anim_a: StringName = &"hurt_air" if step_a < 2 else &"hurt_fall"
+		var drawing_a := step_a if step_a < 2 else mini(step_a - 2, 3)
+		if _dummy.animation != anim_a or _dummy.frame != drawing_a:
+			_dummy_show(anim_a, drawing_a)
+		return
+	if _dummy_state == &"down":
+		# Knocked down: like Sora's (shoulders hit, lie for LIE_FRAMES), then the get-up plays and ends in the idle.
+		_dummy_tick += 1
+		if _dummy.animation == &"hurt_down":
+			var holds_d: Array = ANIMATIONS[&"hurt_down"][2]
+			if _dummy_tick >= 13 + LIE_FRAMES:
+				_dummy_show(&"hurt_getup", 0)
+			else:
+				var step_d := mini(_step_of(_dummy_tick, holds_d), holds_d.size() - 1)
+				if _dummy.frame != step_d:
+					_dummy_show(&"hurt_down", step_d)
+			return
+	# Idle loop, or the get-up playing through (then standing again).
 	_dummy_hold += 1
 	var holds: Array = ANIMATIONS[_dummy.animation][2]
 	if _dummy_hold >= holds[_dummy.frame]:
 		if _dummy.frame + 1 < holds.size():
 			_dummy_show(_dummy.animation, _dummy.frame + 1)
 		else:
+			_dummy_state = &"idle"
 			_dummy_show(&"idle", 0)
+
+
+## The middle hurtbox (of a drawing's three, top to bottom) - the one used for pushing.
+func _middle_box(spr: AnimatedSprite2D) -> Array[Rect2]:
+	var all := _boxes(spr, BOXES.HURT)
+	var out: Array[Rect2] = []
+	if not all.is_empty():
+		out.append(all[all.size() / 2])
+	return out
+
+
+## When the two fighters' middle hurtboxes touch they push each other apart (Kvon: only the middle boxes): the
+## overlap is split between them, so walking into the other shoves it along at half speed; one against a screen
+## edge can't move, so the other takes all of it.
+func _push_apart() -> void:
+	var overlap := 0.0
+	for a: Rect2 in _middle_box(_sprite):
+		for b: Rect2 in _middle_box(_dummy):
+			if a.intersects(b):
+				overlap = maxf(overlap, minf(a.end.x, b.end.x) - maxf(a.position.x, b.position.x))
+	if overlap <= 0.0:
+		return
+	var side := 1.0 if _dummy.position.x >= _sprite.position.x else -1.0  # the dummy's side of Sora
+	var dummy_to := clampf(_dummy.position.x + side * overlap * 0.5, LEFT_LIMIT, RIGHT_LIMIT)
+	var moved := absf(dummy_to - _dummy.position.x)
+	_dummy.position.x = dummy_to
+	_sprite.position.x = clampf(_sprite.position.x - side * (overlap - moved), LEFT_LIMIT, RIGHT_LIMIT)
 
 
 ## A fighter's boxes for its current drawing in world coordinates (table = BOXES.HURT or BOXES.HIT). Boxes are
@@ -903,8 +1025,8 @@ func _boxes(spr: AnimatedSprite2D, table: Dictionary) -> Array[Rect2]:
 
 ## Sora's attack hits the dummy when one of its hitboxes overlaps one of the dummy's hurtboxes - once per attack.
 func _check_hits() -> void:
-	if _attack_hit:
-		return
+	if _attack_hit or _dummy_state == &"down":
+		return  # one hit per attack; a knocked-down fighter can't be hit until it stands
 	var hits := _boxes(_sprite, BOXES.HIT)
 	if hits.is_empty():
 		return
@@ -913,12 +1035,28 @@ func _check_hits() -> void:
 			if h.intersects(b):
 				_attack_hit = true
 				var attack := String(_sprite.animation)
-				var damage := 800 if attack.ends_with("heavy") else (500 if attack.ends_with("medium") else 300)
-				_hp[1] = maxi(_hp[1] - damage, 0)
+				var strength := &"heavy" if attack.ends_with("heavy") else (&"medium" if attack.ends_with("medium")
+					else &"light")
+				_hp[1] = maxi(_hp[1] - DAMAGE[strength], 0)
 				_lost_wait[1] = LOST_HP_DELAY
-				_dummy_show(&"hurt_ground", 0)
+				_freeze = HIT_FREEZE[strength]
+				var away := 1.0 if _dummy.position.x >= _sprite.position.x else -1.0
+				if _sprite.animation == &"attack_cheavy" or _dummy_state == &"air":
+					# The launcher sends it flying; any hit while it is in the air pops it up again (a juggle).
+					var launch := _dummy_state != &"air"
+					_dummy_state = &"air"
+					_dummy_vy = -(LAUNCH_SPEED if launch else JUGGLE_SPEED)
+					_dummy_vx = LAUNCH_VX * away
+					_dummy_tick = 0
+					_dummy_fall = 0
+					_dummy_show(&"hurt_air", 0)
+				else:
+					_dummy_state = &"stun"
+					_dummy_stun = HITSTUN[strength]
+					_dummy_stun_len = _dummy_stun
+					_dummy_show(&"hurt_ground", 0)
 				if _trace:
-					print("HIT ", _tick, " ", attack, " ", damage, " dummy_hp=", _hp[1])
+					print("HIT ", _tick, " ", attack, " ", DAMAGE[strength], " dummy_hp=", _hp[1], " ", _dummy_state)
 				return
 
 
@@ -938,6 +1076,8 @@ func _draw_boxes() -> void:
 		for r: Rect2 in _boxes(spr, BOXES.HURT):
 			_box_view.draw_rect(r, Color(0.2, 0.5, 1.0, 0.22))
 			_box_view.draw_rect(r, Color(0.3, 0.6, 1.0, 0.9), false, 2.0)
+		for r: Rect2 in _middle_box(spr):
+			_box_view.draw_rect(r, Color(1.0, 0.9, 0.2, 0.9), false, 2.0)  # yellow outline: the push box
 		for r: Rect2 in _boxes(spr, BOXES.HIT):
 			_box_view.draw_rect(r, Color(1.0, 0.15, 0.15, 0.28))
 			_box_view.draw_rect(r, Color(1.0, 0.2, 0.2, 0.95), false, 2.0)
