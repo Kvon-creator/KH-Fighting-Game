@@ -12,17 +12,17 @@ script = ExtResource("2")
 
 [node name="Title" type="Label" parent="HUD" unique_id=1608241298]
 offset_left = 72.0
-offset_top = 30.0
+offset_top = 70.0
 offset_right = 900.0
-offset_bottom = 70.0
+offset_bottom = 110.0
 theme_override_colors/font_color = Color(0.85, 0.94, 1, 1)
 theme_override_font_sizes/font_size = 28
 text = "SORA MOVEMENT TEST"
 
 [node name="Controls" type="Label" parent="HUD" unique_id=335286354]
 offset_left = 72.0
-offset_top = 74.0
+offset_top = 110.0
 offset_right = 1100.0
-offset_bottom = 105.0
+offset_bottom = 141.0
 theme_override_font_sizes/font_size = 20
-text = "D / Right: shuffle forward     A / Left: shuffle back     S / Down: crouch     Double-tap D / Right: glide     W / Up: jump (again: spin)     Double-tap D in air: air-dash     Double-tap A: back-dash     U: light attack     I: medium attack     O: heavy attack     H: get hit     J: knockdown     R: reset"
+text = "D / Right: shuffle forward     A / Left: shuffle back     S / Down: crouch     Double-tap D / Right: glide     W / Up: jump (again: spin)     Double-tap D in air: air-dash     Double-tap A: back-dash     U: light attack     I: medium attack     O: heavy attack     H: get hit     J: knockdown     F1: show hit/hurt boxes     R: reset (refills health)"
