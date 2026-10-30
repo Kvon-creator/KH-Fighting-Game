@@ -49,9 +49,10 @@ const DOUBLE_TAP_FRAMES := 15
 ## The glide push-off ends on the loop's first pose, so it hands over to this glide_loop drawing.
 const GLIDE_ENTRY_DRAWING := 1
 ## Jump: peak height in px and game frames from leaving the floor to the peak; gravity and launch
-## speed follow from these (a 0.6 s hop).
+## speed follow from these. Kvon: the Jumping Heavy (24 game frames) must be able to finish when pressed at
+## the very top, so the same 200 px jump rises and falls more slowly - 26 frames each way (was 18, a 0.6 s hop).
 const JUMP_HEIGHT := 200.0
-const JUMP_RISE_FRAMES := 18.0
+const JUMP_RISE_FRAMES := 26.0
 const JUMP_GRAVITY := 2.0 * JUMP_HEIGHT / (JUMP_RISE_FRAMES * JUMP_RISE_FRAMES)
 const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
 ## Second jump: launch speed as a share of the first jump's (about two-thirds of its height; Kvon asked
@@ -99,7 +100,9 @@ const SKY_COLOR := Color8(19, 28, 57)
 ## push, game frames for air hit 1, air hit 2 and the first three falling drawings (the last falling
 ## drawing is held until he lands), and how long he lies on the floor before standing. (Kvon: faster from
 ## the first air pose to the last - 12 game frames instead of 23.)
-const KNOCK_SPEED := JUMP_SPEED * 0.85
+## The knockdown keeps the original (18-frame jump) gravity, so it is unchanged by the slower jump.
+const HURT_GRAVITY := 2.0 * JUMP_HEIGHT / (18.0 * 18.0)
+const KNOCK_SPEED := HURT_GRAVITY * 18.0 * 0.85
 const KNOCK_VX := 5.0
 const HURT_AIR_HOLDS := [2, 4, 2, 2, 2]
 const LIE_FRAMES := 30  # Kvon: less time on the floor (was 60)
@@ -194,9 +197,10 @@ const ANIMATIONS := {
 	# Startup 8, active 3, recovery 12.
 	&"attack_jmedium": ["res://assets/sora/attack_jmedium_384/", "sora_attack_jmedium_", [2, 3, 3, 3, 3, 4, 5], []],
 	# Jumping Heavy (O in the air; Kvon: v2 "That's good", after Trunks' DBFZ j.H): a two-handed overhead slash -
-	# lift, wind-up behind the head, over the top, chop down in front, low, rise, back to the tuck. Startup 11,
-	# active 4, recovery 18.
-	&"attack_jheavy": ["res://assets/sora/attack_jheavy_384/", "sora_attack_jheavy_", [3, 5, 3, 4, 7, 6, 5], []],
+	# lift, wind-up behind the head, over the top, chop down in front, low, rise, back to the tuck. Kvon: must
+	# finish when pressed at the very top of a jump but stay slower than the Medium - startup 10, active 3,
+	# recovery 11 (24 frames vs the Medium's 23; was 11 / 4 / 18).
+	&"attack_jheavy": ["res://assets/sora/attack_jheavy_384/", "sora_attack_jheavy_", [2, 4, 4, 3, 5, 3, 3], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -746,7 +750,7 @@ func _hurt_air_step() -> void:
 	_vx *= AIR_COAST
 	_sprite.position.x = clampf(_sprite.position.x + _vx, LEFT_LIMIT, RIGHT_LIMIT)
 	_sprite.position.y += _vy
-	_vy += JUMP_GRAVITY
+	_vy += HURT_GRAVITY
 	if _sprite.position.y >= FLOOR_Y:
 		_sprite.position.y = FLOOR_Y
 		_hurt_tick = -1

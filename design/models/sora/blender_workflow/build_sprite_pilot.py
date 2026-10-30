@@ -664,7 +664,7 @@ if RUN:
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
                        'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
                        'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5],
-                       'atk_jmed': [2, 3, 3, 3, 5, 7], 'atk_jheavy': [3, 5, 3, 4, 7, 6, 5]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_jmed': [2, 3, 3, 3, 5, 7], 'atk_jheavy': [2, 4, 4, 3, 5, 3, 3]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
