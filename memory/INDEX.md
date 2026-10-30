@@ -34,8 +34,8 @@
 - [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher (supersedes jumping uppercut); FINAL v8 in the game (O while crouching) - overhead thrust after Sora's SSBU up smash, taller 384 x 576 frames (TALL_FEET).
 
 - [Sora Jumping Light](Sora_Jumping_Light.md): Approved quick midair Kingdom Key slash; v7 in the game (U in the air), after Ky's GGST j.S; v1-v6 kept until Kvon calls v7 final.
-- [Sora Jumping Medium](Sora_Jumping_Medium.md): Approved broad diagonal midair Kingdom Key slash. In progress (v2, after Simon's SSBU back air mirrored to strike toward the opponent).
-- [Sora Jumping Heavy](Sora_Jumping_Heavy.md): Approved wide midair spinning Kingdom Key slash.
+- [Sora Jumping Medium](Sora_Jumping_Medium.md): Broad diagonal midair slash, now a clockwise 3/4 spin into a diagonal strike after Simon's SSBU back air; v7 "looks good for now", not in the game yet.
+- [Sora Jumping Heavy](Sora_Jumping_Heavy.md): Now a two-handed overhead slash after Trunks' DBFZ j.H (replaces the spinning slash); v1 pending review.
 - [Sora Attack Grip](Sora_Attack_Grip.md): Rule - one-handed attack drawings hold the Key mid-handle (GRIP_MID_FROM); neutral last drawing excluded; standing attacks left as they are (Kvon).
 - [Sora Pilot Approval](Sora_Pilot_Approval.md): Model-sheet and idle-pilot authorization; first image-generation attempt rejected.
 - [Sora Manual Drawing Guide](Sora_Manual_Drawing_Guide.md): Authorized manual model-sheet and idle guide after generation rejection.

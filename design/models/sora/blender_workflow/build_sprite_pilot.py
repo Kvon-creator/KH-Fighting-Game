@@ -56,7 +56,8 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'jump_spin_v', 'jump_dash_v', 'jump_bdash_v',
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
-                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v')) else None
+                                      'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
+                                      'atk_jheavy_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -105,7 +106,7 @@ CANVAS_H = 768 if OUT_NAME.startswith('atk_cheavy_v') else 512
 # Kvon (October 29): the fist in the middle of the Key's handle (as on the Crouching Heavy's thrust) on every attack.
 # One-handed attack drawings get grip_slide .10 by default from these versions on; the last drawing of each (the
 # crouch guard / jump tuck it hands back to) keeps the neutral grip so it matches those animations.
-GRIP_MID_FROM = {'atk_clight': 31, 'atk_cmed': 24, 'atk_cheavy': 9, 'atk_jlight': 8, 'atk_jmed': 6}
+GRIP_MID_FROM = {'atk_clight': 31, 'atk_cmed': 24, 'atk_cheavy': 9, 'atk_jlight': 8, 'atk_jmed': 6, 'atk_jheavy': 1}
 import re as _re_gm
 _gm = _re_gm.match(r'(atk_[a-z]+)_v(\d+)', OUT_NAME)
 GRIP_MID = bool(_gm and _gm.group(1) in GRIP_MID_FROM and int(_gm.group(2)) >= GRIP_MID_FROM[_gm.group(1)])
@@ -663,7 +664,7 @@ if RUN:
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
                        'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
                        'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5],
-                       'atk_jmed': [2, 3, 3, 3, 5, 7]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_jmed': [2, 3, 3, 3, 5, 7], 'atk_jheavy': [3, 5, 3, 4, 7, 6, 5]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -3146,6 +3147,53 @@ if LOOP:
                             RUN_KEYS = [gath_k, spin1_k, spin2_k, strike_k, extend_k, level_k, back_k]
                             GAME_FRAMES = [2, 3, 3, 3, 3, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
+                elif jpart == 'atk_jheavy':
+                    # Jumping Heavy (Kvon, October 29: "We'll do an overhead slash instead. Use Trunks' jump heavy in DBFZ
+                    # as a reference", two hands - replaces the spinning-slash note; reference
+                    # design/references/trunks_dbfz_jh_reference.png: one huge vertical two-handed arc from high over his
+                    # head down past his feet, body hunched over the sword, legs tucked back). Out of the apex tuck both
+                    # hands raise the Key high over and behind his head (back arched a little, knees up), it comes over
+                    # the top, chops straight down in front past his feet (the hit: body curled forward, legs swung back),
+                    # stays low, comes back up and he returns to the tuck. Two-handed grip as the Standing Heavy
+                    # (release 0, left hand on the handle). Not grounded. Startup 11, active 4, recovery 18.
+                    apex_f = {'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}
+                    up_f = {'L': (.20, LAT['L'], .45, 30.0), 'R': (.02, LAT['R'], .35, 40.0)}      # knees up
+                    back_f = {'L': (-.10, LAT['L'], .40, 40.0), 'R': (-.30, LAT['R'], .30, 50.0)}  # legs swung back
+
+                    def jh(feet, hunch, pitch, neck, hand, blade, twist=0.0):
+                        k_ = hurt(feet, -.12, hunch, pitch, neck, hand, Vector(blade).normalized(), hand)
+                        k_.update(twist=twist, look=8.0 + twist, release=0.0,
+                                  l_elbow_hint=tuple(V_*.75 + U_*.10 + Vector((0, 0, -.65))))
+                        return k_
+                    lift_k = jh(apex_f, 3.0, 0.0, -6.0, U_*.12 + V_*.18 + Vector((0, 0, 1.05)),
+                                -U_*.30 + V_*.35 + Vector((0, 0, .85)))
+                    wind_k = jh(up_f, -6.0, -10.0, 0.0, U_*.00 + V_*.15 + Vector((0, 0, 1.30)),
+                                -U_*.80 + V_*.30 + Vector((0, 0, .30)), -8.0)
+                    over_k = jh(up_f, 2.0, 2.0, -8.0, U_*.15 + V_*.15 + Vector((0, 0, 1.30)),
+                                U_*.55 + V_*.30 + Vector((0, 0, .70)), 5.0)
+                    over_k.update(smear=1, smear_bow=False)
+                    hit_k = jh(back_f, 16.0, 22.0, -26.0, U_*.40 + V_*.20 + Vector((0, 0, .70)),
+                               U_*.35 + V_*.15 + Vector((0, 0, -1.0)), 10.0)
+                    hit_k.update(lean_cam=-14.0, head_cam=14.0, smear=2, smear_bow=False)
+                    low_k = jh(back_f, 14.0, 20.0, -22.0, U_*.30 + V_*.22 + Vector((0, 0, .62)),
+                               U_*.05 + V_*.25 + Vector((0, 0, -1.0)), 8.0)
+                    low_k['lean_cam'] = -10.0
+                    rise_k = jh(apex_f, 6.0, 6.0, -10.0, U_*.15 + V_*.22 + Vector((0, 0, .90)),
+                                U_*.60 + V_*.45 + Vector((0, 0, -.30)), 4.0)
+                    back_k = jh(apex_f, 4.0, 2.0, -8.0, U_*-.10 + V_*.26 + Vector((0, 0, .82)),
+                                -U_*.62 + V_*.55 + Vector((0, 0, -.45)))
+                    back_k['release'] = 1.0   # the jump tuck's one-handed carry
+                    # inside the frame: lift / overhead Keys tipped toward the camera and the hands lower (they ran off
+                    # the top); the low follow-through tipped forward/toward the camera (it ran off the bottom); the hit
+                    # drawn up a little
+                    lift_k['blade_dir'] = tuple((-U_*.45 + V_*.65 + Vector((0, 0, .55))).normalized())
+                    lift_k['hand'] = Vector(lift_k['hand']) + Vector((0, 0, -.10))
+                    over_k['blade_dir'] = tuple((U_*.60 + V_*.55 + Vector((0, 0, .45))).normalized())
+                    over_k['hand'] = Vector(over_k['hand']) + Vector((0, 0, -.12))
+                    wind_k['hand'] = Vector(wind_k['hand']) + Vector((0, 0, -.08))
+                    low_k['blade_dir'] = tuple((U_*.35 + V_*.60 + Vector((0, 0, -.72))).normalized())
+                    hit_k['offset_px'] = (0, 20); low_k['offset_px'] = (0, 20)
+                    RUN_KEYS = [lift_k, wind_k, over_k, hit_k, low_k, rise_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
                     # spinning two-handed slash. Raised over the rear shoulder -> coiled low wind-up -> a full turn on the
