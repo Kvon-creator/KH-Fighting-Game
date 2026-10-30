@@ -17,4 +17,5 @@
 - `scripts/menu.gd` on `scenes/menu.tscn`: KINGDOM ARENA title, 3 buttons (mouse, W/S/arrows, Enter/Space/U), ignores input for 0.25 s.
 - Test flags: P1 demo flags as before + same with `p2-` prefix; `--start-hp=N`; menu `--pick=n`, `--capture=`.
 - Tested: training results identical to before (medium HIT 84, launcher combo 161/214, guard modes, push 873/1051, H/J/air guard); PvP best of 3 -> menu; P2 demo walk + heavy; crossover turn-around; CPU vs idle P1 (all attack types, hits) and vs attacking P1 (guards some); menu picks; screenshots.
-- Pending: project.godot main scene is still demo.tscn (protected - asked Kvon); delete the unused sora_move_test.gd (asked); step 2 = Limit Form importer + re-render for P2 / CPU / dummy.
+- Kvon authorized ("Yes to both", October 29): project.godot `run/main_scene` changed to `res://scenes/menu.tscn` (F5 opens the menu) and the unused `scripts/sora_move_test.gd` (+ .uid) deleted; Training still runs from `scenes/sora_move_test.tscn` or the menu. These were one-time authorizations for those two changes, not standing permission for protected files.
+- Next: step 2 = Limit Form importer + re-render for P2 / CPU / dummy.
