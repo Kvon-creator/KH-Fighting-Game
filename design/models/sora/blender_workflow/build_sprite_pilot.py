@@ -3193,6 +3193,11 @@ if LOOP:
                     wind_k['hand'] = Vector(wind_k['hand']) + Vector((0, 0, -.08))
                     low_k['blade_dir'] = tuple((U_*.35 + V_*.60 + Vector((0, 0, -.72))).normalized())
                     hit_k['offset_px'] = (0, 20); low_k['offset_px'] = (0, 20)
+                    if not HURT.endswith('_v1'):
+                        # v2 (Kvon: pose 5, the chop - angle the tip up more): from straight down (-1.0) to a forward
+                        # diagonal so the tip points out toward the opponent.
+                        hit_k['blade_dir'] = tuple((U_*.75 + V_*.15 + Vector((0, 0, -.65))).normalized())
+                        hit_k['offset_px'] = (-70, 20)  # the raised tip reaches further right
                     RUN_KEYS = [lift_k, wind_k, over_k, hit_k, low_k, rise_k, back_k]
                 elif jpart == 'atk_sheavy':
                     # Standing Heavy (Kvon, October 27; matched to Gemini round-45 poses 2-9 with spin in-betweens): a wide
