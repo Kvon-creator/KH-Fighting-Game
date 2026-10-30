@@ -18,7 +18,8 @@ extends Node2D
 ## O = Standing Heavy (an advancing downward slash); while standing or walking.
 ## U while holding S or Down = Crouching Light (a low jab from the kneel); I while holding S or Down =
 ## Crouching Medium (a lunging low sweep); O while holding S or Down = Crouching Heavy (an overhead Keyblade
-## thrust that launches). U in the air = Jumping Light (a quick level Keyblade slash).
+## thrust that launches). U / I / O in the air = Jumping Light (a quick level
+## slash) / Jumping Medium (a spinning diagonal strike) / Jumping Heavy (a two-handed overhead chop).
 ## R resets his position.
 ## Automated checks: `-- --walk-demo-ticks=N` holds forward for N game frames, `-- --back-demo-ticks=N`
 ## holds back, `-- --crouch-demo-ticks=N` holds crouch (from game frame `--crouch-demo-from=M`,
@@ -188,6 +189,14 @@ const ANIMATIONS := {
 	# his shoulder, a quick level slash at chest height with the front knee up, follow-through, back to the tuck.
 	# Startup 5, active 3, recovery 9; the jump keeps moving him meanwhile (timed in _air_step).
 	&"attack_jlight": ["res://assets/sora/attack_jlight_384/", "sora_attack_jlight_", [2, 3, 3, 4, 5], []],
+	# Jumping Medium (I in the air; Kvon: v7 "looks good for now", after Simon's SSBU back air): a clockwise 3/4 spin
+	# with the Key overhead into a diagonal strike with his back to the camera, reach, arm level, back to the tuck.
+	# Startup 8, active 3, recovery 12.
+	&"attack_jmedium": ["res://assets/sora/attack_jmedium_384/", "sora_attack_jmedium_", [2, 3, 3, 3, 3, 4, 5], []],
+	# Jumping Heavy (O in the air; Kvon: v2 "That's good", after Trunks' DBFZ j.H): a two-handed overhead slash -
+	# lift, wind-up behind the head, over the top, chop down in front, low, rise, back to the tuck. Startup 11,
+	# active 4, recovery 18.
+	&"attack_jheavy": ["res://assets/sora/attack_jheavy_384/", "sora_attack_jheavy_", [3, 5, 3, 4, 7, 6, 5], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -196,7 +205,11 @@ const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
-	&"attack_jlight": [0, 0, 45, 0, 0]}
+	&"attack_jlight": [0, 0, 45, 0, 0],
+	&"attack_jmedium": [0, 0, 0, 90, 52.5, 82.5, 0],
+	&"attack_jheavy": [0, 0, 0, 52.5, 0, 0, 0]}
+## Drawings drawn shifted UP inside their frame (the Jumping Heavy's low chop): shifted back down by this many px.
+const DRAW_SHIFT_Y := {&"attack_jheavy": [0, 0, 0, 15, 15, 0, 0]}
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
@@ -204,7 +217,9 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 	&"attack_clight": ["res://assets/sora/attack_clight_smear_384/", "sora_attack_clight_smear_"],
 	&"attack_cmedium": ["res://assets/sora/attack_cmedium_smear_384/", "sora_attack_cmedium_smear_"],
 	&"attack_cheavy": ["res://assets/sora/attack_cheavy_smear_384/", "sora_attack_cheavy_smear_"],
-	&"attack_jlight": ["res://assets/sora/attack_jlight_smear_384/", "sora_attack_jlight_smear_"]}
+	&"attack_jlight": ["res://assets/sora/attack_jlight_smear_384/", "sora_attack_jlight_smear_"],
+	&"attack_jmedium": ["res://assets/sora/attack_jmedium_smear_384/", "sora_attack_jmedium_smear_"],
+	&"attack_jheavy": ["res://assets/sora/attack_jheavy_smear_384/", "sora_attack_jheavy_smear_"]}
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -227,6 +242,8 @@ var _jump2_used := false
 var _spin_tick := -1
 ## Game frames into the air attack being played (-1 = none); the jump keeps moving him meanwhile.
 var _air_atk_tick := -1
+## Which air attack is playing (attack_jlight / attack_jmedium / attack_jheavy).
+var _air_atk_anim := &"attack_jlight"
 ## Forward air-dash: whether it has been used in this jump, game frames into it (-1 = not dashing),
 ## and whether he is falling after one (the falling drawing then skips the swing-up).
 var _dash_used := false
@@ -439,8 +456,11 @@ func _physics_process(_delta: float) -> void:
 			_dash_back = back_tap and not double_tap
 			_dash_tick = 0
 			_after_dash = false
-		elif light_pressed and _dash_tick < 0 and _air_atk_tick < 0:
-			_air_atk_tick = 0  # Jumping Light: plays over the jump (no air-dash during it)
+		elif (light_pressed or medium_pressed or heavy_pressed) and _dash_tick < 0 and _air_atk_tick < 0:
+			# Jumping Light / Medium / Heavy (U / I / O): plays over the jump (no air-dash during it)
+			_air_atk_anim = &"attack_jheavy" if heavy_pressed else (&"attack_jmedium" if medium_pressed
+				else &"attack_jlight")
+			_air_atk_tick = 0
 			_spin_tick = -1
 		elif jump_pressed and not _jump2_used and _dash_tick < 0:
 			_jump2_used = true  # second jump: a new upward burst and the spin
@@ -621,12 +641,12 @@ func _air_step() -> void:
 		return
 	if _air_atk_tick >= 0:
 		# Air attack: its drawings by its own holds while the jump carries on; then the speed-picked air drawing.
-		var holds_a: Array = ANIMATIONS[&"attack_jlight"][2]
+		var holds_a: Array = ANIMATIONS[_air_atk_anim][2]
 		var step_a := _step_of(_air_atk_tick, holds_a)
 		_air_atk_tick += 1
 		if step_a < holds_a.size():
-			if _sprite.animation != &"attack_jlight" or _sprite.frame != step_a:
-				_show(&"attack_jlight", step_a)
+			if _sprite.animation != _air_atk_anim or _sprite.frame != step_a:
+				_show(_air_atk_anim, step_a)
 			return
 		_air_atk_tick = -1
 	if _spin_tick >= 0:
@@ -760,7 +780,8 @@ func _show(anim: StringName, drawing: int = 0) -> void:
 	_sprite.frame = drawing
 	_hold = 0
 	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
-	_sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, 0)
+	var shift_y: float = DRAW_SHIFT_Y[anim][drawing] if DRAW_SHIFT_Y.has(anim) else 0.0
+	_sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, shift_y)
 	_smear.visible = _smear_frames.has(anim)
 	if _smear.visible:
 		_smear.texture = _smear_frames[anim][drawing]
