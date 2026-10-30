@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwwr13tiqv3nl"]
 
 [ext_resource type="PackedScene" path="res://scenes/arena.tscn" id="1"]
-[ext_resource type="Script" uid="uid://du6u1805nnx3l" path="res://scripts/sora_move_test.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/match.gd" id="2"]
 
 [node name="SoraMoveTest" type="Node2D" unique_id=1246808628]
 script = ExtResource("2")
@@ -17,7 +17,7 @@ offset_right = 900.0
 offset_bottom = 110.0
 theme_override_colors/font_color = Color(0.85, 0.94, 1, 1)
 theme_override_font_sizes/font_size = 28
-text = "SORA MOVEMENT TEST"
+text = "TRAINING"
 
 [node name="Controls" type="Label" parent="HUD" unique_id=335286354]
 offset_left = 72.0
@@ -25,4 +25,4 @@ offset_top = 110.0
 offset_right = 1100.0
 offset_bottom = 141.0
 theme_override_font_sizes/font_size = 20
-text = "D / Right: shuffle forward     A / Left: shuffle back     S / Down: crouch     Double-tap D / Right: glide     W / Up: jump (again: spin)     Double-tap D in air: air-dash     Double-tap A: back-dash     U: light attack     I: medium attack     O: heavy attack     H: get hit     J: knockdown     F1: show hit/hurt boxes     G: dummy guard mode     Hold A + H: guard test     R: reset (refills health, dummy back in place)"
+text = "D: forward     A: back (hold to guard)     S: crouch     W: jump     U / I / O: light / medium / heavy     G: dummy guard mode     H: take a hit     J: knockdown     F1: boxes     R: reset     Esc: menu"
