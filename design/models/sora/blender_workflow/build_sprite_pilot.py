@@ -3140,6 +3140,9 @@ if LOOP:
                                 # -150 checked against -180/-110/-30/+40/+90/+130 (positive turns the face to screen
                                 # left; -150 shows his profile facing the opponent)
                                 strike_k['look'] = float(m_lk.group(1)) if m_lk else -150.0
+                            if not HURT.endswith(('_v3', '_v4', '_v5', '_v6')):
+                                # v7 (Kvon: pose 5's head is turned too far past his shoulder): look -150 -> -125.
+                                strike_k['look'] = float(m_lk.group(1)) if m_lk else -125.0
                             RUN_KEYS = [gath_k, spin1_k, spin2_k, strike_k, extend_k, level_k, back_k]
                             GAME_FRAMES = [2, 3, 3, 3, 3, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
