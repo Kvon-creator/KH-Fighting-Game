@@ -102,6 +102,13 @@ HEIGHT = 1.6          # meters, T-pose top of hair to sole
 # Crouching Heavy (an overhead Keyblade thrust, ~2.9 m tall): a taller 512 x 768 canvas at the same scale, with the
 # soles the same 42 px above the bottom edge; everything else keeps the 512 x 512 frame.
 CANVAS_H = 768 if OUT_NAME.startswith('atk_cheavy_v') else 512
+# Kvon (October 29): the fist in the middle of the Key's handle (as on the Crouching Heavy's thrust) on every attack.
+# One-handed attack drawings get grip_slide .10 by default from these versions on; the last drawing of each (the
+# crouch guard / jump tuck it hands back to) keeps the neutral grip so it matches those animations.
+GRIP_MID_FROM = {'atk_clight': 31, 'atk_cmed': 24, 'atk_cheavy': 9, 'atk_jlight': 8, 'atk_jmed': 6}
+import re as _re_gm
+_gm = _re_gm.match(r'(atk_[a-z]+)_v(\d+)', OUT_NAME)
+GRIP_MID = bool(_gm and _gm.group(1) in GRIP_MID_FROM and int(_gm.group(2)) >= GRIP_MID_FROM[_gm.group(1)])
 FLOOR_ROW = CANVAS_H - 42
 # Grip-to-tip length: approved idle's proportion; v8+ reference shows a longer Key (tip near head height).
 KEY_REACH = 1.0 if REF_POSE and version != 'idle_loop_v7' else .92
@@ -3124,6 +3131,15 @@ if LOOP:
                                 strike_k['hand'] = Vector(strike_k['hand']) + Vector((0, 0, .12))
                                 strike_k['blade_dir'] = tuple((U_*.85 + V_*.10 + Vector((0, 0, -.35))).normalized())
                                 strike_k['offset_px'] = (-120, 0)  # the raised tip reaches further right
+                            if not HURT.endswith(('_v3', '_v4', '_v5')):
+                                # v6 (Kvon, pose 5: angle it up a little more; turn his head toward the opponent): Key
+                                # diagonal -.35 -> -.20; head turned on the neck toward screen right.
+                                import re as re_lk
+                                m_lk = re_lk.search(r'_look(-?\d+)$', OUT_NAME)
+                                strike_k['blade_dir'] = tuple((U_*.85 + V_*.10 + Vector((0, 0, -.20))).normalized())
+                                # -150 checked against -180/-110/-30/+40/+90/+130 (positive turns the face to screen
+                                # left; -150 shows his profile facing the opponent)
+                                strike_k['look'] = float(m_lk.group(1)) if m_lk else -150.0
                             RUN_KEYS = [gath_k, spin1_k, spin2_k, strike_k, extend_k, level_k, back_k]
                             GAME_FRAMES = [2, 3, 3, 3, 3, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
@@ -4503,6 +4519,10 @@ if LOOP:
                 arm.keyframe_insert(path, frame=i + 1)
         if CROUCH or RUN:
             key.matrix_world = pose_world('R_te') @ CR_KEY_IN_TE
+            gs_ = RUN_KEYS[i].get('grip_slide')
+            if (gs_ is None and GRIP_MID and RUN_KEYS[i].get('release', 0.0) >= .5 and not RUN_KEYS[i].get('key_in_left')
+                    and i < len(RUN_KEYS) - 1):
+                RUN_KEYS[i]['grip_slide'] = .10   # mid-handle grip on every one-handed attack drawing (GRIP_MID_FROM)
             if RUN and RUN_KEYS[i].get('grip_slide'):
                 # Crouching Heavy v7+ (Kvon: slide the Key down so the hand is in the middle of the handle): one-handed
                 # grip, the Key moved back along its own line (toward the pommel) by this many metres.

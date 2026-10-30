@@ -26,3 +26,4 @@
 
 Builders' D:\ path assert was replaced (in the six scripts used) by a check for `KingdomArena/project.godot`, so they run from any clone.
 **Why:** Kvon wanted to try a free AI motion model for refining the attack; MoMask was recommended because it runs free in a browser demo.
+- October 29: mid-handle grip rule ([[Sora_Attack_Grip]]) - rebuilt and swapped into the game (offsets unchanged).
