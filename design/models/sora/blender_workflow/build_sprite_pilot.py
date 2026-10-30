@@ -57,7 +57,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
                                       'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
-                                      'atk_jheavy_v')) else None
+                                      'atk_jheavy_v', 'atk_guard_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -664,7 +664,8 @@ if RUN:
                        'atk_sheavy': [1, 2, 3, 2, 2, 1, 2, 3, 6, 9, 6],
                        'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
                        'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5],
-                       'atk_jmed': [2, 3, 3, 3, 5, 7], 'atk_jheavy': [2, 4, 4, 3, 5, 3, 3]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_jmed': [2, 3, 3, 3, 5, 7], 'atk_jheavy': [2, 4, 4, 3, 5, 3, 3],
+                       'atk_guard': [6, 6, 6]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2262,10 +2263,10 @@ if LOOP:
                     back_k = ease(recoil_k, IDLE_R, .6, .4)
                     back_k.update(ground=True, no_center=True)
                     RUN_KEYS = [set_k, bash_k, recoil_k, back_k]
-                elif jpart in ('atk_clight', 'atk_cmed', 'atk_cheavy'):
+                elif jpart in ('atk_clight', 'atk_cmed', 'atk_cheavy', 'atk_guard'):
                     # The Crouching Medium (atk_cmed) reuses this section's kneel, crouch guard and cl() keys: build the
                     # approved Crouching Light (v30) first, then replace its drawings below.
-                    CM_HURT = HURT if jpart in ('atk_cmed', 'atk_cheavy') else None
+                    CM_HURT = HURT if jpart in ('atk_cmed', 'atk_cheavy', 'atk_guard') else None
                     if CM_HURT:
                         HURT = 'atk_clight_v30'
                     # Crouching Light (Kvon, October 27; posture after Ky's 2S in Guilty Gear Strive): from the approved
@@ -2924,6 +2925,33 @@ if LOOP:
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
+                        if jpart == 'atk_guard':
+                            # Guard (Kvon, October 29: "a simple guard animation ... for standing, crouching, and
+                            # jumping", the Keyblade held across): one drawing each - standing (from the battle
+                            # stance), crouching (the approved kneel) and in the air (the jump's apex tuck). Both
+                            # fists on the handle in front of his chest, the Key held level across his body pointing
+                            # back past his rear side, body braced (a little hunched, chin down).
+                            g_elbow = tuple(V_*.75 + U_*.10 + Vector((0, 0, -.65)))
+                            g_blade = (-U_*.90 + V_*.30 + Vector((0, 0, .12))).normalized()
+
+                            def braced(k_, hand_):
+                                k_.update(hand=hand_, l_hand=tuple(hand_), release=0.0, l_elbow_hint=g_elbow,
+                                          blade_dir=tuple(g_blade))
+                                return k_
+                            g_stand = hurt(stand, .10, 8.0, 6.0, -12.0, U_*.22 + V_*.30 + Vector((0, 0, .92)),
+                                           g_blade, U_*.22 + V_*.30 + Vector((0, 0, .92)), ground=True)
+                            g_stand.update(no_center=True, look=8.0, turn=IDLE_R['turn'])
+                            braced(g_stand, U_*.22 + V_*.30 + Vector((0, 0, .92)))
+                            g_crouch = braced(cl(cr_hand, cr_blade), U_*.22 + V_*.30 + Vector((0, 0, .80)))
+                            g_crouch.update(hunch=12.0, pitch=10.0)
+                            apex_g = {'L': (.16, LAT['L'], .30, 35.0), 'R': (-.04, LAT['R'], .10, 45.0)}
+                            g_air = hurt(apex_g, -.12, 8.0, 4.0, -12.0, U_*.22 + V_*.30 + Vector((0, 0, .92)), g_blade,
+                                         U_*.22 + V_*.30 + Vector((0, 0, .92)))
+                            g_air.update(look=8.0)
+                            braced(g_air, U_*.22 + V_*.30 + Vector((0, 0, .92)))
+                            RUN_KEYS = [g_stand, g_crouch, g_air]
+                            GAME_FRAMES = [6, 6, 6]
+                            DURATIONS_MS = [100.0]*3; n = 3
                 elif jpart == 'atk_jlight':
                     # Jumping Light (Kvon, October 29: "a quick midair Kingdom Key slash", designed from that with other
                     # fighting games as reference - Ky's GGST j.S, design/references/ky_ggst_js_reference.png): out of the

@@ -25,4 +25,4 @@ offset_top = 110.0
 offset_right = 1100.0
 offset_bottom = 141.0
 theme_override_font_sizes/font_size = 20
-text = "D / Right: shuffle forward     A / Left: shuffle back     S / Down: crouch     Double-tap D / Right: glide     W / Up: jump (again: spin)     Double-tap D in air: air-dash     Double-tap A: back-dash     U: light attack     I: medium attack     O: heavy attack     H: get hit     J: knockdown     F1: show hit/hurt boxes     R: reset (refills health, dummy back in place)"
+text = "D / Right: shuffle forward     A / Left: shuffle back     S / Down: crouch     Double-tap D / Right: glide     W / Up: jump (again: spin)     Double-tap D in air: air-dash     Double-tap A: back-dash     U: light attack     I: medium attack     O: heavy attack     H: get hit     J: knockdown     F1: show hit/hurt boxes     G: dummy guard mode     Hold A + H: guard test     R: reset (refills health, dummy back in place)"

@@ -202,6 +202,11 @@ const ANIMATIONS := {
 	# finish when pressed at the very top of a jump but stay slower than the Medium - startup 10, active 3,
 	# recovery 11 (24 frames vs the Medium's 23; was 11 / 4 / 18).
 	&"attack_jheavy": ["res://assets/sora/attack_jheavy_384/", "sora_attack_jheavy_", [2, 4, 4, 3, 5, 3, 3], []],
+	# Guard (Kvon): the Keyblade held across in front, both hands - one drawing each for standing, crouching and in
+	# the air (held for the blockstun by the code).
+	&"guard_stand": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [0]],
+	&"guard_crouch": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [1]],
+	&"guard_air": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [2]],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -246,6 +251,22 @@ const HITSTUN := {&"light": 15, &"medium": 19, &"heavy": 23}
 const LAUNCH_SPEED := 17.2
 const JUGGLE_SPEED := 7.0
 const LAUNCH_VX := 1.5
+## Hitstun decay (Kvon: per hit): each hit in the same combo gives 10% less hitstun and air pop, never below 40%, so
+## no combo can loop forever. The combo ends when the one hit recovers.
+const DECAY_PER_HIT := 0.1
+const DECAY_FLOOR := 0.4
+## Light pushback on a hit or a guard: the one hit slides away at this speed (px per game frame), slowing by
+## PUSH_SLOW each frame (about 22 / 28 / 33 px in all); pinned at a screen edge, the attacker slides back instead.
+const PUSHBACK := {&"light": 4.0, &"medium": 5.0, &"heavy": 6.0}
+const PUSH_SLOW := 0.82
+## Guard (Kvon): game frames stuck in the guard pose after blocking, per strength.
+const BLOCKSTUN := {&"light": 11, &"medium": 15, &"heavy": 19}
+## Dummy guard modes, cycled with G: never, standing guard, crouching guard, always the right guard.
+const GUARD_MODES := [&"none", &"stand", &"crouch", &"auto"]
+const GUARD_NAMES := ["OFF", "STANDING", "CROUCHING", "AUTO"]
+## Effects (Kvon): a spark where a hit lands and a barrier flash where a guard blocks (lengths in game frames).
+const SPARK_FRAMES := 10
+const BARRIER_FRAMES := 16
 
 var _sprite: AnimatedSprite2D
 var _smear: Sprite2D
@@ -297,13 +318,13 @@ var _demo_hit_at := -1
 var _demo_knock_at := -1
 ## Standing Light: the U key last frame and the timed demo press (`--light-demo-at=N`).
 var _light_was := false
-var _demo_light_at := -1
+var _demo_light_list: Array[int] = []
 ## Standing Medium: the I key last frame and the timed demo press (`--medium-demo-at=N`).
 var _medium_was := false
-var _demo_medium_at := -1
+var _demo_medium_list: Array[int] = []
 ## Standing Heavy: the O key last frame and the timed demo press (`--heavy-demo-at=N`).
 var _heavy_was := false
-var _demo_heavy_at := -1
+var _demo_heavy_list: Array[int] = []
 ## Jump state: vertical speed in px per game frame (negative = up) while airborne, and whether the
 ## jump key was held last frame (a jump starts on a new press).
 var _air := false
@@ -335,6 +356,15 @@ var _dummy_vy := 0.0
 var _dummy_fall := 0
 ## Hit-freeze frames left (both fighters stop while it counts down).
 var _freeze := 0
+## Hits in the dummy's current combo (for the hitstun decay), its pushback speed and direction, its guard mode
+## (index into GUARD_MODES), Sora's guard frames left (the H + back guard test), and the effects on screen.
+var _combo_hits := 0
+var _push_v := 0.0
+var _push_dir := 1.0
+var _guard_mode := 0
+var _sora_guard := 0
+var _fx: Array[Dictionary] = []
+var _fx_view: Node2D
 ## Real game frames run (counts through hit-freeze too; _tick is Sora's own clock and pauses).
 var _frames := 0
 var _hp := [MAX_HP, MAX_HP]
@@ -410,6 +440,11 @@ func _ready() -> void:
 	_box_view.z_index = 50
 	_box_view.draw.connect(_draw_boxes)
 	add_child(_box_view)
+	# Effects: hit sparks and guard barriers, on top of everything in the world.
+	_fx_view = Node2D.new()
+	_fx_view.z_index = 60
+	_fx_view.draw.connect(_draw_fx)
+	add_child(_fx_view)
 	# Health bars: drawn on the HUD layer (fixed on screen, not moved by the camera).
 	_bars = Control.new()
 	_bars.size = Vector2(1280, 720)
@@ -431,11 +466,14 @@ func _ready() -> void:
 		elif arg.begins_with("--hit-demo-at="):
 			_demo_hit_at = int(arg.trim_prefix("--hit-demo-at="))
 		elif arg.begins_with("--heavy-demo-at="):
-			_demo_heavy_at = int(arg.trim_prefix("--heavy-demo-at="))
+			for v in arg.trim_prefix("--heavy-demo-at=").split(","):  # one frame, or several: 30,52,70
+				_demo_heavy_list.append(int(v))
 		elif arg.begins_with("--medium-demo-at="):
-			_demo_medium_at = int(arg.trim_prefix("--medium-demo-at="))
+			for v in arg.trim_prefix("--medium-demo-at=").split(","):  # one frame, or several: 30,52,70
+				_demo_medium_list.append(int(v))
 		elif arg.begins_with("--light-demo-at="):
-			_demo_light_at = int(arg.trim_prefix("--light-demo-at="))
+			for v in arg.trim_prefix("--light-demo-at=").split(","):  # one frame, or several: 30,52,70
+				_demo_light_list.append(int(v))
 		elif arg.begins_with("--knock-demo-at="):
 			_demo_knock_at = int(arg.trim_prefix("--knock-demo-at="))
 		elif arg.begins_with("--bdash-demo-at="):
@@ -452,6 +490,8 @@ func _ready() -> void:
 			_trace = true
 		elif arg.begins_with("--dummy-x="):
 			_dummy.position.x = float(arg.trim_prefix("--dummy-x="))  # tests: start the dummy elsewhere
+		elif arg.begins_with("--dummy-guard="):
+			_set_guard_mode(int(arg.trim_prefix("--dummy-guard=")))  # tests: 0 off, 1 stand, 2 crouch, 3 auto
 		elif arg == "--show-boxes":
 			_show_boxes = true  # the F1 box view on from the start (recordings)
 		elif arg.begins_with("--capture="):
@@ -464,8 +504,14 @@ func _physics_process(_delta: float) -> void:
 	else:
 		_sora_step()
 		_dummy_step()
+		_pushback_step()
 		_push_apart()
 		_check_hits()
+	for e: Dictionary in _fx:
+		e["age"] += 1  # effects keep playing through the hit-freeze
+	_fx = _fx.filter(func(e: Dictionary) -> bool:
+		return e["age"] < (SPARK_FRAMES if e["kind"] == &"spark" else BARRIER_FRAMES))
+	_fx_view.queue_redraw()
 	_drain_lost_hp()
 	_box_view.queue_redraw()
 	_bars.queue_redraw()
@@ -522,15 +568,28 @@ func _sora_step() -> void:
 	var knock := _tick == _demo_knock_at or Input.is_physical_key_pressed(KEY_J)
 	var knock_pressed := knock and not _knock_was
 	_knock_was = knock
-	var light := _tick == _demo_light_at or Input.is_physical_key_pressed(KEY_U)
+	var light := _tick in _demo_light_list or Input.is_physical_key_pressed(KEY_U)
 	var light_pressed := light and not _light_was
 	_light_was = light
-	var medium := _tick == _demo_medium_at or Input.is_physical_key_pressed(KEY_I)
+	var medium := _tick in _demo_medium_list or Input.is_physical_key_pressed(KEY_I)
 	var medium_pressed := medium and not _medium_was
 	_medium_was = medium
-	var heavy := _tick == _demo_heavy_at or Input.is_physical_key_pressed(KEY_O)
+	var heavy := _tick in _demo_heavy_list or Input.is_physical_key_pressed(KEY_O)
 	var heavy_pressed := heavy and not _heavy_was
 	_heavy_was = heavy
+	if hit_pressed and back and _hurt_tick < 0 and _down_tick < 0:
+		# Guard test (Kvon: guard by holding back): H while holding back is blocked instead of taken - the guard
+		# pose (standing, crouching or in the air) for a medium hit's blockstun, with the barrier flash.
+		hit_pressed = false
+		_sora_guard = BLOCKSTUN[&"medium"]
+		_air_atk_tick = -1
+		_spin_tick = -1
+		_dash_tick = -1
+		_bd_tick = -1
+		if not _air:
+			_sprite.position.y = FLOOR_Y
+			_show(&"guard_crouch" if crouch else &"guard_stand")
+		_add_fx(&"barrier", _sprite.position + Vector2(70, -100 if crouch and not _air else -160), 1.0)
 	if _down_tick < 0 and (knock_pressed or (hit_pressed and (_air or _hurt_tick >= 0))):
 		_start_knockdown(_air or _hurt_tick >= 0)
 	elif _down_tick < 0 and hit_pressed:
@@ -541,8 +600,17 @@ func _sora_step() -> void:
 	if _hurt_tick >= 0:
 		_hurt_air_step()
 		return
+	if _sora_guard > 0 and not _air:
+		_sora_guard -= 1  # held in the guard pose for the blockstun, then back to standing / crouching
+		if _sora_guard == 0:
+			_show(&"crouch_hold" if crouch else &"idle")
+		return
 	if _down_tick >= 0:
 		_down_step()
+		return
+	if _air and _sora_guard > 0:
+		_sora_guard -= 1  # air guard: he keeps falling in the guard pose
+		_air_step()
 		return
 	if _air:
 		_air_input = (1.0 if forward and not back else 0.0) - (1.0 if back and not forward else 0.0)
@@ -730,6 +798,7 @@ func _air_step() -> void:
 		_spin_tick = -1
 		_dash_tick = -1
 		_air_atk_tick = -1  # landing cuts an air attack short
+		_sora_guard = 0
 		_after_dash = false
 		_vx = 0.0
 		_show(&"jump_land")
@@ -759,6 +828,10 @@ func _air_step() -> void:
 				_show(&"jump_air", 3)
 			return
 		_spin_tick = -1
+	if _sora_guard > 0:
+		if _sprite.animation != &"guard_air":
+			_show(&"guard_air")
+		return
 	var t := _vy / JUMP_SPEED  # -1 at launch, 0 at the peak, about +1 on landing
 	var drawing := 0 if t < -0.55 else (1 if t < -0.15 else (2 if t <= 0.15 else (
 		3 if t < 0.4 else (4 if t < 0.75 else 5))))
@@ -897,10 +970,19 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		_hp = [MAX_HP, MAX_HP]  # reset also refills both health bars and stands the dummy back up
 		_lost_hp = [float(MAX_HP), float(MAX_HP)]
 		_dummy.position = Vector2(DUMMY_X, FLOOR_Y)
-		_dummy_state = &"idle"
-		_dummy_show(&"idle", 0)
+		_push_v = 0.0
+		_dummy_rest()
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_F1:
 		_show_boxes = not _show_boxes
+	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_G:
+		_set_guard_mode((_guard_mode + 1) % GUARD_MODES.size())
+
+
+## The dummy's guard mode (G cycles it); at rest it switches to standing / crouching at once.
+func _set_guard_mode(mode: int) -> void:
+	_guard_mode = mode
+	if _dummy_state == &"idle":
+		_dummy_rest()
 
 
 ## Shows a dummy drawing, placed like Sora's (feet on its position). Its root motion is mirrored (it faces left).
@@ -915,14 +997,26 @@ func _dummy_show(anim: StringName, drawing: int) -> void:
 		_dummy.position.x = clampf(_dummy.position.x - motion[drawing], LEFT_LIMIT, RIGHT_LIMIT)
 
 
+## The dummy stands (or crouches, in crouching-guard mode) and its combo is over.
+func _dummy_rest() -> void:
+	_dummy_state = &"idle"
+	_combo_hits = 0
+	_dummy_show(&"crouch_hold" if GUARD_MODES[_guard_mode] == &"crouch" else &"idle", 0)
+
+
 ## One game frame of the dummy.
 func _dummy_step() -> void:
+	if _dummy_state == &"guard":
+		# Blocking: held in the guard pose for the blockstun.
+		_dummy_stun -= 1
+		if _dummy_stun <= 0:
+			_dummy_rest()
+		return
 	if _dummy_state == &"stun":
 		# Reeling: the ground hit animation stretched over the hitstun, then back to the idle.
 		_dummy_stun -= 1
 		if _dummy_stun <= 0:
-			_dummy_state = &"idle"
-			_dummy_show(&"idle", 0)
+			_dummy_rest()
 			return
 		var holds_h: Array = ANIMATIONS[&"hurt_ground"][2]
 		var total := 0
@@ -974,9 +1068,10 @@ func _dummy_step() -> void:
 	if _dummy_hold >= holds[_dummy.frame]:
 		if _dummy.frame + 1 < holds.size():
 			_dummy_show(_dummy.animation, _dummy.frame + 1)
+		elif _dummy.animation == &"idle" or _dummy.animation == &"crouch_hold":
+			_dummy_show(_dummy.animation, 0)  # resting loop
 		else:
-			_dummy_state = &"idle"
-			_dummy_show(&"idle", 0)
+			_dummy_rest()  # stood up after a knockdown
 
 
 ## The middle hurtbox (of a drawing's three, top to bottom) - the one used for pushing.
@@ -1037,27 +1132,108 @@ func _check_hits() -> void:
 				var attack := String(_sprite.animation)
 				var strength := &"heavy" if attack.ends_with("heavy") else (&"medium" if attack.ends_with("medium")
 					else &"light")
+				# Crouching attacks hit low, jumping attacks overhead, standing attacks mid (Kvon's guard rule).
+				var level := &"low" if attack.begins_with("attack_c") else (&"overhead" if attack.begins_with("attack_j")
+					else &"mid")
+				var away := 1.0 if _dummy.position.x >= _sprite.position.x else -1.0
+				var contact := h.intersection(b).get_center()
+				_freeze = HIT_FREEZE[strength]
+				_push_v = PUSHBACK[strength]
+				_push_dir = away
+				var guard := _dummy_guard_pose(level)
+				if guard != &"":
+					# Blocked: no damage, the guard pose for the blockstun, the barrier flash, pushback.
+					_dummy_state = &"guard"
+					_dummy_stun = BLOCKSTUN[strength]
+					_dummy_show(guard, 0)
+					_add_fx(&"barrier", contact, -away)
+					if _trace:
+						print("GUARD ", _tick, " ", attack, " ", level, " ", guard)
+					return
 				_hp[1] = maxi(_hp[1] - DAMAGE[strength], 0)
 				_lost_wait[1] = LOST_HP_DELAY
-				_freeze = HIT_FREEZE[strength]
-				var away := 1.0 if _dummy.position.x >= _sprite.position.x else -1.0
+				_add_fx(&"spark", contact, away)
+				var decay := maxf(DECAY_FLOOR, 1.0 - DECAY_PER_HIT * _combo_hits)
+				_combo_hits += 1
 				if _sprite.animation == &"attack_cheavy" or _dummy_state == &"air":
-					# The launcher sends it flying; any hit while it is in the air pops it up again (a juggle).
+					# The launcher sends it flying; any hit while it is in the air pops it up again (a juggle) -
+					# less each hit in the combo.
 					var launch := _dummy_state != &"air"
 					_dummy_state = &"air"
-					_dummy_vy = -(LAUNCH_SPEED if launch else JUGGLE_SPEED)
+					_dummy_vy = -(LAUNCH_SPEED if launch else JUGGLE_SPEED) * decay
 					_dummy_vx = LAUNCH_VX * away
 					_dummy_tick = 0
 					_dummy_fall = 0
+					_push_v = 0.0  # in the air it drifts instead
 					_dummy_show(&"hurt_air", 0)
 				else:
 					_dummy_state = &"stun"
-					_dummy_stun = HITSTUN[strength]
+					_dummy_stun = maxi(1, roundi(HITSTUN[strength] * decay))
 					_dummy_stun_len = _dummy_stun
 					_dummy_show(&"hurt_ground", 0)
 				if _trace:
-					print("HIT ", _tick, " ", attack, " ", DAMAGE[strength], " dummy_hp=", _hp[1], " ", _dummy_state)
+					print("HIT ", _tick, " ", attack, " ", DAMAGE[strength], " dummy_hp=", _hp[1], " ", _dummy_state,
+						" combo=", _combo_hits, " stun=", _dummy_stun, " decay=", snappedf(decay, 0.01))
 				return
+
+
+## Which guard pose the dummy blocks with against an attack of this level, or &"" if it doesn't block (no guard
+## mode, the wrong guard for a low / overhead, or it is reeling, launched or down and can't guard).
+func _dummy_guard_pose(level: StringName) -> StringName:
+	if _dummy_state != &"idle" and _dummy_state != &"guard":
+		return &""
+	match GUARD_MODES[_guard_mode]:
+		&"stand":
+			return &"guard_stand" if level != &"low" else &""
+		&"crouch":
+			return &"guard_crouch" if level != &"overhead" else &""
+		&"auto":
+			return &"guard_crouch" if level == &"low" else &"guard_stand"
+	return &""
+
+
+## Pushback after a hit or guard: the dummy slides away, slowing down; at a screen edge the attacker slides back.
+func _pushback_step() -> void:
+	if _push_v < 0.2 or _dummy_state == &"air":
+		_push_v = 0.0
+		return
+	var to := clampf(_dummy.position.x + _push_dir * _push_v, LEFT_LIMIT, RIGHT_LIMIT)
+	var left := _push_v - absf(to - _dummy.position.x)
+	_dummy.position.x = to
+	if left > 0.0:
+		_sprite.position.x = clampf(_sprite.position.x - _push_dir * left, LEFT_LIMIT, RIGHT_LIMIT)
+	_push_v *= PUSH_SLOW
+
+
+func _add_fx(kind: StringName, pos: Vector2, dir: float) -> void:
+	_fx.append({"kind": kind, "pos": pos, "dir": dir, "age": 0})
+
+
+## Hit spark: a white flash with gold rays bursting out. Guard barrier (Kingdom Hearts style): a pale blue
+## hexagon shield flashing up on the guarding side and fading.
+func _draw_fx() -> void:
+	for e: Dictionary in _fx:
+		var pos: Vector2 = e["pos"]
+		if e["kind"] == &"spark":
+			var t := float(e["age"]) / SPARK_FRAMES
+			for k in 8:
+				var d := Vector2.from_angle(TAU * k / 8.0 + 0.3)
+				var inner := 8.0 + 18.0 * t
+				var outer := inner + (46.0 if k % 2 == 0 else 26.0) * (1.0 - 0.4 * t)
+				_fx_view.draw_line(pos + d * inner, pos + d * outer, Color(1.0, 0.9, 0.45, 1.0 - t), 5.0)
+			_fx_view.draw_circle(pos, 16.0 * (1.0 - t), Color(1, 1, 1, 1.0 - t))
+		else:
+			var t := float(e["age"]) / BARRIER_FRAMES
+			var center := pos + Vector2(e["dir"] * 8.0, 0)
+			for ring in 2:
+				var r := (78.0 + 22.0 * t) * (1.0 if ring == 0 else 0.7)
+				var pts := PackedVector2Array()
+				for k in 7:
+					var ang := TAU * k / 6.0 + PI / 6.0
+					pts.append(center + Vector2(cos(ang) * r * 0.6, sin(ang) * r))
+				if ring == 0:
+					_fx_view.draw_colored_polygon(pts.slice(0, 6), Color(0.55, 0.85, 1.0, 0.45 * (1.0 - t)))
+				_fx_view.draw_polyline(pts, Color(0.9, 0.98, 1.0, 1.0 - t), 4.0 if ring == 0 else 2.5)
 
 
 ## The red part of each bar (health just lost) waits a moment, then drains down to the real health.
@@ -1112,6 +1288,9 @@ func _draw_bars() -> void:
 		_bars.draw_string(font, at, label, side, bar.size.x, 18, Color8(235, 240, 255))
 		_bars.draw_string_outline(font, at, str(_hp[i]), other, bar.size.x, 16, 4, ink)
 		_bars.draw_string(font, at, str(_hp[i]), other, bar.size.x, 16, Color8(170, 255, 170))
+	var mode := "GUARD: %s  (G)" % GUARD_NAMES[_guard_mode]
+	_bars.draw_string_outline(font, Vector2(720, 76), mode, HORIZONTAL_ALIGNMENT_RIGHT, 520.0, 15, 4, ink)
+	_bars.draw_string(font, Vector2(720, 76), mode, HORIZONTAL_ALIGNMENT_RIGHT, 520.0, 15, Color8(190, 225, 255))
 
 
 func _capture(path: String) -> void:
