@@ -39,6 +39,7 @@
 - [Sora Attack Grip](Sora_Attack_Grip.md): Rule - one-handed attack drawings hold the Key mid-handle (GRIP_MID_FROM); neutral last drawing excluded; standing attacks left as they are (Kvon).
 - [Player 2 Limit Form](Sora_Limit_Form_Player2.md): Kvon's Limit Form Sora model (design/sprite_backups/sora_limit_form, untracked) - after Kvon implements player 2, re-render every current animation with it.
 - [Combat Boxes and Health](Combat_Hitboxes_Health.md): Built - make_boxes.py -> scripts/sora_boxes.gd (re-run when drawings change), training dummy, 10000 HP, 300/500/800, F1 box view, KH-style bars.
+- [Match Modes and Player 2](Match_Modes_Player2.md): Menu (PvP / PvCPU / Training), P2 arrows + numpad 7/8/9, P1 WASD only, simple CPU AI, best of 3, always face each other, Limit Form via own .dae importer after.
 - [Sora Pilot Approval](Sora_Pilot_Approval.md): Model-sheet and idle-pilot authorization; first image-generation attempt rejected.
 - [Sora Manual Drawing Guide](Sora_Manual_Drawing_Guide.md): Authorized manual model-sheet and idle guide after generation rejection.
 - [Sora Stance Reference](Sora_Stance_Reference.md): Supplied combat-stance GIF and observed pose details.
