@@ -94,7 +94,11 @@ WRAP_GAIN, WRAP_MAX_DEG = (1.0, 250) if version == 'idle_loop_v15' else (1.7, 27
 # v17+: bend each wrist so the fingers cross the handle; v16's palm-up right fingers lay along it.
 SQUARE_WRISTS = FIST_WRAP and version not in ('idle_loop_v15', 'idle_loop_v16')
 SORA = ROOT / 'design/models/sora'
-OUT = SORA / OUT_NAME
+# SORA_CHARACTER=limit_form (Kvon, October 29: player 2 / CPU / dummy in Limit Form): the same recipes with Kvon's
+# Limit Form model on the KH2 Sora skeleton (limit_form_model.py); outputs go to design/models/sora_limit_form/.
+import os
+LIMIT_FORM = os.environ.get('SORA_CHARACTER') == 'limit_form'
+OUT = (ROOT / 'design/models/sora_limit_form' if LIMIT_FORM else SORA) / OUT_NAME
 if OUT.exists():
     raise RuntimeError('Preserve existing pilot; choose a new version')
 assert bpy.app.version[:2] == (5, 2), bpy.app.version_string
@@ -171,6 +175,10 @@ else:
     bpy.ops.import_scene.fbx(filepath=str(SORA / 'downloads/p_ex150.fbx'))
 arm = next(o for o in scene.objects if o.type == 'ARMATURE')
 body = [o for o in scene.objects if o.type == 'MESH']
+if LIMIT_FORM:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import limit_form_model
+    body = limit_form_model.swap_in(scene, arm, ROOT / 'design/sprite_backups/sora_limit_form')
 if SHEET_MODEL:
     # Hand/finger maths reads evaluated vertices by original index; keep subdivision render-only.
     for o in body:

@@ -13,7 +13,9 @@ import bpy
 ROOT = Path(__file__).resolve().parents[4]
 assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 source, version = sys.argv[sys.argv.index('--')+1:][:2]
-SORA = ROOT / 'design/models/sora'
+import os
+# SORA_CHARACTER=limit_form: player 2's Limit Form renders (build_sprite_pilot.py / limit_form_model.py).
+SORA = ROOT / ('design/models/sora_limit_form' if os.environ.get('SORA_CHARACTER') == 'limit_form' else 'design/models/sora')
 SRC = SORA / source / 'sora_idle_loop.blend'
 OUT = SORA / version
 if OUT.exists():
