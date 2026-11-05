@@ -158,6 +158,10 @@ func _physics_process(_delta: float) -> void:
 	_frames += 1
 	if _freeze > 0:
 		_freeze -= 1  # hit-freeze: both fighters hold still (effects and bars keep going)
+		if _phase == "fight":
+			for i in 2:
+				if i == 0 or mode == "pvp":
+					p[i].buffer_input(_input_for(i))  # a cancel tapped during the freeze still comes out
 	else:
 		_phase_step()
 		for i in 2:
@@ -277,6 +281,7 @@ func _hits() -> void:
 		a.attack_hit = true
 		_freeze = maxi(_freeze, Fighter.HIT_FREEZE[strength])
 		var guarded := d.take_hit(strength, level, a.sprite.animation == &"attack_cheavy", away)
+		a.attack_guarded = guarded  # a guarded ground attack can still chain, but not jump cancel
 		_add_fx(&"barrier" if guarded else &"spark", h["contact"], -away)
 		if not guarded:
 			_lost_wait[p.find(d)] = LOST_HP_DELAY

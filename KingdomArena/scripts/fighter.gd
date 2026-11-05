@@ -230,8 +230,11 @@ var guard_mode := &"input"
 ## Prefix for --trace lines ("" = no trace). Player 1 prints "TRACE ..." like the old test scene.
 var trace_tag := ""
 var sprite: AnimatedSprite2D
-## The current attack has already hit (one hit per attack).
+## The current attack has already touched the opponent - hit or guarded (one hit per attack). Contact opens the
+## cancels (Kvon): a chain into a stronger attack, and a jump (ground attacks only on a hit, air attacks either).
 var attack_hit := false
+## That contact was guarded (set by the match with attack_hit).
+var attack_guarded := false
 ## Hits in the combo he is taking (hitstun decay), his pushback speed and direction (world), knocked out.
 var combo_hits := 0
 var push_v := 0.0
@@ -261,6 +264,8 @@ var _dash_back := false
 var _bd_tick := -1
 var _glide := false
 var _was := {}
+## Button presses made during a hit-freeze, used on his next game frame (so a cancel tapped in the freeze counts).
+var _buffered := {}
 var _last_forward_press := -1000
 var _last_back_press := -1000
 var _back_held := false
@@ -305,6 +310,7 @@ func reset(start_x: float, face: float) -> void:
 	_spin_tick = -1
 	_air_atk_tick = -1
 	_bd_tick = -1
+	_buffered.clear()
 	_glide = false
 	set_facing(face)
 	show_anim(&"idle")
@@ -360,6 +366,20 @@ func is_airborne() -> bool:
 	return _air or state == &"hurt_air"
 
 
+## During a hit-freeze (no game frame for him): remembers new jump / attack presses for his next frame.
+func buffer_input(inp: Dictionary) -> void:
+	for k: String in ["up", "light", "medium", "heavy"]:
+		if inp.get(k, false) and not _was.get(k, false):
+			_buffered[k] = true
+		_was[k] = inp.get(k, false)
+
+
+## Attack strength as a rank: Light 0, Medium 1, Heavy 2 (chains only go to a higher rank).
+static func strength_rank(anim: StringName) -> int:
+	var s := String(anim)
+	return 2 if s.ends_with("heavy") else (1 if s.ends_with("medium") else 0)
+
+
 ## One game frame. inp holds this frame's held buttons: forward, back, up, down, light, medium, heavy.
 func step(inp: Dictionary) -> void:
 	_tick += 1
@@ -367,6 +387,7 @@ func step(inp: Dictionary) -> void:
 	_down_held = inp.get("down", false)
 	if state != &"control":
 		_hurt_step()
+		_buffered.clear()
 		for k: String in ["forward", "back", "up", "light", "medium", "heavy"]:
 			_was[k] = inp.get(k, false)  # presses during hitstun don't come out afterwards
 		return
@@ -375,8 +396,9 @@ func step(inp: Dictionary) -> void:
 	var crouch: bool = inp.get("down", false)
 	var pressed := {}
 	for k: String in ["forward", "back", "up", "light", "medium", "heavy"]:
-		pressed[k] = inp.get(k, false) and not _was.get(k, false)
+		pressed[k] = (inp.get(k, false) and not _was.get(k, false)) or _buffered.get(k, false)
 		_was[k] = inp.get(k, false)
+	_buffered.clear()
 	# A new back press soon after the previous one is a back-dash (on the ground or in the air).
 	var back_tap := false
 	if pressed["back"]:
@@ -401,20 +423,29 @@ func step(inp: Dictionary) -> void:
 	var light_pressed: bool = pressed["light"]
 	var medium_pressed: bool = pressed["medium"]
 	var heavy_pressed: bool = pressed["heavy"]
+	# The strongest attack button pressed this frame (&"" = none).
+	var pressed_strength := &"heavy" if heavy_pressed else (&"medium" if medium_pressed else (
+		&"light" if light_pressed else &""))
 	if _air:
 		_air_input = (1.0 if forward and not back else 0.0) - (1.0 if back and not forward else 0.0)
-		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0 and _air_atk_tick < 0:
+		var air_attacking := _air_atk_tick >= 0
+		# Air chain (Kvon): once a jumping attack has touched the opponent (hit or guard), a stronger one cancels
+		# the rest of it - jL -> jM / jH, jM -> jH.
+		var air_chain := air_attacking and attack_hit and pressed_strength != &"" \
+			and strength_rank(pressed_strength) > strength_rank(_air_atk_anim)
+		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0 and not air_attacking:
 			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
 			_dash_back = back_tap and not double_tap
 			_dash_tick = 0
 			_after_dash = false
-		elif (light_pressed or medium_pressed or heavy_pressed) and _dash_tick < 0 and _air_atk_tick < 0:
+		elif pressed_strength != &"" and _dash_tick < 0 and (not air_attacking or air_chain):
 			# Jumping Light / Medium / Heavy: plays over the jump (no air-dash during it)
-			_air_atk_anim = &"attack_jheavy" if heavy_pressed else (&"attack_jmedium" if medium_pressed
-				else &"attack_jlight")
+			_air_atk_anim = StringName("attack_j" + pressed_strength)
 			_air_atk_tick = 0
 			_spin_tick = -1
-		elif jump_pressed and not _jump2_used and _dash_tick < 0:
+		# Second jump; during a jumping attack only once it has touched the opponent (Kvon: air attacks jump
+		# cancel on hit or guard).
+		elif jump_pressed and not _jump2_used and _dash_tick < 0 and (not air_attacking or attack_hit):
 			_jump2_used = true  # second jump: a new upward burst and the spin
 			_air_atk_tick = -1
 			_vy = -JUMP2_SPEED
@@ -432,7 +463,10 @@ func step(inp: Dictionary) -> void:
 	# (nearly standing) drawing, standing or walking; not during the crouched landing drawings.
 	var upright := anim in [&"idle", &"shuffle_forward", &"shuffle_back"] or (anim == &"jump_land"
 		and sprite.frame == ANIMATIONS[&"jump_land"][2].size() - 1)
-	if (jump_pressed and (back_dashing or anim in GROUND_CANCEL)) or (jump and upright and not back_dashing):
+	# Jump cancel (Kvon): a ground attack that hit (not one that was guarded) can be cut short by a jump.
+	var jump_cancel := is_attacking() and attack_hit and not attack_guarded
+	if (jump_pressed and (back_dashing or anim in GROUND_CANCEL or jump_cancel)) \
+			or (jump and upright and not back_dashing):
 		_takeoff_vx = _ground_speed(anim, forward, back)
 		var moving := absf(_takeoff_vx) > 0.0
 		_bd_tick = -1
@@ -441,10 +475,13 @@ func step(inp: Dictionary) -> void:
 		return
 	# Ground attacks: from any ground move (not mid back-dash); they play to the end (only a hit interrupts),
 	# then he returns to whatever is held. Holding down gives the crouching version.
-	if (light_pressed or medium_pressed or heavy_pressed) and not back_dashing and anim in GROUND_CANCEL:
-		var strength := "heavy" if heavy_pressed else ("medium" if medium_pressed else "light")
+	# Chain (Kvon): once a ground attack has touched the opponent (hit or guard), any stronger one - standing or
+	# crouching, skipping allowed - cancels the rest of it: L -> M / H, M -> H (e.g. L -> crouching Heavy launcher).
+	var chain := is_attacking() and attack_hit and pressed_strength != &"" \
+		and strength_rank(pressed_strength) > strength_rank(anim)
+	if pressed_strength != &"" and not back_dashing and (anim in GROUND_CANCEL or chain):
 		position.y = FLOOR_Y
-		show_anim(StringName("attack_" + ("c" if crouch else "") + strength))
+		show_anim(StringName("attack_" + ("c" if crouch else "") + pressed_strength))
 		return
 	if back_tap and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0
@@ -654,6 +691,7 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 	_hold = 0
 	if drawing == 0 and String(anim).begins_with("attack_"):
 		attack_hit = false  # a new attack: it may hit once
+		attack_guarded = false
 	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
 	var shift_y: float = DRAW_SHIFT_Y[anim][drawing] if DRAW_SHIFT_Y.has(anim) else 0.0
 	sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, shift_y)
@@ -763,6 +801,7 @@ func _end_moves() -> void:
 	_spin_tick = -1
 	_air_atk_tick = -1
 	_bd_tick = -1
+	_buffered.clear()
 	_after_dash = false
 	_glide = false
 
