@@ -2931,6 +2931,55 @@ if LOOP:
                                     # against 0 / +45 / +90) shows its face again, teeth still pointing back
                                     k_['key_roll'] = float(OUT_NAME.split('_roll')[1]) if '_roll' in OUT_NAME else -45.0
                             RUN_KEYS = [gather_k, rise_k, thrust_k, hold_k, tip_k, lower_k, crouch_k]
+                            if not HURT.endswith(tuple(f'_v{n_}' for n_ in range(1, 10))):
+                                # v10 (Kvon, November 6: the up thrust's hitbox was very hard to combo into - back to
+                                # the original concept, a grounded upward Kingdom Key swing; the up thrust v9 is saved in
+                                # design/models/sora/saved_attacks/crouching_heavy_up_thrust/). One-handed, facing the
+                                # opponent as in the idle: from the kneel the Key is drawn back low behind him, swings
+                                # through low in front (tip near the floor), sweeps forward and up to about 45 degrees
+                                # at chest height as he rises (the hit, in front of him from low to high), follows
+                                # through overhead stretched tall on his toes, then tips back over his shoulder and he
+                                # settles into the crouch guard. Same timing: startup 11, active 4, recovery 22.
+                                free_dn = -U_*.35 + V_*.05 + Vector((0, 0, .95))   # free arm down behind for balance
+                                half_feet = {'L': (L0[0] - .06, L0[1], 0.0, 0.0), 'R': (R0[0] + .10, R0[1] - .28, .04, 20.0)}
+                                wind_k = cl(-U_*.22 + V_*.16 + Vector((0, 0, .46)), -U_*.55 - V_*.15 + Vector((0, 0, -.80)),
+                                            ce=.40, hunch=14.0, pitch=16.0, turn=IDLE_R['turn'] + 14.0)
+                                low_k = cl(U_*.30 + V_*.20 + Vector((0, 0, .55)), U_*.85 + Vector((0, 0, -.45)),
+                                           ce=.34, hunch=12.0, pitch=14.0, turn=IDLE_R['turn'] + 4.0)
+                                low_k.update(smear=1)
+                                swing_k = stand_up(cl(U_*.42 + V_*.18 + Vector((0, 0, 1.10)), U_*.65 + Vector((0, 0, .75)),
+                                                      ce=.16, hunch=4.0, pitch=4.0, turn=IDLE_R['turn'] - 6.0,
+                                                      l_hand=free_dn), half_feet)
+                                swing_k.update(smear=1)
+                                over_k = stand_up(cl(U_*.20 + V_*.12 + Vector((0, 0, 1.75)), -U_*.25 + up_, ce=-.26 + .08,
+                                                     hunch=-6.0, pitch=-4.0, turn=IDLE_R['turn'] - 10.0,
+                                                     l_hand=free_dn + Vector((0, 0, -.10))),
+                                                  {'L': (L0[0]*.5, L0[1]*.5, .05, 30.0),
+                                                   'R': (R0[0]*.5, R0[1]*.5 - .05, .05, 30.0)})
+                                over_k.update(neck=-10.0, smear=1)
+                                back_k = stand_up(cl(U_*.02 + V_*.14 + Vector((0, 0, 1.45)), -U_*.55 + Vector((0, 0, .85)),
+                                                     ce=.04 + .08, hunch=0.0, pitch=0.0, l_hand=tc_ @ Vector((.30, .10, 1.05))),
+                                                  {'L': (L0[0], L0[1], 0.0, 0.0), 'R': (R0[0] + .06, R0[1] - .15, .16, 0.0)})
+                                back_k['knee_hint_world'] = {'R': tuple(U_ + Vector((0, 0, .2)))}
+                                down_k = cl(U_*-.10 + V_*.15 + Vector((0, 0, .95)), -U_*.60 - to_cam*.30 + Vector((0, 0, .30)),
+                                            ce=.16 + .08, hunch=5.0, pitch=5.0)
+                                down_k['feet'] = {'L': (L0[0] - .08, L0[1], 0.0, 0.0), 'R': (R0[0] + .12, R0[1] - .35, .06, 20.0)}
+                                for k_ in (wind_k, low_k, swing_k, over_k, back_k, down_k):
+                                    k_['look'] = 8.0
+                                if not HURT.endswith('_v10'):
+                                    # v11 (my review of v10): the wind-up Key went down through the floor and out of the
+                                    # frame - drawn back nearly level behind him instead; the low sweep's tip touched the
+                                    # floor and the right edge, and the hit's smear was cut by the right edge - tip raised,
+                                    # both drawn 60 px left (Godot's DRAW_SHIFT puts them back); the hit and overhead turned
+                                    # his chest to the camera - kept turned toward the opponent like the idle.
+                                    wind_k.update(hand=-U_*.18 + V_*.16 + Vector((0, 0, .55)),
+                                                  blade_dir=tuple((-U_*.85 - V_*.20 + Vector((0, 0, -.22))).normalized()))
+                                    low_k.update(hand=U_*.26 + V_*.20 + Vector((0, 0, .58)),
+                                                 blade_dir=tuple((U_*.90 + Vector((0, 0, -.28))).normalized()),
+                                                 offset_px=(-60, 0))
+                                    swing_k.update(turn=IDLE_R['turn'] + 6.0, offset_px=(-60, 0))
+                                    over_k['turn'] = IDLE_R['turn'] + 10.0
+                                RUN_KEYS = [wind_k, low_k, swing_k, over_k, back_k, down_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
                         if jpart == 'atk_guard':

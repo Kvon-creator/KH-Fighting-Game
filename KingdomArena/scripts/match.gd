@@ -5,7 +5,8 @@ extends Node2D
 ## - Player vs. CPU: player 2 is a simple fighter AI.
 ## - Training: player 2 is a standing dummy (G cycles its guard: off / standing / crouching / auto); H = take a
 ##   hit (hold A to guard it), J = knockdown, R = reset. Health refills.
-## Fighters always face each other (they turn around when they cross; in the air on landing). "Back" (away from
+## Fighters always face each other (they turn around when they cross, on the ground or in the air, once
+## any move they are in has ended). "Back" (away from
 ## the opponent) guards. Best of 3 rounds in the two match modes, then back to the menu (Esc also returns).
 ## F1 shows hitboxes (red), hurtboxes (blue) and push boxes (yellow).
 ## Combat rules: one hit per attack; hit-freeze; hitstun with per-hit decay; launcher + juggles; pushback; the
@@ -13,7 +14,7 @@ extends Node2D
 ## Automated checks (player 1, as in the old test scene): `--walk-demo-ticks=N`, `--back-demo-ticks=N`,
 ## `--crouch-demo-ticks=N` (from `--crouch-demo-from=M`), `--glide-demo-ticks=N`, `--jump-demo-at=N`
 ## (`--jump-hold-to=N`, `--jump2-demo-at=M`, `--dash-demo-at=M`), `--bdash-demo-at=N`, `--hit-demo-at=N`,
-## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`; the same with a `p2-` prefix for player 2
+## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`, `--r1-demo-at=N[,N...]` (dash button held on those frames); the same with a `p2-` prefix for player 2
 ## (e.g. `--p2-walk-demo-ticks=N`); `--dummy-guard=0-3`, `--show-boxes`, `--trace`, `--capture=<png>`.
 
 const BOXES := preload("res://scripts/sora_boxes.gd")
@@ -135,7 +136,7 @@ func _ready() -> void:
 
 func _parse_demo(prefix: String) -> Dictionary:
 	var d := {"walk": -1, "back": -1, "crouch": -1, "crouch_from": 1, "glide": -1, "jump": -1, "jump_hold": -1,
-		"jump2": -1, "dash": -1, "bdash": -1, "hit": -1, "knock": -1, "light": [], "medium": [], "heavy": []}
+		"jump2": -1, "dash": -1, "bdash": -1, "hit": -1, "knock": -1, "light": [], "medium": [], "heavy": [], "r1": []}
 	var names := {"walk-demo-ticks": "walk", "back-demo-ticks": "back", "crouch-demo-ticks": "crouch",
 		"crouch-demo-from": "crouch_from", "glide-demo-ticks": "glide", "jump-demo-at": "jump",
 		"jump-hold-to": "jump_hold", "jump2-demo-at": "jump2", "dash-demo-at": "dash", "bdash-demo-at": "bdash",
@@ -149,7 +150,7 @@ func _parse_demo(prefix: String) -> Dictionary:
 		for n: String in names:
 			if rest.begins_with(n + "="):
 				d[names[n]] = int(rest.trim_prefix(n + "="))
-		for k in ["light", "medium", "heavy"]:
+		for k in ["light", "medium", "heavy", "r1"]:
 			if rest.begins_with(k + "-demo-at="):
 				for v in rest.trim_prefix(k + "-demo-at=").split(","):
 					d[k].append(int(v))
@@ -213,8 +214,8 @@ func _input_for(i: int) -> Dictionary:
 		var pad := _pad_input()  # a controller works for player 1 alongside the keyboard
 		right = right or pad["right"]
 		left = left or pad["left"]
-		for k in ["up", "down", "light", "medium", "heavy"]:
-			inp[k] = inp[k] or pad[k]
+		for k in ["up", "down", "light", "medium", "heavy", "dash"]:
+			inp[k] = inp.get(k, false) or pad[k]
 	elif mode == "pvp":
 		right = Input.is_physical_key_pressed(KEY_RIGHT)
 		left = Input.is_physical_key_pressed(KEY_LEFT)
@@ -243,14 +244,16 @@ func _input_for(i: int) -> Dictionary:
 	for k in ["light", "medium", "heavy"]:
 		if t in d[k]:
 			inp[k] = true
+	if t in d["r1"]:
+		inp["dash"] = true  # the dash button (R1)
 	return inp
 
 
 ## The first connected controller (Kvon, November 6: a DualSense for player 1): D-pad or left stick moves
-## (up = jump, down = crouch), Square / Triangle / Circle = light / medium / heavy. No controller = all false.
+## (up = jump, down = crouch), Square / Triangle / Circle = light / medium / heavy, R1 = dash. No controller = all false.
 func _pad_input() -> Dictionary:
 	var inp := {"right": false, "left": false, "up": false, "down": false, "light": false, "medium": false,
-		"heavy": false}
+		"heavy": false, "dash": false}
 	var pads := Input.get_connected_joypads()
 	if pads.is_empty():
 		return inp
@@ -264,6 +267,7 @@ func _pad_input() -> Dictionary:
 	inp["light"] = Input.is_joy_button_pressed(d, JOY_BUTTON_X)  # Square
 	inp["medium"] = Input.is_joy_button_pressed(d, JOY_BUTTON_Y)  # Triangle
 	inp["heavy"] = Input.is_joy_button_pressed(d, JOY_BUTTON_B)  # Circle
+	inp["dash"] = Input.is_joy_button_pressed(d, JOY_BUTTON_RIGHT_SHOULDER)  # R1 (Kvon, November 6)
 	return inp
 
 
@@ -307,6 +311,7 @@ func _hits() -> void:
 			else &"mid")
 		var away := 1.0 if d.position.x >= a.position.x else -1.0
 		a.attack_hit = true
+		a.hit_grounded = not d.is_airborne()  # before the hit, which may launch him
 		_freeze = maxi(_freeze, Fighter.HIT_FREEZE[strength])
 		var guarded := d.take_hit(strength, level, a.sprite.animation == &"attack_cheavy", away)
 		a.attack_guarded = guarded  # a guarded ground attack can still chain, but not jump cancel
@@ -431,14 +436,14 @@ func _cpu_input(me: Fighter, foe: Fighter) -> Dictionary:
 	if foe.state == &"hurt_air" and me.state == &"control" and not me.is_airborne() and _cpu_plan.is_empty() \
 			and _rng.randf() < 0.6:
 		# Juggle: jump in after it and strike.
-		_cpu_plan = [{"at": now, "keys": ["up", "forward"], "len": 4},
+		_cpu_plan = [{"at": now, "keys": ["up", "forward"], "len": 24},
 			{"at": now + 14, "keys": ["medium" if _rng.randf() < 0.5 else "light"], "len": 2}]
 		_cpu_next = now + 50
 	if now >= _cpu_next and _cpu_plan.is_empty() and me.state == &"control":
 		var r := _rng.randf()
 		if dist > 300.0:
 			if r < 0.2:
-				_cpu_plan = [{"at": now, "keys": ["up", "forward"], "len": 4},
+				_cpu_plan = [{"at": now, "keys": ["up", "forward"], "len": 24},
 					{"at": now + 20, "keys": ["heavy"], "len": 2}]
 			else:
 				_cpu_plan = [{"at": now, "keys": ["forward"], "len": _rng.randi_range(18, 34)}]

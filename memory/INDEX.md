@@ -31,7 +31,7 @@
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
 - [Sora Crouching Light](Sora_Crouching_Light.md): Now a quick low Kingdom Key jab; final chamber free hand = C2, tucked at his side poses 1-4 with the elbow folding more after pose 2 (v30, pending review); earlier slash history: v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14, small-lean v15 pending review (rotate toward the attack, little lean).
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): FINAL v23 in the game (I while crouching) - lunging low sweep after Ky's GGST 2S (reference image + GIFs).
-- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher (supersedes jumping uppercut); FINAL v8 in the game (O while crouching) - overhead thrust after Sora's SSBU up smash, taller 384 x 576 frames (TALL_FEET).
+- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher (supersedes jumping uppercut); Nov 6: up-thrust (v9) saved in saved_attacks/; original upward swing v11 in the game, pending review (same timing, hitbox from the floor up in front).
 
 - [Sora Jumping Light](Sora_Jumping_Light.md): Approved quick midair Kingdom Key slash; v7 in the game (U in the air), after Ky's GGST j.S; v1-v6 kept until Kvon calls v7 final.
 - [Sora Jumping Medium](Sora_Jumping_Medium.md): Broad diagonal midair slash, now a clockwise 3/4 spin into a diagonal strike after Simon's SSBU back air; v7 "looks good for now", not in the game yet.
@@ -39,8 +39,8 @@
 - [Sora Attack Grip](Sora_Attack_Grip.md): Rule - one-handed attack drawings hold the Key mid-handle (GRIP_MID_FROM); neutral last drawing excluded; standing attacks left as they are (Kvon).
 - [Player 2 Limit Form](Sora_Limit_Form_Player2.md): Kvon's Limit Form Sora model (design/sprite_backups/sora_limit_form, untracked) - after Kvon implements player 2, re-render every current animation with it.
 - [Combat Boxes and Health](Combat_Hitboxes_Health.md): Built - make_boxes.py -> scripts/sora_boxes.gd (re-run when drawings change), training dummy, 10000 HP, 300/500/800, F1 box view, KH-style bars.
-- [Match Modes and Player 2](Match_Modes_Player2.md): Menu (PvP / PvCPU / Training), P2 arrows + numpad 7/8/9, P1 WASD only, simple CPU AI, best of 3, always face each other, Limit Form via own .dae importer after.
-- [Sora Attack Cancels](Sora_Attack_Cancels.md): Chain L -> M -> H (stand/crouch mix, skip OK, air too) on hit or guard; jump cancel: ground attacks on hit only, air attacks on hit or guard.
+- [Match Modes and Player 2](Match_Modes_Player2.md): Menu (PvP / PvCPU / Training), P2 arrows + numpad 7/8/9, P1 WASD only, simple CPU AI, best of 3, always face each other (in the air too, after any current move), Limit Form via own .dae importer after.
+- [Sora Attack Cancels](Sora_Attack_Cancels.md): Chain L -> M -> H (stand/crouch mix, skip OK, air too) on hit or guard; jump cancel: ground attacks on hit only, air attacks on hit or guard; air dash (both) -> air attack from the burst on, keeping full dash speed through the attack; R1 = dedicated dash button (Light + Medium is not a dash).
 - [Sora Pilot Approval](Sora_Pilot_Approval.md): Model-sheet and idle-pilot authorization; first image-generation attempt rejected.
 - [Sora Manual Drawing Guide](Sora_Manual_Drawing_Guide.md): Authorized manual model-sheet and idle guide after generation rejection.
 - [Sora Stance Reference](Sora_Stance_Reference.md): Supplied combat-stance GIF and observed pose details.
@@ -65,3 +65,4 @@
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and completed GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
 - [Controller Support](Controller_Support.md): DualSense = P1 with keyboard; Square/Triangle/Circle = L/M/H, D-pad + stick move, Cross starts menu items, Training Create/touchpad/L1 = G/R/F1.
+- [Sora Jump Feel](Sora_Jump_Feel.md): 22-frame rise (less floaty), hold-length short/long jumps, fast fall after a jumping attack connects so jump-ins combo.

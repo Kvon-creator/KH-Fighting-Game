@@ -3,12 +3,12 @@
 ## HURT: where Sora can be hit. HIT: where an attack hits (its active drawings only).
 
 const HURT := {
-	"attack_cheavy_384/sora_attack_cheavy_00.png": [Rect2(189, 366, 83, 64), Rect2(156, 424, 110, 65), Rect2(84, 483, 194, 65)],
-	"attack_cheavy_384/sora_attack_cheavy_01.png": [Rect2(174, 313, 75, 76), Rect2(161, 389, 71, 82), Rect2(122, 465, 110, 83)],
-	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(147, 209, 116, 117), Rect2(91, 320, 165, 117), Rect2(134, 431, 122, 118)],
-	"attack_cheavy_384/sora_attack_cheavy_03.png": [Rect2(144, 230, 118, 110), Rect2(90, 334, 175, 110), Rect2(138, 438, 128, 110)],
-	"attack_cheavy_384/sora_attack_cheavy_04.png": [Rect2(165, 283, 74, 92), Rect2(160, 369, 86, 92), Rect2(150, 455, 96, 93)],
-	"attack_cheavy_384/sora_attack_cheavy_05.png": [Rect2(155, 326, 95, 78), Rect2(155, 398, 104, 78), Rect2(94, 470, 193, 78)],
+	"attack_cheavy_384/sora_attack_cheavy_00.png": [Rect2(172, 366, 85, 64), Rect2(132, 424, 130, 65), Rect2(128, 483, 168, 65)],
+	"attack_cheavy_384/sora_attack_cheavy_01.png": [Rect2(123, 353, 85, 69), Rect2(105, 416, 120, 69), Rect2(79, 479, 166, 69)],
+	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(97, 311, 132, 83), Rect2(67, 388, 168, 83), Rect2(53, 465, 208, 84)],
+	"attack_cheavy_384/sora_attack_cheavy_03.png": [Rect2(155, 223, 63, 112), Rect2(124, 329, 143, 113), Rect2(124, 436, 144, 113)],
+	"attack_cheavy_384/sora_attack_cheavy_04.png": [Rect2(162, 288, 90, 90), Rect2(155, 372, 126, 91), Rect2(98, 457, 224, 91)],
+	"attack_cheavy_384/sora_attack_cheavy_05.png": [Rect2(157, 326, 93, 78), Rect2(152, 398, 127, 78), Rect2(107, 470, 200, 79)],
 	"attack_cheavy_384/sora_attack_cheavy_06.png": [Rect2(158, 346, 83, 71), Rect2(99, 411, 172, 72), Rect2(129, 477, 167, 72)],
 	"attack_clight_384/sora_attack_clight_00.png": [Rect2(155, 154, 80, 71), Rect2(122, 219, 147, 71), Rect2(121, 284, 167, 72)],
 	"attack_clight_384/sora_attack_clight_01.png": [Rect2(115, 157, 76, 70), Rect2(106, 221, 118, 70), Rect2(76, 285, 167, 71)],
@@ -180,7 +180,7 @@ const HIT := {
 	"attack_heavy_384/sora_attack_heavy_04.png": [Rect2(187, 158, 156, 125)],
 	"attack_clight_384/sora_attack_clight_02.png": [Rect2(159, 276, 169, 40)],
 	"attack_cmedium_384/sora_attack_cmedium_04.png": [Rect2(77, 233, 306, 117)],
-	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(216, 78, 152, 296)],
+	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(202, 234, 160, 298)],
 	"attack_jlight_384/sora_attack_jlight_02.png": [Rect2(157, 75, 204, 83)],
 	"attack_jmedium_384/sora_attack_jmedium_03.png": [Rect2(181, 115, 163, 126)],
 	"attack_jheavy_384/sora_attack_jheavy_03.png": [Rect2(204, 149, 153, 160)],

@@ -7,6 +7,7 @@
 2. **In `design/models/sora/`, keep:**
    - the approved version's 3D folder(s) and their 2D-style (`*2d_*`) folder(s);
    - every other animation's current final version;
+   - `saved_attacks/` (retired attacks Kvon asked to keep for future reference, November 6);
    - the non-animation folders: `blender_workflow`, `downloads`, `gemini_walk_review`, `gemini_animation`, `pose_edit`, `character_blockout_*`, `README.md`.
 3. **Delete:** that animation's older versions, test and measurement renders (e.g. `_m`, `_look*` folders), and any animation the approved one replaced.
 4. **In `KingdomArena/assets/sora/`:** delete the image files of folders Godot no longer loads. **Keep every `.import` file.** Kvon said "don't remove the .import files".

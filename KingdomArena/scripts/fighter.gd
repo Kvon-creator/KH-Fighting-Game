@@ -22,12 +22,22 @@ const DOUBLE_TAP_FRAMES := 15
 ## The glide push-off ends on the loop's first pose, so it hands over to this glide_loop drawing.
 const GLIDE_ENTRY_DRAWING := 1
 ## Jump: peak height in px and game frames from leaving the floor to the peak; gravity and launch
-## speed follow from these. Kvon: the Jumping Heavy (24 game frames) must be able to finish when pressed at
-## the very top, so the same 200 px jump rises and falls more slowly - 26 frames each way (was 18, a 0.6 s hop).
+## speed follow from these. Was 26 frames each way so a Jumping Heavy (24 game frames) pressed at the very top
+## could finish; Kvon (November 6) found that too floaty: 22 each way (about 15% less air time) - a Jumping Heavy
+## pressed at the very top is now cut short by the landing.
 const JUMP_HEIGHT := 200.0
-const JUMP_RISE_FRAMES := 26.0
+const JUMP_RISE_FRAMES := 22.0
 const JUMP_GRAVITY := 2.0 * JUMP_HEIGHT / (JUMP_RISE_FRAMES * JUMP_RISE_FRAMES)
 const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
+## Short and long jumps (Kvon, November 6): letting go of jump while rising multiplies gravity by this for the rest
+## of the rise - a tap gives about half the height (also for the second jump).
+const JUMP_RELEASE_GRAVITY := 2.0
+## Fast fall (Kvon, November 6): once a jumping attack has hit or been guarded by an opponent on the ground, gravity
+## is multiplied by this for the rest of the jump, so he lands while the opponent is still in hitstun / blockstun.
+## Air-to-air hits (opponent jumping or being juggled) keep the normal fall.
+const FAST_FALL_GRAVITY := 2.5
+## Gravity of launches and juggles (the old, slower jump gravity: 200 px over 26 frames), so they are unchanged.
+const LAUNCH_GRAVITY := 2.0 * 200.0 / (26.0 * 26.0)
 ## Second jump: launch speed as a share of the first jump's (about two-thirds of its height; Kvon asked
 ## for a little higher than 0.7). Used at the very top of the first jump, his hair can pass the top of
 ## this fixed test screen by ~25 px.
@@ -187,6 +197,7 @@ const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
+	&"attack_cheavy": [0, 45, 45, 0, 0, 0, 0],  # v11 low sweep + hit drawn 60 px left
 	&"attack_jlight": [0, 0, 45, 0, 0],
 	&"attack_jmedium": [0, 0, 0, 90, 52.5, 82.5, 0],
 	&"attack_jheavy": [0, 0, 0, 52.5, 0, 0, 0]}
@@ -235,6 +246,8 @@ var sprite: AnimatedSprite2D
 var attack_hit := false
 ## That contact was guarded (set by the match with attack_hit).
 var attack_guarded := false
+## Whether the opponent the current attack touched was on the ground then (a jumping attack's fast fall).
+var hit_grounded := false
 ## Hits in the combo he is taking (hitstun decay), his pushback speed and direction (world), knocked out.
 var combo_hits := 0
 var push_v := 0.0
@@ -263,6 +276,11 @@ var _after_dash := false
 var _dash_back := false
 var _bd_tick := -1
 var _glide := false
+## Jump button held this frame (short / long jumps), and the fast fall after a jumping attack connects.
+var _jump_held := false
+var _fast_fall := false
+## An air dash cancelled into an air attack keeps its speed until the attack ends (Kvon, November 6).
+var _hold_vx := false
 var _was := {}
 ## Button presses made during a hit-freeze, used on his next game frame (so a cancel tapped in the freeze counts).
 var _buffered := {}
@@ -347,15 +365,24 @@ func set_facing(face: float) -> void:
 	sprite.scale.x = face
 
 
-## Turns him to face dir if he can turn now: standing on the ground in control, not attacking, back-dashing or
-## gliding (in the air he turns when he lands).
+## Turns him to face dir if he can turn now: in control and not in the middle of a move - an attack, air dash,
+## back-dash, glide or jump start (Kvon, November 6: also in the air; mid-move he turns once it ends).
 func face_toward(dir: float) -> void:
-	if dir == facing or state != &"control" or _air or _bd_tick >= 0:
+	if dir == facing or state != &"control" or _bd_tick >= 0 or _dash_tick >= 0 or _air_atk_tick >= 0:
 		return
 	var anim := String(sprite.animation)
 	if anim.begins_with("attack_") or sprite.animation in GLIDE_ANIMS or sprite.animation == &"jump_start":
 		return
 	set_facing(dir)
+	if _air:
+		_vx = -_vx  # _vx is relative to facing: keep moving the same way across the screen
+	# Forward and back swap meaning: a held direction isn't a new press, and double taps keep their screen side.
+	var held_forward: bool = _was.get("forward", false)
+	_was["forward"] = _was.get("back", false)
+	_was["back"] = held_forward
+	var last_forward := _last_forward_press
+	_last_forward_press = _last_back_press
+	_last_back_press = last_forward
 
 
 func is_attacking() -> bool:
@@ -368,7 +395,7 @@ func is_airborne() -> bool:
 
 ## During a hit-freeze (no game frame for him): remembers new jump / attack presses for his next frame.
 func buffer_input(inp: Dictionary) -> void:
-	for k: String in ["up", "light", "medium", "heavy"]:
+	for k: String in ["up", "light", "medium", "heavy", "dash"]:
 		if inp.get(k, false) and not _was.get(k, false):
 			_buffered[k] = true
 		_was[k] = inp.get(k, false)
@@ -380,22 +407,23 @@ static func strength_rank(anim: StringName) -> int:
 	return 2 if s.ends_with("heavy") else (1 if s.ends_with("medium") else 0)
 
 
-## One game frame. inp holds this frame's held buttons: forward, back, up, down, light, medium, heavy.
+## One game frame. inp holds this frame's held buttons: forward, back, up, down, light, medium, heavy, dash.
 func step(inp: Dictionary) -> void:
 	_tick += 1
 	_back_held = inp.get("back", false)
 	_down_held = inp.get("down", false)
+	_jump_held = inp.get("up", false)
 	if state != &"control":
 		_hurt_step()
 		_buffered.clear()
-		for k: String in ["forward", "back", "up", "light", "medium", "heavy"]:
+		for k: String in ["forward", "back", "up", "light", "medium", "heavy", "dash"]:
 			_was[k] = inp.get(k, false)  # presses during hitstun don't come out afterwards
 		return
 	var forward: bool = inp.get("forward", false)
 	var back: bool = inp.get("back", false)
 	var crouch: bool = inp.get("down", false)
 	var pressed := {}
-	for k: String in ["forward", "back", "up", "light", "medium", "heavy"]:
+	for k: String in ["forward", "back", "up", "light", "medium", "heavy", "dash"]:
 		pressed[k] = (inp.get(k, false) and not _was.get(k, false)) or _buffered.get(k, false)
 		_was[k] = inp.get(k, false)
 	_buffered.clear()
@@ -411,12 +439,19 @@ func step(inp: Dictionary) -> void:
 		_glide = _tick - _last_forward_press <= DOUBLE_TAP_FRAMES
 		double_tap = _glide
 		_last_forward_press = _tick
-	if not forward:
+	# Dash button (Kvon, November 6: R1): with back held = back-dash; otherwise (forward or no direction) = forward
+	# dash - the glide on the ground (it glides on while R1 or forward stays held), the air dash in the air.
+	var dash_held: bool = inp.get("dash", false)
+	var dash_back: bool = pressed["dash"] and back and not forward
+	var dash_forward: bool = pressed["dash"] and not dash_back
+	if dash_forward and not _air:
+		_glide = true
+	if not forward and not dash_held:
 		_glide = false
 	var wanted: StringName = &"crouch_down" if crouch else (
 		&"shuffle_forward" if forward and not back else (
 		&"shuffle_back" if back and not forward else &"idle"))
-	var glide_wanted := _glide and wanted == &"shuffle_forward"
+	var glide_wanted := _glide and (wanted == &"shuffle_forward" or (dash_held and wanted == &"idle"))
 	var anim := sprite.animation
 	var jump: bool = inp.get("up", false)
 	var jump_pressed: bool = pressed["up"]
@@ -433,13 +468,18 @@ func step(inp: Dictionary) -> void:
 		# the rest of it - jL -> jM / jH, jM -> jH.
 		var air_chain := air_attacking and attack_hit and pressed_strength != &"" \
 			and strength_rank(pressed_strength) > strength_rank(_air_atk_anim)
-		if (double_tap or back_tap) and not _dash_used and _dash_tick < 0 and _spin_tick < 0 and not air_attacking:
+		if (double_tap or back_tap or dash_forward or dash_back) and not _dash_used and _dash_tick < 0 \
+				and _spin_tick < 0 and not air_attacking:
 			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
-			_dash_back = back_tap and not double_tap
+			_dash_back = dash_back if pressed["dash"] else (back_tap and not double_tap)
 			_dash_tick = 0
 			_after_dash = false
-		elif pressed_strength != &"" and _dash_tick < 0 and (not air_attacking or air_chain):
-			# Jumping Light / Medium / Heavy: plays over the jump (no air-dash during it)
+		elif pressed_strength != &"" and (_dash_tick < 0 or _dash_cancellable()) \
+				and (not air_attacking or air_chain):
+			# Jumping Light / Medium / Heavy: plays over the jump (no air-dash during it). Kvon: it cancels an air
+			# dash from the burst (forward) or first hop (back) on, keeping the dash's end momentum.
+			if _dash_tick >= 0:
+				_end_air_dash(true)
 			_air_atk_anim = StringName("attack_j" + pressed_strength)
 			_air_atk_tick = 0
 			_spin_tick = -1
@@ -453,6 +493,7 @@ func step(inp: Dictionary) -> void:
 				_vx = _air_input * JUMP2_VX
 			_spin_tick = 0
 			_after_dash = false
+			_fast_fall = false
 		_air_step()
 		return
 	# Instant cancels (Kvon): any ground move - standing, walking, crouching, gliding, back-dashing or
@@ -483,7 +524,7 @@ func step(inp: Dictionary) -> void:
 		position.y = FLOOR_Y
 		show_anim(StringName("attack_" + ("c" if crouch else "") + pressed_strength))
 		return
-	if back_tap and not back_dashing and anim in GROUND_CANCEL:
+	if (back_tap or dash_back) and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0
 		_back_dash_step()
 		return
@@ -523,6 +564,7 @@ func step(inp: Dictionary) -> void:
 		var at_end := sprite.frame + 1 == holds.size()
 		if anim == &"jump_start" and at_end:
 			_air = true  # leave the floor
+			_fast_fall = false
 			_vy = -JUMP_SPEED
 			_jump2_used = false
 			_spin_tick = -1
@@ -575,11 +617,12 @@ func _air_step() -> void:
 			elif sprite.animation != &"jump_dash" or sprite.frame != step_d - 1:
 				show_anim(&"jump_dash", step_d - 1)
 			return
-		_dash_tick = -1
-		_vy = 0.0
-		_vx = -AIR_DASH_CARRY if _dash_back else AIR_DASH_CARRY
-		_after_dash = not _dash_back  # the forward brake already raised the Keyblade
-	if _air_input != 0.0:
+		_end_air_dash()
+	if _hold_vx and _air_atk_tick < 0:
+		_hold_vx = false  # the attack is over: the dash speed fades as usual from here
+	if _hold_vx:
+		pass  # cancelled dash: its speed carries the attack
+	elif _air_input != 0.0:
 		# Steering: ease toward the held direction's speed; holding the same way as a faster carry keeps it.
 		var target := _air_input * AIR_STEER_SPEED
 		if absf(_vx) > AIR_STEER_SPEED and signf(_vx) == signf(target):
@@ -592,7 +635,11 @@ func _air_step() -> void:
 		_vx *= AIR_COAST
 	position.x = clampf(position.x + _vx * facing, LEFT_LIMIT, RIGHT_LIMIT)
 	position.y += _vy
-	_vy += JUMP_GRAVITY
+	if _air_atk_tick >= 0 and attack_hit and hit_grounded:
+		_fast_fall = true  # only against an opponent on the ground (Kvon): air-to-air hits keep the normal fall
+	var gravity_mult := FAST_FALL_GRAVITY if _fast_fall else (
+		JUMP_RELEASE_GRAVITY if _vy < 0.0 and not _jump_held else 1.0)
+	_vy += JUMP_GRAVITY * gravity_mult
 	if position.y >= FLOOR_Y:
 		_land()
 		show_anim(&"jump_land")
@@ -631,12 +678,36 @@ func _air_step() -> void:
 		show_anim(&"jump_air", drawing)
 
 
+## An air dash ends (played out, or cancelled into an air attack): he falls, carrying some sideways momentum.
+## cancelled: into an air attack - he keeps the dash's current speed through the attack (Kvon, November 6).
+func _end_air_dash(cancelled: bool = false) -> void:
+	if cancelled:
+		var holds_d: Array = BACK_DASH_HOLDS.slice(0, 3) if _dash_back else AIR_DASH_HOLDS
+		var speeds_d: Array = BACK_DASH_SPEED.slice(0, 3) if _dash_back else AIR_DASH_SPEED
+		_vx = speeds_d[mini(_step_of(maxi(_dash_tick - 1, 0), holds_d), speeds_d.size() - 1)]
+		_hold_vx = true
+	else:
+		_vx = -AIR_DASH_CARRY if _dash_back else AIR_DASH_CARRY
+	_dash_tick = -1
+	_vy = 0.0
+	_after_dash = not _dash_back  # the forward brake already raised the Keyblade
+
+
+## Whether this frame of the air dash may be cancelled into an air attack: not during the forward dash's tuck or
+## the back dash's push (its first drawing).
+func _dash_cancellable() -> bool:
+	var holds_d: Array = BACK_DASH_HOLDS.slice(0, 3) if _dash_back else AIR_DASH_HOLDS
+	return _dash_tick >= 0 and _step_of(_dash_tick, holds_d) >= 1
+
+
 func _land() -> void:
 	position.y = FLOOR_Y
 	_air = false
 	_spin_tick = -1
 	_dash_tick = -1
 	_air_atk_tick = -1  # landing cuts an air attack short
+	_hold_vx = false
+	_fast_fall = false
 	_after_dash = false
 	_vx = 0.0
 
@@ -692,6 +763,7 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 	if drawing == 0 and String(anim).begins_with("attack_"):
 		attack_hit = false  # a new attack: it may hit once
 		attack_guarded = false
+		hit_grounded = false
 	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
 	var shift_y: float = DRAW_SHIFT_Y[anim][drawing] if DRAW_SHIFT_Y.has(anim) else 0.0
 	sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, shift_y)
@@ -773,14 +845,15 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 	hp = maxi(hp - DAMAGE[strength], 0)
 	var decay := maxf(DECAY_FLOOR, 1.0 - DECAY_PER_HIT * combo_hits)
 	combo_hits += 1
+	var was_air := _air  # _end_moves clears it; a jumping fighter hit in the air must be knocked up, not left floating
 	_end_moves()
 	if hp == 0:
 		# Knocked out: thrown down and stays down.
 		ko = true
 		_start_hurt_air(-KNOCK_SPEED * 0.8, KNOCK_VX * away, HURT_GRAVITY)
-	elif launch or state == &"hurt_air" or _air:
+	elif launch or state == &"hurt_air" or was_air:
 		# The launcher sends him flying; any hit while airborne pops him up again (a juggle) - less each hit.
-		_start_hurt_air(-(LAUNCH_SPEED if launch else JUGGLE_SPEED) * decay, LAUNCH_VX * away, JUMP_GRAVITY)
+		_start_hurt_air(-(LAUNCH_SPEED if launch else JUGGLE_SPEED) * decay, LAUNCH_VX * away, LAUNCH_GRAVITY)
 	else:
 		state = &"stun"
 		_stun = maxi(1, roundi(HITSTUN[strength] * decay))
@@ -804,6 +877,8 @@ func _end_moves() -> void:
 	_buffered.clear()
 	_after_dash = false
 	_glide = false
+	_hold_vx = false
+	_fast_fall = false
 
 
 func _start_hurt_air(vy: float, vx: float, gravity: float) -> void:
