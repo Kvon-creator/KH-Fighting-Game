@@ -35,6 +35,8 @@ const INTRO_FRAMES := 100
 const KO_FRAMES := 150
 const WIN_FRAMES := 210
 const ROUNDS_TO_WIN := 2
+## How far the left stick must be pushed (0-1) to count as a direction.
+const PAD_STICK_DEADZONE := 0.5
 
 var mode := "training"
 var p: Array[Fighter] = []
@@ -208,6 +210,11 @@ func _input_for(i: int) -> Dictionary:
 		inp = {"up": Input.is_physical_key_pressed(KEY_W), "down": Input.is_physical_key_pressed(KEY_S),
 			"light": Input.is_physical_key_pressed(KEY_U), "medium": Input.is_physical_key_pressed(KEY_I),
 			"heavy": Input.is_physical_key_pressed(KEY_O)}
+		var pad := _pad_input()  # a controller works for player 1 alongside the keyboard
+		right = right or pad["right"]
+		left = left or pad["left"]
+		for k in ["up", "down", "light", "medium", "heavy"]:
+			inp[k] = inp[k] or pad[k]
 	elif mode == "pvp":
 		right = Input.is_physical_key_pressed(KEY_RIGHT)
 		left = Input.is_physical_key_pressed(KEY_LEFT)
@@ -236,6 +243,27 @@ func _input_for(i: int) -> Dictionary:
 	for k in ["light", "medium", "heavy"]:
 		if t in d[k]:
 			inp[k] = true
+	return inp
+
+
+## The first connected controller (Kvon, November 6: a DualSense for player 1): D-pad or left stick moves
+## (up = jump, down = crouch), Square / Triangle / Circle = light / medium / heavy. No controller = all false.
+func _pad_input() -> Dictionary:
+	var inp := {"right": false, "left": false, "up": false, "down": false, "light": false, "medium": false,
+		"heavy": false}
+	var pads := Input.get_connected_joypads()
+	if pads.is_empty():
+		return inp
+	var d: int = pads[0]
+	var sx := Input.get_joy_axis(d, JOY_AXIS_LEFT_X)
+	var sy := Input.get_joy_axis(d, JOY_AXIS_LEFT_Y)  # stick up is negative
+	inp["right"] = Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_RIGHT) or sx > PAD_STICK_DEADZONE
+	inp["left"] = Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_LEFT) or sx < -PAD_STICK_DEADZONE
+	inp["up"] = Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_UP) or sy < -PAD_STICK_DEADZONE
+	inp["down"] = Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_DOWN) or sy > PAD_STICK_DEADZONE
+	inp["light"] = Input.is_joy_button_pressed(d, JOY_BUTTON_X)  # Square
+	inp["medium"] = Input.is_joy_button_pressed(d, JOY_BUTTON_Y)  # Triangle
+	inp["heavy"] = Input.is_joy_button_pressed(d, JOY_BUTTON_B)  # Circle
 	return inp
 
 
@@ -466,9 +494,28 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				_set_guard_mode((_guard_mode + 1) % GUARD_MODES.size())
 		KEY_R:
 			if mode == "training":
-				for i in 2:
-					p[i].reset(START_X[i], 1.0 if i == 0 else -1.0)
-					_hp_shown[i] = float(Fighter.MAX_HP)
+				_reset_training()
+
+
+## Controller buttons in Training: Create = dummy guard mode (G), touchpad press = reset (R), L1 = boxes (F1).
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventJoypadButton and event.pressed) or mode != "training":
+		return
+	if not Input.get_connected_joypads().is_empty() and event.device != Input.get_connected_joypads()[0]:
+		return
+	match event.button_index:
+		JOY_BUTTON_BACK:
+			_set_guard_mode((_guard_mode + 1) % GUARD_MODES.size())
+		JOY_BUTTON_TOUCHPAD:
+			_reset_training()
+		JOY_BUTTON_LEFT_SHOULDER:
+			_show_boxes = not _show_boxes
+
+
+func _reset_training() -> void:
+	for i in 2:
+		p[i].reset(START_X[i], 1.0 if i == 0 else -1.0)
+		_hp_shown[i] = float(Fighter.MAX_HP)
 
 
 func _add_fx(kind: StringName, pos: Vector2, dir: float) -> void:

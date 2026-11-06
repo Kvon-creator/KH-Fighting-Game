@@ -77,6 +77,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_pick(focused)
 
 
+## Controller (Kvon, November 6): the D-pad and left stick already move the choice (Godot's built-in ui_up /
+## ui_down); Cross starts it.
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_A:
+		_pick(maxi(_buttons.find(get_viewport().gui_get_focus_owner() as Button), 0))
+
+
 func _pick(i: int) -> void:
 	if Time.get_ticks_msec() < _ready_at:
 		return

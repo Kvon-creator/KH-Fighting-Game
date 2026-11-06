@@ -64,3 +64,4 @@
 - [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and completed GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
+- [Controller Support](Controller_Support.md): DualSense = P1 with keyboard; Square/Triangle/Circle = L/M/H, D-pad + stick move, Cross starts menu items, Training Create/touchpad/L1 = G/R/F1.
