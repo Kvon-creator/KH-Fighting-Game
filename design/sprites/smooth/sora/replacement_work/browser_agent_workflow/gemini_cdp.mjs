@@ -99,7 +99,18 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'upper-slash-concept': [
+const referenceSets = {'grab-spin-idle-only': [
+  // Round 57: round 56 copied the attached round 55 sheet (opponent stayed on his right) - battle idle only.
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
+], 'grab-spin-fix': [
+  // Round 56 (Kvon chose a spin-only correction in a fresh chat): idle + the round 55 sheet for continuity.
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
+  'design/models/sora/gemini_walk_review/round_55/gemini_original.png'
+], 'grab-concept': [
+  // Round 55 (Kvon, November 10): Sora's ground grab - concept sheet of Sora AND the grabbed opponent (also Sora).
+  // Sora's own battle idle render only (third-party footage likely tripped round 48).
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
+], 'upper-slash-concept': [
   // Round 51 (Kvon, November 6): the Crouching Heavy becomes KH2's Upper Slash; his GIF is too unclear to read, so a
   // Gemini pose sheet - Sora's own renders only (third-party footage likely tripped round 48): kneel + battle idle.
   'design/models/sora/crouch_hold2d_v18/frames_512/sora_idle3d_00.png',
@@ -409,7 +420,10 @@ async function exchange() {
       // loaded and no progress indicator is showing, then let the page settle before sending.
       const loadedDeadline=Date.now()+60000;
       // Round 50: the composer thumbnails are now alt "attachment" (earlier "Uploaded image preview").
-      const previewsReady=()=>evaluate(`queryAll('img[alt="Uploaded image preview"],img[alt="attachment"]').filter(e=>e.complete&&e.naturalWidth>0).length>=${refs.length}`);
+      // November 10: Gemini's composer previews no longer carry those alt texts - also accept blob: thumbnails.
+      // Or count the attachment chips (uploader-file-preview) that show a loaded image and no progress spinner.
+      const previewsReady=()=>evaluate(`[...new Set(queryAll('img[alt="Uploaded image preview"],img[alt="attachment"],img[src^="blob:"]'))].filter(e=>e.complete&&e.naturalWidth>0).length>=${refs.length}
+        || queryAll('uploader-file-preview').filter(c=>[...c.querySelectorAll('img')].some(i=>i.complete&&i.naturalWidth>0)&&!c.querySelector('mat-progress-spinner,[role="progressbar"]')).length>=${refs.length}`);
       while(!(await previewsReady())&&Date.now()<loadedDeadline) {await new Promise(resolve=>setTimeout(resolve,1000));await guard();}
       if(!(await previewsReady()))throw Error('Art reference previews did not finish loading; no prompt submitted.');
       await new Promise(resolve=>setTimeout(resolve,4000));

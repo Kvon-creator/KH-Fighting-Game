@@ -1,0 +1,18 @@
+Please draw a concept pose sheet for Sora's GROUND GRAB (throw) in our 2D fighting game. The opponent is a second Sora (same outfit), so each pose shows TWO characters: the attacker (Sora, starting on the left) and the grabbed opponent.
+
+Attached: Sora's battle idle, rendered from his own 3D model in our sprite style - use it for his look, outfit and Kingdom Key.
+
+The move, in order:
+1. Grab: Sora steps in and seizes the opponent's torso with his LEFT (free) hand, gripping the front of the jacket at the chest. The Kingdom Key stays in his RIGHT hand, held low and out of the way.
+2. Spin, first half: still gripping, Sora pivots on his feet and swings the opponent around him, the opponent's feet dragging or lifting off the floor, body leaning outward from the pull.
+3. Spin, second half: Sora has turned his back toward the viewer, the opponent swung around behind him, still held at arm's length by the left hand.
+4. Toss: after one full turn, Sora is facing screen right again and heaves the opponent UP into the air with his left arm, releasing them above head height, the opponent tumbling.
+5. Wind-up: the opponent hangs in the air in front of him; Sora draws the Kingdom Key back over his shoulder with his right hand, bracing his legs.
+6. Strike: a big one-handed Keyblade swing hits the airborne opponent and sends them flying backward to screen right, with a bold smear arc.
+
+Strict rules:
+- Sora always grips with his LEFT hand only; the Keyblade never leaves his RIGHT hand, fist in the middle of the handle.
+- Sora stays on the floor the whole time (no jumping); same floor line and same scale in every pose. Knees bend the natural way. The Keyblade keeps the same length.
+- Sora starts and ends facing screen right; the opponent starts on his right facing him.
+
+Image: 6 poses in two rows of three, plain white background, same 2D cel style, KH2 outfit and Kingdom Key as the attachment, no text.

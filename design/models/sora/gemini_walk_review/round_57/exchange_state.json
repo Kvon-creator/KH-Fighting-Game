@@ -1,0 +1,29 @@
+{
+  "status": "ready_for_visual_review",
+  "media": "image",
+  "tabId": "42D8F2903C381E3232F1EFC1AB0673B7",
+  "chatUrl": "https://gemini.google.com/app/1c0d3a93a7277a2f",
+  "referenceSet": "grab-spin-idle-only",
+  "promptSha256": "6cdac7d3222c907e8f4a81a0d747a9847493fccab64f07db78f28da3ae2555d3",
+  "promptFile": "design\\sprites\\smooth\\sora\\replacement_work\\browser_agent_workflow\\GRAB_SPIN_CORRECTION_ROUND_57.txt",
+  "mode": "Pro",
+  "createdAt": "2026-11-10T17:34:32.228Z",
+  "baselineImages": [],
+  "baselineVideos": [],
+  "references": [
+    {
+      "file": "design\\models\\sora\\sprite2d_v3\\frames_512\\sora_idle3d_00.png",
+      "sha256": "6e69e61e1a7bfd7d247d568fc4b29e4231a715b68d6a5182a943fac62f4d3340"
+    }
+  ],
+  "finalUserApproval": "pending",
+  "completedAt": "2026-11-10T17:36:19.090Z",
+  "preview": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_57\\gemini_original_preview.webp",
+  "originalDownload": "D:\\KH Fighting Game\\design\\models\\sora\\gemini_walk_review\\round_57\\Gemini_Generated_Image_uir5fquir5fquir5.jfif",
+  "nativePreviewSize": [
+    1024,
+    765
+  ],
+  "imageFormat": "webp",
+  "review": "pending"
+}
