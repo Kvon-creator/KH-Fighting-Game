@@ -1,0 +1,18 @@
+Please draw a concept pose sheet for Sora's CROUCHING HEAVY attack in our 2D fighting game, inspired by his Upper Slash: a big one-handed upward slash that knocks the opponent into the air.
+
+Attached, both rendered from Sora's own 3D model in our sprite style: (1) his kneeling crouch - the start and end pose; (2) his battle idle, for his look, outfit and Keyblade.
+
+Strict rules for every pose:
+- ONE HAND: the Kingdom Key is always in his RIGHT hand only, fist in the middle of the handle. His left hand never touches the Keyblade; the left arm is out to the side or behind him for balance.
+- GROUNDED: both feet stay on the same floor line in every pose. At the hit he may rise onto his toes and stretch tall, but he never jumps and never lifts a knee.
+- Same size, same floor line, Sora always facing screen right (the opponent is off screen to the right). Knees bend the natural way. The Keyblade keeps the same length.
+
+6 poses in two rows of three, showing the Keyblade travelling from LOW IN FRONT to HIGH:
+1. The kneeling crouch from attachment 1 (back knee down, Keyblade low behind him).
+2. Wind-up: still low, the Keyblade swung forward and DOWN in front of him, its tip near the floor ahead of his front foot.
+3. The swing starts: he begins to rise, the Keyblade coming UP in front of his body at waist height, small smear.
+4. HIT: he rises onto his toes, his right arm reaching up and forward toward screen right, the Keyblade sweeping upward in front of him at head height, with a big bold upward smear arc from the floor in front of him up to the Keyblade.
+5. Follow-through: the Keyblade finishes high above his head, body stretched tall, feet still on the floor.
+6. Recovery: lowering back down toward the kneeling crouch, the Keyblade coming down behind him.
+
+Image: plain white background, same 2D cel style, KH2 outfit and Kingdom Key as the attachments, no text.

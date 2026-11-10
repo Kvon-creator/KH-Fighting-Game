@@ -1,0 +1,13 @@
+Please draw a concept pose sheet for Sora's CROUCHING HEAVY attack in our 2D fighting game. It should be his Upper Slash ability from Kingdom Hearts II: the combo finisher where he slashes the Kingdom Key upward and knocks the opponent into the air.
+
+Attached, both rendered from Sora's own 3D model in our sprite style: (1) his kneeling crouch - the start and end pose; (2) his battle idle, for his look, outfit and Keyblade.
+
+Rules: Sora STAYS ON THE GROUND the whole time (he may rise up onto his toes, but his feet never leave the floor). Each pose flows smoothly into the next (same size, same floor line, same facing). Knees always bend the natural way. The Keyblade stays in his hands and stays the same length.
+
+Image: plain white background, Sora facing screen right (the opponent is off screen to the right), same 2D cel style, KH2 outfit and Kingdom Key as the attachments, no text. 6 poses in two rows of three:
+1. Kneeling crouch (attachment 1).
+2. Wind-up for the Upper Slash: the Keyblade drawn down low, ready to swing up.
+3. The upward swing beginning, the Keyblade coming up from low in front of him, with a smear arc.
+4. ACTIVE: the Upper Slash at the moment it hits - the Keyblade sweeping up through the space in front of him, body rising, with a bold upward smear arc.
+5. Follow-through: the Keyblade high after the slash.
+6. Recovery back toward the kneeling crouch.

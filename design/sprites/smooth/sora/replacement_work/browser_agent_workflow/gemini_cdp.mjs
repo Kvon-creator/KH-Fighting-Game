@@ -99,7 +99,12 @@ const frameTree = await send('Page.getFrameTree');
 const mainContexts = [...contexts.values()].filter(c=>c.auxData?.isDefault&&c.auxData?.frameId===frameTree.frameTree.frame.id);
 if (mainContexts.length!==1) {socket.close();throw Error(`Expected one active main-frame context, found ${mainContexts.length}`);}
 const mainContext=mainContexts[0];
-const referenceSets = {'crouching-medium-own-renders': [
+const referenceSets = {'upper-slash-concept': [
+  // Round 51 (Kvon, November 6): the Crouching Heavy becomes KH2's Upper Slash; his GIF is too unclear to read, so a
+  // Gemini pose sheet - Sora's own renders only (third-party footage likely tripped round 48): kneel + battle idle.
+  'design/models/sora/crouch_hold2d_v18/frames_512/sora_idle3d_00.png',
+  'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
+], 'crouching-medium-own-renders': [
   // Round 49: round 48 ("I encountered an error...") likely tripped on the third-party Ky art; only Sora's own renders
   // now - the kneeling crouch and our 3D active-pose candidate A (Ky-style) as the pose guide.
   'design/models/sora/crouch_hold2d_v18/frames_512/sora_idle3d_00.png',

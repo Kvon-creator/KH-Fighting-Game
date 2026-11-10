@@ -1,0 +1,20 @@
+{
+  "source": "atk_cheavy_v12",
+  "smears": [
+    {
+      "drawing": 1,
+      "from_drawing": 0,
+      "sweep_deg": 27.0
+    },
+    {
+      "drawing": 2,
+      "from_drawing": 1,
+      "sweep_deg": 68.4
+    },
+    {
+      "drawing": 3,
+      "from_drawing": 2,
+      "sweep_deg": 80.3
+    }
+  ]
+}

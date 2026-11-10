@@ -39,7 +39,7 @@ ATTACKS = [
     ('attack_heavy', 'atk_sheavy_v7', [4], 'key', 0.0),
     ('attack_clight', 'atk_clight_v31', [2], 'key', .10),
     ('attack_cmedium', 'atk_cmed_v24', [4], 'key', .10),
-    ('attack_cheavy', 'atk_cheavy_v11', [2], 'key', .10),
+    ('attack_cheavy', 'atk_cheavy_v17', [2], 'key', .10),
     ('attack_jlight', 'atk_jlight_v8', [2], 'key', .10),
     ('attack_jmedium', 'atk_jmed_v7', [3], 'key', .10),
     ('attack_jheavy', 'atk_jheavy_v2', [3], 'key', 0.0),
@@ -49,8 +49,8 @@ SWEEP_FROM = .5            # a 'key' hitbox covers the Key's path over the last 
 # front), and the Jumping Medium's spin brings the Key down from high over his head (only the end of it strikes).
 SWEEP_FROM_BY = {'attack_cmedium': 0.0, 'attack_jmedium': .8, 'attack_cheavy': 0.0}
 # Extra forward reach (px, 384 scale) on top of the drawing. The old up-thrust launcher (atk_cheavy_v9, saved in
-# saved_attacks/crouching_heavy_up_thrust) needed 110 because its Key pointed straight up; the upward swing (v11,
-# Kvon November 6) reaches forward on its own, so none now. Its hitbox covers the whole swing from the low sweep.
+# saved_attacks/crouching_heavy_up_thrust) needed 110 because its Key pointed straight up; the Upper Slash (v13,
+# Kvon November 6) reaches forward on its own, so none now. Its hitbox covers the whole swing from the rise.
 FORWARD_PX = {}
 
 

@@ -3,10 +3,10 @@
 ## HURT: where Sora can be hit. HIT: where an attack hits (its active drawings only).
 
 const HURT := {
-	"attack_cheavy_384/sora_attack_cheavy_00.png": [Rect2(172, 366, 85, 64), Rect2(132, 424, 130, 65), Rect2(128, 483, 168, 65)],
-	"attack_cheavy_384/sora_attack_cheavy_01.png": [Rect2(123, 353, 85, 69), Rect2(105, 416, 120, 69), Rect2(79, 479, 166, 69)],
-	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(97, 311, 132, 83), Rect2(67, 388, 168, 83), Rect2(53, 465, 208, 84)],
-	"attack_cheavy_384/sora_attack_cheavy_03.png": [Rect2(155, 223, 63, 112), Rect2(124, 329, 143, 113), Rect2(124, 436, 144, 113)],
+	"attack_cheavy_384/sora_attack_cheavy_00.png": [Rect2(141, 366, 79, 64), Rect2(110, 424, 108, 65), Rect2(40, 483, 192, 65)],
+	"attack_cheavy_384/sora_attack_cheavy_01.png": [Rect2(109, 320, 71, 80), Rect2(60, 394, 158, 80), Rect2(39, 468, 206, 80)],
+	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(103, 254, 110, 102), Rect2(67, 350, 150, 102), Rect2(62, 446, 160, 103)],
+	"attack_cheavy_384/sora_attack_cheavy_03.png": [Rect2(158, 252, 66, 102), Rect2(122, 348, 130, 103), Rect2(88, 445, 229, 103)],
 	"attack_cheavy_384/sora_attack_cheavy_04.png": [Rect2(162, 288, 90, 90), Rect2(155, 372, 126, 91), Rect2(98, 457, 224, 91)],
 	"attack_cheavy_384/sora_attack_cheavy_05.png": [Rect2(157, 326, 93, 78), Rect2(152, 398, 127, 78), Rect2(107, 470, 200, 79)],
 	"attack_cheavy_384/sora_attack_cheavy_06.png": [Rect2(158, 346, 83, 71), Rect2(99, 411, 172, 72), Rect2(129, 477, 167, 72)],
@@ -180,7 +180,7 @@ const HIT := {
 	"attack_heavy_384/sora_attack_heavy_04.png": [Rect2(187, 158, 156, 125)],
 	"attack_clight_384/sora_attack_clight_02.png": [Rect2(159, 276, 169, 40)],
 	"attack_cmedium_384/sora_attack_cmedium_04.png": [Rect2(77, 233, 306, 117)],
-	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(202, 234, 160, 298)],
+	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(207, 164, 157, 277)],
 	"attack_jlight_384/sora_attack_jlight_02.png": [Rect2(157, 75, 204, 83)],
 	"attack_jmedium_384/sora_attack_jmedium_03.png": [Rect2(181, 115, 163, 126)],
 	"attack_jheavy_384/sora_attack_jheavy_03.png": [Rect2(204, 149, 153, 160)],

@@ -2979,7 +2979,92 @@ if LOOP:
                                                  offset_px=(-60, 0))
                                     swing_k.update(turn=IDLE_R['turn'] + 6.0, offset_px=(-60, 0))
                                     over_k['turn'] = IDLE_R['turn'] + 10.0
-                                RUN_KEYS = [wind_k, low_k, swing_k, over_k, back_k, down_k, crouch_k]
+                                if not HURT.endswith(('_v10', '_v11')):
+                                    # v12 (Kvon, November 6: "His Down Heavy should be the Upper Slash ability from KH2";
+                                    # his GIF was too unclear, so Gemini concept round 54 -
+                                    # design/models/sora/gemini_walk_review/round_54 - approved with two changes: the hit
+                                    # has the Key sweeping up IN FRONT of him (hitbox in front) and Gemini's pose 4, Key
+                                    # overhead pointing back, is the follow-through; idle 3/4 facing kept). One hand,
+                                    # grounded throughout. Wind-up: Key forward-down in front, tip near the floor (round
+                                    # 54 pose 2) / rising, Key up in front at waist height / HIT: tall on his toes, arm
+                                    # reaching up and forward, Key at head height in front, big upward smear / follow-
+                                    # through: Key overhead pointing back, feet planted wide, free arm out / back over
+                                    # the shoulder / lower / crouch guard. Same timing (startup 11, active 4, recovery 22).
+                                    wind_k = cl(U_*.24 + V_*.18 + Vector((0, 0, .52)), U_*.80 + Vector((0, 0, -.50)),
+                                                ce=.40, hunch=14.0, pitch=16.0, turn=IDLE_R['turn'] + 4.0)
+                                    wind_k.update(offset_px=(-60, 0))
+                                    rise12_k = stand_up(cl(U_*.32 + V_*.18 + Vector((0, 0, .80)), U_*.92 + Vector((0, 0, -.08)),
+                                                           ce=.20, hunch=6.0, pitch=6.0, turn=IDLE_R['turn'] + 4.0,
+                                                           l_hand=free_dn), half_feet)
+                                    rise12_k.update(smear=1, offset_px=(-80, 0))
+                                    free_out = -U_*.45 + V_*.10 + Vector((0, 0, 1.10))   # free arm out to the side
+                                    hit12_k = stand_up(cl(U_*.30 + V_*.14 + Vector((0, 0, 1.55)), U_*.45 + Vector((0, 0, .90)),
+                                                          ce=-.26 + .08, hunch=-6.0, pitch=-4.0, turn=IDLE_R['turn'] + 6.0,
+                                                          l_hand=free_out),
+                                                       {'L': (L0[0]*.6, L0[1]*.6, .05, 30.0),
+                                                        'R': (R0[0]*.6, R0[1]*.6 - .05, .05, 30.0)})
+                                    hit12_k.update(neck=-10.0, smear=1, offset_px=(-40, 0))
+                                    follow12_k = stand_up(cl(U_*.05 + V_*.12 + Vector((0, 0, 1.78)), -U_*.75 + Vector((0, 0, .55)),
+                                                             ce=-.10 + .08, hunch=-4.0, pitch=-2.0, turn=IDLE_R['turn'] + 10.0,
+                                                             l_hand=free_out + Vector((0, 0, -.15))),
+                                                          {'L': (L0[0], L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)})
+                                    follow12_k.update(neck=-8.0, smear=1)
+                                    for k_ in (wind_k, rise12_k, hit12_k, follow12_k):
+                                        k_['look'] = 8.0
+                                    if not HURT.endswith('_v12'):
+                                        # v13 (my review of v12): the wind-up tip went through the floor and out of the
+                                        # frame - Key raised a little; the hit's Key pointed nearly straight up (like the
+                                        # old up thrust, a high hitbox) and its smear hit the right edge - the hand lower
+                                        # and further forward, the Key ~40 degrees up toward the opponent at head height,
+                                        # drawn 70 px left.
+                                        wind_k.update(hand=U_*.24 + V_*.18 + Vector((0, 0, .58)),
+                                                      blade_dir=tuple((U_*.85 + Vector((0, 0, -.32))).normalized()))
+                                        hit12_k.update(hand=U_*.38 + V_*.14 + Vector((0, 0, 1.35)),
+                                                       blade_dir=tuple((U_*.75 + Vector((0, 0, .65))).normalized()),
+                                                       offset_px=(-70, 0))
+                                    if not HURT.endswith(('_v12', '_v13')):
+                                        # v14 (Kvon: "Sora should turn his body away from the camera for the wind up
+                                        # before turning it back as he is about to attack"): wind-up turned 45 degrees
+                                        # away from the camera, the rise halfway back (20), the hit back at the idle's
+                                        # angle. Feet turn about the hips with him (v4 lesson: otherwise the legs cross).
+                                        for k_, add_ in ((wind_k, 45.0 - 4.0), (rise12_k, 20.0 - 4.0)):
+                                            k_['turn'] = k_['turn'] + add_
+                                            rz_ = Matrix.Rotation(math.radians(add_), 3, 'Z')
+                                            feet_ = {}
+                                            for sd_, (fs_, fl_, *rest_) in k_['feet'].items():
+                                                wv_ = rz_ @ (U_*fs_ + V_*fl_)
+                                                feet_[sd_] = (wv_.dot(U_), wv_.dot(V_), *rest_)
+                                            k_['feet'] = feet_
+                                    if not HURT.endswith(('_v12', '_v13', '_v14')):
+                                        # v15 (Kvon: "His non-sword arm sticks out too much during the attack and I
+                                        # want the tip of the keyblade to be angled toward the background during the
+                                        # wind-up"): the free hand pulled in close to his side / chest (it was .45 m out
+                                        # behind him) on the rise, hit and follow-through; the wind-up Key's tip turned
+                                        # toward the background (-V), still low.
+                                        rise12_k['l_hand'] = tuple(-U_*.16 + V_*.08 + Vector((0, 0, .88)))
+                                        hit12_k['l_hand'] = tuple(-U_*.14 + V_*.08 + Vector((0, 0, 1.05)))
+                                        follow12_k['l_hand'] = tuple(-U_*.16 + V_*.08 + Vector((0, 0, .98)))
+                                        wind_k['blade_dir'] = tuple((U_*.55 - V_*.65 + Vector((0, 0, -.30))).normalized())
+                                    if not HURT.endswith(('_v12', '_v13', '_v14', '_v15')):
+                                        # v16 (Kvon: "Move his non-sword arm so that the elbow is slightly bent and
+                                        # the arm is to his side"): v15's fist sat at his chest with the elbow folded
+                                        # tight. The free hand now hangs down by his hip on the far side (-V), a little
+                                        # behind (far enough back to show past his torso), elbow aimed back so it bends
+                                        # only slightly. (Targets are in standing
+                                        # terms - the IK subtracts crouch_extra.)
+                                        side_hand = -U_*.22 - V_*.06 + Vector((0, 0, .70))
+                                        for k_ in (rise12_k, hit12_k, follow12_k):
+                                            k_['l_hand'] = tuple(side_hand)
+                                            k_['l_elbow_hint'] = tuple((-U_*.9 - V_*.3 + Vector((0, 0, -.2))).normalized())
+                                    if not HURT.endswith(('_v12', '_v13', '_v14', '_v15', '_v16')):
+                                        # v17 (Kvon: "Bring the arm more forward"): the hanging hand moves from
+                                        # behind his hip to in front of it (toward the opponent), same height and
+                                        # slight elbow bend.
+                                        for k_ in (rise12_k, hit12_k, follow12_k):
+                                            k_['l_hand'] = tuple(U_*.16 - V_*.02 + Vector((0, 0, .72)))
+                                    RUN_KEYS = [wind_k, rise12_k, hit12_k, follow12_k, back_k, down_k, crouch_k]
+                                else:
+                                    RUN_KEYS = [wind_k, low_k, swing_k, over_k, back_k, down_k, crouch_k]
                             GAME_FRAMES = [6, 5, 4, 8, 5, 4, 5]
                             DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]; n = len(DURATIONS_MS)
                         if jpart == 'atk_guard':

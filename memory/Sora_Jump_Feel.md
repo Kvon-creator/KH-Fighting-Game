@@ -12,3 +12,6 @@
 **Tested:** jH hitting at the jump's top: lands with 9 frames of hitstun left (was -2) - jH -> Light combos; jH -> Medium has a 1-frame gap from that top-height hit only. Lower jH hits land with 12-14 frames left.
 
 **Bug found while testing (fixed):** take_hit called _end_moves() (which clears _air) before checking _air, so a jumping fighter hit air-to-air got the ground hit reaction and floated in place; now it is knocked up (hurt_air) as intended.
+
+**Juggles (Kvon, November 6):** "when juggling an opponent in the air, the only attack that should trigger a fast fall attack is a jump heavy." Rule now: the fast fall starts when a jumping attack touches an opponent on the ground, OR a juggled opponent (hurt_air) with the Jumping Heavy. A jumping opponent who is not being juggled: no fast fall. match.gd sets `fast_fall_hit` (replaces hit_grounded). Tested: after the launcher, jL / jM juggles fall normally (land T76) and jH fast-falls (T69); grounded jH is unchanged (T42).
+**Bug fixed with it:** on the frame a jumping attack started, the fast-fall check ran before the new attack cleared the previous attack's contact, so a grounded hit (e.g. the launcher) followed by a jump-in fast-fell at once. Contact flags are now cleared when the air attack starts.

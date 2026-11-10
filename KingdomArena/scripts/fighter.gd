@@ -34,7 +34,7 @@ const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
 const JUMP_RELEASE_GRAVITY := 2.0
 ## Fast fall (Kvon, November 6): once a jumping attack has hit or been guarded by an opponent on the ground, gravity
 ## is multiplied by this for the rest of the jump, so he lands while the opponent is still in hitstun / blockstun.
-## Air-to-air hits (opponent jumping or being juggled) keep the normal fall.
+## Air-to-air hits keep the normal fall, except the Jumping Heavy on a juggled opponent (Kvon, November 6).
 const FAST_FALL_GRAVITY := 2.5
 ## Gravity of launches and juggles (the old, slower jump gravity: 200 px over 26 frames), so they are unchanged.
 const LAUNCH_GRAVITY := 2.0 * 200.0 / (26.0 * 26.0)
@@ -197,7 +197,7 @@ const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
-	&"attack_cheavy": [0, 45, 45, 0, 0, 0, 0],  # v11 low sweep + hit drawn 60 px left
+	&"attack_cheavy": [45, 60, 52.5, 0, 0, 0, 0],  # Upper Slash v17 (final): wind-up / rise / hit drawn 60 / 80 / 70 px left
 	&"attack_jlight": [0, 0, 45, 0, 0],
 	&"attack_jmedium": [0, 0, 0, 90, 52.5, 82.5, 0],
 	&"attack_jheavy": [0, 0, 0, 52.5, 0, 0, 0]}
@@ -246,8 +246,9 @@ var sprite: AnimatedSprite2D
 var attack_hit := false
 ## That contact was guarded (set by the match with attack_hit).
 var attack_guarded := false
-## Whether the opponent the current attack touched was on the ground then (a jumping attack's fast fall).
-var hit_grounded := false
+## Whether the current attack's contact starts the fast fall: opponent on the ground, or juggled and hit by the
+## Jumping Heavy (set by match.gd).
+var fast_fall_hit := false
 ## Hits in the combo he is taking (hitstun decay), his pushback speed and direction (world), knocked out.
 var combo_hits := 0
 var push_v := 0.0
@@ -482,6 +483,11 @@ func step(inp: Dictionary) -> void:
 				_end_air_dash(true)
 			_air_atk_anim = StringName("attack_j" + pressed_strength)
 			_air_atk_tick = 0
+			# A new attack: clear the last one's contact now (show_anim does it only after this frame's fall, which
+			# would otherwise start a fast fall from an earlier ground hit, e.g. the launcher before a juggle).
+			attack_hit = false
+			attack_guarded = false
+			fast_fall_hit = false
 			_spin_tick = -1
 		# Second jump; during a jumping attack only once it has touched the opponent (Kvon: air attacks jump
 		# cancel on hit or guard).
@@ -635,8 +641,8 @@ func _air_step() -> void:
 		_vx *= AIR_COAST
 	position.x = clampf(position.x + _vx * facing, LEFT_LIMIT, RIGHT_LIMIT)
 	position.y += _vy
-	if _air_atk_tick >= 0 and attack_hit and hit_grounded:
-		_fast_fall = true  # only against an opponent on the ground (Kvon): air-to-air hits keep the normal fall
+	if _air_atk_tick >= 0 and attack_hit and fast_fall_hit:
+		_fast_fall = true  # (Kvon) on a grounded opponent; on a juggled one only from the Jumping Heavy
 	var gravity_mult := FAST_FALL_GRAVITY if _fast_fall else (
 		JUMP_RELEASE_GRAVITY if _vy < 0.0 and not _jump_held else 1.0)
 	_vy += JUMP_GRAVITY * gravity_mult
@@ -763,7 +769,7 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 	if drawing == 0 and String(anim).begins_with("attack_"):
 		attack_hit = false  # a new attack: it may hit once
 		attack_guarded = false
-		hit_grounded = false
+		fast_fall_hit = false
 	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
 	var shift_y: float = DRAW_SHIFT_Y[anim][drawing] if DRAW_SHIFT_Y.has(anim) else 0.0
 	sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, shift_y)

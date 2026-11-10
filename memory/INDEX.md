@@ -31,7 +31,7 @@
 - [Sora Standing Heavy](Sora_Standing_Heavy.md): Advancing downward slash, stepping forward with the back foot for range (replaced the spin October27).
 - [Sora Crouching Light](Sora_Crouching_Light.md): Now a quick low Kingdom Key jab; final chamber free hand = C2, tucked at his side poses 1-4 with the elbow folding more after pose 2 (v30, pending review); earlier slash history: v8 on the kneel pending review; October28 MoMask-refined v9-v11, torso-turn clipping fix v14, small-lean v15 pending review (rotate toward the attack, little lean).
 - [Sora Crouching Medium](Sora_Crouching_Medium.md): FINAL v23 in the game (I while crouching) - lunging low sweep after Ky's GGST 2S (reference image + GIFs).
-- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher (supersedes jumping uppercut); Nov 6: up-thrust (v9) saved in saved_attacks/; original upward swing v11 in the game, pending review (same timing, hitbox from the floor up in front).
+- [Sora Crouching Heavy](Sora_Crouching_Heavy.md): Approved grounded upward Keyblade swing launcher (supersedes jumping uppercut); Nov 6: up-thrust (v9) saved in saved_attacks/; now KH2 Upper Slash v17 (from Gemini round 54; wind-up turned away, Key tip to the background, free arm hanging at his side in front of the hip, elbow slightly bent) in the game, pending review: one hand, grounded, same timing.
 
 - [Sora Jumping Light](Sora_Jumping_Light.md): Approved quick midair Kingdom Key slash; v7 in the game (U in the air), after Ky's GGST j.S; v1-v6 kept until Kvon calls v7 final.
 - [Sora Jumping Medium](Sora_Jumping_Medium.md): Broad diagonal midair slash, now a clockwise 3/4 spin into a diagonal strike after Simon's SSBU back air; v7 "looks good for now", not in the game yet.
@@ -65,4 +65,4 @@
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and completed GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
 - [Controller Support](Controller_Support.md): DualSense = P1 with keyboard; Square/Triangle/Circle = L/M/H, D-pad + stick move, Cross starts menu items, Training Create/touchpad/L1 = G/R/F1.
-- [Sora Jump Feel](Sora_Jump_Feel.md): 22-frame rise (less floaty), hold-length short/long jumps, fast fall after a jumping attack connects so jump-ins combo.
+- [Sora Jump Feel](Sora_Jump_Feel.md): 22-frame rise (less floaty), hold-length short/long jumps, fast fall after a jumping attack hits a grounded opponent (on juggles only the jH).

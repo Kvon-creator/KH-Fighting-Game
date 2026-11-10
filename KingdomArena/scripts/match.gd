@@ -311,7 +311,9 @@ func _hits() -> void:
 			else &"mid")
 		var away := 1.0 if d.position.x >= a.position.x else -1.0
 		a.attack_hit = true
-		a.hit_grounded = not d.is_airborne()  # before the hit, which may launch him
+		# Fast fall (Kvon): a jumping attack makes him drop fast after touching an opponent on the ground; against a
+		# juggled opponent only the Jumping Heavy does. Checked before the hit, which may launch him.
+		a.fast_fall_hit = not d.is_airborne() or (d.state == &"hurt_air" and attack == "attack_jheavy")
 		_freeze = maxi(_freeze, Fighter.HIT_FREEZE[strength])
 		var guarded := d.take_hit(strength, level, a.sprite.animation == &"attack_cheavy", away)
 		a.attack_guarded = guarded  # a guarded ground attack can still chain, but not jump cancel
