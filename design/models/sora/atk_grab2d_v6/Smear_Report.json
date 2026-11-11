@@ -1,0 +1,15 @@
+{
+  "source": "atk_grab_v6",
+  "smears": [
+    {
+      "drawing": 14,
+      "from_drawing": 13,
+      "sweep_deg": 175.8
+    },
+    {
+      "drawing": 15,
+      "from_drawing": 14,
+      "sweep_deg": 42.3
+    }
+  ]
+}

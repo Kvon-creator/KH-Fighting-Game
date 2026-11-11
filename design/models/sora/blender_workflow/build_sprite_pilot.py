@@ -57,7 +57,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'hurt_ground_v', 'hurt_air_v', 'hurt_fall_v', 'hurt_down_v',
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
                                       'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
-                                      'atk_jheavy_v', 'atk_guard_v')) else None
+                                      'atk_jheavy_v', 'atk_guard_v', 'atk_grab_v', 'hurt_grab_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -107,10 +107,17 @@ HEIGHT = 1.6          # meters, T-pose top of hair to sole
 # Crouching Heavy (an overhead Keyblade thrust, ~2.9 m tall): a taller 512 x 768 canvas at the same scale, with the
 # soles the same 42 px above the bottom edge; everything else keeps the 512 x 512 frame.
 CANVAS_H = 768 if OUT_NAME.startswith('atk_cheavy_v') else 512
+# Ground grab (Kvon, November 10): Sora and the grabbed opponent are rendered as two separate layers on one shared
+# 1024 x 1024 canvas (same px per metre, soles 42 px above the bottom edge) - the opponent is swung ~2 m out.
+GRAB_CANVAS = OUT_NAME.startswith(('atk_grab_v', 'hurt_grab_v'))
+if GRAB_CANVAS:
+    CANVAS_H = 1024
+CANVAS_W = 1024 if GRAB_CANVAS else 512
+GRAB_HAND, GRAB_FRONT = [], []
 # Kvon (October 29): the fist in the middle of the Key's handle (as on the Crouching Heavy's thrust) on every attack.
 # One-handed attack drawings get grip_slide .10 by default from these versions on; the last drawing of each (the
 # crouch guard / jump tuck it hands back to) keeps the neutral grip so it matches those animations.
-GRIP_MID_FROM = {'atk_clight': 31, 'atk_cmed': 24, 'atk_cheavy': 9, 'atk_jlight': 8, 'atk_jmed': 6, 'atk_jheavy': 1}
+GRIP_MID_FROM = {'atk_grab': 1, 'atk_clight': 31, 'atk_cmed': 24, 'atk_cheavy': 9, 'atk_jlight': 8, 'atk_jmed': 6, 'atk_jheavy': 1}
 import re as _re_gm
 _gm = _re_gm.match(r'(atk_[a-z]+)_v(\d+)', OUT_NAME)
 GRIP_MID = bool(_gm and _gm.group(1) in GRIP_MID_FROM and int(_gm.group(2)) >= GRIP_MID_FROM[_gm.group(1)])
@@ -127,7 +134,7 @@ scene.render.engine = 'CYCLES'
 scene.cycles.device = 'CPU'
 scene.cycles.samples = 16
 scene.render.film_transparent = True
-scene.render.resolution_x = 512
+scene.render.resolution_x = CANVAS_W
 scene.render.resolution_y = CANVAS_H
 scene.render.image_settings.file_format = 'PNG'
 scene.render.image_settings.color_mode = 'RGBA'
@@ -673,7 +680,16 @@ if RUN:
                        'atk_clight': [2, 3, 3, 4, 4, 4], 'atk_cmed': [6, 6, 6],
                        'atk_cheavy': [6, 5, 4, 8, 5, 4, 5], 'atk_jlight': [2, 3, 3, 4, 5],
                        'atk_jmed': [2, 3, 3, 3, 5, 7], 'atk_jheavy': [2, 4, 4, 3, 5, 3, 3],
-                       'atk_guard': [6, 6, 6]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_guard': [6, 6, 6],
+                       # Ground grab: reach 3 + grab 4 (connects on frame 7), spin 8 x 3, heave 4, toss 4,
+                       # wind-up 4 + 4, strike 3 + 5, recovery 5 + 6. The grabbed opponent's layer uses the same holds.
+                       'atk_grab': [3, 4] + [3]*8 + [4, 4, 4, 4, 3, 5, 5, 6],
+                       'hurt_grab': [3, 4] + [3]*8 + [4, 4, 4, 4, 3, 5, 5, 6]}[JUMP.rsplit('_v', 1)[0]]
+        if JUMP.startswith(('atk_grab', 'hurt_grab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+            GAME_FRAMES[2:10] = [2]*8  # v6: faster spin (2 frames per 45 deg step), 66 -> 58 frames in all
+            if not JUMP.endswith('_v6'):
+                # v7: heave + release 3 each (the throw keeps the spin's speed), the batting load held 4 + 5
+                GAME_FRAMES[10:14] = [3, 3, 4, 5]
         if JUMP.startswith('hurt_fall') and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES = [3, 4, 4, 4]  # v6: horizontal in-between first
         if JUMP.startswith('jump_fall') and not JUMP.endswith(('_v1', '_v2', '_v3')):
@@ -2204,6 +2220,214 @@ if LOOP:
                             RUN_KEYS[3].update(hand=B_(-.30, .04, .64), l_hand=tuple(B_(.30, .04, .64)))
                         if not HURT.endswith(('_v9', '_v10')):
                             RUN_KEYS[3]['offset_px'] = (0, -24)  # v11: v10's Key tip touched the top edge
+                elif jpart in ('atk_grab', 'hurt_grab'):
+                    # Ground grab v1 (Kvon, November 10): Sora seizes the opponent's chest with his LEFT hand, spins one
+                    # full turn on the spot swinging them around him like a hammer throw (right -> in front -> left ->
+                    # behind -> right), heaves them up, draws the Key back over his right shoulder and strikes them away
+                    # to screen right. Concepts: Gemini rounds 55 (strike) and 57 (turn/swing); the spin path is ours
+                    # (Gemini kept the opponent on his right). Kvon asked for more in-betweens: 18 drawings, the spin in
+                    # 45-degree steps. atk_grab = Sora; hurt_grab = the grabbed opponent (a second Sora) on its own layer,
+                    # chest placed exactly at Sora's rendered left hand (read from atk_grab_vN's report).
+                    SPIN_A = [45.0*(j_ + 1) for j_ in range(8)]        # drawings 2-9
+                    Q0 = B_(.12, -.62, 1.15)                           # left fist on the opponent's chest (before the spin)
+                    key_low = T_((-.15, .75, -.65)).normalized()
+                    step = {'L': (L0[0] + .10, L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 0.0)}
+                    G_V2 = not HURT.endswith('_v1')
+                    if G_V2:
+                        # v2 (my review of v1): v1 grabbed along his chest's facing (50 deg toward the camera), so the two
+                        # bodies overlapped - grab toward screen right (the opponent's side); the spin then goes right ->
+                        # in front -> left -> behind. Free-hand targets in world terms.
+                        Q0 = U_*.60 - V_*.06 + Vector((0, 0, 1.12))
+
+                    def gk(feet, ce, hunch, pitch, hand, blade, l_hand, spin=0.0, neck=-6.0):
+                        k_ = hurt(feet, ce, hunch, pitch, neck, hand, Vector(blade).normalized(), l_hand, ground=True)
+                        k_.update(no_center=True, look=8.0)
+                        if spin:
+                            k_['spin_deg'] = spin
+                        return k_
+                    if jpart == 'atk_grab':
+                        reach_k = gk(stand, .04, 0.0, 4.0, B_(-.28, .04, .85), key_low, B_(.10, -.35, 1.15))
+                        grab_k = gk(step, .06, 2.0, 6.0, B_(-.28, .04, .85), key_low, Q0)
+                        # v4 (Kvon, November 10: "Make him turn in the opposite direction"): the spin is reversed -
+                        # the opponent now goes right -> behind -> left -> in front -> right. The opponent's layer
+                        # follows Sora's rendered hand, so it reverses with him.
+                        SPIN_SIGN = -1.0 if HURT.endswith(('_v1', '_v2', '_v3')) else 1.0
+                        spin_ks = [gk(step, .10, -2.0, -6.0, B_(-.28, .04, .85), key_low, Q0, spin=SPIN_SIGN*a_,
+                                      neck=-4.0) for a_ in SPIN_A]
+                        G_V6 = not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5'))
+                        if G_V6:
+                            # v6 (Kvon, November 10: "Do everything", from my v5 suggestions):
+                            # - the swing arm reaches further out and a little lower (wider circle), so the opponent
+                            #   covers less of him when passing in front;
+                            # - a hammer thrower's turn: he leans back against the opponent's weight and pivots on
+                            #   alternating feet (one heel lifted, turning on the ball) instead of standing still.
+                            Q_SPIN = U_*.72 - V_*.06 + Vector((0, 0, 1.04))
+                            spin_ks = []
+                            for j_, a_ in enumerate(SPIN_A):
+                                lift_l = j_ % 2 == 0
+                                feet_ = {'L': (L0[0] + .10, L0[1], .05 if lift_l else 0.0, 25.0 if lift_l else 0.0),
+                                         'R': (R0[0], R0[1], 0.0 if lift_l else .05, 0.0 if lift_l else 25.0)}
+                                spin_ks.append(gk(feet_, .14, -6.0, -15.0, B_(-.28, .04, .85), key_low, Q_SPIN,
+                                                  spin=SPIN_SIGN*a_, neck=-2.0))
+                        heave_k = gk(step, .16, 6.0, 10.0, B_(-.28, .04, .85), key_low,
+                                     U_*.52 - V_*.06 + Vector((0, 0, .85)) if G_V2 else B_(.12, -.52, .85))
+                        toss_k = gk(stand, -.04, -4.0, -6.0, B_(-.28, .04, .90), key_low,
+                                    U_*.32 + Vector((0, 0, 1.75)) if G_V2 else B_(.10, -.40, 1.75), neck=-14.0)
+                        wind_k = gk(stand, .04, 0.0, -2.0, B_(-.25, .15, 1.45), T_((-.10, .70, -.70)),
+                                    B_(.15, -.45, 1.35), neck=-12.0)
+                        wind_k['twist'] = -15.0
+                        wind2_k = gk(stand, .10, 2.0, 0.0, B_(-.20, .25, 1.55), T_((0.0, .60, -.80)),
+                                     B_(.18, -.40, 1.30), neck=-12.0)
+                        wind2_k['twist'] = -22.0
+                        if G_V6:
+                            # v6: a loaded wind-up for the rising strike - the Key pulled LOW and back behind his right
+                            # hip (tip down behind him), torso twisted away and knees bent, eyes up on the falling
+                            # opponent. Low, so the Key stays clear of his head (Kvon's v5 note).
+                            # Blade in world terms: back toward screen left (behind him) and down - pointing away
+                            # from the camera it looked short and read as "held at his side".
+                            wind_k = gk(stand, .12, 2.0, -4.0, -U_*.30 + V_*.05 + Vector((0, 0, .85)),
+                                        -U_*.75 + Vector((0, 0, -.55)), B_(.20, -.42, 1.30), neck=-16.0)
+                            wind_k['twist'] = -30.0
+                            wind2_k = gk(step, .18, 4.0, -2.0, -U_*.40 + V_*.05 + Vector((0, 0, .75)),
+                                         -U_*.85 + Vector((0, 0, -.42)), B_(.22, -.40, 1.25), neck=-16.0)
+                            wind2_k['twist'] = -42.0
+                        G_V7 = G_V6 and not HURT.endswith('_v6')
+                        if G_V7:
+                            # v7 (Kvon, November 11): carry the spin's momentum straight into the toss, and make the
+                            # wind-up a baseball batter's load. Researched references (hammer-throw coaching and
+                            # biomechanics; batting-load coaching guides), not traced from footage:
+                            # - Hammer throw: the ball rides a TILTED orbit - lowest in front of the thrower, highest
+                            #   behind - and speeds up every turn; the release comes out of the rising part of the
+                            #   orbit, not from a stop. So the spin accelerates (30 -> 45 deg steps), dips lowest as the
+                            #   opponent passes in front (also clears Sora's head there), keeps turning through the
+                            #   heave (365 deg, fist rising, leaning back, legs driving up) and releases at 385 deg with
+                            #   the fist overhead - no stop and dip between the spin and the toss as in v1-v6.
+                            # - Batting load: hands go BACK (not down) to the back shoulder, both hands on the handle,
+                            #   bat between flat and 45 deg over the back shoulder, ~60% of the weight on the back
+                            #   leg, a short soft stride with the front foot, front shoulder tucked. Drawing 12 =
+                            #   stride (front foot lifted, hands starting back), 13 = loaded (front foot down).
+                            #   Hands stay a little toward the camera so the arms read in front of his head (v5 note).
+                            SPIN_V7 = [30.0, 65.0, 105.0, 150.0, 195.0, 240.0, 285.0, 325.0]
+                            SPIN_Z = [1.06, 1.05, 1.03, .99, .93, .86, .86, .96]   # low point in front (~270 deg)
+                            spin_ks = []
+                            for j_, a_ in enumerate(SPIN_V7):
+                                lift_l = j_ % 2 == 0
+                                feet_ = {'L': (L0[0] + .10, L0[1], .05 if lift_l else 0.0, 25.0 if lift_l else 0.0),
+                                         'R': (R0[0], R0[1], 0.0 if lift_l else .05, 0.0 if lift_l else 25.0)}
+                                spin_ks.append(gk(feet_, .14 + .02*(j_ >= 5), -6.0, -15.0 - 2.0*(j_ >= 5),
+                                                  B_(-.28, .04, .85), key_low,
+                                                  U_*.72 - V_*.06 + Vector((0, 0, SPIN_Z[j_])),
+                                                  spin=SPIN_SIGN*a_, neck=-2.0))
+                            heave_k = gk(step, .08, -8.0, -20.0, B_(-.28, .04, .85), key_low,
+                                         U_*.66 - V_*.06 + Vector((0, 0, 1.32)), spin=SPIN_SIGN*365.0, neck=-12.0)
+                            toss_k = gk({'L': (L0[0] + .06, L0[1], .04, 30.0), 'R': (R0[0], R0[1], .04, 30.0)},
+                                        -.04, -6.0, -10.0, B_(-.28, .04, .95), key_low,
+                                        U_*.30 + Vector((0, 0, 1.82)), spin=SPIN_SIGN*385.0, neck=-18.0)
+                            bat_hand = U_*-.32 + V_*.10 + Vector((0, 0, 1.02))   # at the back shoulder, clear of his face
+                            bat_dir = (-U_*.70 + V_*.05 + Vector((0, 0, .70))).normalized()     # 45 deg, up and back
+                            wind_k = gk({'L': (L0[0] + .04, L0[1], .07, 15.0), 'R': (R0[0], R0[1], 0.0, 0.0)},
+                                        .08, 2.0, -6.0, U_*-.20 + V_*.12 + Vector((0, 0, .98)),
+                                        (-U_*.45 + V_*.10 + Vector((0, 0, .89))).normalized(),
+                                        U_*-.14 + V_*.14 + Vector((0, 0, .92)), neck=-14.0)
+                            wind_k['twist'] = -20.0
+                            wind2_k = gk({'L': (L0[0] + .16, L0[1], 0.0, 0.0), 'R': (R0[0] - .02, R0[1], 0.0, 0.0)},
+                                         .14, 4.0, -4.0, bat_hand, bat_dir, bat_hand - bat_dir*.11, neck=-16.0)
+                            wind2_k['twist'] = -38.0
+                            wind_k['l_hand'] = tuple(Vector(wind_k['hand']) - Vector(wind_k['blade_dir'])*.11)
+                        hit_k = gk(step, .06, 4.0, 8.0, B_(-.05, -.55, 1.35), U_*.85 + Vector((0, 0, .45)),
+                                   B_(.25, -.05, 1.05), neck=-10.0)
+                        hit_k.update(twist=20.0, smear=1)
+                        follow_k = gk(step, .06, 6.0, 10.0, B_(.20, -.35, 1.10), T_((.70, -.40, -.10)),
+                                      B_(.30, .10, 1.00), neck=-8.0)
+                        follow_k.update(twist=28.0, smear=1)
+                        if not HURT.endswith(('_v1', '_v2')):
+                            # v3 (my review of v2): the follow-through Key ended level to the right like the idle - the
+                            # rising swing now finishes high over his head, tip pointing up and back.
+                            follow_k.update(hand=U_*.20 - V_*.05 + Vector((0, 0, 1.60)),
+                                            blade_dir=tuple((-U_*.35 + Vector((0, 0, .90))).normalized()), twist=12.0)
+                        if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                            # v5 (Kvon, November 10: "his arms and keyblade are positioned behind his head"): the strike's
+                            # guard covered his face and the follow-through / first recovery put the arm and Key behind
+                            # his head. Both now keep the fist out toward the opponent (screen right) and toward the
+                            # camera, at chest height (guard clear of his face), so the arm and Key stay in front of and beside his head.
+                            hit_k.update(hand=U_*.62 + V_*.18 + Vector((0, 0, .98)),
+                                         blade_dir=tuple((U_*.85 + Vector((0, 0, .50))).normalized()))
+                            follow_k.update(hand=U_*.55 + V_*.25 + Vector((0, 0, 1.05)),
+                                            blade_dir=tuple((U_*.30 + V_*.10 + Vector((0, 0, .95))).normalized()),
+                                            twist=22.0)
+                        rec1_k = ease(follow_k, IDLE_R, .5, .5); rec1_k.update(ground=True, no_center=True)
+                        rec2_k = ease(follow_k, IDLE_R, .85, .15); rec2_k.update(ground=True, no_center=True)
+                        RUN_KEYS = ([reach_k, grab_k] + spin_ks + [heave_k, toss_k, wind_k, wind2_k, hit_k, follow_k,
+                                                                     rec1_k, rec2_k])
+                    else:
+                        # The grabbed opponent. Posed upright in Sora's own frame (arms flung, legs loose), then turned
+                        # and placed as one piece after the solve ('place': chest front -> point Q, body up/front axes).
+                        src_ = SORA / OUT_NAME.replace('hurt_grab', 'atk_grab') / 'Idle_Loop_Report.json'
+                        HANDS_ = [Vector(h_) for h_ in json.loads(src_.read_text(encoding='utf-8'))['grab_hand_L']]
+                        dir0_ = Vector((HANDS_[1].x, HANDS_[1].y, 0)).normalized()   # Sora -> opponent at the grab
+                        air_ = U_ if not HURT.endswith('_v1') else dir0_   # v2: tossed and struck along screen right
+
+                        def vk(hand, l_hand, blade, feet=stand, hunch=-6.0, pitch=-10.0, neck=-14.0, reach=None):
+                            k_ = hurt(feet, 0.0, hunch, pitch, neck, hand, Vector(blade).normalized(), l_hand)
+                            if reach:
+                                k_['leg_reach'] = reach
+                            return k_
+
+                        def axes(dir_, tilt):
+                            # tilt 0 = upright facing Sora; 90 = horizontal, feet flung out, head toward Sora (face down).
+                            c_, s_ = math.cos(math.radians(tilt)), math.sin(math.radians(tilt))
+                            z_ = Vector((0, 0, 1))
+                            return z_*c_ - dir_*s_, -dir_*c_ - z_*s_
+                        # v2: the opponent's own Key hangs down along his right side (v1's flailing Key read as Sora's).
+                        v_blade = T_((-.12, .10, -1.0)) if not HURT.endswith('_v1') else None
+                        flinch = vk(B_(-.32, -.10, 1.25), B_(.32, -.10, 1.30), v_blade or T_((-.30, .50, -.60)))
+                        swing = vk(B_(-.38, .05, 1.50), B_(.38, .05, 1.50), v_blade or T_((-.40, .40, .30)),
+                                   feet={'L': (.06, LAT['L'], .10, 30.0), 'R': (-.08, LAT['R'], .14, 30.0)}, reach=.94)
+                        tumble = vk(B_(-.40, -.05, 1.35), B_(.40, -.05, 1.35), v_blade or T_((-.30, .60, .20)),
+                                    feet={'L': (.20, LAT['L'], .25, 20.0), 'R': (.05, LAT['R'], .18, 25.0)}, reach=.94)
+                        keys_ = []
+                        for i_ in range(18):
+                            if i_ <= 1:
+                                k_ = dict(flinch); up_, fr_ = axes(dir0_, 0.0); q_ = HANDS_[1]
+                            elif i_ <= 10:
+                                h_ = HANDS_[i_]; d_ = Vector((h_.x, h_.y, 0)).normalized()
+                                tilt_ = [30, 45, 58, 68, 75, 80, 80, 80, 60][i_ - 2]
+                                G7_ = not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6'))
+                                if G7_:
+                                    # v7: the body keeps swinging up through the heave (drawing 10) instead of hanging
+                                    tilt_ = [30, 45, 58, 68, 75, 80, 80, 80, 72][i_ - 2]
+                                if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')) and 2 <= i_ <= (10 if G7_ else 9):
+                                    # v6: the legs trail BEHIND the motion (dragged, 45 deg off straight out) instead of
+                                    # pointing straight away from Sora - when passing in front they no longer point at
+                                    # the camera and cover him; the body stretches across the screen.
+                                    nb_ = HANDS_[min(i_ + 1, 10 if G7_ else 9)] - HANDS_[max(i_ - 1, 1)]
+                                    mv_ = Vector((nb_.x, nb_.y, 0)); mv_ = (mv_ - d_*mv_.dot(d_)).normalized()
+                                    d_ = (d_*math.cos(math.radians(45)) - mv_*math.sin(math.radians(45))).normalized()
+                                k_ = dict(swing); up_, fr_ = axes(d_, tilt_); q_ = h_
+                            else:
+                                # released: up over him, tumbling, then struck away to screen right
+                                at_ = {11: (.75, 2.05, 140), 12: (.85, 2.20, 175), 13: (.92, 2.00, 205),
+                                       14: (1.00, 1.65, -40), 15: (1.40, 1.75, -60), 16: (1.40, 1.75, -60),
+                                       17: (1.40, 1.75, -60)}[i_]
+                                if not HURT.endswith(('_v1', '_v2')) and i_ >= 14:
+                                    # v3: v2's struck opponent sat on the Key and flipped upright - further out along
+                                    # the swing, still turning over (205 -> 240).
+                                    at_ = (1.25, 1.80, 240)
+                                if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')) and i_ in (11, 12, 13):
+                                    # v6: a lower, tighter toss (top ~2.9 m instead of ~3.2 m) so the move fits a
+                                    # smaller frame; same tumble.
+                                    at_ = {11: (.70, 1.80, 140), 12: (.82, 1.92, 175), 13: (.92, 1.80, 205)}[i_]
+                                if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')) and i_ in (12, 13):
+                                    at_ = {12: (.62, 2.05, 170), 13: (.86, 1.90, 205)}[i_]
+                                k_ = dict(tumble if (i_ <= 13 or not HURT.endswith(('_v1', '_v2'))) else flinch)
+                                up_, fr_ = axes(air_, at_[2]); q_ = air_*at_[0] + Vector((0, 0, at_[1]))
+                                if not HURT.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')) and i_ == 11:
+                                    # v7: just released from Sora's raised fist, still rising along the swing
+                                    up_, fr_ = axes(air_, 120); q_ = HANDS_[11] + Vector((0, 0, .22))
+                            k_['place'] = (tuple(q_), tuple(up_), tuple(fr_))
+                            k_['ground'] = False
+                            keys_.append(k_)
+                        RUN_KEYS = keys_
                 elif jpart == 'atk_slight':
                     # Standing Light (Kvon, October 27): a guard bash like a bunt - the Key level at chest height, guard
                     # in front toward the opponent and blade pointing back, right fist (inside the guard) on the handle,
@@ -4739,6 +4963,23 @@ if LOOP:
                 arm.matrix_world = (Matrix.Translation(cam_r_*hk_['offset_px'][0]*px_m_
                                                        + Vector((0, 0, hk_['offset_px'][1]*px_m_))) @ arm.matrix_world)
                 update()
+            if hk_.get('place'):
+                # Ground grab: turn the solved opponent as one piece so its up/front axes match the targets, and put
+                # the front of its chest (where Sora's fist holds the jacket) on the target point.
+                q_, up_t, fr_t = (Vector(v_) for v_ in hk_['place'])
+                lat_c = (pose_world('L_momo').translation - pose_world('R_momo').translation).normalized()
+                up_c = (pose_world('kubi').translation - pose_world('hara').translation).normalized()
+                fr_c = lat_c.cross(up_c).normalized(); lat_c = up_c.cross(fr_c).normalized()
+                fr_t = (fr_t - up_t*fr_t.dot(up_t)).normalized()
+                C_ = Matrix((fr_c, lat_c, up_c)).transposed(); T3_ = Matrix((fr_t, up_t.cross(fr_t), up_t)).transposed()
+                anchor_ = pose_world('mune').translation + fr_c*.12
+                arm.matrix_world = (Matrix.Translation(q_) @ (T3_ @ C_.transposed()).to_4x4()
+                                    @ Matrix.Translation(-anchor_) @ arm.matrix_world)
+                update()
+                # 1 = the opponent's chest is further from the camera than Sora's axis (draw it behind Sora).
+                GRAB_FRONT.append(1 if pose_world('mune').translation.dot(to_cam) < 0 else 0)
+            if HURT.startswith('atk_grab'):
+                GRAB_HAND.append([round(c_, 5) for c_ in hand_point('L')])
             RUN_LOG[-1].update(roll_deg=round(roll_, 1), spin_deg=hk_.get('spin_deg', 0.0),
                                grounded=bool(hk_.get('ground')))
             for path in ('location', 'rotation_quaternion', 'scale'):
@@ -4793,7 +5034,7 @@ if LOOP:
         scene.render.filepath = str(path512)
         bpy.ops.render.render(write_still=True)
         img = bpy.data.images.load(str(path512))
-        small = img.copy(); small.scale(128, 128*CANVAS_H//512)
+        small = img.copy(); small.scale(128*CANVAS_W//512, 128*CANVAS_H//512)
         small.filepath_raw = str(OUT / 'frames_128' / path512.name); small.file_format = 'PNG'; small.save()
         if HURT:
             # Smear data (Standing Medium v3+): the Key's grip point and blade direction in this drawing, so
@@ -4838,7 +5079,8 @@ if LOOP:
     report = {
         'version': version, 'blender': bpy.app.version_string, 'animation': 'standing_breathing_idle',
         'source': 'downloads/p_ex150.fbx + downloads/Kingdom Key/Kingdom Key.obj', 'loop': True,
-        'canvas_size': [512, CANVAS_H], 'ground_baseline_y': FLOOR_ROW, 'body_anchor': [256, FLOOR_ROW],
+        'canvas_size': [CANVAS_W, CANVAS_H], 'ground_baseline_y': FLOOR_ROW, 'body_anchor': [CANVAS_W//2, FLOOR_ROW],
+        'grab_hand_L': GRAB_HAND or None, 'grab_victim_behind': GRAB_FRONT or None,
         'total_duration_ms': sum(DURATIONS_MS), 'pose': POSE, 'breath': BREATH,
         'camera_yaw_deg': CAM_YAW, 'ortho_scale': round(cam_data.ortho_scale, 4), 'frames': frames,
         'camera_location': [round(c_, 5) for c_ in cam.location], 'key_reach_m': KEY_REACH,

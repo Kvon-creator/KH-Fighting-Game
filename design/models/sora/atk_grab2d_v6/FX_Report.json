@@ -1,0 +1,52 @@
+{
+  "source": "atk_grab_v6",
+  "fx": [
+    {
+      "drawing": 3,
+      "lines": 3,
+      "sweep_deg": 60.8
+    },
+    {
+      "drawing": 4,
+      "lines": 3,
+      "sweep_deg": 60.7
+    },
+    {
+      "drawing": 5,
+      "lines": 3,
+      "sweep_deg": 60.8
+    },
+    {
+      "drawing": 6,
+      "lines": 3,
+      "sweep_deg": 60.7
+    },
+    {
+      "drawing": 7,
+      "lines": 3,
+      "sweep_deg": 60.8
+    },
+    {
+      "drawing": 8,
+      "lines": 3,
+      "sweep_deg": 60.7
+    },
+    {
+      "drawing": 9,
+      "lines": 3,
+      "sweep_deg": 60.8
+    },
+    {
+      "drawing": 10,
+      "lines": 3,
+      "sweep_deg": 3.0
+    },
+    {
+      "drawing": 14,
+      "impact_px": [
+        801,
+        667
+      ]
+    }
+  ]
+}
