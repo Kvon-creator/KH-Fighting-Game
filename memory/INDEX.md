@@ -66,4 +66,5 @@
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and completed GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
 - [Controller Support](Controller_Support.md): DualSense = P1 with keyboard; Square/Triangle/Circle = L/M/H, D-pad + stick move, Cross starts menu items, Training Create/touchpad/L1 = G/R/F1.
+- [Input Buffer](Input_Buffer.md): 5-frame buffer for attack / jump / dash / grab presses in recovery, landing, blockstun, hitstun, wake-up and hit-freeze; used presses are cleared; directions not buffered.
 - [Sora Jump Feel](Sora_Jump_Feel.md): 22-frame rise (less floaty), hold-length short/long jumps, fast fall after a jumping attack hits a grounded opponent (on juggles only the jH).

@@ -257,6 +257,9 @@ const GRAB_BEHIND := [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0]
 ## Where the opponent's body is drawn on the strike drawing, as the feet point of their knockdown (px from Sora's feet,
 ## forward / up; measured by export_grab_assets.py: strike body centre minus the hurt_air drawing's body centre).
 const GRAB_RELEASE_AT := Vector2(179.5, -223.0)
+## Input buffer (Kvon, November 11): a press of these buttons stays usable for this many game frames.
+const INPUT_BUFFER := 5
+const BUFFERED_KEYS := ["up", "light", "medium", "heavy", "dash"]
 ## Hitstun decay (Kvon: per hit): each hit in the same combo gives 10% less hitstun and air pop, never below 40%.
 const DECAY_PER_HIT := 0.1
 const DECAY_FLOOR := 0.4
@@ -316,8 +319,8 @@ var _fast_fall := false
 ## An air dash cancelled into an air attack keeps its speed until the attack ends (Kvon, November 6).
 var _hold_vx := false
 var _was := {}
-## Button presses made during a hit-freeze, used on his next game frame (so a cancel tapped in the freeze counts).
-var _buffered := {}
+## Input buffer: game frame each attack / jump / dash button was last newly pressed (see _record_presses).
+var _press_at := {}
 var _last_forward_press := -1000
 var _last_back_press := -1000
 var _back_held := false
@@ -362,7 +365,7 @@ func reset(start_x: float, face: float) -> void:
 	_spin_tick = -1
 	_air_atk_tick = -1
 	_bd_tick = -1
-	_buffered.clear()
+	_press_at.clear()
 	_glide = false
 	grab_t = -1
 	grab_part = &""
@@ -431,12 +434,30 @@ func is_airborne() -> bool:
 	return _air or state == &"hurt_air"
 
 
-## During a hit-freeze (no game frame for him): remembers new jump / attack presses for his next frame.
+## During a hit-freeze (no game frame for him): remembers new jump / attack / dash presses (input buffer).
 func buffer_input(inp: Dictionary) -> void:
-	for k: String in ["up", "light", "medium", "heavy", "dash"]:
+	_record_presses(inp)
+
+
+## Input buffer (Kvon, November 11: 5 frames, everywhere): a new press of an attack, jump or dash button is
+## remembered for INPUT_BUFFER game frames, so one pressed slightly early - in an attack's recovery, before landing,
+## in blockstun / hitstun, while getting up, during a hit-freeze - comes out on the first frame he can act. Once a
+## move uses a press it is cleared (_use). Directions aren't buffered (double taps start glides / back-dashes).
+func _record_presses(inp: Dictionary) -> void:
+	for k: String in BUFFERED_KEYS:
 		if inp.get(k, false) and not _was.get(k, false):
-			_buffered[k] = true
+			_press_at[k] = _tick
 		_was[k] = inp.get(k, false)
+
+
+func _buffered_press(k: String) -> bool:
+	return _tick - int(_press_at.get(k, -1000)) <= INPUT_BUFFER  # pressed up to 5 frames before he can act
+
+
+## The move just started used these presses: they don't come out again.
+func _use(keys: Array) -> void:
+	for k: String in keys:
+		_press_at.erase(k)
 
 
 ## Attack strength as a rank: Light 0, Medium 1, Heavy 2 (chains only go to a higher rank).
@@ -459,18 +480,22 @@ func step(inp: Dictionary) -> void:
 			tech_request = true
 	if state != &"control":
 		_hurt_step()
-		_buffered.clear()
-		for k: String in ["forward", "back", "up", "light", "medium", "heavy", "dash"]:
-			_was[k] = inp.get(k, false)  # presses during hitstun don't come out afterwards
+		# Reeling, guarding, flying, lying, getting up: presses are buffered (they come out if he can act within
+		# INPUT_BUFFER frames of them); directions are just tracked.
+		_record_presses(inp)
+		for k: String in ["forward", "back"]:
+			_was[k] = inp.get(k, false)
 		return
 	var forward: bool = inp.get("forward", false)
 	var back: bool = inp.get("back", false)
 	var crouch: bool = inp.get("down", false)
 	var pressed := {}
-	for k: String in ["forward", "back", "up", "light", "medium", "heavy", "dash"]:
-		pressed[k] = (inp.get(k, false) and not _was.get(k, false)) or _buffered.get(k, false)
+	for k: String in ["forward", "back"]:
+		pressed[k] = inp.get(k, false) and not _was.get(k, false)
 		_was[k] = inp.get(k, false)
-	_buffered.clear()
+	_record_presses(inp)
+	for k: String in BUFFERED_KEYS:
+		pressed[k] = _buffered_press(k)
 	if grab_t >= 0:
 		_grab_step()
 		return
@@ -518,6 +543,7 @@ func step(inp: Dictionary) -> void:
 		if (double_tap or back_tap or dash_forward or dash_back) and not _dash_used and _dash_tick < 0 \
 				and _spin_tick < 0 and not air_attacking:
 			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
+			_use(["dash"])
 			_dash_back = dash_back if pressed["dash"] else (back_tap and not double_tap)
 			_dash_tick = 0
 			_after_dash = false
@@ -529,6 +555,7 @@ func step(inp: Dictionary) -> void:
 				_end_air_dash(true)
 			_air_atk_anim = StringName("attack_j" + pressed_strength)
 			_air_atk_tick = 0
+			_use(["light", "medium", "heavy"])
 			# A new attack: clear the last one's contact now (show_anim does it only after this frame's fall, which
 			# would otherwise start a fast fall from an earlier ground hit, e.g. the launcher before a juggle).
 			attack_hit = false
@@ -539,6 +566,7 @@ func step(inp: Dictionary) -> void:
 		# cancel on hit or guard).
 		elif jump_pressed and not _jump2_used and _dash_tick < 0 and (not air_attacking or attack_hit):
 			_jump2_used = true  # second jump: a new upward burst and the spin
+			_use(["up"])
 			_air_atk_tick = -1
 			_vy = -JUMP2_SPEED
 			if _air_input != 0.0 and absf(_vx) < JUMP2_VX:
@@ -564,17 +592,22 @@ func step(inp: Dictionary) -> void:
 		var moving := absf(_takeoff_vx) > 0.0
 		_bd_tick = -1
 		position.y = FLOOR_Y
+		_use(["up"])
 		show_anim(&"jump_start", 1 if moving else 0)  # already moving: skip the crouch drawing
 		return
 	# Ground grab (Kvon): Medium + Heavy together - the second pressed while the first is held, so pressing them a
 	# frame apart still counts (an attack the first press started this frame or the last is turned into the grab).
-	var grab_pressed: bool = (medium_pressed or heavy_pressed) and inp.get("medium", false) and inp.get("heavy", false)
-	var just_started: bool = anim in [&"attack_medium", &"attack_heavy", &"attack_cmedium", &"attack_cheavy"] 		and sprite.frame == 0 and _hold <= 1 and not attack_hit
+	# Buffered: both pressed within the input buffer (e.g. during recovery) also counts.
+	var grab_pressed: bool = ((medium_pressed or heavy_pressed) and inp.get("medium", false) and inp.get("heavy", false)) \
+		or (medium_pressed and heavy_pressed)
+	var just_started: bool = anim in [&"attack_medium", &"attack_heavy", &"attack_cmedium", &"attack_cheavy"] \
+		and sprite.frame == 0 and _hold <= 1 and not attack_hit
 	if grab_pressed and not back_dashing and (anim in GROUND_CANCEL or just_started):
 		position.y = FLOOR_Y
 		_glide = false
 		grab_t = 0
 		grab_part = &"reach"
+		_use(["light", "medium", "heavy"])
 		show_anim(&"grab")
 		return
 	# Ground attacks: from any ground move (not mid back-dash); they play to the end (only a hit interrupts),
@@ -585,15 +618,18 @@ func step(inp: Dictionary) -> void:
 		and strength_rank(pressed_strength) > strength_rank(anim)
 	if pressed_strength != &"" and not back_dashing and (anim in GROUND_CANCEL or chain):
 		position.y = FLOOR_Y
+		_use(["light", "medium", "heavy"])
 		show_anim(StringName("attack_" + ("c" if crouch else "") + pressed_strength))
 		return
 	if (back_tap or dash_back) and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0
+		_use(["dash"])
 		_back_dash_step()
 		return
 	if glide_wanted and (back_dashing or (anim in GROUND_CANCEL and not (anim in GLIDE_ANIMS))):
 		_bd_tick = -1
 		position.y = FLOOR_Y
+		_use(["dash"])
 		show_anim(&"glide_start")
 		return
 	if back_dashing:
@@ -953,7 +989,8 @@ func middle_box(table: Dictionary) -> Array[Rect2]:
 func guard_pose(level: StringName) -> StringName:
 	if state != &"control" and state != &"guard":
 		return &""
-	if is_attacking() or grab_t >= 0 or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 			or sprite.animation in GLIDE_ANIMS:
+	if is_attacking() or grab_t >= 0 or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 \
+			or sprite.animation in GLIDE_ANIMS:
 		return &""
 	match guard_mode:
 		&"input":
@@ -1019,7 +1056,7 @@ func _end_moves() -> void:
 	_spin_tick = -1
 	_air_atk_tick = -1
 	_bd_tick = -1
-	_buffered.clear()
+	_press_at.clear()
 	_after_dash = false
 	_glide = false
 	_hold_vx = false

@@ -370,7 +370,8 @@ func _grabs() -> void:
 			if not a.grab_ready():
 				continue
 			var dx := d.position.x - a.position.x
-			if d.state == &"control" and not d.is_airborne() and d.grab_t < 0 and absf(dx) <= Fighter.GRAB_RANGE 					and signf(dx) == a.facing:
+			if d.state == &"control" and not d.is_airborne() and d.grab_t < 0 and absf(dx) <= Fighter.GRAB_RANGE \
+					and signf(dx) == a.facing:
 				a.grab_connect()
 				_grab = {"a": i, "x": d.position.x, "t0": a.grab_t, "struck": false}
 				# The catch point: between the two at chest height, a little toward the one grabbed.
