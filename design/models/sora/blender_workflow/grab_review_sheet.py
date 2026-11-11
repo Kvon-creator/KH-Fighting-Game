@@ -19,12 +19,18 @@ SORA = Path(__file__).resolve().parents[1]
 sora, opp, sub, out_png = sys.argv[1:5]
 gif = sys.argv[sys.argv.index('--gif') + 1] if '--gif' in sys.argv else None
 hitstop = int(sys.argv[sys.argv.index('--hitstop') + 1]) if '--hitstop' in sys.argv else 0
+# --last N: the last drawing the opponent's layer is shown on (ground grab 14 = the strike; air grab 8).
+LAST_OPP = int(sys.argv[sys.argv.index('--last') + 1]) if '--last' in sys.argv else 14
 rep = json.loads((SORA / opp / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
 behind = rep['grab_victim_behind']
 holds = rep['game_frames_60fps']
 n = len(behind)
-LAST_OPP = 14
-TOP = .12
+# Crop from 12% down, or higher when a drawing reaches above that (the air grab's overhead haul).
+_tops = [Image.open(SORA / d_ / sub / f'sora_idle3d_{i:02d}.png').getchannel('A').getbbox()[1]
+         for d_ in (sora, opp) for i in range(n)
+         if Image.open(SORA / d_ / sub / f'sora_idle3d_{i:02d}.png').getchannel('A').getbbox()]
+_w0 = Image.open(SORA / sora / sub / 'sora_idle3d_00.png').size[0]
+TOP = min(.12, max(0, min(_tops) - 16)/_w0)
 S, COLS = 340, 6
 rows = (n + COLS - 1)//COLS
 sheet = Image.new('RGB', (COLS*S, rows*(S + 18)), 'white')
