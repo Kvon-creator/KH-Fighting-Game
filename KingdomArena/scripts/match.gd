@@ -24,6 +24,9 @@ const LOST_HP_DELAY := 30
 const LOST_HP_DRAIN := 120.0
 const SPARK_FRAMES := 10
 const BARRIER_FRAMES := 16
+## Grab landing (Kvon, November 11: a unique effect when a grab lands, the same for every character): drawn by the
+## match at the catch, not part of any character's art. Game frames it lasts.
+const GRAB_FX_FRAMES := 20
 const GUARD_MODES := [&"none", &"stand", &"crouch", &"auto"]
 const GUARD_NAMES := ["OFF", "STANDING", "CROUCHING", "AUTO"]
 const SCREEN_CENTER := Vector2(640, 360)
@@ -191,7 +194,7 @@ func _physics_process(_delta: float) -> void:
 	for e: Dictionary in _fx:
 		e["age"] += 1
 	_fx = _fx.filter(func(e: Dictionary) -> bool:
-		return e["age"] < (SPARK_FRAMES if e["kind"] == &"spark" else BARRIER_FRAMES))
+		return e["age"] < {&"spark": SPARK_FRAMES, &"grab": GRAB_FX_FRAMES}.get(e["kind"], BARRIER_FRAMES))
 	for i in 2:
 		if _lost_wait[i] > 0:
 			_lost_wait[i] -= 1
@@ -370,6 +373,8 @@ func _grabs() -> void:
 			if d.state == &"control" and not d.is_airborne() and d.grab_t < 0 and absf(dx) <= Fighter.GRAB_RANGE 					and signf(dx) == a.facing:
 				a.grab_connect()
 				_grab = {"a": i, "x": d.position.x, "t0": a.grab_t, "struck": false}
+				# The catch point: between the two at chest height, a little toward the one grabbed.
+				_add_fx(&"grab", Vector2(a.position.x + dx * 0.6, a.position.y - 170.0), a.facing)
 				d.start_held()
 				if _trace:
 					print("GRAB ", a._tick, " dist=", snappedf(absf(dx), 0.1))
@@ -657,6 +662,9 @@ func _draw_boxes() -> void:
 func _draw_fx() -> void:
 	for e: Dictionary in _fx:
 		var pos: Vector2 = e["pos"]
+		if e["kind"] == &"grab":
+			_draw_grab_fx(pos, float(e["age"]) / GRAB_FX_FRAMES)
+			continue
 		if e["kind"] == &"spark":
 			var t := float(e["age"]) / SPARK_FRAMES
 			for k in 8:
@@ -677,6 +685,30 @@ func _draw_fx() -> void:
 				if ring == 0:
 					_fx_view.draw_colored_polygon(pts.slice(0, 6), Color(0.55, 0.85, 1.0, 0.45 * (1.0 - t)))
 				_fx_view.draw_polyline(pts, Color(0.9, 0.98, 1.0, 1.0 - t), 4.0 if ring == 0 else 2.5)
+
+
+## Grab landing (universal): a white flash, four violet chevrons snapping in onto the catch point like a clamp
+## closing (fast, then held), and a ring expanding out from it - unlike the hit spark (gold rays out) and the guard
+## barrier (blue hexagon). t = 0 -> 1 over GRAB_FX_FRAMES.
+func _draw_grab_fx(pos: Vector2, t: float) -> void:
+	var fade := 1.0 - t
+	var violet := Color(0.82, 0.42, 1.0, fade)
+	var pale := Color(1.0, 0.92, 1.0, fade)
+	if t < 0.25:
+		_fx_view.draw_circle(pos, 34.0 * (1.0 - t * 4.0) + 6.0, Color(1, 1, 1, 1.0 - t * 4.0))
+	var close := minf(1.0, t / 0.3)
+	close = 1.0 - (1.0 - close) * (1.0 - close)  # ease out: snaps in, then holds
+	var r := lerpf(96.0, 26.0, close)
+	for k in 4:
+		var d := Vector2.from_angle(TAU * k / 4.0 + PI / 4.0)
+		var n := d.orthogonal()
+		var tip := pos + d * r
+		var arm := 22.0
+		var pts := PackedVector2Array([tip + d * arm + n * arm, tip, tip + d * arm - n * arm])
+		_fx_view.draw_polyline(pts, violet, 9.0)
+		_fx_view.draw_polyline(pts, pale, 3.5)
+	var ring := 20.0 + 70.0 * t
+	_fx_view.draw_arc(pos, ring, 0.0, TAU, 40, Color(0.82, 0.42, 1.0, 0.8 * fade), 5.0 * fade + 1.0)
 
 
 ## Kingdom Hearts style health bars (dark frame + light rim, green bar with a bright top stripe and darker bottom,
