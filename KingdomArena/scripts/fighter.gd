@@ -260,6 +260,9 @@ const GRAB_RELEASE_AT := Vector2(179.5, -223.0)
 ## Input buffer (Kvon, November 11): a press of these buttons stays usable for this many game frames.
 const INPUT_BUFFER := 5
 const BUFFERED_KEYS := ["up", "light", "medium", "heavy", "dash"]
+## The grab (Medium + Heavy) gets a longer buffer (Kvon, November 11: "a bit longer"): both pressed up to this many
+## frames before he can act.
+const GRAB_BUFFER := 8
 ## Hitstun decay (Kvon: per hit): each hit in the same combo gives 10% less hitstun and air pop, never below 40%.
 const DECAY_PER_HIT := 0.1
 const DECAY_FLOOR := 0.4
@@ -597,9 +600,11 @@ func step(inp: Dictionary) -> void:
 		return
 	# Ground grab (Kvon): Medium + Heavy together - the second pressed while the first is held, so pressing them a
 	# frame apart still counts (an attack the first press started this frame or the last is turned into the grab).
-	# Buffered: both pressed within the input buffer (e.g. during recovery) also counts.
+	# Buffered: both pressed within the grab's own, longer buffer (GRAB_BUFFER, e.g. during recovery) also counts.
+	var grab_buffered: bool = _tick - int(_press_at.get("medium", -1000)) <= GRAB_BUFFER \
+		and _tick - int(_press_at.get("heavy", -1000)) <= GRAB_BUFFER
 	var grab_pressed: bool = ((medium_pressed or heavy_pressed) and inp.get("medium", false) and inp.get("heavy", false)) \
-		or (medium_pressed and heavy_pressed)
+		or grab_buffered
 	var just_started: bool = anim in [&"attack_medium", &"attack_heavy", &"attack_cmedium", &"attack_cheavy"] \
 		and sprite.frame == 0 and _hold <= 1 and not attack_hit
 	if grab_pressed and not back_dashing and (anim in GROUND_CANCEL or just_started):
