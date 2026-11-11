@@ -2482,6 +2482,45 @@ if LOOP:
                             throw_k['l_hand'] = tuple(U_*.72 - V_*.04 + Vector((0, 0, .34)))
                             follow_k['l_hand'] = tuple(U_*.62 - V_*.04 + Vector((0, 0, .26)))
                         RUN_KEYS = [reach_k, catch_k] + twist_ks + [haul_k, throw_k, follow_k, back_k]
+                        if not HURT.endswith(('_v1', '_v2')):
+                            # v3 (Kvon, November 11: "too stiff ... moving his limbs very little; legs tucked into his
+                            # body too much; his body should be tilted forward during the spin, using his momentum to
+                            # throw the opponent down and forward instead of lifting his arm up"). No overhead haul now:
+                            # the spin keeps going past a full turn and the opponent is flung forward and down off its
+                            # end. Body leans forward more each step (12 -> 40 deg), legs extended and kicking back
+                            # through the turn (a dolphin kick on the throw), the Key arm swinging out for balance.
+                            def leg(front, back, lift_f=.14, lift_b=.26):
+                                # front foot forward and a little down, back foot trailing back and up (legs long)
+                                return {'L': (front, LAT['L'], lift_f, 25.0), 'R': (back, LAT['R'], lift_b, 60.0)}
+                            bal = lambda x_, y_, z_: B_(x_, y_, z_)   # the Key hand, his body frame (turns with him)
+                            key_out = T_((-.70, .55, -.30))             # the Key trailing out behind him
+                            reach_k = ak(leg(.24, -.30, .12, .20), 8.0, 12.0, -10.0, U_*.46 - V_*.10 + Vector((0, 0, .98)),
+                                         hand=bal(-.40, .08, .80), blade=key_out)
+                            catch_k = ak(leg(.20, -.34, .14, .24), 10.0, 16.0, -10.0, AQ,
+                                         hand=bal(-.44, .10, .82), blade=key_out)
+                            SPIN3 = [70.0, 160.0, 250.0, 330.0]
+                            PITCH3 = [20.0, 26.0, 32.0, 36.0]
+                            LEGS3 = [leg(.18, -.40, .10, .30), leg(.10, -.46, .16, .36), leg(.20, -.42, .08, .30),
+                                     leg(.12, -.48, .14, .38)]
+                            FIST3 = [.95, .90, .80, .84]   # dips as the opponent passes in front (250 deg)
+                            twist_ks = []
+                            for j_, a_ in enumerate(SPIN3):
+                                k_ = ak(LEGS3[j_], 12.0 + 2*j_, PITCH3[j_], -8.0,
+                                        U_*(.62 + .04*(j_ == 2)) - V_*.06 + Vector((0, 0, FIST3[j_])),
+                                        hand=bal(-.52, .14, .92 - .04*j_), blade=key_out, spin=a_)
+                                k_['leg_reach'] = .97
+                                twist_ks.append(k_)
+                            # whip: still turning (390), leaning 40 deg, the fist sweeping forward and down in front
+                            haul_k = ak(leg(.08, -.52, .18, .44), 16.0, 40.0, -6.0, U_*.66 - V_*.04 + Vector((0, 0, .62)),
+                                        hand=bal(-.50, .22, 1.02), blade=key_out, spin=390.0)
+                            # release: diving forward (48 deg), arm straight down-forward, legs whipped back and up
+                            throw_k = ak(leg(-.10, -.50, .30, .52), 18.0, 48.0, -4.0, U_*.64 - V_*.04 + Vector((0, 0, .22)),
+                                         hand=bal(-.40, .30, 1.10), blade=key_out, spin=400.0)
+                            follow_k = ak(leg(.08, -.36, .22, .36), 14.0, 30.0, -8.0, U_*.50 - V_*.04 + Vector((0, 0, .34)),
+                                          hand=bal(-.38, .18, .90), blade=key_out, spin=380.0)
+                            for k_ in (reach_k, catch_k, haul_k, throw_k, follow_k):
+                                k_['leg_reach'] = .97
+                            RUN_KEYS = [reach_k, catch_k] + twist_ks + [haul_k, throw_k, follow_k, back_k]
                     else:
                         src_ = SORA / OUT_NAME.replace('hurt_agrab', 'atk_agrab') / 'Idle_Loop_Report.json'
                         HANDS_ = [Vector(h_) for h_ in json.loads(src_.read_text(encoding='utf-8'))['grab_hand_L']]
@@ -2505,6 +2544,7 @@ if LOOP:
                         tumble = vk(B_(-.40, -.05, 1.35), B_(.40, -.05, 1.35), v_blade, reach=.94,
                                     feet={'L': (.20, LAT['L'], .25, 20.0), 'R': (.05, LAT['R'], .18, 25.0)})
                         keys_ = []
+                        G3_ = not HURT.endswith(('_v1', '_v2'))
                         for i_ in range(10):
                             h_ = HANDS_[i_]
                             d_ = Vector((h_.x, h_.y, 0))
@@ -2512,11 +2552,27 @@ if LOOP:
                             if i_ <= 1:
                                 k_ = dict(flinch); up_, fr_ = axes(dir0_, 0.0); q_ = HANDS_[1]
                             elif i_ <= 5:
-                                # twisting with him: swung out, legs trailing behind the turn
+                                # twisting with him: swung out, legs trailing behind the turn (v3: further out)
                                 nb_ = HANDS_[min(i_ + 1, 6)] - HANDS_[i_ - 1]
                                 mv_ = Vector((nb_.x, nb_.y, 0)); mv_ = (mv_ - d_*mv_.dot(d_)).normalized()
                                 out_ = (d_*math.cos(math.radians(40)) - mv_*math.sin(math.radians(40))).normalized()
-                                k_ = dict(swing); up_, fr_ = axes(out_, [35, 50, 60, 60][i_ - 2]); q_ = h_
+                                k_ = dict(swing); up_, fr_ = axes(out_, ([45, 65, 75, 82] if G3_ else [35, 50, 60, 60])[i_ - 2]); q_ = h_
+                            elif G3_ and i_ == 6:
+                                # v3: still swinging with the turn, low in front, body stretched out behind the motion
+                                nb_ = HANDS_[7] - HANDS_[5]
+                                mv_ = Vector((nb_.x, nb_.y, 0)); mv_ = (mv_ - d_*mv_.dot(d_)).normalized()
+                                out_ = (d_*math.cos(math.radians(40)) - mv_*math.sin(math.radians(40))).normalized()
+                                k_ = dict(swing); up_, fr_ = axes(out_, 95.0); q_ = h_
+                            elif G3_ and i_ >= 7:
+                                # v3: flung forward and down off the end of the spin, head first (diving away from him)
+                                k_ = dict(tumble); up_, fr_ = axes(U_, 225.0 if i_ == 7 else 210.0)
+                                q_ = h_ + U_*.10 + Vector((0, 0, -.10)) if i_ == 7 else U_*.95 + Vector((0, 0, -.55))
+                                if i_ == 7 and not HURT.endswith(('_v1', '_v2', '_v3')):
+                                    # v4 (my review of v3): the released body left further out from his fist, angled
+                                    # more toward the ground, so the legs no longer cross Sora's chest.
+                                    up_, fr_ = axes(U_, 205.0); q_ = h_ + U_*.32 + Vector((0, 0, -.18))
+                                if i_ == 9:
+                                    q_ = U_*1.05 + Vector((0, 0, -1.00))
                             elif i_ == 6:
                                 # over his head, upside down, legs up and back
                                 k_ = dict(tumble); up_, fr_ = axes(-U_, 160.0); q_ = h_
