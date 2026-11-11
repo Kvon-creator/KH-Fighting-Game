@@ -194,10 +194,12 @@ const ANIMATIONS := {
 	&"guard_air": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [2]],
 	# Ground grab (Medium + Heavy; Kvon approved v7, November 11): reach, grab (checks on frame 7), a hammer-throw spin
 	# speeding up, heave, release overhead, batting-stance load, strike (1200), follow-through, recovery x2.
-	# Timed by _grab_step. grab_held = the opponent's matching held drawings (0-14), shown on the grabbed fighter.
-	&"grab": ["res://assets/sora/grab_768/", "sora_grab_", [3, 4, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 3, 5, 5, 6], []],
+	# Timed by _grab_step. grab_held = the opponent's matching held drawings (0-14), shown on the grabber's timing.
+	# Kvon (November 11): "a little too fast in-game" - everything after the catch about a third slower (57 -> 76
+	# frames; the startup stays 7).
+	&"grab": ["res://assets/sora/grab_768/", "sora_grab_", [3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 6, 4, 7, 7, 8], []],
 	&"grab_held": ["res://assets/sora/grab_held_768/", "sora_grab_held_",
-		[3, 4, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 3], []],
+		[3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 6, 4], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
