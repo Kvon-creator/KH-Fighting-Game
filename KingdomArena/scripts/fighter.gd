@@ -13,7 +13,10 @@ const FLOOR_Y := 600.0
 const FEET := Vector2(192, 354)
 ## Animations drawn on taller 384 x 576 frames (the Crouching Heavy's overhead thrust): the extra 192 px are
 ## added above him, so his feet sit 192 px lower in the frame.
-const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192)}
+const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192),
+	# Ground grab (Kvon, November 11): Sora and the grabbed opponent share one 768 x 768 frame (the 1024 render canvas
+	# at the usual x 0.75), his feet in the middle of the bottom.
+	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738)}
 ## How far he may walk toward either screen edge.
 const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
@@ -189,6 +192,12 @@ const ANIMATIONS := {
 	&"guard_stand": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [0]],
 	&"guard_crouch": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [1]],
 	&"guard_air": ["res://assets/sora/guard_384/", "sora_guard_", [1], [], [2]],
+	# Ground grab (Medium + Heavy; Kvon approved v7, November 11): reach, grab (checks on frame 7), a hammer-throw spin
+	# speeding up, heave, release overhead, batting-stance load, strike (1200), follow-through, recovery x2.
+	# Timed by _grab_step. grab_held = the opponent's matching held drawings (0-14), shown on the grabbed fighter.
+	&"grab": ["res://assets/sora/grab_768/", "sora_grab_", [3, 4, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 3, 5, 5, 6], []],
+	&"grab_held": ["res://assets/sora/grab_held_768/", "sora_grab_held_",
+		[3, 4, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 3], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -212,7 +221,8 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 	&"attack_cheavy": ["res://assets/sora/attack_cheavy_smear_384/", "sora_attack_cheavy_smear_"],
 	&"attack_jlight": ["res://assets/sora/attack_jlight_smear_384/", "sora_attack_jlight_smear_"],
 	&"attack_jmedium": ["res://assets/sora/attack_jmedium_smear_384/", "sora_attack_jmedium_smear_"],
-	&"attack_jheavy": ["res://assets/sora/attack_jheavy_smear_384/", "sora_attack_jheavy_smear_"]}
+	&"attack_jheavy": ["res://assets/sora/attack_jheavy_smear_384/", "sora_attack_jheavy_smear_"],
+	&"grab": ["res://assets/sora/grab_fx_768/", "sora_grab_fx_"]}  # the strike's smear + impact burst
 
 ## Combat numbers (Kvon, October 29): 10000 health, damage / hit-freeze / hitstun / blockstun / pushback per strength.
 const MAX_HP := 10000
@@ -229,6 +239,22 @@ const PUSH_SLOW := 0.82
 const LAUNCH_SPEED := 17.2
 const JUGGLE_SPEED := 7.0
 const LAUNCH_VX := 1.5
+## Ground grab (Kvon, November 10-11): Medium + Heavy on the ground. Game frames per drawing; the drawing whose last
+## frame checks for the opponent (frame 7); the strike drawing (damage, hit-freeze, then the knockdown takes over);
+## how close the opponent must be (px, in front); the escape window after the grab connects (the opponent presses
+## Medium + Heavy: both are pushed apart, no damage); damage; strike hit-freeze; a miss's recovery (frames after the
+## check); and per drawing whether the grabbed opponent is drawn behind Sora. Holds per drawing: ANIMATIONS[&"grab"].
+const GRAB_CHECK_FRAME := 7
+const GRAB_STRIKE := 14
+const GRAB_RANGE := 210.0
+const GRAB_TECH_FRAMES := 10
+const GRAB_DAMAGE := 1200
+const GRAB_FREEZE := 10
+const GRAB_WHIFF_RECOVERY := 25
+const GRAB_BEHIND := [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0]
+## Where the opponent's body is drawn on the strike drawing, as the feet point of their knockdown (px from Sora's feet,
+## forward / up; measured by export_grab_assets.py: strike body centre minus the hurt_air drawing's body centre).
+const GRAB_RELEASE_AT := Vector2(179.5, -223.0)
 ## Hitstun decay (Kvon: per hit): each hit in the same combo gives 10% less hitstun and air pop, never below 40%.
 const DECAY_PER_HIT := 0.1
 const DECAY_FLOOR := 0.4
@@ -257,6 +283,11 @@ var ko := false
 ## &"control" (moving / attacking by input), &"stun" (reeling), &"guard" (blocking), &"hurt_air" (launched,
 ## juggled or knocked down through the air), &"down" (lying, then getting up).
 var state := &"control"
+## Ground grab: game frames since it started (-1 = not grabbing) and its part: &"reach", &"throw" or &"whiff".
+var grab_t := -1
+var grab_part := &""
+## While held: Medium + Heavy was pressed (the match decides whether it was inside the escape window).
+var tech_request := false
 
 var _smear: Sprite2D
 var _smear_frames := {}
@@ -331,6 +362,10 @@ func reset(start_x: float, face: float) -> void:
 	_bd_tick = -1
 	_buffered.clear()
 	_glide = false
+	grab_t = -1
+	grab_part = &""
+	tech_request = false
+	z_index = 0
 	set_facing(face)
 	show_anim(&"idle")
 
@@ -369,7 +404,7 @@ func set_facing(face: float) -> void:
 ## Turns him to face dir if he can turn now: in control and not in the middle of a move - an attack, air dash,
 ## back-dash, glide or jump start (Kvon, November 6: also in the air; mid-move he turns once it ends).
 func face_toward(dir: float) -> void:
-	if dir == facing or state != &"control" or _bd_tick >= 0 or _dash_tick >= 0 or _air_atk_tick >= 0:
+	if dir == facing or state != &"control" or _bd_tick >= 0 or _dash_tick >= 0 or _air_atk_tick >= 0 or grab_t >= 0:
 		return
 	var anim := String(sprite.animation)
 	if anim.begins_with("attack_") or sprite.animation in GLIDE_ANIMS or sprite.animation == &"jump_start":
@@ -414,6 +449,12 @@ func step(inp: Dictionary) -> void:
 	_back_held = inp.get("back", false)
 	_down_held = inp.get("down", false)
 	_jump_held = inp.get("up", false)
+	if state == &"held":
+		# Escape (Kvon: by grabbing back): Medium + Heavy, the second of them pressed while the first is held.
+		var m_new: bool = inp.get("medium", false) and not _was.get("medium", false)
+		var h_new: bool = inp.get("heavy", false) and not _was.get("heavy", false)
+		if (m_new or h_new) and inp.get("medium", false) and inp.get("heavy", false):
+			tech_request = true
 	if state != &"control":
 		_hurt_step()
 		_buffered.clear()
@@ -428,6 +469,9 @@ func step(inp: Dictionary) -> void:
 		pressed[k] = (inp.get(k, false) and not _was.get(k, false)) or _buffered.get(k, false)
 		_was[k] = inp.get(k, false)
 	_buffered.clear()
+	if grab_t >= 0:
+		_grab_step()
+		return
 	# A new back press soon after the previous one is a back-dash (on the ground or in the air).
 	var back_tap := false
 	if pressed["back"]:
@@ -520,6 +564,17 @@ func step(inp: Dictionary) -> void:
 		position.y = FLOOR_Y
 		show_anim(&"jump_start", 1 if moving else 0)  # already moving: skip the crouch drawing
 		return
+	# Ground grab (Kvon): Medium + Heavy together - the second pressed while the first is held, so pressing them a
+	# frame apart still counts (an attack the first press started this frame or the last is turned into the grab).
+	var grab_pressed: bool = (medium_pressed or heavy_pressed) and inp.get("medium", false) and inp.get("heavy", false)
+	var just_started: bool = anim in [&"attack_medium", &"attack_heavy", &"attack_cmedium", &"attack_cheavy"] 		and sprite.frame == 0 and _hold <= 1 and not attack_hit
+	if grab_pressed and not back_dashing and (anim in GROUND_CANCEL or just_started):
+		position.y = FLOOR_Y
+		_glide = false
+		grab_t = 0
+		grab_part = &"reach"
+		show_anim(&"grab")
+		return
 	# Ground attacks: from any ground move (not mid back-dash); they play to the end (only a hit interrupts),
 	# then he returns to whatever is held. Holding down gives the crouching version.
 	# Chain (Kvon): once a ground attack has touched the opponent (hit or guard), any stronger one - standing or
@@ -599,6 +654,85 @@ func step(inp: Dictionary) -> void:
 			# End of a step cycle, standing up or the glide landing: the feet are in the idle stance, so
 			# he can stand, crouch, switch direction or keep going without any pop.
 			show_anim(wanted)
+
+
+## One game frame of the ground grab: reach and grab (the match checks for the opponent on frame 7 and calls
+## grab_connect or grab_whiff), then the throw's drawings by their holds, or a miss's recovery, then the idle.
+func _grab_step() -> void:
+	grab_t += 1
+	var holds: Array = ANIMATIONS[&"grab"][2]
+	var drawing := _step_of(grab_t, holds)
+	if grab_part == &"whiff":
+		# A miss (no drawing of its own yet): the open hand stays out, then draws back to the reach, then the idle -
+		# GRAB_WHIFF_RECOVERY frames after the check, punishable.
+		var after := grab_t - GRAB_CHECK_FRAME
+		if after >= GRAB_WHIFF_RECOVERY:
+			grab_t = -1
+			grab_part = &""
+			show_anim(&"idle")
+			return
+		drawing = 1 if after < GRAB_WHIFF_RECOVERY / 2 else 0
+	elif drawing >= holds.size():
+		grab_t = -1
+		grab_part = &""
+		show_anim(&"idle")
+		return
+	if sprite.frame != drawing or sprite.animation != &"grab":
+		show_anim(&"grab", drawing)
+
+
+## The match checks the grab on this frame (the last frame of the reach).
+func grab_ready() -> bool:
+	return grab_part == &"reach" and grab_t == GRAB_CHECK_FRAME - 1
+
+
+func grab_connect() -> void:
+	grab_part = &"throw"
+
+
+func grab_whiff() -> void:
+	grab_part = &"whiff"
+
+
+## The grab drawing showing now (-1 = not grabbing).
+func grab_drawing() -> int:
+	return sprite.frame if grab_t >= 0 and sprite.animation == &"grab" else -1
+
+
+## Grabbed: held by the opponent (the match places and flips him and picks the held drawing every frame).
+func start_held() -> void:
+	_end_moves()
+	state = &"held"
+	push_v = 0.0
+	combo_hits = 0
+	tech_request = false
+	show_anim(&"grab_held", 0)
+
+
+## Shows held drawing k (in the grabber's frame: the match sets his position and facing to the grabber's).
+func show_held(k: int) -> void:
+	if sprite.animation != &"grab_held" or sprite.frame != k:
+		show_anim(&"grab_held", k)
+
+
+## Struck out of the grab: the knockdown from where the held drawing showed him, knocked away (world direction).
+func release_from_grab(at: Vector2, away: float) -> void:
+	z_index = 0
+	set_facing(-away)
+	position = at
+	ko = hp == 0
+	_start_hurt_air(-KNOCK_SPEED * 0.4, KNOCK_VX * 1.6 * away, HURT_GRAVITY)
+
+
+## Escaped (or the grabber let go): back in control at x, standing.
+func end_grab(x: float) -> void:
+	z_index = 0
+	grab_t = -1
+	grab_part = &""
+	tech_request = false
+	position = Vector2(x, FLOOR_Y)
+	state = &"control"
+	show_anim(&"idle")
 
 
 ## One airborne game frame: move by the vertical speed, apply gravity, pick the air drawing from the
@@ -774,6 +908,7 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 	var shift_y: float = DRAW_SHIFT_Y[anim][drawing] if DRAW_SHIFT_Y.has(anim) else 0.0
 	sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, shift_y)
 	_smear.visible = _smear_frames.has(anim)
+	_smear.z_index = 2 if anim == &"grab" else 0  # the grab's smear / impact burst sits over the held opponent too
 	if _smear.visible:
 		_smear.texture = _smear_frames[anim][drawing]
 		_smear.offset = sprite.offset
@@ -816,7 +951,7 @@ func middle_box(table: Dictionary) -> Array[Rect2]:
 func guard_pose(level: StringName) -> StringName:
 	if state != &"control" and state != &"guard":
 		return &""
-	if is_attacking() or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 or sprite.animation in GLIDE_ANIMS:
+	if is_attacking() or grab_t >= 0 or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 			or sprite.animation in GLIDE_ANIMS:
 		return &""
 	match guard_mode:
 		&"input":
@@ -876,6 +1011,8 @@ func knockdown() -> void:
 
 func _end_moves() -> void:
 	_air = false
+	grab_t = -1  # a hit during the reach stops the grab
+	grab_part = &""
 	_dash_tick = -1
 	_spin_tick = -1
 	_air_atk_tick = -1

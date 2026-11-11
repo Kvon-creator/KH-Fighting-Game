@@ -1,6 +1,6 @@
 """Hurtboxes and hitboxes for every Sora drawing in the game, written as a GDScript data file.
 
-Hurtboxes (where he can be hit): for every drawing in KingdomArena/assets/sora/*_384 (not the smear layers), the
+Hurtboxes (where he can be hit): for every drawing in KingdomArena/assets/sora/*_384 and grab_768 (not the smear layers), the
 silhouette with its thin parts removed (a morphological opening wider than the Keyblade's shaft, so the Key, hair
 spikes and the thinnest limb ends drop out), split into three horizontal bands (head/chest, waist, legs); each band's
 bounding box, grown a little.
@@ -157,7 +157,9 @@ def hitbox(mask, rep, i, style, slide, sweep_from=SWEEP_FROM):
 
 def main():
     hurt, hit = {}, {}
-    for folder in sorted(p for p in ASSETS.iterdir() if p.is_dir() and p.name.endswith('_384')
+    # + the ground grab's own drawings (grab_768: Sora alone on the 768 frame - his reach and a miss can be hit; the
+    # held opponent's and the effect layers are not hurtboxes).
+    for folder in sorted(p for p in ASSETS.iterdir() if p.is_dir() and (p.name.endswith('_384') or p.name == 'grab_768')
                          and '_smear_' not in p.name):
         for png in sorted(folder.glob('*.png')):
             hurt[f'{folder.name}/{png.name}'] = hurtboxes(body_mask(png))

@@ -14,7 +14,7 @@ extends Node2D
 ## Automated checks (player 1, as in the old test scene): `--walk-demo-ticks=N`, `--back-demo-ticks=N`,
 ## `--crouch-demo-ticks=N` (from `--crouch-demo-from=M`), `--glide-demo-ticks=N`, `--jump-demo-at=N`
 ## (`--jump-hold-to=N`, `--jump2-demo-at=M`, `--dash-demo-at=M`), `--bdash-demo-at=N`, `--hit-demo-at=N`,
-## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`, `--r1-demo-at=N[,N...]` (dash button held on those frames); the same with a `p2-` prefix for player 2
+## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`, `--grab-demo-at=N[,N...]` (Medium + Heavy), `--r1-demo-at=N[,N...]` (dash button held on those frames); the same with a `p2-` prefix for player 2
 ## (e.g. `--p2-walk-demo-ticks=N`); `--dummy-guard=0-3`, `--show-boxes`, `--trace`, `--capture=<png>`.
 
 const BOXES := preload("res://scripts/sora_boxes.gd")
@@ -38,6 +38,8 @@ const WIN_FRAMES := 210
 const ROUNDS_TO_WIN := 2
 ## How far the left stick must be pushed (0-1) to count as a direction.
 const PAD_STICK_DEADZONE := 0.5
+## Ground grab: how high above the grabber's feet the held fighter's top is drawn during the toss (camera).
+const GRAB_TOSS_TOP := 590.0
 
 var mode := "training"
 var p: Array[Fighter] = []
@@ -66,6 +68,11 @@ var _cpu_plan: Array[Dictionary] = []
 var _cpu_next := 0
 var _cpu_seen_attack := ""
 var _rng := RandomNumberGenerator.new()
+## CPU: the frame it will try to escape a grab on (-1 = undecided, -2 = it won't).
+var _cpu_tech_at := -1
+## The grab in progress (empty = none): grabber index, the held fighter's x before the grab, the grabber's frame it
+## connected on, and whether the strike's damage has been dealt.
+var _grab := {}
 ## `--start-hp=N`: rounds start with this much health (automated checks of the round flow).
 var _start_hp := Fighter.MAX_HP
 
@@ -136,7 +143,8 @@ func _ready() -> void:
 
 func _parse_demo(prefix: String) -> Dictionary:
 	var d := {"walk": -1, "back": -1, "crouch": -1, "crouch_from": 1, "glide": -1, "jump": -1, "jump_hold": -1,
-		"jump2": -1, "dash": -1, "bdash": -1, "hit": -1, "knock": -1, "light": [], "medium": [], "heavy": [], "r1": []}
+		"jump2": -1, "dash": -1, "bdash": -1, "hit": -1, "knock": -1, "light": [], "medium": [], "heavy": [], "r1": [],
+		"grab": []}
 	var names := {"walk-demo-ticks": "walk", "back-demo-ticks": "back", "crouch-demo-ticks": "crouch",
 		"crouch-demo-from": "crouch_from", "glide-demo-ticks": "glide", "jump-demo-at": "jump",
 		"jump-hold-to": "jump_hold", "jump2-demo-at": "jump2", "dash-demo-at": "dash", "bdash-demo-at": "bdash",
@@ -150,7 +158,7 @@ func _parse_demo(prefix: String) -> Dictionary:
 		for n: String in names:
 			if rest.begins_with(n + "="):
 				d[names[n]] = int(rest.trim_prefix(n + "="))
-		for k in ["light", "medium", "heavy", "r1"]:
+		for k in ["light", "medium", "heavy", "r1", "grab"]:
 			if rest.begins_with(k + "-demo-at="):
 				for v in rest.trim_prefix(k + "-demo-at=").split(","):
 					d[k].append(int(v))
@@ -175,8 +183,10 @@ func _physics_process(_delta: float) -> void:
 			var dx := p[1 - i].position.x - p[i].position.x
 			if absf(dx) > 1.0:
 				p[i].face_toward(signf(dx))
+		_grabs()
 		_pushback_step()
-		_push_apart()
+		if _grab.is_empty():
+			_push_apart()  # the held fighter is drawn on the grabber: no pushing during a grab
 		_hits()
 	for e: Dictionary in _fx:
 		e["age"] += 1
@@ -188,6 +198,11 @@ func _physics_process(_delta: float) -> void:
 		else:
 			_hp_shown[i] = move_toward(_hp_shown[i], float(p[i].hp), LOST_HP_DRAIN)
 	var top := minf(p[0].position.y, p[1].position.y) - HEAD_ABOVE_FEET
+	if not _grab.is_empty():
+		# The grab's toss draws the held fighter far above the feet point (up to ~580 px over drawings 10-14).
+		var gk := p[_grab["a"]].grab_drawing()
+		if gk >= 10:
+			top = minf(top, p[_grab["a"]].position.y - GRAB_TOSS_TOP)
 	_camera.position.y = lerpf(_camera.position.y, minf(SCREEN_CENTER.y, top - CAMERA_MARGIN + SCREEN_CENTER.y),
 		CAMERA_EASE)
 	_box_view.queue_redraw()
@@ -246,6 +261,9 @@ func _input_for(i: int) -> Dictionary:
 			inp[k] = true
 	if t in d["r1"]:
 		inp["dash"] = true  # the dash button (R1)
+	if t in d["grab"]:
+		inp["medium"] = true
+		inp["heavy"] = true
 	return inp
 
 
@@ -336,6 +354,86 @@ func _hits() -> void:
 			print("KO winner=", _winner, " wins=", _wins)
 
 
+## Ground grab (Kvon): on the grabber's frame 7 the opponent must be on the ground, close in front and free (not
+## reeling, guarding, flying, lying or getting up, not already held); otherwise it's a miss. While it holds, the held
+## fighter is drawn on the grabber (same feet point and facing, in front or behind per drawing). Medium + Heavy within
+## GRAB_TECH_FRAMES of the catch escapes: both pushed apart, no damage. The strike deals the damage with a hit-freeze;
+## when the strike drawing ends, the held fighter is knocked down from where he is drawn.
+func _grabs() -> void:
+	if _grab.is_empty():
+		for i in 2:
+			var a := p[i]
+			var d := p[1 - i]
+			if not a.grab_ready():
+				continue
+			var dx := d.position.x - a.position.x
+			if d.state == &"control" and not d.is_airborne() and d.grab_t < 0 and absf(dx) <= Fighter.GRAB_RANGE 					and signf(dx) == a.facing:
+				a.grab_connect()
+				_grab = {"a": i, "x": d.position.x, "t0": a.grab_t, "struck": false}
+				d.start_held()
+				if _trace:
+					print("GRAB ", a._tick, " dist=", snappedf(absf(dx), 0.1))
+				break
+			a.grab_whiff()
+			if _trace:
+				print("GRAB_MISS ", a._tick, " dist=", snappedf(absf(dx), 0.1), " ", d.state)
+	if _grab.is_empty():
+		return
+	var gi: int = _grab["a"]
+	var g := p[gi]
+	var h := p[1 - gi]
+	var k := g.grab_drawing()
+	if k < 0 or h.state != &"held":
+		g.z_index = 0
+		h.z_index = 0
+		_grab = {}  # the grab ended some other way
+		return
+	if h.tech_request and g.grab_t - int(_grab["t0"]) <= Fighter.GRAB_TECH_FRAMES:
+		# Escaped: both stand, pushed apart.
+		var side := 1.0 if float(_grab["x"]) >= g.position.x else -1.0
+		h.end_grab(float(_grab["x"]))
+		g.z_index = 0
+		g.end_grab(g.position.x)
+		h.push_v = Fighter.PUSHBACK[&"heavy"]
+		h.push_dir = side
+		g.push_v = Fighter.PUSHBACK[&"heavy"]
+		g.push_dir = -side
+		_add_fx(&"barrier", (g.position + h.position) * 0.5 + Vector2(0, -150), -side)
+		if _trace:
+			print("GRAB_TECH ", g._tick)
+		_grab = {}
+		return
+	h.tech_request = false  # presses after the window don't count
+	if k > Fighter.GRAB_STRIKE:
+		# The strike drawing is over: the knockdown takes over from where he is drawn.
+		var at := g.position + Vector2(Fighter.GRAB_RELEASE_AT.x * g.facing, Fighter.GRAB_RELEASE_AT.y)
+		at.x = clampf(at.x, Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
+		h.release_from_grab(at, g.facing)
+		g.z_index = 0
+		if _trace:
+			print("GRAB_RELEASE ", g._tick, " at=", at)
+		_grab = {}
+		return
+	h.position = g.position
+	h.set_facing(g.facing)
+	h.show_held(k)
+	# Behind / in front of the grabber per drawing (never below 0: that would put him behind the arena too).
+	g.z_index = 2 if Fighter.GRAB_BEHIND[k] else 1
+	h.z_index = 3 - g.z_index
+	if k == Fighter.GRAB_STRIKE and not _grab["struck"]:
+		_grab["struck"] = true
+		h.hp = maxi(h.hp - Fighter.GRAB_DAMAGE, 0)
+		_freeze = maxi(_freeze, Fighter.GRAB_FREEZE)
+		_lost_wait[1 - gi] = LOST_HP_DELAY
+		if _trace:
+			print("GRAB_HIT ", g._tick, " ", Fighter.GRAB_DAMAGE, " hp=", h.hp)
+		if mode != "training" and _phase == "fight" and h.hp == 0:
+			_phase = "ko"
+			_phase_t = 0
+			_winner = gi
+			_wins[_winner] += 1
+
+
 ## Attacker a's hitbox overlapping defender d's hurtbox (a knocked-down fighter can't be hit).
 func _find_hit(a: Fighter, d: Fighter) -> Dictionary:
 	if a.attack_hit or a.state != &"control" or d.state == &"down":
@@ -403,6 +501,7 @@ func _start_round() -> void:
 	_phase = "intro"
 	_phase_t = 0
 	_cpu_plan.clear()
+	_grab = {}
 	for i in 2:
 		p[i].reset(START_X[i], 1.0 if i == 0 else -1.0)
 		p[i].hp = _start_hp
@@ -422,6 +521,14 @@ func _to_menu() -> void:
 ## Every decision is a short plan of held buttons; a few frames pass between decisions.
 func _cpu_input(me: Fighter, foe: Fighter) -> Dictionary:
 	var now := _frames
+	if me.state == &"held":
+		# Grabbed: escapes about a third of the time, a few frames in (inside the window).
+		if _cpu_tech_at == -1:
+			_cpu_tech_at = now + _rng.randi_range(2, 7) if _rng.randf() < 0.35 else -2
+		if now == _cpu_tech_at:
+			return {"medium": true, "heavy": true}
+		return {}
+	_cpu_tech_at = -1
 	if me.state != &"control":
 		_cpu_plan.clear()
 		_cpu_next = now + _rng.randi_range(4, 10)
@@ -465,8 +572,10 @@ func _cpu_input(me: Fighter, foe: Fighter) -> Dictionary:
 				_cpu_plan = [{"at": now, "keys": ["down", "light"], "len": 3}]
 			elif r < 0.6:
 				_cpu_plan = [{"at": now, "keys": ["down", "heavy"], "len": 3}]
-			elif r < 0.75:
+			elif r < 0.7:
 				_cpu_plan = [{"at": now, "keys": ["heavy"], "len": 2}]
+			elif r < 0.8:
+				_cpu_plan = [{"at": now, "keys": ["medium", "heavy"], "len": 2}]  # the grab
 			else:
 				_cpu_plan = [{"at": now, "keys": ["back"], "len": _rng.randi_range(10, 18)}]
 		_cpu_next = now + _rng.randi_range(14, 30)
@@ -520,6 +629,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _reset_training() -> void:
+	_grab = {}
 	for i in 2:
 		p[i].reset(START_X[i], 1.0 if i == 0 else -1.0)
 		_hp_shown[i] = float(Fighter.MAX_HP)
@@ -619,7 +729,7 @@ func _draw_hud() -> void:
 	if text != "":
 		_hud.draw_string_outline(font, Vector2(0, 300), text, HORIZONTAL_ALIGNMENT_CENTER, 1280.0, 64, 10, ink)
 		_hud.draw_string(font, Vector2(0, 300), text, HORIZONTAL_ALIGNMENT_CENTER, 1280.0, 64, Color8(255, 226, 120))
-	var help := "P1: WASD move  U/I/O attack     " + ("P2: arrows move  numpad 7/8/9 attack     " if mode == "pvp"
+	var help := "P1: WASD move  U/I/O attack  I+O grab     " + ("P2: arrows move  numpad 7/8/9 attack  8+9 grab     " if mode == "pvp"
 		else "") + "Esc: menu   F1: boxes"
 	_hud.draw_string_outline(font, Vector2(0, 708), help, HORIZONTAL_ALIGNMENT_CENTER, 1280.0, 15, 4, ink)
 	_hud.draw_string(font, Vector2(0, 708), help, HORIZONTAL_ALIGNMENT_CENTER, 1280.0, 15, Color8(200, 215, 240))
