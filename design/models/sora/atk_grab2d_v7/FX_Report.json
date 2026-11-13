@@ -2,44 +2,56 @@
   "source": "atk_grab_v7",
   "fx": [
     {
+      "drawing": 2,
+      "rings": 3,
+      "turn_deg": 30.7
+    },
+    {
       "drawing": 3,
-      "lines": 3,
-      "sweep_deg": 47.9
+      "rings": 3,
+      "turn_deg": 35.5
     },
     {
       "drawing": 4,
-      "lines": 3,
-      "sweep_deg": 54.9
+      "rings": 3,
+      "turn_deg": 40.7
     },
     {
       "drawing": 5,
-      "lines": 3,
-      "sweep_deg": 61.5
+      "rings": 3,
+      "turn_deg": 45.6
     },
     {
       "drawing": 6,
-      "lines": 3,
-      "sweep_deg": 60.8
+      "rings": 3,
+      "turn_deg": 45.0
     },
     {
       "drawing": 7,
-      "lines": 3,
-      "sweep_deg": 60.4
+      "rings": 3,
+      "turn_deg": 44.7
     },
     {
       "drawing": 8,
-      "lines": 3,
-      "sweep_deg": 59.7
+      "rings": 3,
+      "turn_deg": 44.2
     },
     {
       "drawing": 9,
-      "lines": 3,
-      "sweep_deg": 53.2
+      "rings": 3,
+      "turn_deg": 39.4
     },
     {
       "drawing": 10,
-      "lines": 3,
-      "sweep_deg": 54.7
+      "sweep_radius_px": 387
+    },
+    {
+      "drawing": 11,
+      "sweep_radius_px": 468
+    },
+    {
+      "drawing": 12,
+      "speed_lines": 5
     },
     {
       "drawing": 14,

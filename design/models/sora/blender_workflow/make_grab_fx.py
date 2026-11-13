@@ -1,21 +1,17 @@
-"""Ground grab effects (v6+), drawn as their own transparent layers like the Keyblade smears.
-
-- Spin motion lines (drawings 3-10): curved speed lines trailing the swung opponent along the circle Sora's left fist
-  travels (from the build report's `grab_hand_L`), three lines at the opponent's chest / hips / legs, tapering and
-  fading toward the back. Layer `frames_fx_back_512` - drawn BEHIND both bodies.
-- Impact burst (drawing 14, the strike): a two-tone star burst with a few streaks where the Key meets the opponent
-  (on the Key 80% of the way to the tip, from `key_track`). Layer `frames_fx_front_512` - drawn on top of everything.
-Tones match the smears (pale blue band, near-white core).
-Plain Python + Pillow + numpy; reads only the report.
-Run: python make_grab_fx.py atk_grab_v6 atk_grab2d_v6
-
-Air grab (source name atk_agrab_*; Kvon, November 13: "Put them where suggested"), all on `frames_fx_back_512`:
-- Spin and whip (2-6): three flat rings round his pivot, outside the bodies, trailing the opponent by about a quarter turn.
-- Release (7): three wide arcs round Sora ending at the opponent's far end, trailing back up the way it was swung.
-- After the release (8): straight speed lines from the thrown opponent back toward Sora.
+"""Grab effects, drawn as their own transparent layers like the Keyblade smears. The same three for the ground grab
+and the air grab (Kvon, November 13), all on `frames_fx_back_512` - drawn BEHIND both bodies:
+- Rings on the level swing (ground: the spin, drawings 2-9; air: spin and whip, 2-6): three flat arcs round Sora's
+  pivot (fitted to the build report's `grab_hand_L`), outside the bodies, trailing the opponent by about a quarter turn.
+- Arcs where the opponent is swung out of it (ground: heave and toss, 10-11; air: the release, 7): three wide arcs
+  round Sora ending at the opponent's far end and trailing back the way it came.
+- Speed lines on the drawing after the release (ground 12, air 8): from the opponent back toward Sora.
+Ground only: the impact burst on the strike (drawing 14) - a two-tone star burst with a few streaks where the Key
+meets the opponent (from `key_track`), on `frames_fx_front_512`, drawn on top of everything; and the layers are cut
+at the floor line (in the air grab the opponent is thrown below Sora's feet line).
 The opponent's position per drawing is measured from its rendered layer (third argument), so live pose edits count.
-No floor clip: the opponent is thrown below Sora's feet line.
-Run: python make_grab_fx.py atk_agrab_v10 atk_agrab2d_v10 hurt_agrab2d_v10
+Tones match the smears (pale blue band, near-white core). Plain Python + Pillow + numpy.
+Run: python make_grab_fx.py atk_grab_v7 atk_grab2d_v7 hurt_grab2d_v7
+     python make_grab_fx.py atk_agrab_v10 atk_agrab2d_v10 hurt_agrab2d_v10
 """
 import json
 import math
@@ -39,10 +35,10 @@ REACH = rep['key_reach_m']
 LINE_TONE = (122, 178, 255)
 CORE_TONE = (232, 243, 255)
 AIR = src.startswith('atk_agrab')
-SPIN = range(2, 7) if AIR else range(3, 11)   # drawings that get trailing lines (the swing, first spin step on)
-STRIKE = None if AIR else 14
+# Drawings with rings (the level swing), with arcs (the opponent swung out of it: air = thrown down, ground = heaved
+# and tossed up), with speed lines (just released), and with the impact burst (ground only: the Keyblade strike).
+SPIN, SWEEP, RELEASED, STRIKE = (range(2, 7), (7,), 8, None) if AIR else (range(2, 10), (10, 11), 12, 14)
 SQUASH = .38                                   # how flat a level circle looks from the sprite camera
-SWEEP, RELEASED = (7,), 8                    # air grab: path bands on the whip / release, speed lines after it
 
 
 def screen(p):
@@ -58,17 +54,6 @@ _xy = np.array([h[:2] for h in spin_pts])
 _A = np.column_stack((2*_xy, np.ones(len(_xy))))
 _sol = np.linalg.lstsq(_A, (_xy**2).sum(axis=1), rcond=None)[0]
 center = _sol[:2]
-
-
-def ang(p):
-    return math.atan2(p[1] - center[1], p[0] - center[0])
-
-
-def arc(a0, a1, r, z, n=24):
-    # world points on the horizontal circle from angle a0 to a1 (shortest way)
-    da = (a1 - a0 + math.pi) % (2*math.pi) - math.pi
-    return [np.array((center[0] + r*math.cos(a0 + da*k/n), center[1] + r*math.sin(a0 + da*k/n), z))
-            for k in range(n + 1)]
 
 
 def tapered(draw, pts, width_px, tone, alpha):
@@ -95,33 +80,28 @@ def centre(folder, i):
     return np.array((xs.mean(), ys.mean()))*SS
 
 
+def far_end(i, me):
+    # the opponent's point furthest from Sora's middle on drawing i, relative to it (supersampled px)
+    a = np.asarray(Image.open(SORA / sys.argv[3] / 'frames_512' / f'sora_idle3d_{i:02d}.png').getchannel('A')) > 40
+    ys, xs = np.nonzero(a)
+    far = np.column_stack((xs, ys))*SS - me
+    return far[np.argmax((far**2).sum(axis=1))]
+
+
 for sub in ('frames_fx_back_512', 'frames_fx_front_512'):
     (SORA / dst / sub).mkdir(parents=True, exist_ok=True)
 log = []
 for i in range(len(hands)):
     back = Image.new('RGBA', (W_*SS, H_*SS), (0, 0, 0, 0))
     front = Image.new('RGBA', (W_*SS, H_*SS), (0, 0, 0, 0))
-    if not AIR and i in SPIN:
-        h = hands[i]
-        r = float(np.linalg.norm(h[:2] - center))
-        a_now, a_prev = ang(h), ang(hands[i - 1])
-        da = (a_now - a_prev + math.pi) % (2*math.pi) - math.pi
-        a_start = a_now - da*2.2                         # trail a good deal longer than one step (visible past the bodies)
-        a_end = a_now - da*.25                           # stop short of the body so it stays readable
-        d = ImageDraw.Draw(back, 'RGBA')
-        # chest, hips and legs of the opponent (legs swing wider and a little lower)
-        for dr, dz, w_px, alpha in ((0.0, .10, 16, 240), (.35, -.10, 13, 225), (.75, -.25, 11, 210)):
-            pts = [screen(p) for p in arc(a_start, a_end, r + dr, h[2] + dz)]
-            tapered(d, pts, w_px, LINE_TONE, alpha)
-            tapered(d, pts, w_px*.4, CORE_TONE, alpha)
-        log.append({'drawing': i, 'lines': 3, 'sweep_deg': round(abs(math.degrees(da))*1.35, 1)})
-    if AIR and i in SPIN:
-        # Screen-space rings round his pivot: the fist's orbit seen from the sprite camera is a flat ellipse. Three
-        # arcs outside the bodies, trailing the opponent by about a quarter turn.
+    if i in SPIN:
+        # Rings round his pivot. The sprite camera is level, so the fist's circle is really a flat line on screen;
+        # it is drawn as a shallow ellipse (far side up) so the turn reads. Three arcs outside the bodies, trailing
+        # the opponent by about a quarter turn.
         ctr = screen(np.array((center[0], center[1], hands[i][2])))
         def theta(h_):
-            q = screen(h_) - ctr
-            return math.atan2(-q[1]/SQUASH, q[0])
+            # where the fist is on its circle, seen from above, measured from the camera's right (far side = up)
+            return math.atan2(h_[1] - center[1], h_[0] - center[0]) - t
         turn = (theta(hands[i]) - theta(hands[i - 1]) + math.pi) % (2*math.pi) - math.pi
         sgn = 1.0 if turn >= 0 else -1.0
         reach_px = max(np.linalg.norm(centre(sys.argv[3], i) - ctr), 150*SS)
@@ -133,23 +113,22 @@ for i in range(len(hands)):
             tapered(d, pts, w_px, LINE_TONE, alpha)
             tapered(d, pts, w_px*.4, CORE_TONE, alpha)
         log.append({'drawing': i, 'rings': 3, 'turn_deg': round(math.degrees(turn), 1)})
-    if AIR and i in SWEEP:
+    if i in SWEEP:
         # The release: the opponent is swung over and down in front of him (clockwise on screen). Three
         # wide arcs round Sora, ending at the opponent's far end and trailing back up the way it came.
         me = centre(dst, i)
-        a = np.asarray(Image.open(SORA / sys.argv[3] / 'frames_512' / f'sora_idle3d_{i:02d}.png').getchannel('A')) > 40
-        ys, xs = np.nonzero(a)
-        far = np.column_stack((xs, ys))*SS - me
-        tip = far[np.argmax((far**2).sum(axis=1))]
+        tip, was = far_end(i, me), far_end(i - 1, centre(dst, i - 1))
         t_tip, R0 = math.atan2(-tip[1], tip[0]), float(np.linalg.norm(tip))
+        t_was = math.atan2(-was[1], was[0])
+        way = 1.0 if (t_tip - t_was + math.pi) % (2*math.pi) - math.pi >= 0 else -1.0
         d = ImageDraw.Draw(back, 'RGBA')
         for scale, w_px, alpha in ((.95, 26, 240), (.75, 19, 225), (.55, 13, 210)):
-            angs = np.linspace(t_tip + math.radians(85), t_tip + math.radians(10), 28)
+            angs = np.linspace(t_tip - way*math.radians(85), t_tip - way*math.radians(10), 28)
             pts = [me + np.array((R0*scale*math.cos(a_), -R0*scale*math.sin(a_))) for a_ in angs]
             tapered(d, pts, w_px, LINE_TONE, alpha)
             tapered(d, pts, w_px*.4, CORE_TONE, alpha)
         log.append({'drawing': i, 'sweep_radius_px': round(R0/SS)})
-    if AIR and i == RELEASED:
+    if i == RELEASED:
         # Thrown: straight speed lines from the opponent back toward the hand that threw it.
         c, me = centre(sys.argv[3], i), centre(dst, i)
         along = (c - me)/max(np.linalg.norm(c - me), 1.0)
