@@ -1,0 +1,38 @@
+{
+  "source": "atk_agrab_v10",
+  "fx": [
+    {
+      "drawing": 2,
+      "rings": 3,
+      "turn_deg": -6.7
+    },
+    {
+      "drawing": 3,
+      "rings": 3,
+      "turn_deg": 138.3
+    },
+    {
+      "drawing": 4,
+      "rings": 3,
+      "turn_deg": 23.9
+    },
+    {
+      "drawing": 5,
+      "rings": 3,
+      "turn_deg": 154.1
+    },
+    {
+      "drawing": 6,
+      "rings": 3,
+      "turn_deg": -16.7
+    },
+    {
+      "drawing": 7,
+      "sweep_radius_px": 474
+    },
+    {
+      "drawing": 8,
+      "speed_lines": 5
+    }
+  ]
+}
