@@ -694,6 +694,10 @@ if RUN:
                        # back to the jump tuck 6.
                        'atk_agrab': [2, 3, 3, 3, 3, 3, 4, 3, 5, 6],
                        'hurt_agrab': [2, 3, 3, 3, 3, 3, 4, 3, 5, 6]}[JUMP.rsplit('_v', 1)[0]]
+        if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
+            # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
+            # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
+            GAME_FRAMES = [2, 3, 3, 3, 2, 2, 2, 2, 6, 6]
         if JUMP.startswith(('atk_grab', 'hurt_grab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
             GAME_FRAMES[2:10] = [2]*8  # v6: faster spin (2 frames per 45 deg step), 66 -> 58 frames in all
             if not JUMP.endswith('_v6'):
@@ -2521,6 +2525,41 @@ if LOOP:
                             for k_ in (reach_k, catch_k, haul_k, throw_k, follow_k):
                                 k_['leg_reach'] = .97
                             RUN_KEYS = [reach_k, catch_k] + twist_ks + [haul_k, throw_k, follow_k, back_k]
+                            if not HURT.endswith(('_v3', '_v4')):
+                                # v5 (Kvon, November 13: "continue refining"; my review of v4 against the usual
+                                # animation principles). v4's front leg hung straight down like a pole through the
+                                # whole spin, the Key never moved, reach/catch and whip/release/follow-through were
+                                # near-copies. Now: overlap - both legs drag behind the turn and scissor; anticipation -
+                                # the catch pulls in and winds the torso against the spin; the Key flares out with the
+                                # turn and swings up behind him on the release (one line from Key tip to throwing
+                                # fist); the release dives further with the arm straight at the opponent; the
+                                # follow-through swings the arm through under him while the legs come back forward.
+                                def legs5(l_, r_):
+                                    return {'L': (l_[0], LAT['L'], l_[1], 45.0), 'R': (r_[0], LAT['R'], r_[1], 60.0)}
+                                catch_k.update(pitch=8.0, hunch=14.0, twist=-16.0,
+                                               l_hand=tuple(U_*.44 - V_*.06 + Vector((0, 0, .98))))
+                                catch_k['feet'] = legs5((.16, .34), (-.10, .30))   # knees gathered for the turn
+                                catch_k.pop('leg_reach', None)                    # (bent: he extends out of it)
+                                LEGS5 = [legs5((-.04, .22), (-.46, .36)), legs5((-.34, .44), (-.22, .30)),
+                                         legs5((-.20, .30), (-.56, .50)), legs5((-.44, .52), (-.30, .36))]
+                                KEY5 = [T_((-.80, .45, -.20)), T_((-.85, .40, -.05)), T_((-.85, .40, .05)),
+                                        T_((-.80, .45, .15))]
+                                for j_, k_ in enumerate(twist_ks):
+                                    k_['feet'] = LEGS5[j_]
+                                    k_['twist'] = 10.0
+                                    k_['blade_dir'] = tuple(Vector(KEY5[j_]).normalized())
+                                haul_k.update(pitch=44.0, twist=16.0, hand=bal(-.50, .26, 1.10),
+                                              l_hand=tuple(U_*.70 - V_*.04 + Vector((0, 0, .78))),
+                                              blade_dir=tuple(Vector(T_((-.65, .50, .45))).normalized()))
+                                haul_k['feet'] = legs5((-.30, .26), (-.62, .44))
+                                throw_k.update(pitch=56.0, twist=22.0, hand=bal(-.44, .34, 1.26),
+                                               l_hand=tuple(U_*.80 - V_*.04 + Vector((0, 0, .50))),
+                                               blade_dir=tuple(Vector(T_((-.45, .60, .65))).normalized()))
+                                throw_k['feet'] = legs5((-.36, .34), (-.66, .52))   # both legs whipped back and up
+                                follow_k.update(pitch=44.0, twist=6.0, hand=bal(-.42, .20, 1.00),
+                                                l_hand=tuple(U_*.30 - V_*.02 + Vector((0, 0, .34))),
+                                                blade_dir=tuple(Vector(T_((-.78, .45, .10))).normalized()))
+                                follow_k['feet'] = legs5((-.16, .24), (-.46, .44))
                     else:
                         src_ = SORA / OUT_NAME.replace('hurt_agrab', 'atk_agrab') / 'Idle_Loop_Report.json'
                         HANDS_ = [Vector(h_) for h_ in json.loads(src_.read_text(encoding='utf-8'))['grab_hand_L']]
@@ -2551,6 +2590,15 @@ if LOOP:
                             d_ = d_.normalized() if d_.length > 1e-4 else dir0_
                             if i_ <= 1:
                                 k_ = dict(flinch); up_, fr_ = axes(dir0_, 0.0); q_ = HANDS_[1]
+                                if not HURT.endswith(('_v1', '_v2', '_v3', '_v4')):
+                                    # v5: drawings 0 and 1 were the same pose - 0 is an unguarded jump pose (hands
+                                    # low), 1 snaps back from the catch (head and chest thrown back, arms up).
+                                    k_ = (vk(B_(-.30, -.05, .95), B_(.30, -.08, 1.00), v_blade, hunch=2.0, pitch=2.0,
+                                             neck=-6.0, reach=.94) if i_ == 0 else
+                                          vk(B_(-.34, -.06, 1.30), B_(.34, -.06, 1.34), v_blade, hunch=-10.0,
+                                             pitch=-18.0, neck=-22.0, reach=.94,
+                                             feet={'L': (.16, LAT['L'], .16, 25.0), 'R': (.02, LAT['R'], .12, 30.0)}))
+                                    q_ = HANDS_[1] if i_ == 1 else HANDS_[1] + dir0_*.06
                             elif i_ <= 5:
                                 # twisting with him: swung out, legs trailing behind the turn (v3: further out)
                                 nb_ = HANDS_[min(i_ + 1, 6)] - HANDS_[i_ - 1]
@@ -2573,6 +2621,9 @@ if LOOP:
                                     up_, fr_ = axes(U_, 205.0); q_ = h_ + U_*.32 + Vector((0, 0, -.18))
                                 if i_ == 9:
                                     q_ = U_*1.05 + Vector((0, 0, -1.00))
+                                if i_ == 8 and not HURT.endswith(('_v3', '_v4')):
+                                    # v5: thrown faster - further out and still turning over between 7 and 8
+                                    up_, fr_ = axes(U_, 245.0); q_ = U_*1.10 + Vector((0, 0, -.60))
                             elif i_ == 6:
                                 # over his head, upside down, legs up and back
                                 k_ = dict(tumble); up_, fr_ = axes(-U_, 160.0); q_ = h_
