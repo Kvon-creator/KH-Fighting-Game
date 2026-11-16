@@ -997,6 +997,8 @@ func guard_pose(level: StringName) -> StringName:
 	if is_attacking() or grab_t >= 0 or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 \
 			or sprite.animation in GLIDE_ANIMS:
 		return &""
+	if _air and guard_mode in [&"stand", &"crouch", &"auto"]:
+		return &"guard_air"  # a jumping training dummy guards like a player in the air (everything)
 	match guard_mode:
 		&"input":
 			if not _back_held:

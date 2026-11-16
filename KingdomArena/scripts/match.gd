@@ -3,8 +3,12 @@ extends Node2D
 ## "mode") or `--mode=pvp|cpu|training`; started on its own, it is Training.
 ## - Player vs. Player: player 1 = WASD + U / I / O, player 2 = arrow keys + number pad 7 / 8 / 9.
 ## - Player vs. CPU: player 2 is a simple fighter AI.
-## - Training: player 2 is a standing dummy (G cycles its guard: off / standing / crouching / auto); H = take a
-##   hit (hold A to guard it), J = knockdown, R = reset. Health refills.
+## - Training: player 2 is a dummy you give simple commands, as in other fighting games' training modes (Street
+##   Fighter 6's dummy Action / Guard / Counter settings, Guilty Gear Strive's enemy status + counter-attack):
+##   T = its action (stand / crouch / jump / light / medium / heavy attack / grab over and over / CPU that fights back),
+##   G = its guard (off / standing / crouching / auto), Y = its counter - what it does the moment it can act again
+##   after guarding, being hit or getting up (off / light attack / grab / jump).
+##   H = take a hit (hold A to guard it), J = knockdown, R = reset. Health refills.
 ## Fighters always face each other (they turn around when they cross, on the ground or in the air, once
 ## any move they are in has ended). "Back" (away from
 ## the opponent) guards. Best of 3 rounds in the two match modes, then back to the menu (Esc also returns).
@@ -15,7 +19,7 @@ extends Node2D
 ## `--crouch-demo-ticks=N` (from `--crouch-demo-from=M`), `--glide-demo-ticks=N`, `--jump-demo-at=N`
 ## (`--jump-hold-to=N`, `--jump2-demo-at=M`, `--dash-demo-at=M`), `--bdash-demo-at=N`, `--hit-demo-at=N`,
 ## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`, `--grab-demo-at=N[,N...]` (Medium + Heavy), `--r1-demo-at=N[,N...]` (dash button held on those frames); the same with a `p2-` prefix for player 2
-## (e.g. `--p2-walk-demo-ticks=N`); `--dummy-guard=0-3`, `--show-boxes`, `--trace`, `--capture=<png>`.
+## (e.g. `--p2-walk-demo-ticks=N`); `--dummy-guard=0-3`, `--dummy-action=0-7`, `--dummy-counter=0-3`, `--show-boxes`, `--trace`, `--capture=<png>`.
 
 const BOXES := preload("res://scripts/sora_boxes.gd")
 const FLOOR_Y := 600.0
@@ -29,6 +33,15 @@ const BARRIER_FRAMES := 16
 const GRAB_FX_FRAMES := 20
 const GUARD_MODES := [&"none", &"stand", &"crouch", &"auto"]
 const GUARD_NAMES := ["OFF", "STANDING", "CROUCHING", "AUTO"]
+## Training dummy commands (Kvon, November 13). Action: what it does while free. Counter: the buttons it taps while it
+## cannot act (guarding, reeling, down), so the input buffer brings the move out on its first free frame.
+const DUMMY_ACTIONS := [&"stand", &"crouch", &"jump", &"light", &"medium", &"heavy", &"grab", &"cpu"]
+const ACTION_NAMES := ["STAND", "CROUCH", "JUMP", "LIGHT ATTACK", "MEDIUM ATTACK", "HEAVY ATTACK", "GRAB", "CPU (FIGHTS BACK)"]
+const ACTION_KEYS := {&"light": ["light"], &"medium": ["medium"], &"heavy": ["heavy"], &"grab": ["medium", "heavy"]}
+const COUNTER_NAMES := ["OFF", "LIGHT ATTACK", "GRAB", "JUMP"]
+const COUNTER_KEYS := [[], ["light"], ["medium", "heavy"], ["up"]]
+## Game frames between the dummy's repeated attacks / grabs (longer than the slowest of them).
+const DUMMY_ATTACK_EVERY := 60
 const SCREEN_CENTER := Vector2(640, 360)
 const HEAD_ABOVE_FEET := 294.0
 const CAMERA_MARGIN := 40.0
@@ -54,6 +67,8 @@ var _fx: Array[Dictionary] = []
 var _show_boxes := false
 var _trace := false
 var _guard_mode := 0
+var _dummy_action := 0
+var _dummy_counter := 0
 var _demo: Array[Dictionary] = [{}, {}]
 var _was_test := {}
 var _phase := "fight"  # intro / fight / ko / win (match modes); training stays in fight
@@ -132,6 +147,10 @@ func _ready() -> void:
 			p[1].trace_tag = "TRACE2"
 		elif arg.begins_with("--dummy-guard="):
 			_set_guard_mode(int(arg.trim_prefix("--dummy-guard=")))
+		elif arg.begins_with("--dummy-action="):
+			_dummy_action = clampi(int(arg.trim_prefix("--dummy-action=")), 0, DUMMY_ACTIONS.size() - 1)
+		elif arg.begins_with("--dummy-counter="):
+			_dummy_counter = clampi(int(arg.trim_prefix("--dummy-counter=")), 0, COUNTER_KEYS.size() - 1)
 		elif arg == "--show-boxes":
 			_show_boxes = true
 		elif arg.begins_with("--start-hp="):
@@ -139,7 +158,7 @@ func _ready() -> void:
 		elif arg.begins_with("--capture="):
 			_capture(arg.trim_prefix("--capture="))
 	if mode == "training":
-		_set_guard_mode(_guard_mode)
+		_set_dummy_action(_dummy_action)
 	else:
 		_start_round()
 
@@ -243,7 +262,7 @@ func _input_for(i: int) -> Dictionary:
 	elif mode == "cpu":
 		inp = _cpu_input(f, p[0])
 	else:
-		inp = {"down": GUARD_MODES[_guard_mode] == &"crouch"}  # the training dummy
+		inp = _dummy_input(f)
 	if right or left:
 		inp["forward"] = (right and f.facing > 0.0) or (left and f.facing < 0.0)
 		inp["back"] = (left and f.facing > 0.0) or (right and f.facing < 0.0)
@@ -267,6 +286,26 @@ func _input_for(i: int) -> Dictionary:
 	if t in d["grab"]:
 		inp["medium"] = true
 		inp["heavy"] = true
+	return inp
+
+
+## The training dummy's buttons, from its Action and Counter commands.
+func _dummy_input(f: Fighter) -> Dictionary:
+	var action: StringName = DUMMY_ACTIONS[_dummy_action]
+	if action == &"cpu":
+		return _cpu_input(f, p[0])
+	if f.state == &"held":
+		return {}  # no buttons while grabbed: Medium + Heavy there would escape every grab
+	var inp := {"down": action == &"crouch" or (action == &"stand" and GUARD_MODES[_guard_mode] == &"crouch")}
+	if f.state != &"control":
+		if f._tick % 4 < 2:  # a fresh tap every 4 frames: always one inside the 5-frame input buffer
+			for k: String in COUNTER_KEYS[_dummy_counter]:
+				inp[k] = true
+	elif action == &"jump":
+		inp["up"] = true
+	elif ACTION_KEYS.has(action) and f._tick % DUMMY_ATTACK_EVERY < 2:
+		for k: String in ACTION_KEYS[action]:
+			inp[k] = true
 	return inp
 
 
@@ -600,7 +639,14 @@ func _cpu_input(me: Fighter, foe: Fighter) -> Dictionary:
 func _set_guard_mode(m: int) -> void:
 	_guard_mode = m
 	if mode == "training":
-		p[1].guard_mode = GUARD_MODES[m]
+		# The CPU action guards the way the CPU does (by holding back), not by the dummy's guard setting.
+		p[1].guard_mode = &"input" if DUMMY_ACTIONS[_dummy_action] == &"cpu" else GUARD_MODES[m]
+
+
+func _set_dummy_action(a: int) -> void:
+	_dummy_action = a
+	_cpu_plan.clear()
+	_set_guard_mode(_guard_mode)
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -617,9 +663,16 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_R:
 			if mode == "training":
 				_reset_training()
+		KEY_T:
+			if mode == "training":
+				_set_dummy_action((_dummy_action + 1) % DUMMY_ACTIONS.size())
+		KEY_Y:
+			if mode == "training":
+				_dummy_counter = (_dummy_counter + 1) % COUNTER_KEYS.size()
 
 
-## Controller buttons in Training: Create = dummy guard mode (G), touchpad press = reset (R), L1 = boxes (F1).
+## Controller buttons in Training: Create = dummy guard mode (G), Options = dummy action (T), R3 = dummy counter (Y),
+## touchpad press = reset (R), L1 = boxes (F1).
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventJoypadButton and event.pressed) or mode != "training":
 		return
@@ -628,6 +681,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	match event.button_index:
 		JOY_BUTTON_BACK:
 			_set_guard_mode((_guard_mode + 1) % GUARD_MODES.size())
+		JOY_BUTTON_START:
+			_set_dummy_action((_dummy_action + 1) % DUMMY_ACTIONS.size())
+		JOY_BUTTON_RIGHT_STICK:
+			_dummy_counter = (_dummy_counter + 1) % COUNTER_KEYS.size()
 		JOY_BUTTON_TOUCHPAD:
 			_reset_training()
 		JOY_BUTTON_LEFT_SHOULDER:
@@ -746,9 +803,17 @@ func _draw_hud() -> void:
 				_hud.draw_circle(c, 9.0, ink)
 				_hud.draw_circle(c, 7.0, Color8(255, 210, 70) if _wins[i] > k else Color8(48, 56, 86))
 	if mode == "training":
-		var gm := "GUARD: %s  (G)" % GUARD_NAMES[_guard_mode]
-		_hud.draw_string_outline(font, Vector2(720, 76), gm, HORIZONTAL_ALIGNMENT_RIGHT, 520.0, 15, 4, ink)
-		_hud.draw_string(font, Vector2(720, 76), gm, HORIZONTAL_ALIGNMENT_RIGHT, 520.0, 15, Color8(190, 225, 255))
+		var lines := ["ACTION: %s  (T)" % ACTION_NAMES[_dummy_action], "GUARD: %s  (G)" % GUARD_NAMES[_guard_mode],
+			"COUNTER: %s  (Y)" % COUNTER_NAMES[_dummy_counter]]
+		if DUMMY_ACTIONS[_dummy_action] == &"cpu":
+			lines = [lines[0]]  # the CPU guards and counters by itself
+		for k in lines.size():
+			var at := Vector2(720, 76 + 20 * k)
+			_hud.draw_string_outline(font, at, lines[k], HORIZONTAL_ALIGNMENT_RIGHT, 520.0, 15, 4, ink)
+			_hud.draw_string(font, at, lines[k], HORIZONTAL_ALIGNMENT_RIGHT, 520.0, 15, Color8(190, 225, 255))
+		var tips := "Dummy: T action  G guard  Y counter     R: reset   H: hit me   J: knock me down   F1: boxes   Esc: menu"
+		_hud.draw_string_outline(font, Vector2(0, 708), tips, HORIZONTAL_ALIGNMENT_CENTER, 1280.0, 15, 4, ink)
+		_hud.draw_string(font, Vector2(0, 708), tips, HORIZONTAL_ALIGNMENT_CENTER, 1280.0, 15, Color8(200, 215, 240))
 		return
 	var text := ""
 	if _phase == "intro":
