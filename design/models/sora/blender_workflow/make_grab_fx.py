@@ -121,6 +121,11 @@ for i in range(len(hands)):
         t_tip, R0 = math.atan2(-tip[1], tip[0]), float(np.linalg.norm(tip))
         t_was = math.atan2(-was[1], was[0])
         way = 1.0 if (t_tip - t_was + math.pi) % (2*math.pi) - math.pi >= 0 else -1.0
+        # Keep the widest arc inside the frame (a long swung limb or weapon can push it past the top edge).
+        angs = np.linspace(t_tip - way*math.radians(85), t_tip - way*math.radians(10), 28)
+        top = min(me[1] - R0*.95*math.sin(a_) for a_ in angs)
+        if top < 12*SS:
+            R0 *= (me[1] - 12*SS)/(me[1] - top)
         d = ImageDraw.Draw(back, 'RGBA')
         for scale, w_px, alpha in ((.95, 26, 240), (.75, 19, 225), (.55, 13, 210)):
             angs = np.linspace(t_tip - way*math.radians(85), t_tip - way*math.radians(10), 28)
