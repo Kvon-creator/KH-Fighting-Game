@@ -280,6 +280,10 @@ var sprite: AnimatedSprite2D
 var attack_hit := false
 ## That contact was guarded (set by the match with attack_hit).
 var attack_guarded := false
+## Same-strength cancels in the current ground string (Kvon, November 16): strengths already switched between standing
+## and crouching (once each), and whether the Crouching Light has already cancelled into itself (once).
+var _switched := {}
+var _clight_again := false
 ## Whether the current attack's contact starts the fast fall: opponent on the ground, or juggled and hit by the
 ## Jumping Heavy (set by match.gd).
 var fast_fall_hit := false
@@ -621,10 +625,24 @@ func step(inp: Dictionary) -> void:
 	# crouching, skipping allowed - cancels the rest of it: L -> M / H, M -> H (e.g. L -> crouching Heavy launcher).
 	var chain := is_attacking() and attack_hit and pressed_strength != &"" \
 		and strength_rank(pressed_strength) > strength_rank(anim)
-	if pressed_strength != &"" and not back_dashing and (anim in GROUND_CANCEL or chain):
+	# Same strength (Kvon, November 16), also after contact (hit or guard): standing <-> crouching once per strength
+	# in a string (sL -> cL, cM -> sM; not back again), and the Crouching Light into itself once (cL -> cL).
+	var target := StringName("attack_" + ("c" if crouch else "") + pressed_strength)
+	var same := is_attacking() and attack_hit and pressed_strength != &"" \
+		and strength_rank(pressed_strength) == strength_rank(anim)
+	var switch: bool = same and target != anim and not _switched.get(pressed_strength, false)
+	var again: bool = same and target == &"attack_clight" and anim == &"attack_clight" and not _clight_again
+	if pressed_strength != &"" and not back_dashing and (anim in GROUND_CANCEL or chain or switch or again):
+		if anim in GROUND_CANCEL:
+			_switched.clear()  # a new string
+			_clight_again = false
+		elif switch:
+			_switched[pressed_strength] = true
+		elif again:
+			_clight_again = true
 		position.y = FLOOR_Y
 		_use(["light", "medium", "heavy"])
-		show_anim(StringName("attack_" + ("c" if crouch else "") + pressed_strength))
+		show_anim(target)
 		return
 	if (back_tap or dash_back) and not back_dashing and anim in GROUND_CANCEL:
 		_bd_tick = 0

@@ -52,6 +52,34 @@ SWEEP_FROM_BY = {'attack_cmedium': 0.0, 'attack_jmedium': .8, 'attack_cheavy': 0
 # saved_attacks/crouching_heavy_up_thrust) needed 110 because its Key pointed straight up; the Upper Slash (v13,
 # Kvon November 6) reaches forward on its own, so none now. Its hitbox covers the whole swing from the rise.
 FORWARD_PX = {}
+# Attacks whose hitbox also follows the Keyblade smear on the active drawing (Kvon, November 16: "Sora's jumping heavy
+# hitbox to match that of its smear frames when active"): the smear's pixels are split along its arc into SMEAR_BINS
+# pieces, each boxed, so the boxes follow the curve instead of filling the arc's empty middle.
+SMEAR_HIT = {'attack_jheavy'}
+SMEAR_BINS = 8
+
+
+def smear_boxes(path):
+    a = np.asarray(Image.open(path).convert('RGBA').getchannel('A')) > 40
+    ys, xs = np.nonzero(a)
+    if not len(xs):
+        return []
+    # the arc's centre: least-squares circle through the smear's pixels
+    cx, cy = np.linalg.lstsq(np.column_stack((2*xs, 2*ys, np.ones(len(xs)))), xs**2 + ys**2, rcond=None)[0][:2]
+    ang = np.degrees(np.arctan2(ys - cy, xs - cx)) % 360
+    srt = np.sort(ang)
+    gaps = np.diff(np.append(srt, srt[0] + 360))
+    start = srt[(int(np.argmax(gaps)) + 1) % len(srt)]       # the arc begins after its largest empty angle
+    rel = (ang - start) % 360
+    edges = np.linspace(0, rel.max() + 1e-6, SMEAR_BINS + 1)
+    boxes = []
+    for k in range(SMEAR_BINS):
+        sel = (rel >= edges[k]) & (rel < edges[k + 1])
+        if sel.any():
+            bx, by = xs[sel], ys[sel]
+            boxes.append((int(bx.min()) - GROW, int(by.min()) - GROW, int(bx.max() - bx.min()) + 1 + 2*GROW,
+                          int(by.max() - by.min()) + 1 + 2*GROW))
+    return boxes
 
 
 def alpha_mask(path):
@@ -174,6 +202,8 @@ def main():
                 box = (box[0], box[1], min(mask.shape[1] - box[0], box[2] + FORWARD_PX[anim]), box[3])
             assert box, (anim, i)
             hit[name] = [box]
+            if anim in SMEAR_HIT:
+                hit[name] += smear_boxes(ASSETS / f'{anim}_smear_384' / f'sora_{anim}_smear_{i:02d}.png')
             # preview: drawing + hurt (blue) + hit (red)
             im = Image.open(ASSETS / name).convert('RGBA')
             bg = Image.new('RGBA', im.size, (255, 255, 255, 255)); bg.alpha_composite(im)

@@ -201,5 +201,5 @@ const HIT := {
 	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(207, 164, 157, 277)],
 	"attack_jlight_384/sora_attack_jlight_02.png": [Rect2(157, 75, 204, 83)],
 	"attack_jmedium_384/sora_attack_jmedium_03.png": [Rect2(181, 115, 163, 126)],
-	"attack_jheavy_384/sora_attack_jheavy_03.png": [Rect2(204, 149, 153, 160)],
+	"attack_jheavy_384/sora_attack_jheavy_03.png": [Rect2(204, 149, 153, 160), Rect2(-3, 3, 80, 45), Rect2(60, -3, 79, 34), Rect2(129, -3, 72, 47), Rect2(185, -2, 81, 70), Rect2(229, 18, 83, 97), Rect2(245, 70, 94, 86), Rect2(249, 133, 105, 78), Rect2(243, 187, 112, 106)],
 }
