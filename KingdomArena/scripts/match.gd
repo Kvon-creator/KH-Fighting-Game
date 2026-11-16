@@ -384,7 +384,7 @@ func _hits() -> void:
 			if guarded:
 				print("GUARD ", a._tick, " ", attack, " ", level, " ", d.sprite.animation)
 			else:
-				print("HIT ", a._tick, " ", attack, " ", Fighter.DAMAGE[strength], " dummy_hp=", d.hp, " ",
+				print("HIT ", a._tick, " ", attack, " ", d.last_damage, " dummy_hp=", d.hp, " ",
 					d.state, " combo=", d.combo_hits)
 	if mode != "training" and _phase == "fight" and (p[0].hp == 0 or p[1].hp == 0):
 		_phase = "ko"

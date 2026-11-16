@@ -266,6 +266,11 @@ const GRAB_BUFFER := 8
 ## Hitstun decay (Kvon: per hit): each hit in the same combo gives 10% less hitstun and air pop, never below 40%.
 const DECAY_PER_HIT := 0.1
 const DECAY_FLOOR := 0.4
+## Damage scaling by combo starter (Kvon, November 16): a combo's first hit deals full damage; each later hit loses this
+## share per hit already landed, set by the strength of the combo's FIRST hit (light starters scale the most), never
+## below DAMAGE_FLOOR. E.g. sL > sM > cH = 300 + 500 x .8 + 800 x .6 = 1180. The grab's 1200 is not scaled.
+const STARTER_SCALING := {&"light": 0.2, &"medium": 0.15, &"heavy": 0.1}
+const DAMAGE_FLOOR := 0.3
 
 ## Which way he faces: 1 = right, -1 = left. "Forward" / "back" in his input are relative to it.
 var facing := 1.0
@@ -289,6 +294,9 @@ var _clight_again := false
 var fast_fall_hit := false
 ## Hits in the combo he is taking (hitstun decay), his pushback speed and direction (world), knocked out.
 var combo_hits := 0
+## Strength of the hit that started the combo he is taking, and the damage the last hit dealt (after scaling).
+var combo_starter := &"light"
+var last_damage := 0
 var push_v := 0.0
 var push_dir := 1.0
 var ko := false
@@ -1047,7 +1055,11 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 		_stun = BLOCKSTUN[strength]
 		show_anim(guard)
 		return true
-	hp = maxi(hp - DAMAGE[strength], 0)
+	if combo_hits == 0:
+		combo_starter = strength
+	var scaling := 1.0 if combo_hits == 0 else maxf(DAMAGE_FLOOR, 1.0 - STARTER_SCALING[combo_starter] * combo_hits)
+	last_damage = roundi(DAMAGE[strength] * scaling)
+	hp = maxi(hp - last_damage, 0)
 	var decay := maxf(DECAY_FLOOR, 1.0 - DECAY_PER_HIT * combo_hits)
 	combo_hits += 1
 	var was_air := _air  # _end_moves clears it; a jumping fighter hit in the air must be knocked up, not left floating
