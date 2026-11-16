@@ -12,6 +12,7 @@
 - [Agent Setup](Agent_Setup.md): User preferences, Godot requirements, testing, protected files, and memory workflow. Read before project work.
 - [Approval Preference](Codex_Approval_Preference.md): Routine work allowed by Agent Setup is preauthorized; project settings use automatic review for eligible runtime approvals.
 - [Mobile Workflow](Codex_Mobile_Workflow.md): Phone pairing requested before further Gemini sprite generation; setup and status.
+- [GitHub Pages Web Build](GitHub_Pages_Web_Build.md): Playable browser build in docs/ (Web preset in export_presets.cfg, authorized Nov 16); re-export after game changes; Kvon enables Pages in repo settings.
 - [GitHub Repository](GitHub_Repository.md): Repository URL, branch tracking, commit/push approval; push after every finished step.
 - [Godot executable](Godot_Executable.md): Godot 4.7.2 path, KingdomArena project, online-docs use, verified import/capture/movie test commands.
 - [Git Executable](Git_Executable.md): User-provided installation path for commits and periodic main pushes when Git is absent from PATH.
