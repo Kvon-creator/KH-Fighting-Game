@@ -6,6 +6,9 @@ extends Control
 const ITEMS := [["PLAYER  VS.  PLAYER", "pvp"], ["PLAYER  VS.  CPU", "cpu"], ["TRAINING", "training"]]
 
 var _buttons: Array[Button] = []
+## Browser build: a web page can't see a controller until one of its buttons is pressed (Godot's web export docs), so
+## the menu says so until one connects (Kvon, November 17: controller support for the GitHub Pages version).
+var _pad_hint: Label
 ## Input is ignored for the first quarter second (a key or click still held when the window opens).
 var _ready_at := 0
 
@@ -51,6 +54,17 @@ func _ready() -> void:
 	help.add_theme_font_size_override("font_size", 18)
 	add_child(help)
 	_ready_at = Time.get_ticks_msec() + 250
+	if OS.has_feature("web"):
+		_pad_hint = Label.new()
+		_pad_hint.text = "Controller: press any button on it to connect"
+		_pad_hint.position = Vector2(0, 600)
+		_pad_hint.size = Vector2(1280, 30)
+		_pad_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_pad_hint.add_theme_font_size_override("font_size", 18)
+		_pad_hint.add_theme_color_override("font_color", Color8(255, 226, 120))
+		add_child(_pad_hint)
+		Input.joy_connection_changed.connect(_on_joy_changed)
+		_on_joy_changed(0, false)
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture="):
 			await get_tree().create_timer(1.0).timeout
@@ -82,6 +96,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_A:
 		_pick(maxi(_buttons.find(get_viewport().gui_get_focus_owner() as Button), 0))
+
+
+func _on_joy_changed(_device: int, _connected: bool) -> void:
+	_pad_hint.visible = Input.get_connected_joypads().is_empty()
+	if not _pad_hint.visible:
+		# In a browser the press that wakes the controller also arrives as a press: don't let it pick a menu item.
+		_ready_at = Time.get_ticks_msec() + 300
+		print("MENU controller connected")
 
 
 func _pick(i: int) -> void:

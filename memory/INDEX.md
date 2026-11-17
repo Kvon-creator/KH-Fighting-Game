@@ -66,7 +66,7 @@
 - [Flat-canvas Refinement](Sora_Flat_Canvas_Refinement.md): Authorized local painting of whole sprites; latest early-lift pilot and13-pose study, with preserved sources and remaining weapon/pose work.
 - [Flat Run and Stop](Sora_Flat_Run_Cycles.md): Current 18-pose gait_cycle_study_v5 landing candidate, preserved stop, export/provenance QA, unfinished artwork/joins and completed GitHub delivery.
 - [Git Identity](Git_Identity.md): Provided commit name and email, configured for this repository.
-- [Controller Support](Controller_Support.md): DualSense = P1 with keyboard; Square/Triangle/Circle = L/M/H, D-pad + stick move, Cross starts menu items, Training Create/touchpad/L1 = G/R/F1.
+- [Controller Support](Controller_Support.md): DualSense = P1 with keyboard; Square/Triangle/Circle = L/M/H, R1 dash, D-pad + stick move, Cross starts menu items; Training Options/Create/R3 = dummy action/guard/counter, touchpad or L3 = reset, L1 = boxes; browser build: press a button to connect.
 - [Rigging Basics](Rigging_Basics_Tutorial.md): Beginner rigging tutorial Kvon shared (Nov 16) - armature at origin, In Front, extrude spine/arm, .L/.R names + Symmetrize, Ctrl+P automatic weights, joint topology, root bone.
 - [Rigify Rigging](Rigify_Rigging_Tutorial.md): Second tutorial Kvon shared (Nov 16, transcript + screenshots) - Rigify Basic Human meta-rig, align to joints with X-Axis Mirror, slight knee/elbow bend, Generate Rig, bind, keep the meta-rig to regenerate.
 - [Rig and Weight Checklist](Rig_Weight_Checklist.md): Apply the tutorials to every character - rig_audit.py first; Nov 16 audit (Sora fine, SMD rigs unnamed + rigid, Larxene unrigged); learn from transcripts, not full video downloads.

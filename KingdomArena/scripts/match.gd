@@ -684,7 +684,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 ## Controller buttons in Training: Create = dummy guard mode (G), Options = dummy action (T), R3 = dummy counter (Y),
-## touchpad press = reset (R), L1 = boxes (F1).
+## touchpad press or L3 = reset (R), L1 = boxes (F1). L3 because browsers don't report the touchpad press (it isn't part
+## of the standard web gamepad layout) - the GitHub Pages build needs another reset button.
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventJoypadButton and event.pressed) or mode != "training":
 		return
@@ -697,7 +698,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_set_dummy_action((_dummy_action + 1) % DUMMY_ACTIONS.size())
 		JOY_BUTTON_RIGHT_STICK:
 			_dummy_counter = (_dummy_counter + 1) % COUNTER_KEYS.size()
-		JOY_BUTTON_TOUCHPAD:
+		JOY_BUTTON_TOUCHPAD, JOY_BUTTON_LEFT_STICK:
 			_reset_training()
 		JOY_BUTTON_LEFT_SHOULDER:
 			_show_boxes = not _show_boxes
