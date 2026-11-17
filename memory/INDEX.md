@@ -72,5 +72,5 @@
 - [Rig and Weight Checklist](Rig_Weight_Checklist.md): Apply the tutorials to every character - rig_audit.py first; Nov 16 audit (Sora fine, SMD rigs unnamed + rigid, Larxene unrigged); learn from transcripts, not full video downloads.
 - [Weight Painting](Weight_Painting_Tutorial.md): Third tutorial (Crashsune Academy part 10, Nov 16, from its captions) - weight / strength / gradient, flat falloff, always Auto Normalize, fix stray hair, add + parent a secondary-motion bone; yt-dlp too old for YouTube video.
 - [Training Mode](Training_Mode.md): Dummy commands - T action (stand / crouch / jump / L / M / H / grab / CPU), G guard, Y counter after guard / hit / get-up; DualSense Options / Create / R3.
-- [Input Buffer](Input_Buffer.md): 5-frame buffer for attack / jump / dash / grab presses in recovery, landing, blockstun, hitstun, wake-up and hit-freeze; used presses are cleared; directions not buffered.
+- [Input Buffer](Input_Buffer.md): 8-frame buffer for attack buttons (Nov 17), 5 for jump / dash, 8 for the grab; buffer for attack / jump / dash / grab presses in recovery, landing, blockstun, hitstun, wake-up and hit-freeze; used presses are cleared; directions not buffered.
 - [Sora Jump Feel](Sora_Jump_Feel.md): 22-frame rise (less floaty), hold-length short/long jumps, fast fall after a jumping attack hits a grounded opponent (on juggles only the jH).

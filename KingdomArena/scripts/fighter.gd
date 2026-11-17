@@ -291,6 +291,10 @@ const AGRAB_HANG_HEIGHT := 300.0
 const AGRAB_LIFT := 12.0
 ## Input buffer (Kvon, November 11): a press of these buttons stays usable for this many game frames.
 const INPUT_BUFFER := 5
+## Attack buttons (Light / Medium / Heavy) keep a press longer (Kvon, November 17: "I was struggling to cancel S.H into
+## C.H. Increase the input buffering window"): a cancel pressed during the swing, before it connects, still comes out.
+## Jump and dash stay at INPUT_BUFFER.
+const ATTACK_BUFFER := 8
 const BUFFERED_KEYS := ["up", "light", "medium", "heavy", "dash"]
 ## The grab (Medium + Heavy) gets a longer buffer (Kvon, November 11: "a bit longer"): both pressed up to this many
 ## frames before he can act.
@@ -501,7 +505,8 @@ func _record_presses(inp: Dictionary) -> void:
 
 
 func _buffered_press(k: String) -> bool:
-	return _tick - int(_press_at.get(k, -1000)) <= INPUT_BUFFER  # pressed up to 5 frames before he can act
+	var window := ATTACK_BUFFER if k in ["light", "medium", "heavy"] else INPUT_BUFFER
+	return _tick - int(_press_at.get(k, -1000)) <= window  # pressed up to 8 (attacks) / 5 frames before he can act
 
 
 ## The move just started used these presses: they don't come out again.
