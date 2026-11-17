@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/stages/dark_depths/bg.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/stages/dark_depths/mid.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/stages/dark_depths/fg.png" id="3"]
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(1280, 120)
+[sub_resource type="RectangleShape2D" id="WallShape"]
+size = Vector2(48, 1600)
+[sub_resource type="RectangleShape2D" id="CeilingShape"]
+size = Vector2(1280, 40)
+
+[node name="DarkDepths" type="Node2D"]
+
+[node name="Background" type="Parallax2D" parent="."]
+scroll_scale = Vector2(1, 0.25)
+scroll_offset = Vector2(0, -360)
+
+[node name="Sprite" type="Sprite2D" parent="Background"]
+texture = ExtResource("1")
+centered = false
+
+[node name="Middleground" type="Parallax2D" parent="."]
+scroll_scale = Vector2(1, 0.55)
+scroll_offset = Vector2(0, -360)
+
+[node name="Sprite" type="Sprite2D" parent="Middleground"]
+texture = ExtResource("2")
+centered = false
+
+[node name="Foreground" type="Parallax2D" parent="."]
+scroll_offset = Vector2(0, -360)
+
+[node name="Sprite" type="Sprite2D" parent="Foreground"]
+texture = ExtResource("3")
+centered = false
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(640, 660)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-24, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WallShape")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1304, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WallShape")
+
+[node name="Ceiling" type="StaticBody2D" parent="."]
+position = Vector2(640, -20)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+shape = SubResource("CeilingShape")
+
+[node name="PlayerOneSpawn" type="Marker2D" parent="."]
+position = Vector2(420, 552)
+
+[node name="PlayerTwoSpawn" type="Marker2D" parent="."]
+position = Vector2(860, 552)
