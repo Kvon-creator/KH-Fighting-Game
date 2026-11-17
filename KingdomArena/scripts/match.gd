@@ -46,6 +46,10 @@ const COUNTER_KEYS := [[], ["light"], ["medium", "heavy"], ["up"]]
 ## Game frames between the dummy's repeated attacks / grabs (longer than the slowest of them).
 const DUMMY_ATTACK_EVERY := 60
 const SCREEN_CENTER := Vector2(640, 360)
+## The camera's resting height (Kvon, November 17: the floor lower on the screen to show more of the stage behind):
+## 60 px above the screen's centre, so the fighters' floor (FLOOR_Y 600) shows 660 px down; the parallax layers move
+## less, so more of the castle and sky shows above the floor's edge. It still rises for jumps as before.
+const CAMERA_REST_Y := 300.0
 const HEAD_ABOVE_FEET := 294.0
 const CAMERA_MARGIN := 40.0
 const CAMERA_EASE := 0.25
@@ -122,7 +126,7 @@ func _ready() -> void:
 		f.setup(frames, smears, START_X[i], 1.0 if i == 0 else -1.0)
 		p.append(f)
 	_camera = Camera2D.new()
-	_camera.position = SCREEN_CENTER
+	_camera.position = Vector2(SCREEN_CENTER.x, CAMERA_REST_Y)
 	_camera.limit_left = 0
 	_camera.limit_right = int(STAGE_WIDTH)
 	_camera.limit_bottom = 720
@@ -235,7 +239,7 @@ func _physics_process(_delta: float) -> void:
 			top = minf(top, p[_grab["a"]].position.y - GRAB_TOSS_TOP)
 		elif gk >= 17 and gk <= 23 and p[_grab["a"]].grab_air:
 			top = minf(top, p[_grab["a"]].position.y - AGRAB_LIFT_TOP)
-	_camera.position.y = lerpf(_camera.position.y, minf(SCREEN_CENTER.y, top - CAMERA_MARGIN + SCREEN_CENTER.y),
+	_camera.position.y = lerpf(_camera.position.y, minf(CAMERA_REST_Y, top - CAMERA_MARGIN + SCREEN_CENTER.y),
 		CAMERA_EASE)
 	_box_view.queue_redraw()
 	_fx_view.queue_redraw()
