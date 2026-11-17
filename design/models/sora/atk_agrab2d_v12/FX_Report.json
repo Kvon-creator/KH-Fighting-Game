@@ -1,0 +1,113 @@
+{
+  "source": "atk_agrab_v12",
+  "fx": [
+    {
+      "drawing": 3,
+      "rings": 3,
+      "turn_deg": 28.5
+    },
+    {
+      "drawing": 4,
+      "rings": 3,
+      "turn_deg": 26.5
+    },
+    {
+      "drawing": 5,
+      "rings": 3,
+      "turn_deg": 41.1
+    },
+    {
+      "drawing": 6,
+      "rings": 3,
+      "turn_deg": 41.9
+    },
+    {
+      "drawing": 7,
+      "rings": 3,
+      "turn_deg": 32.7
+    },
+    {
+      "drawing": 8,
+      "rings": 3,
+      "turn_deg": 32.8
+    },
+    {
+      "drawing": 9,
+      "rings": 3,
+      "turn_deg": 55.1
+    },
+    {
+      "drawing": 10,
+      "rings": 3,
+      "turn_deg": 54.5
+    },
+    {
+      "drawing": 11,
+      "rings": 3,
+      "turn_deg": 52.7
+    },
+    {
+      "drawing": 12,
+      "rings": 3,
+      "turn_deg": 49.2
+    },
+    {
+      "drawing": 13,
+      "rings": 3,
+      "turn_deg": 41.1
+    },
+    {
+      "drawing": 14,
+      "rings": 3,
+      "turn_deg": 41.9
+    },
+    {
+      "drawing": 15,
+      "rings": 3,
+      "turn_deg": 32.7
+    },
+    {
+      "drawing": 16,
+      "rings": 3,
+      "turn_deg": 32.8
+    },
+    {
+      "drawing": 17,
+      "rings": 3,
+      "turn_deg": 55.1
+    },
+    {
+      "drawing": 18,
+      "rings": 3,
+      "turn_deg": 54.5
+    },
+    {
+      "drawing": 19,
+      "sweep_radius_px": 378
+    },
+    {
+      "drawing": 20,
+      "sweep_radius_px": 405
+    },
+    {
+      "drawing": 21,
+      "sweep_radius_px": 453
+    },
+    {
+      "drawing": 22,
+      "sweep_radius_px": 451
+    },
+    {
+      "drawing": 23,
+      "sweep_radius_px": 318
+    },
+    {
+      "drawing": 24,
+      "sweep_radius_px": 461
+    },
+    {
+      "drawing": 25,
+      "speed_lines": 5
+    }
+  ]
+}

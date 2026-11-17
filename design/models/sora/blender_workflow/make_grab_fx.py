@@ -37,7 +37,6 @@ CORE_TONE = (232, 243, 255)
 AIR = src.startswith('atk_agrab')
 # Drawings with rings (the level swing), with arcs (the opponent swung out of it: air = thrown down, ground = heaved
 # and tossed up), with speed lines (just released), and with the impact burst (ground only: the Keyblade strike).
-SPIN, SWEEP, RELEASED, STRIKE = (range(2, 7), (7,), 8, None) if AIR else (range(2, 10), (10, 11), 12, 14)
 SQUASH = .38                                   # how flat a level circle looks from the sprite camera
 
 
@@ -47,7 +46,14 @@ def screen(p):
 
 
 hands = [np.array(h) for h in rep['grab_hand_L']]
-spin_pts = hands[2:7] if AIR else hands[2:10]
+# Per move (by drawing count): ring drawings, arc drawings, speed-line drawings, the strike, the drawings the spin
+# centre is fitted to. Air grab v12 (Kvon, November 17: "increase the use of the speed line effects"): rings on both
+# spins, arcs following the opponent up into the overhead lift and down into the throw, speed lines on the release.
+SPIN, SWEEP, RELEASED, STRIKE, FIT = {
+    (True, 29): (range(3, 19), (19, 20, 21, 22, 23, 24), (25,), None, range(3, 19)),
+    (True, 12): (range(2, 7), (7,), (8,), None, range(2, 7)),
+}.get((AIR, len(hands)), (range(2, 10), (10, 11), (12,), 14, range(2, 10)))
+spin_pts = [hands[k] for k in FIT]
 # Least-squares circle through the spin's fist positions (top view) -> its centre (his pivot). v7's steps are uneven
 # (the spin accelerates), so a plain average no longer lands on the centre.
 _xy = np.array([h[:2] for h in spin_pts])
@@ -133,7 +139,7 @@ for i in range(len(hands)):
             tapered(d, pts, w_px, LINE_TONE, alpha)
             tapered(d, pts, w_px*.4, CORE_TONE, alpha)
         log.append({'drawing': i, 'sweep_radius_px': round(R0/SS)})
-    if i == RELEASED:
+    if i in RELEASED:
         # Thrown: straight speed lines from the opponent back toward the hand that threw it.
         c, me = centre(sys.argv[3], i), centre(dst, i)
         along = (c - me)/max(np.linalg.norm(c - me), 1.0)
