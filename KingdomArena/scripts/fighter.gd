@@ -202,11 +202,13 @@ const ANIMATIONS := {
 	&"grab": ["res://assets/sora/grab_768/", "sora_grab_", [3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 6, 4, 7, 7, 8], []],
 	&"grab_held": ["res://assets/sora/grab_held_768/", "sora_grab_held_",
 		[3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 6, 4], []],
-	# Air grab (Medium + Heavy in the air; Kvon approved v11, November 17, after Magik's Tokon air throw): reach, catch
-	# (checks on frame 5), twist x4, whip, throw (1200), release, two follow-through drawings, back to the jump tuck.
-	# Timed by _air_step. agrab_held = the opponent's matching drawings (0-8), shown on the grabber's timing.
-	&"agrab": ["res://assets/sora/agrab_768/", "sora_agrab_", [2, 3, 3, 3, 2, 2, 2, 2, 4, 4, 4, 5], []],
-	&"agrab_held": ["res://assets/sora/agrab_held_768/", "sora_agrab_held_", [2, 3, 3, 3, 2, 2, 2, 2, 4], []],
+	# Air grab (Medium + Heavy in the air; Kvon approved v12, November 17, after Magik's Tokon air throw): reach,
+	# in-between, catch (checks on frame 6), two spins with in-betweens (3-18), the momentum lift (19-20) into the
+	# overhead hold (21), throw down (22-23, 1200 on 23), release (24), the opponent's dive (25), follow-through and
+	# the jump tuck (26-28). 72 frames. Timed by _air_step. agrab_held = the opponent's drawings (0-25).
+	&"agrab": ["res://assets/sora/agrab_768/", "sora_agrab_", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4, 4, 4, 5], []],
+	&"agrab_held": ["res://assets/sora/agrab_held_768/", "sora_agrab_held_",
+		[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -265,18 +267,18 @@ const GRAB_BEHIND := [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0]
 ## forward / up; measured by export_grab_assets.py: strike body centre minus the hurt_air drawing's body centre).
 const GRAB_RELEASE_AT := Vector2(179.5, -223.0)
 ## Air grab (Kvon, November 17, approving my proposed values): catches only an opponent who is also in the air and free,
-## on frame 5 (as drawn), within AGRAB_RANGE px in front and AGRAB_RANGE_Y px above or below (my choice - no value
-## was set). While it holds, Sora hangs in place; the throw drawing (7) deals GRAB_DAMAGE with GRAB_FREEZE; after the
-## last held drawing (8) the opponent drops head-first from where it showed them (AGRAB_RELEASE_AT: their body there
+## on frame 6 (as drawn), within AGRAB_RANGE px in front and AGRAB_RANGE_Y px above or below (my choice - no value
+## was set). While it holds, Sora hangs in place; the throw-down drawing (23) deals GRAB_DAMAGE with GRAB_FREEZE; after
+## the last held drawing (25) the opponent drops head-first from where it showed them (AGRAB_RELEASE_AT: their body there
 ## minus the hurt_fall drawing's body centre, from export_grab_assets.py air), moving AGRAB_RELEASE_V (forward, down)
 ## px per frame. Sora then falls through the follow-through. A miss keeps the open hand out while he falls.
-const AGRAB_CHECK_FRAME := 5
-const AGRAB_THROW := 7
-const AGRAB_LAST_HELD := 8
+const AGRAB_CHECK_FRAME := 6
+const AGRAB_THROW := 23
+const AGRAB_LAST_HELD := 25
 const AGRAB_RANGE := 180.0
 const AGRAB_RANGE_Y := 150.0
 const AGRAB_WHIFF_RECOVERY := 20
-const AGRAB_BEHIND := [1, 1, 1, 1, 0, 0, 1, 1, 1]
+const AGRAB_BEHIND := [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1]
 const AGRAB_RELEASE_AT := Vector2(182.1, 291.1)
 const AGRAB_RELEASE_V := Vector2(4.0, 6.0)
 ## While holding, Sora rises (AGRAB_LIFT px per frame) until he is at least this high above the floor, so the approved
@@ -877,7 +879,7 @@ func _air_step() -> void:
 		var holds_g: Array = ANIMATIONS[&"agrab"][2]
 		var drawing := _step_of(grab_t, holds_g)
 		if grab_part == &"whiff":
-			drawing = 1 if grab_t - AGRAB_CHECK_FRAME < AGRAB_WHIFF_RECOVERY else holds_g.size()
+			drawing = 0 if grab_t - AGRAB_CHECK_FRAME < AGRAB_WHIFF_RECOVERY else holds_g.size()  # the reach, hand out
 		if drawing >= holds_g.size():
 			grab_t = -1  # over: the jump's own drawings from here
 			grab_part = &""

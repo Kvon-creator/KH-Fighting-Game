@@ -56,6 +56,9 @@ const ROUNDS_TO_WIN := 2
 const PAD_STICK_DEADZONE := 0.5
 ## Ground grab: how high above the grabber's feet the held fighter's top is drawn during the toss (camera).
 const GRAB_TOSS_TOP := 590.0
+## Air grab: the overhead lift (drawings 19-23) draws the held fighter up to ~470 px above the grabber's feet; the
+## camera starts rising two drawings early (it eases) and keeps the health bars clear (+70 px).
+const AGRAB_LIFT_TOP := 540.0
 
 var mode := "training"
 var p: Array[Fighter] = []
@@ -225,6 +228,8 @@ func _physics_process(_delta: float) -> void:
 		var gk := p[_grab["a"]].grab_drawing()
 		if gk >= 10 and not p[_grab["a"]].grab_air:
 			top = minf(top, p[_grab["a"]].position.y - GRAB_TOSS_TOP)
+		elif gk >= 17 and gk <= 23 and p[_grab["a"]].grab_air:
+			top = minf(top, p[_grab["a"]].position.y - AGRAB_LIFT_TOP)
 	_camera.position.y = lerpf(_camera.position.y, minf(SCREEN_CENTER.y, top - CAMERA_MARGIN + SCREEN_CENTER.y),
 		CAMERA_EASE)
 	_box_view.queue_redraw()

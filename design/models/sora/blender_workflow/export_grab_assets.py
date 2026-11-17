@@ -10,12 +10,12 @@ Also prints the opponent body's centre on the strike drawing (14) relative to th
 drawing 0 body centre relative to its feet, so the game can start the knockdown where the opponent is drawn.
 Plain Python + Pillow. Run: python export_grab_assets.py
 
-`python export_grab_assets.py air` exports the approved AIR grab (v11, Kvon November 17) the same way:
-- agrab_768/sora_agrab_NN.png           Sora (12 drawings)
-- agrab_held_768/sora_agrab_held_NN.png the grabbed opponent (drawings 0-8), the effects (rings / arcs / speed lines)
+`python export_grab_assets.py air` exports the approved AIR grab (v12, Kvon November 17) the same way:
+- agrab_768/sora_agrab_NN.png           Sora (29 drawings)
+- agrab_held_768/sora_agrab_held_NN.png the grabbed opponent (drawings 0-25), the effects (rings / arcs / speed lines)
   under them; no smear or front-effect layer exists for the air grab
 Feet point (384, 511.5): the air build stands Sora on canvas row 680 (x .75 + 1.5). It prints the opponent body's centre
-on the last held drawing (8) and the head-first fall drawing (hurt_fall 0) centre, for where the knockdown takes over.
+on the last held drawing (25) and the head-first fall drawing (hurt_fall 0) centre, for where the knockdown takes over.
 """
 import sys
 import json
@@ -27,8 +27,8 @@ assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT
 SORA = ROOT / 'design/models/sora'
 ASSETS = ROOT / 'KingdomArena/assets/sora'
 AIR = 'air' in sys.argv[1:]
-ATK, HURT = (SORA / 'atk_agrab2d_v11', SORA / 'hurt_agrab2d_v11') if AIR else (SORA / 'atk_grab2d_v7', SORA / 'hurt_grab2d_v7')
-LAST_HELD = 8 if AIR else 14
+ATK, HURT = (SORA / 'atk_agrab2d_v12', SORA / 'hurt_agrab2d_v12') if AIR else (SORA / 'atk_grab2d_v7', SORA / 'hurt_grab2d_v7')
+LAST_HELD = 25 if AIR else 14
 SIZE = 768
 NAME = 'agrab' if AIR else 'grab'
 FEET_ROW = 680 if AIR else 982
@@ -70,4 +70,6 @@ strike = centre(HURT / 'frames_512' / f'sora_idle3d_{LAST_HELD:02d}.png', (512, 
 strike = (round(strike[0]*.75, 1), round(strike[1]*.75, 1))
 air0 = centre(ASSETS / ('hurt_fall_384/sora_hurt_fall_00.png' if AIR else 'hurt_air_384/sora_hurt_air_00.png'), (192, 354))
 print('EXPORT_OK holds', rep['game_frames_60fps'], 'behind', rep['grab_victim_behind'][:LAST_HELD + 1])
+tops = [Image.open(HURT / 'frames_512' / f'sora_idle3d_{i:02d}.png').getchannel('A').getbbox()[1] for i in range(LAST_HELD + 1)]
+print('HELD_TOP_ABOVE_FEET', round((FEET_ROW - min(tops))*.75, 1), 'on drawing', tops.index(min(tops)))
 print('STRIKE_BODY_CENTRE', strike, 'HURT_AIR0_CENTRE', (round(air0[0], 1), round(air0[1], 1)))
