@@ -374,6 +374,10 @@ var _hold_vx := false
 var _was := {}
 ## Input buffer: game frame each attack / jump / dash button was last newly pressed (see _record_presses).
 var _press_at := {}
+## Cancel presses held for the current attack (Kvon, November 17, option 2): an attack button pressed while an attack
+## is out is remembered until that attack makes contact, then cancels as if pressed at that moment (the usual cancel
+## rules decide whether it can). Forgotten when the attack ends without contact, or is cut short.
+var _pending := {}
 var _last_forward_press := -1000
 var _last_back_press := -1000
 var _back_held := false
@@ -419,6 +423,7 @@ func reset(start_x: float, face: float) -> void:
 	_air_atk_tick = -1
 	_bd_tick = -1
 	_press_at.clear()
+	_pending.clear()
 	_glide = false
 	grab_t = -1
 	grab_part = &""
@@ -501,6 +506,8 @@ func _record_presses(inp: Dictionary) -> void:
 	for k: String in BUFFERED_KEYS:
 		if inp.get(k, false) and not _was.get(k, false):
 			_press_at[k] = _tick
+			if k in ["light", "medium", "heavy"] and is_attacking():
+				_pending[k] = true
 		_was[k] = inp.get(k, false)
 
 
@@ -513,6 +520,7 @@ func _buffered_press(k: String) -> bool:
 func _use(keys: Array) -> void:
 	for k: String in keys:
 		_press_at.erase(k)
+		_pending.erase(k)
 
 
 ## Attack strength as a rank: Light 0, Medium 1, Heavy 2 (chains only go to a higher rank).
@@ -524,6 +532,8 @@ static func strength_rank(anim: StringName) -> int:
 ## One game frame. inp holds this frame's held buttons: forward, back, up, down, light, medium, heavy, dash.
 func step(inp: Dictionary) -> void:
 	_tick += 1
+	if not is_attacking():
+		_pending.clear()  # the attack ended (or never was): its held cancel presses go
 	_back_held = inp.get("back", false)
 	_down_held = inp.get("down", false)
 	_jump_held = inp.get("up", false)
@@ -550,7 +560,7 @@ func step(inp: Dictionary) -> void:
 		_was[k] = inp.get(k, false)
 	_record_presses(inp)
 	for k: String in BUFFERED_KEYS:
-		pressed[k] = _buffered_press(k)
+		pressed[k] = _buffered_press(k) or (attack_hit and _pending.get(k, false))
 	if grab_t >= 0 and not grab_air:
 		_grab_step()
 		return
@@ -1204,6 +1214,7 @@ func _end_moves() -> void:
 	_air_atk_tick = -1
 	_bd_tick = -1
 	_press_at.clear()
+	_pending.clear()
 	_after_dash = false
 	_glide = false
 	_hold_vx = false
