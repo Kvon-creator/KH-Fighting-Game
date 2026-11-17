@@ -9,7 +9,15 @@ like every other animation's 512 -> 384). Feet point in those frames: (384, 738)
 Also prints the opponent body's centre on the strike drawing (14) relative to the feet point, and the hurt_air
 drawing 0 body centre relative to its feet, so the game can start the knockdown where the opponent is drawn.
 Plain Python + Pillow. Run: python export_grab_assets.py
+
+`python export_grab_assets.py air` exports the approved AIR grab (v11, Kvon November 17) the same way:
+- agrab_768/sora_agrab_NN.png           Sora (12 drawings)
+- agrab_held_768/sora_agrab_held_NN.png the grabbed opponent (drawings 0-8), the effects (rings / arcs / speed lines)
+  under them; no smear or front-effect layer exists for the air grab
+Feet point (384, 511.5): the air build stands Sora on canvas row 680 (x .75 + 1.5). It prints the opponent body's centre
+on the last held drawing (8) and the head-first fall drawing (hurt_fall 0) centre, for where the knockdown takes over.
 """
+import sys
 import json
 from pathlib import Path
 from PIL import Image
@@ -18,12 +26,15 @@ ROOT = Path(__file__).resolve().parents[4]
 assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT
 SORA = ROOT / 'design/models/sora'
 ASSETS = ROOT / 'KingdomArena/assets/sora'
-ATK, HURT = SORA / 'atk_grab2d_v7', SORA / 'hurt_grab2d_v7'
-LAST_HELD = 14
+AIR = 'air' in sys.argv[1:]
+ATK, HURT = (SORA / 'atk_agrab2d_v11', SORA / 'hurt_agrab2d_v11') if AIR else (SORA / 'atk_grab2d_v7', SORA / 'hurt_grab2d_v7')
+LAST_HELD = 8 if AIR else 14
 SIZE = 768
+NAME = 'agrab' if AIR else 'grab'
+FEET_ROW = 680 if AIR else 982
 
 rep = json.loads((HURT / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
-out = {k: ASSETS / k for k in ('grab_768', 'grab_fx_768', 'grab_held_768')}
+out = {k: ASSETS / f'{NAME}{k[4:]}' for k in ('grab_768', 'grab_held_768') + (() if AIR else ('grab_fx_768',))}
 for d in out.values():
     d.mkdir(parents=True, exist_ok=True)
 
@@ -34,19 +45,20 @@ def small(img):
 
 for i in range(len(rep['game_frames_60fps'])):
     body = Image.open(ATK / 'frames_512' / f'sora_idle3d_{i:02d}.png').convert('RGBA')
-    small(body).save(out['grab_768'] / f'sora_grab_{i:02d}.png')
-    fx = Image.new('RGBA', body.size, (0, 0, 0, 0))
-    for p in (ATK / 'frames_smear_512' / f'sora_smear_{i:02d}.png', ATK / 'frames_fx_front_512' / f'sora_fx_{i:02d}.png'):
-        if p.is_file():
-            fx.alpha_composite(Image.open(p).convert('RGBA'))
-    small(fx).save(out['grab_fx_768'] / f'sora_grab_fx_{i:02d}.png')
+    small(body).save(out['grab_768'] / f'sora_{NAME}_{i:02d}.png')
+    if not AIR:
+        fx = Image.new('RGBA', body.size, (0, 0, 0, 0))
+        for p in (ATK / 'frames_smear_512' / f'sora_smear_{i:02d}.png', ATK / 'frames_fx_front_512' / f'sora_fx_{i:02d}.png'):
+            if p.is_file():
+                fx.alpha_composite(Image.open(p).convert('RGBA'))
+        small(fx).save(out['grab_fx_768'] / f'sora_grab_fx_{i:02d}.png')
     if i <= LAST_HELD:
         held = Image.new('RGBA', body.size, (0, 0, 0, 0))
         lines = ATK / 'frames_fx_back_512' / f'sora_fx_{i:02d}.png'
         if lines.is_file():
             held.alpha_composite(Image.open(lines).convert('RGBA'))
         held.alpha_composite(Image.open(HURT / 'frames_512' / f'sora_idle3d_{i:02d}.png').convert('RGBA'))
-        small(held).save(out['grab_held_768'] / f'sora_grab_held_{i:02d}.png')
+        small(held).save(out['grab_held_768'] / f'sora_{NAME}_held_{i:02d}.png')
 
 
 def centre(path, feet):
@@ -54,8 +66,8 @@ def centre(path, feet):
     return ((bb[0] + bb[2])/2 - feet[0], (bb[1] + bb[3])/2 - feet[1])
 
 
-strike = centre(HURT / 'frames_512' / f'sora_idle3d_{LAST_HELD:02d}.png', (512, 982))
+strike = centre(HURT / 'frames_512' / f'sora_idle3d_{LAST_HELD:02d}.png', (512, FEET_ROW))
 strike = (round(strike[0]*.75, 1), round(strike[1]*.75, 1))
-air0 = centre(ASSETS / 'hurt_air_384' / 'sora_hurt_air_00.png', (192, 354))
+air0 = centre(ASSETS / ('hurt_fall_384/sora_hurt_fall_00.png' if AIR else 'hurt_air_384/sora_hurt_air_00.png'), (192, 354))
 print('EXPORT_OK holds', rep['game_frames_60fps'], 'behind', rep['grab_victim_behind'][:LAST_HELD + 1])
 print('STRIKE_BODY_CENTRE', strike, 'HURT_AIR0_CENTRE', (round(air0[0], 1), round(air0[1], 1)))

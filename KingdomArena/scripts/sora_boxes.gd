@@ -3,6 +3,18 @@
 ## HURT: where Sora can be hit. HIT: where an attack hits (its active drawings only).
 
 const HURT := {
+	"agrab_768/sora_agrab_00.png": [Rect2(295, 252, 221, 100), Rect2(235, 346, 201, 100), Rect2(235, 440, 203, 100)],
+	"agrab_768/sora_agrab_01.png": [Rect2(342, 246, 150, 98), Rect2(289, 342, 173, 100), Rect2(286, 436, 173, 102)],
+	"agrab_768/sora_agrab_02.png": [Rect2(362, 256, 101, 98), Rect2(333, 348, 79, 98), Rect2(309, 440, 83, 98)],
+	"agrab_768/sora_agrab_03.png": [Rect2(322, 261, 157, 83), Rect2(358, 338, 145, 83), Rect2(421, 415, 102, 83)],
+	"agrab_768/sora_agrab_04.png": [Rect2(292, 268, 120, 77), Rect2(357, 339, 85, 77), Rect2(376, 410, 98, 77)],
+	"agrab_768/sora_agrab_05.png": [Rect2(344, 272, 156, 64), Rect2(265, 330, 173, 64), Rect2(233, 388, 130, 65)],
+	"agrab_768/sora_agrab_06.png": [Rect2(313, 266, 161, 69), Rect2(241, 329, 256, 69), Rect2(227, 392, 150, 70)],
+	"agrab_768/sora_agrab_07.png": [Rect2(266, 264, 186, 60), Rect2(231, 318, 251, 60), Rect2(245, 372, 249, 61)],
+	"agrab_768/sora_agrab_08.png": [Rect2(316, 280, 159, 94), Rect2(232, 368, 197, 94), Rect2(240, 456, 187, 94)],
+	"agrab_768/sora_agrab_09.png": [Rect2(233, 289, 246, 87), Rect2(242, 370, 163, 87), Rect2(306, 451, 79, 88)],
+	"agrab_768/sora_agrab_10.png": [Rect2(324, 262, 135, 89), Rect2(274, 345, 169, 89), Rect2(265, 428, 174, 90)],
+	"agrab_768/sora_agrab_11.png": [Rect2(345, 239, 88, 88), Rect2(342, 321, 102, 88), Rect2(353, 403, 84, 88)],
 	"attack_cheavy_384/sora_attack_cheavy_00.png": [Rect2(141, 366, 79, 64), Rect2(110, 424, 108, 65), Rect2(40, 483, 192, 65)],
 	"attack_cheavy_384/sora_attack_cheavy_01.png": [Rect2(109, 320, 71, 80), Rect2(60, 394, 158, 80), Rect2(39, 468, 206, 80)],
 	"attack_cheavy_384/sora_attack_cheavy_02.png": [Rect2(103, 254, 110, 102), Rect2(67, 350, 150, 102), Rect2(62, 446, 160, 103)],

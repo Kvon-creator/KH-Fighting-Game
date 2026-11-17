@@ -223,7 +223,7 @@ func _physics_process(_delta: float) -> void:
 	if not _grab.is_empty():
 		# The grab's toss draws the held fighter far above the feet point (up to ~580 px over drawings 10-14).
 		var gk := p[_grab["a"]].grab_drawing()
-		if gk >= 10:
+		if gk >= 10 and not p[_grab["a"]].grab_air:
 			top = minf(top, p[_grab["a"]].position.y - GRAB_TOSS_TOP)
 	_camera.position.y = lerpf(_camera.position.y, minf(SCREEN_CENTER.y, top - CAMERA_MARGIN + SCREEN_CENTER.y),
 		CAMERA_EASE)
@@ -409,13 +409,17 @@ func _grabs() -> void:
 			if not a.grab_ready():
 				continue
 			var dx := d.position.x - a.position.x
-			if d.state == &"control" and not d.is_airborne() and d.grab_t < 0 and absf(dx) <= Fighter.GRAB_RANGE \
-					and signf(dx) == a.facing:
+			var dy := d.position.y - a.position.y
+			# Ground grab: a grounded opponent in range; air grab: an airborne one (Kvon: neither works on the other).
+			var in_reach: bool = (a.grab_air and d.is_airborne() and absf(dx) <= Fighter.AGRAB_RANGE
+				and absf(dy) <= Fighter.AGRAB_RANGE_Y) or (not a.grab_air and not d.is_airborne()
+				and absf(dx) <= Fighter.GRAB_RANGE)
+			if d.state == &"control" and d.grab_t < 0 and in_reach and signf(dx) == a.facing:
 				a.grab_connect()
-				_grab = {"a": i, "x": d.position.x, "t0": a.grab_t, "struck": false}
+				_grab = {"a": i, "x": d.position.x, "y": d.position.y, "t0": a.grab_t, "struck": false}
 				# The catch point: between the two at chest height, a little toward the one grabbed.
 				_add_fx(&"grab", Vector2(a.position.x + dx * 0.6, a.position.y - 170.0), a.facing)
-				d.start_held()
+				d.start_held(a.grab_air)
 				if _trace:
 					print("GRAB ", a._tick, " dist=", snappedf(absf(dx), 0.1))
 				break
@@ -428,6 +432,7 @@ func _grabs() -> void:
 	var g := p[gi]
 	var h := p[1 - gi]
 	var k := g.grab_drawing()
+	var air: bool = g.grab_air
 	if k < 0 or h.state != &"held":
 		g.z_index = 0
 		h.z_index = 0
@@ -436,9 +441,9 @@ func _grabs() -> void:
 	if h.tech_request and g.grab_t - int(_grab["t0"]) <= Fighter.GRAB_TECH_FRAMES:
 		# Escaped: both stand, pushed apart.
 		var side := 1.0 if float(_grab["x"]) >= g.position.x else -1.0
-		h.end_grab(float(_grab["x"]))
+		h.end_grab(float(_grab["x"]), air, float(_grab["y"]) if air else Fighter.FLOOR_Y)
 		g.z_index = 0
-		g.end_grab(g.position.x)
+		g.end_grab(g.position.x, air, g.position.y)
 		h.push_v = Fighter.PUSHBACK[&"heavy"]
 		h.push_dir = side
 		g.push_v = Fighter.PUSHBACK[&"heavy"]
@@ -449,11 +454,13 @@ func _grabs() -> void:
 		_grab = {}
 		return
 	h.tech_request = false  # presses after the window don't count
-	if k > Fighter.GRAB_STRIKE:
-		# The strike drawing is over: the knockdown takes over from where he is drawn.
-		var at := g.position + Vector2(Fighter.GRAB_RELEASE_AT.x * g.facing, Fighter.GRAB_RELEASE_AT.y)
+	if k > (Fighter.AGRAB_LAST_HELD if air else Fighter.GRAB_STRIKE):
+		# The last held drawing is over: the knockdown takes over from where he is drawn (air: thrown down).
+		var rel: Vector2 = Fighter.AGRAB_RELEASE_AT if air else Fighter.GRAB_RELEASE_AT
+		var at := g.position + Vector2(rel.x * g.facing, rel.y)
 		at.x = clampf(at.x, Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
-		h.release_from_grab(at, g.facing)
+		at.y = minf(at.y, Fighter.FLOOR_Y)
+		h.release_from_grab(at, g.facing, air)
 		g.z_index = 0
 		if _trace:
 			print("GRAB_RELEASE ", g._tick, " at=", at)
@@ -461,11 +468,11 @@ func _grabs() -> void:
 		return
 	h.position = g.position
 	h.set_facing(g.facing)
-	h.show_held(k)
+	h.show_held(k, air)
 	# Behind / in front of the grabber per drawing (never below 0: that would put him behind the arena too).
-	g.z_index = 2 if Fighter.GRAB_BEHIND[k] else 1
+	g.z_index = 2 if (Fighter.AGRAB_BEHIND if air else Fighter.GRAB_BEHIND)[k] else 1
 	h.z_index = 3 - g.z_index
-	if k == Fighter.GRAB_STRIKE and not _grab["struck"]:
+	if k == (Fighter.AGRAB_THROW if air else Fighter.GRAB_STRIKE) and not _grab["struck"]:
 		_grab["struck"] = true
 		h.hp = maxi(h.hp - Fighter.GRAB_DAMAGE, 0)
 		_freeze = maxi(_freeze, Fighter.GRAB_FREEZE)

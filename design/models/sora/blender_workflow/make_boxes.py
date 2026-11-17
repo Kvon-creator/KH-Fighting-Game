@@ -185,9 +185,9 @@ def hitbox(mask, rep, i, style, slide, sweep_from=SWEEP_FROM):
 
 def main():
     hurt, hit = {}, {}
-    # + the ground grab's own drawings (grab_768: Sora alone on the 768 frame - his reach and a miss can be hit; the
+    # + the ground and air grabs' own drawings (grab_768 / agrab_768: Sora alone on the 768 frame - his reach and a miss can be hit; the
     # held opponent's and the effect layers are not hurtboxes).
-    for folder in sorted(p for p in ASSETS.iterdir() if p.is_dir() and (p.name.endswith('_384') or p.name == 'grab_768')
+    for folder in sorted(p for p in ASSETS.iterdir() if p.is_dir() and (p.name.endswith('_384') or p.name in ('grab_768', 'agrab_768'))
                          and '_smear_' not in p.name):
         for png in sorted(folder.glob('*.png')):
             hurt[f'{folder.name}/{png.name}'] = hurtboxes(body_mask(png))

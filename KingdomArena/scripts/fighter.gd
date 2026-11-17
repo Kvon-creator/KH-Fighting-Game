@@ -16,7 +16,9 @@ const FEET := Vector2(192, 354)
 const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192),
 	# Ground grab (Kvon, November 11): Sora and the grabbed opponent share one 768 x 768 frame (the 1024 render canvas
 	# at the usual x 0.75), his feet in the middle of the bottom.
-	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738)}
+	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738),
+	# Air grab: the same 768 frame, Sora's feet point on canvas row 680 (x .75 + 1.5) so the throw fits below him.
+	&"agrab": Vector2(384, 511.5), &"agrab_held": Vector2(384, 511.5)}
 ## How far he may walk toward either screen edge.
 const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
@@ -200,6 +202,11 @@ const ANIMATIONS := {
 	&"grab": ["res://assets/sora/grab_768/", "sora_grab_", [3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 6, 4, 7, 7, 8], []],
 	&"grab_held": ["res://assets/sora/grab_held_768/", "sora_grab_held_",
 		[3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 5, 6, 4], []],
+	# Air grab (Medium + Heavy in the air; Kvon approved v11, November 17, after Magik's Tokon air throw): reach, catch
+	# (checks on frame 5), twist x4, whip, throw (1200), release, two follow-through drawings, back to the jump tuck.
+	# Timed by _air_step. agrab_held = the opponent's matching drawings (0-8), shown on the grabber's timing.
+	&"agrab": ["res://assets/sora/agrab_768/", "sora_agrab_", [2, 3, 3, 3, 2, 2, 2, 2, 4, 4, 4, 5], []],
+	&"agrab_held": ["res://assets/sora/agrab_held_768/", "sora_agrab_held_", [2, 3, 3, 3, 2, 2, 2, 2, 4], []],
 }
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
@@ -257,6 +264,26 @@ const GRAB_BEHIND := [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0]
 ## Where the opponent's body is drawn on the strike drawing, as the feet point of their knockdown (px from Sora's feet,
 ## forward / up; measured by export_grab_assets.py: strike body centre minus the hurt_air drawing's body centre).
 const GRAB_RELEASE_AT := Vector2(179.5, -223.0)
+## Air grab (Kvon, November 17, approving my proposed values): catches only an opponent who is also in the air and free,
+## on frame 5 (as drawn), within AGRAB_RANGE px in front and AGRAB_RANGE_Y px above or below (my choice - no value
+## was set). While it holds, Sora hangs in place; the throw drawing (7) deals GRAB_DAMAGE with GRAB_FREEZE; after the
+## last held drawing (8) the opponent drops head-first from where it showed them (AGRAB_RELEASE_AT: their body there
+## minus the hurt_fall drawing's body centre, from export_grab_assets.py air), moving AGRAB_RELEASE_V (forward, down)
+## px per frame. Sora then falls through the follow-through. A miss keeps the open hand out while he falls.
+const AGRAB_CHECK_FRAME := 5
+const AGRAB_THROW := 7
+const AGRAB_LAST_HELD := 8
+const AGRAB_RANGE := 180.0
+const AGRAB_RANGE_Y := 150.0
+const AGRAB_WHIFF_RECOVERY := 20
+const AGRAB_BEHIND := [1, 1, 1, 1, 0, 0, 1, 1, 1]
+const AGRAB_RELEASE_AT := Vector2(182.1, 291.1)
+const AGRAB_RELEASE_V := Vector2(4.0, 6.0)
+## While holding, Sora rises (AGRAB_LIFT px per frame) until he is at least this high above the floor, so the approved
+## throw - the opponent drawn ~290 px below his feet on the last held drawing - stays above the floor (his jump peaks
+## at 200 px). My choice, not Kvon's.
+const AGRAB_HANG_HEIGHT := 300.0
+const AGRAB_LIFT := 12.0
 ## Input buffer (Kvon, November 11): a press of these buttons stays usable for this many game frames.
 const INPUT_BUFFER := 5
 const BUFFERED_KEYS := ["up", "light", "medium", "heavy", "dash"]
@@ -308,6 +335,8 @@ var grab_t := -1
 var grab_part := &""
 ## While held: Medium + Heavy was pressed (the match decides whether it was inside the escape window).
 var tech_request := false
+## The current grab is the air grab.
+var grab_air := false
 
 var _smear: Sprite2D
 var _smear_frames := {}
@@ -384,6 +413,7 @@ func reset(start_x: float, face: float) -> void:
 	_glide = false
 	grab_t = -1
 	grab_part = &""
+	grab_air = false
 	tech_request = false
 	z_index = 0
 	set_facing(face)
@@ -511,7 +541,7 @@ func step(inp: Dictionary) -> void:
 	_record_presses(inp)
 	for k: String in BUFFERED_KEYS:
 		pressed[k] = _buffered_press(k)
-	if grab_t >= 0:
+	if grab_t >= 0 and not grab_air:
 		_grab_step()
 		return
 	# A new back press soon after the previous one is a back-dash (on the ground or in the air).
@@ -555,7 +585,26 @@ func step(inp: Dictionary) -> void:
 		# the rest of it - jL -> jM / jH, jM -> jH.
 		var air_chain := air_attacking and attack_hit and pressed_strength != &"" \
 			and strength_rank(pressed_strength) > strength_rank(_air_atk_anim)
-		if (double_tap or back_tap or dash_forward or dash_back) and not _dash_used and _dash_tick < 0 \
+		if grab_t >= 0:
+			_air_step()  # the air grab plays out (no other moves during it)
+			return
+		# Air grab (Kvon): Medium + Heavy in the air, the same input and buffer as the ground grab; a Jumping Medium /
+		# Heavy that the first press started a frame ago is turned into the grab.
+		var a_buf: bool = _tick - int(_press_at.get("medium", -1000)) <= GRAB_BUFFER \
+			and _tick - int(_press_at.get("heavy", -1000)) <= GRAB_BUFFER
+		var a_grab: bool = ((medium_pressed or heavy_pressed) and inp.get("medium", false) and inp.get("heavy", false)) \
+			or a_buf
+		var a_just: bool = air_attacking and _air_atk_tick <= 2 and not attack_hit \
+			and _air_atk_anim in [&"attack_jmedium", &"attack_jheavy"]
+		if a_grab and _dash_tick < 0 and (not air_attacking or a_just):
+			_air_atk_tick = -1
+			_spin_tick = -1
+			grab_t = 0
+			grab_part = &"reach"
+			grab_air = true
+			_use(["light", "medium", "heavy"])
+			show_anim(&"agrab")
+		elif (double_tap or back_tap or dash_forward or dash_back) and not _dash_used and _dash_tick < 0 \
 				and _spin_tick < 0 and not air_attacking:
 			_dash_used = true  # air dash (forward or back): a straight horizontal burst, once per jump
 			_use(["dash"])
@@ -752,7 +801,7 @@ func _grab_step() -> void:
 
 ## The match checks the grab on this frame (the last frame of the reach).
 func grab_ready() -> bool:
-	return grab_part == &"reach" and grab_t == GRAB_CHECK_FRAME - 1
+	return grab_part == &"reach" and grab_t == (AGRAB_CHECK_FRAME if grab_air else GRAB_CHECK_FRAME) - 1
 
 
 func grab_connect() -> void:
@@ -765,48 +814,93 @@ func grab_whiff() -> void:
 
 ## The grab drawing showing now (-1 = not grabbing).
 func grab_drawing() -> int:
-	return sprite.frame if grab_t >= 0 and sprite.animation == &"grab" else -1
+	return sprite.frame if grab_t >= 0 and sprite.animation in [&"grab", &"agrab"] else -1
 
 
 ## Grabbed: held by the opponent (the match places and flips him and picks the held drawing every frame).
-func start_held() -> void:
+func start_held(air := false) -> void:
 	_end_moves()
 	state = &"held"
 	push_v = 0.0
 	combo_hits = 0
 	tech_request = false
-	show_anim(&"grab_held", 0)
+	show_anim(&"agrab_held" if air else &"grab_held", 0)
 
 
 ## Shows held drawing k (in the grabber's frame: the match sets his position and facing to the grabber's).
-func show_held(k: int) -> void:
-	if sprite.animation != &"grab_held" or sprite.frame != k:
-		show_anim(&"grab_held", k)
+func show_held(k: int, air := false) -> void:
+	var anim := &"agrab_held" if air else &"grab_held"
+	if sprite.animation != anim or sprite.frame != k:
+		show_anim(anim, k)
 
 
 ## Struck out of the grab: the knockdown from where the held drawing showed him, knocked away (world direction).
-func release_from_grab(at: Vector2, away: float) -> void:
+func release_from_grab(at: Vector2, away: float, air := false) -> void:
 	z_index = 0
 	set_facing(-away)
 	position = at
 	ko = hp == 0
-	_start_hurt_air(-KNOCK_SPEED * 0.4, KNOCK_VX * 1.6 * away, HURT_GRAVITY)
+	if air:
+		_start_hurt_air(AGRAB_RELEASE_V.y, AGRAB_RELEASE_V.x * away, HURT_GRAVITY)  # thrown down: head-first fall
+	else:
+		_start_hurt_air(-KNOCK_SPEED * 0.4, KNOCK_VX * 1.6 * away, HURT_GRAVITY)
 
 
 ## Escaped (or the grabber let go): back in control at x, standing.
-func end_grab(x: float) -> void:
+## Air grab escapes leave him in the air at height y, falling (no second jump or air dash left).
+func end_grab(x: float, air := false, y := FLOOR_Y) -> void:
 	z_index = 0
 	grab_t = -1
 	grab_part = &""
+	grab_air = false
 	tech_request = false
-	position = Vector2(x, FLOOR_Y)
+	_use(["medium", "heavy"])  # the escape used the Medium + Heavy press: it doesn't start a grab of its own
 	state = &"control"
+	if air:
+		position = Vector2(x, y)
+		_air = true
+		_vx = 0.0
+		_vy = 0.0
+		_jump2_used = true
+		_dash_used = true
+		show_anim(&"jump_air", 4)
+		return
+	position = Vector2(x, FLOOR_Y)
 	show_anim(&"idle")
 
 
 ## One airborne game frame: move by the vertical speed, apply gravity, pick the air drawing from the
 ## speed, and land when the feet reach the floor.
 func _air_step() -> void:
+	if grab_t >= 0 and grab_air:
+		grab_t += 1
+		var holds_g: Array = ANIMATIONS[&"agrab"][2]
+		var drawing := _step_of(grab_t, holds_g)
+		if grab_part == &"whiff":
+			drawing = 1 if grab_t - AGRAB_CHECK_FRAME < AGRAB_WHIFF_RECOVERY else holds_g.size()
+		if drawing >= holds_g.size():
+			grab_t = -1  # over: the jump's own drawings from here
+			grab_part = &""
+			grab_air = false
+		elif grab_part == &"throw" and drawing <= AGRAB_LAST_HELD:
+			_vy = 0.0  # holding the opponent: he hangs in place until the release, rising if too low for the throw
+			position.y = move_toward(position.y, minf(position.y, FLOOR_Y - AGRAB_HANG_HEIGHT), AGRAB_LIFT)
+			if sprite.animation != &"agrab" or sprite.frame != drawing:
+				show_anim(&"agrab", drawing)
+			return
+		else:
+			# The reach, a miss and the follow-through: he keeps falling (no steering).
+			_vx *= AIR_COAST
+			position.x = clampf(position.x + _vx * facing, LEFT_LIMIT, RIGHT_LIMIT)
+			position.y += _vy
+			_vy += JUMP_GRAVITY
+			if position.y >= FLOOR_Y:
+				_land()
+				show_anim(&"jump_land")
+				return
+			if sprite.animation != &"agrab" or sprite.frame != drawing:
+				show_anim(&"agrab", drawing)
+			return
 	if _dash_tick >= 0:
 		# Air dash: no gravity, a straight horizontal move with its own drawings, holds and speeds. Forward:
 		# brief tuck (the apex drawing), burst, dash 1, dash 2, brake. Back: push, hop, hop 2. Then he falls,
@@ -912,6 +1006,10 @@ func _dash_cancellable() -> bool:
 func _land() -> void:
 	position.y = FLOOR_Y
 	_air = false
+	if grab_air:
+		grab_t = -1  # landing ends an air grab's reach, miss or follow-through
+		grab_part = &""
+		grab_air = false
 	_spin_tick = -1
 	_dash_tick = -1
 	_air_atk_tick = -1  # landing cuts an air attack short
@@ -1089,6 +1187,7 @@ func _end_moves() -> void:
 	_air = false
 	grab_t = -1  # a hit during the reach stops the grab
 	grab_part = &""
+	grab_air = false
 	_dash_tick = -1
 	_spin_tick = -1
 	_air_atk_tick = -1
