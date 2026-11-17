@@ -19,9 +19,13 @@ const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192),
 	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738),
 	# Air grab: the same 768 frame, Sora's feet point on canvas row 680 (x .75 + 1.5) so the throw fits below him.
 	&"agrab": Vector2(384, 511.5), &"agrab_held": Vector2(384, 511.5), &"agrab_whiff": Vector2(384, 511.5)}
-## How far he may walk toward either screen edge.
-const LEFT_LIMIT := 120.0
-const RIGHT_LIMIT := 1280.0 - 120.0
+## How far he may walk toward either screen edge (the invisible walls, WALL_MARGIN px inside the screen). The camera
+## follows the fighters sideways across a stage wider than the screen (Kvon, November 17: "the map to move side to
+## side as the players move"), so match.gd moves these walls with the camera every frame - the screen edges stay the
+## walls, and the stage's two ends stop the camera (corners).
+const WALL_MARGIN := 120.0
+static var left_limit := WALL_MARGIN
+static var right_limit := 1280.0 - WALL_MARGIN
 ## The second forward press must come within this many game frames of the first to start a glide.
 const DOUBLE_TAP_FRAMES := 15
 ## The glide push-off ends on the loop's first pose, so it hands over to this glide_loop drawing.
@@ -911,7 +915,7 @@ func _air_step() -> void:
 		else:
 			# The reach, a miss and the follow-through: he keeps falling (no steering).
 			_vx *= AIR_COAST
-			position.x = clampf(position.x + _vx * facing, LEFT_LIMIT, RIGHT_LIMIT)
+			position.x = clampf(position.x + _vx * facing, left_limit, right_limit)
 			position.y += _vy
 			_vy += JUMP_GRAVITY
 			if position.y >= FLOOR_Y:
@@ -931,7 +935,7 @@ func _air_step() -> void:
 		var step_d := _step_of(_dash_tick, holds_d)
 		_dash_tick += 1
 		if step_d < holds_d.size():
-			position.x = clampf(position.x + speeds_d[step_d] * facing, LEFT_LIMIT, RIGHT_LIMIT)
+			position.x = clampf(position.x + speeds_d[step_d] * facing, left_limit, right_limit)
 			if _dash_back:
 				if sprite.animation != &"back_dash" or sprite.frame != step_d:
 					show_anim(&"back_dash", step_d)
@@ -957,7 +961,7 @@ func _air_step() -> void:
 		_vx *= AIR_DRAG  # dash momentum fades quickly when not steering
 	else:
 		_vx *= AIR_COAST
-	position.x = clampf(position.x + _vx * facing, LEFT_LIMIT, RIGHT_LIMIT)
+	position.x = clampf(position.x + _vx * facing, left_limit, right_limit)
 	position.y += _vy
 	if _air_atk_tick >= 0 and attack_hit and fast_fall_hit:
 		_fast_fall = true  # (Kvon) on a grounded opponent; on a juggled one only from the Jumping Heavy
@@ -1077,7 +1081,7 @@ func _back_dash_step() -> void:
 	var hop_len: int = BACK_DASH_HOLDS[1] + BACK_DASH_HOLDS[2]
 	var u := float(_bd_tick - hop_start) / hop_len
 	position.y = FLOOR_Y - (BACK_DASH_HEIGHT * sin(PI * u) if u > 0.0 and u < 1.0 else 0.0)
-	position.x = clampf(position.x + BACK_DASH_SPEED[step_b] * facing, LEFT_LIMIT, RIGHT_LIMIT)
+	position.x = clampf(position.x + BACK_DASH_SPEED[step_b] * facing, left_limit, right_limit)
 	_bd_tick += 1
 	if sprite.animation != &"back_dash" or sprite.frame != step_b:
 		show_anim(&"back_dash", step_b)
@@ -1102,7 +1106,7 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 		_smear.offset = sprite.offset
 	var motion: Array = ANIMATIONS[anim][3]
 	if drawing < motion.size():
-		position.x = clampf(position.x + motion[drawing] * facing, LEFT_LIMIT, RIGHT_LIMIT)
+		position.x = clampf(position.x + motion[drawing] * facing, left_limit, right_limit)
 	if trace_tag != "":
 		print(trace_tag, " ", _tick, " ", anim, " ", drawing, " ", snappedf(position.x, 0.01), " ",
 			snappedf(position.y, 0.01))
@@ -1240,7 +1244,7 @@ func _hurt_step() -> void:
 			if _air:
 				# Air guard: keeps falling in the guard pose; landing ends it.
 				_vx *= AIR_COAST
-				position.x = clampf(position.x + _vx * facing, LEFT_LIMIT, RIGHT_LIMIT)
+				position.x = clampf(position.x + _vx * facing, left_limit, right_limit)
 				position.y += _vy
 				_vy += JUMP_GRAVITY
 				if position.y >= FLOOR_Y:
@@ -1272,7 +1276,7 @@ func _hurt_step() -> void:
 				step_a = 2 + _step_of(_hfall, HURT_AIR_HOLDS.slice(2))
 			_htick += 1
 			_hvx *= AIR_COAST
-			position.x = clampf(position.x + _hvx, LEFT_LIMIT, RIGHT_LIMIT)
+			position.x = clampf(position.x + _hvx, left_limit, right_limit)
 			position.y += _hvy
 			_hvy += _hgrav
 			if position.y >= FLOOR_Y:

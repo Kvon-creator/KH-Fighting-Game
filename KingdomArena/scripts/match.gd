@@ -23,7 +23,10 @@ extends Node2D
 
 const BOXES := preload("res://scripts/sora_boxes.gd")
 const FLOOR_Y := 600.0
-const START_X := [420.0, 860.0]
+## The stage is two screens wide (Kvon, November 17: the map moves side to side with the players; the width is my
+## choice): the camera follows the fighters' midpoint between its ends, and the screen edges stay the walls.
+const STAGE_WIDTH := 2560.0
+const START_X := [1060.0, 1500.0]
 const LOST_HP_DELAY := 30
 const LOST_HP_DRAIN := 120.0
 const SPARK_FRAMES := 10
@@ -107,7 +110,7 @@ func _ready() -> void:
 	var sky := ColorRect.new()
 	sky.color = SKY_COLOR
 	sky.position = Vector2(0, -600)
-	sky.size = Vector2(1280, 600)
+	sky.size = Vector2(STAGE_WIDTH, 600)
 	sky.z_index = -10
 	add_child(sky)
 	move_child(sky, 0)
@@ -121,10 +124,11 @@ func _ready() -> void:
 	_camera = Camera2D.new()
 	_camera.position = SCREEN_CENTER
 	_camera.limit_left = 0
-	_camera.limit_right = 1280
+	_camera.limit_right = int(STAGE_WIDTH)
 	_camera.limit_bottom = 720
 	add_child(_camera)
 	_camera.make_current()
+	_follow_sideways()  # start centred on the fighters
 	_box_view = Node2D.new()
 	_box_view.z_index = 50
 	_box_view.draw.connect(_draw_boxes)
@@ -192,6 +196,7 @@ func _parse_demo(prefix: String) -> Dictionary:
 
 func _physics_process(_delta: float) -> void:
 	_frames += 1
+	_follow_sideways()
 	if _freeze > 0:
 		_freeze -= 1  # hit-freeze: both fighters hold still (effects and bars keep going)
 		if _phase == "fight":
@@ -239,6 +244,15 @@ func _physics_process(_delta: float) -> void:
 		print("POS ", _frames, " sora=", snappedf(p[0].position.x, 0.1), " dummy=", snappedf(p[1].position.x, 0.1),
 			",", snappedf(p[1].position.y, 0.1), " ", p[1].state, " freeze=", _freeze, " facing=", p[0].facing, ",",
 			p[1].facing)
+
+
+## The camera follows the fighters' midpoint sideways (stopping at the stage's ends), and the walls move with it:
+## WALL_MARGIN px inside the screen's edges, so the fighters can be at most a screen (minus the margins) apart.
+func _follow_sideways() -> void:
+	var mid := (p[0].position.x + p[1].position.x) * 0.5
+	_camera.position.x = clampf(mid, SCREEN_CENTER.x, STAGE_WIDTH - SCREEN_CENTER.x)
+	Fighter.left_limit = _camera.position.x - SCREEN_CENTER.x + Fighter.WALL_MARGIN
+	Fighter.right_limit = _camera.position.x + SCREEN_CENTER.x - Fighter.WALL_MARGIN
 
 
 ## This frame's buttons for fighter i, as forward / back (relative to where he faces), up, down, light, medium, heavy.
@@ -463,7 +477,7 @@ func _grabs() -> void:
 		# The last held drawing is over: the knockdown takes over from where he is drawn (air: thrown down).
 		var rel: Vector2 = Fighter.AGRAB_RELEASE_AT if air else Fighter.GRAB_RELEASE_AT
 		var at := g.position + Vector2(rel.x * g.facing, rel.y)
-		at.x = clampf(at.x, Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
+		at.x = clampf(at.x, Fighter.left_limit, Fighter.right_limit)
 		at.y = minf(at.y, Fighter.FLOOR_Y)
 		h.release_from_grab(at, g.facing, air)
 		g.z_index = 0
@@ -510,12 +524,12 @@ func _pushback_step() -> void:
 		if d.push_v < 0.2 or d.state == &"hurt_air":
 			d.push_v = 0.0
 			continue
-		var to := clampf(d.position.x + d.push_dir * d.push_v, Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
+		var to := clampf(d.position.x + d.push_dir * d.push_v, Fighter.left_limit, Fighter.right_limit)
 		var left := d.push_v - absf(to - d.position.x)
 		d.position.x = to
 		if left > 0.0:
 			var a := p[1 - i]
-			a.position.x = clampf(a.position.x - d.push_dir * left, Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
+			a.position.x = clampf(a.position.x - d.push_dir * left, Fighter.left_limit, Fighter.right_limit)
 		d.push_v *= Fighter.PUSH_SLOW
 
 
@@ -530,10 +544,10 @@ func _push_apart() -> void:
 	if overlap <= 0.0:
 		return
 	var side := 1.0 if p[1].position.x >= p[0].position.x else -1.0
-	var to := clampf(p[1].position.x + side * overlap * 0.5, Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
+	var to := clampf(p[1].position.x + side * overlap * 0.5, Fighter.left_limit, Fighter.right_limit)
 	var moved := absf(to - p[1].position.x)
 	p[1].position.x = to
-	p[0].position.x = clampf(p[0].position.x - side * (overlap - moved), Fighter.LEFT_LIMIT, Fighter.RIGHT_LIMIT)
+	p[0].position.x = clampf(p[0].position.x - side * (overlap - moved), Fighter.left_limit, Fighter.right_limit)
 
 
 ## Rounds (match modes): "ROUND n" / "FIGHT!", fight, K.O. pause, then the next round or the winner, then the menu.
