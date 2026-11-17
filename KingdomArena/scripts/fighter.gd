@@ -18,7 +18,7 @@ const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192),
 	# at the usual x 0.75), his feet in the middle of the bottom.
 	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738),
 	# Air grab: the same 768 frame, Sora's feet point on canvas row 680 (x .75 + 1.5) so the throw fits below him.
-	&"agrab": Vector2(384, 511.5), &"agrab_held": Vector2(384, 511.5)}
+	&"agrab": Vector2(384, 511.5), &"agrab_held": Vector2(384, 511.5), &"agrab_whiff": Vector2(384, 511.5)}
 ## How far he may walk toward either screen edge.
 const LEFT_LIMIT := 120.0
 const RIGHT_LIMIT := 1280.0 - 120.0
@@ -207,6 +207,9 @@ const ANIMATIONS := {
 	# overhead hold (21), throw down (22-23, 1200 on 23), release (24), the opponent's dive (25), follow-through and
 	# the jump tuck (26-28). 72 frames. Timed by _air_step. agrab_held = the opponent's drawings (0-25).
 	&"agrab": ["res://assets/sora/agrab_768/", "sora_agrab_", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4, 4, 4, 5], []],
+	# Air grab miss (Kvon, November 17: a pose "that doesn't have his body stretched out as much" as the reach): the
+	# jump tuck with only the grabbing arm half out, held for the miss's recovery.
+	&"agrab_whiff": ["res://assets/sora/agrab_whiff_768/", "sora_agrab_whiff_", [1], []],
 	&"agrab_held": ["res://assets/sora/agrab_held_768/", "sora_agrab_held_",
 		[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4], []],
 }
@@ -879,7 +882,7 @@ func _air_step() -> void:
 		var holds_g: Array = ANIMATIONS[&"agrab"][2]
 		var drawing := _step_of(grab_t, holds_g)
 		if grab_part == &"whiff":
-			drawing = 0 if grab_t - AGRAB_CHECK_FRAME < AGRAB_WHIFF_RECOVERY else holds_g.size()  # the reach, hand out
+			drawing = 0 if grab_t - AGRAB_CHECK_FRAME < AGRAB_WHIFF_RECOVERY else holds_g.size()  # the miss pose
 		if drawing >= holds_g.size():
 			grab_t = -1  # over: the jump's own drawings from here
 			grab_part = &""
@@ -900,8 +903,9 @@ func _air_step() -> void:
 				_land()
 				show_anim(&"jump_land")
 				return
-			if sprite.animation != &"agrab" or sprite.frame != drawing:
-				show_anim(&"agrab", drawing)
+			var anim_g := &"agrab_whiff" if grab_part == &"whiff" else &"agrab"
+			if sprite.animation != anim_g or sprite.frame != drawing:
+				show_anim(anim_g, drawing)
 			return
 	if _dash_tick >= 0:
 		# Air dash: no gravity, a straight horizontal move with its own drawings, holds and speeds. Forward:

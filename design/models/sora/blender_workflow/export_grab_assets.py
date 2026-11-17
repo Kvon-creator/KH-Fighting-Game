@@ -61,6 +61,13 @@ for i in range(len(rep['game_frames_60fps'])):
         small(held).save(out['grab_held_768'] / f'sora_{NAME}_held_{i:02d}.png')
 
 
+if AIR:
+    # The air grab's miss pose (Kvon, November 17: less stretched out than the reach): its own one-drawing render.
+    WHIFF = SORA / 'atk_agrab_whiff2d_v1' / 'frames_512' / 'sora_idle3d_00.png'
+    (ASSETS / 'agrab_whiff_768').mkdir(exist_ok=True)
+    small(Image.open(WHIFF).convert('RGBA')).save(ASSETS / 'agrab_whiff_768' / 'sora_agrab_whiff_00.png')
+
+
 def centre(path, feet):
     bb = Image.open(path).convert('RGBA').getchannel('A').point(lambda a: 255 if a > 127 else 0).getbbox()
     return ((bb[0] + bb[2])/2 - feet[0], (bb[1] + bb[3])/2 - feet[1])

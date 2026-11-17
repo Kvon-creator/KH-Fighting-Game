@@ -51,7 +51,8 @@ SWEEP_FROM_BY = {'attack_cmedium': 0.0, 'attack_jmedium': .8, 'attack_cheavy': 0
 # Extra forward reach (px, 384 scale) on top of the drawing. The old up-thrust launcher (atk_cheavy_v9, saved in
 # saved_attacks/crouching_heavy_up_thrust) needed 110 because its Key pointed straight up; the Upper Slash (v13,
 # Kvon November 6) reaches forward on its own, so none now. Its hitbox covers the whole swing from the rise.
-FORWARD_PX = {}
+# Crouching Medium (Kvon, November 17: "a little bit longer" range): +24 px past the Keyblade's sweep.
+FORWARD_PX = {'attack_cmedium': 24}
 # Attacks whose hitbox also follows the Keyblade smear on the active drawing (Kvon, November 16: "Sora's jumping heavy
 # hitbox to match that of its smear frames when active"): the smear's pixels are split along its arc into SMEAR_BINS
 # pieces, each boxed, so the boxes follow the curve instead of filling the arc's empty middle.
@@ -187,7 +188,7 @@ def main():
     hurt, hit = {}, {}
     # + the ground and air grabs' own drawings (grab_768 / agrab_768: Sora alone on the 768 frame - his reach and a miss can be hit; the
     # held opponent's and the effect layers are not hurtboxes).
-    for folder in sorted(p for p in ASSETS.iterdir() if p.is_dir() and (p.name.endswith('_384') or p.name in ('grab_768', 'agrab_768'))
+    for folder in sorted(p for p in ASSETS.iterdir() if p.is_dir() and (p.name.endswith('_384') or p.name in ('grab_768', 'agrab_768', 'agrab_whiff_768'))
                          and '_smear_' not in p.name):
         for png in sorted(folder.glob('*.png')):
             hurt[f'{folder.name}/{png.name}'] = hurtboxes(body_mask(png))
@@ -199,7 +200,7 @@ def main():
             mask = alpha_mask(ASSETS / name)
             box = hitbox(mask, rep, i, style, slide, SWEEP_FROM_BY.get(anim, SWEEP_FROM))
             if anim in FORWARD_PX:
-                box = (box[0], box[1], min(mask.shape[1] - box[0], box[2] + FORWARD_PX[anim]), box[3])
+                box = (box[0], box[1], box[2] + FORWARD_PX[anim], box[3])  # may pass the frame edge: fine in game
             assert box, (anim, i)
             hit[name] = [box]
             if anim in SMEAR_HIT:
