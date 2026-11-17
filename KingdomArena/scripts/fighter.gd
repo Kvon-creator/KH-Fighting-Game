@@ -242,6 +242,17 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 	&"attack_jheavy": ["res://assets/sora/attack_jheavy_smear_384/", "sora_attack_jheavy_smear_"],
 	&"grab": ["res://assets/sora/grab_fx_768/", "sora_grab_fx_"]}  # the strike's smear + impact burst
 
+## Floor shadow (Kvon, November 17: "shadowing by provide an invisible light source in the background"; chose shadows of
+## the fighters on the floor): an invisible light behind the stage's middle (SHADOW_LIGHT_X, like the sun behind the
+## pillars), so each fighter's shadow falls toward the camera - their current drawing flipped below the feet, flattened
+## (SHADOW_SQUASH), leaning away from the light (up to SHADOW_LEAN radians at a screen's distance), dark and see-through.
+## It stays on the floor in the air, shrinking and fading out by SHADOW_FADE_HEIGHT px up. None while held in a grab.
+const SHADOW_LIGHT_X := 1280.0
+const SHADOW_SQUASH := 0.17
+const SHADOW_LEAN := 0.55
+const SHADOW_COLOR := Color(0.05, 0.02, 0.12, 0.6)
+const SHADOW_FADE_HEIGHT := 420.0
+
 ## Combat numbers (Kvon, October 29): 10000 health, damage / hit-freeze / hitstun / blockstun / pushback per strength.
 const MAX_HP := 10000
 const DAMAGE := {&"light": 300, &"medium": 500, &"heavy": 800}
@@ -352,6 +363,7 @@ var tech_request := false
 var grab_air := false
 
 var _smear: Sprite2D
+var _shadow: Sprite2D
 var _smear_frames := {}
 var _tick := 0
 var _hold := 0
@@ -398,6 +410,9 @@ var _hfall := 0
 
 ## Builds his sprite (sharing one SpriteFrames between fighters) and smear layer.
 func setup(frames: SpriteFrames, smear_frames: Dictionary, start_x: float, face: float) -> void:
+	_shadow = Sprite2D.new()  # added first: drawn under him
+	_shadow.centered = false
+	add_child(_shadow)
 	sprite = AnimatedSprite2D.new()
 	sprite.sprite_frames = frames
 	sprite.centered = false
@@ -409,6 +424,24 @@ func setup(frames: SpriteFrames, smear_frames: Dictionary, start_x: float, face:
 	sprite.add_child(_smear)
 	_smear_frames = smear_frames
 	reset(start_x, face)
+
+
+## The floor shadow follows his current drawing every frame (see SHADOW_*).
+func _process(_delta: float) -> void:
+	if _shadow == null:
+		return
+	var h := FLOOR_Y - position.y
+	_shadow.visible = state != &"held" and h < SHADOW_FADE_HEIGHT
+	if not _shadow.visible:
+		return
+	_shadow.texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	_shadow.offset = sprite.offset
+	_shadow.position = Vector2(0, h)  # on the floor under him
+	var k := 1.0 - h / SHADOW_FADE_HEIGHT
+	var size := 0.6 + 0.4 * k
+	_shadow.scale = Vector2(facing * size, -SHADOW_SQUASH * size)
+	_shadow.skew = clampf((position.x - SHADOW_LIGHT_X) / 1280.0, -1.0, 1.0) * SHADOW_LEAN
+	_shadow.modulate = Color(SHADOW_COLOR, SHADOW_COLOR.a * k)
 
 
 ## Back to standing at x, full health, facing face (round start / reset).

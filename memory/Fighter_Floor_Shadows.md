@@ -1,0 +1,5 @@
+# Fighter Floor Shadows
+
+**Fact or rule:** Kvon (November 17): "add shadowing by provide an invisible light source in the background"; asked what should cast shadows, Kvon chose **the fighters, on the floor** (not re-lighting the stage art). fighter.gd SHADOW_* + `_process`: an invisible light behind the stage's middle (SHADOW_LIGHT_X 1280, like the sun behind the pillars), so each fighter's shadow falls toward the camera: his current drawing (any animation) flipped below the feet, flattened (SHADOW_SQUASH 0.17), leaning away from the light by up to SHADOW_LEAN 0.55 rad at a screen's distance, dark navy at 60% (SHADOW_COLOR). In the air it stays on the floor under him, shrinking and fading out by 420 px up. None while held in a grab (the held drawing is placed relative to the grabber). A child Sprite2D added before his sprite, so it draws under him. First tried 0.28 squash / 42%: with the floor 60 px from the screen's bottom (CAMERA_REST_Y) most of it ran off-screen - a light behind the stage throws shadows toward the camera, i.e. down the screen, so they must stay short.
+
+**Why:** Kvon's request; no further reason given.
