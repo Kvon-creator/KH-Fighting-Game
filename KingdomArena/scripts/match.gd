@@ -51,7 +51,10 @@ const SCREEN_CENTER := Vector2(640, 360)
 ## less, so more of the castle and sky shows above the floor's edge. It still rises for jumps as before.
 const CAMERA_REST_Y := 300.0
 const HEAD_ABOVE_FEET := 294.0
-const CAMERA_MARGIN := 40.0
+## The camera starts rising once a fighter's head is this close to the screen's top (Kvon, November 17: "there isn't
+## enough opportunity for the stage to move in the upward direction" - was 40; with the higher jumps every jump now
+## lifts the stage a little and a double jump a lot).
+const CAMERA_MARGIN := 160.0
 const CAMERA_EASE := 0.25
 const SKY_COLOR := Color8(19, 28, 57)
 ## Rounds: game frames for "ROUND n" + "FIGHT!", the K.O. pause, and the winner screen.
@@ -132,7 +135,7 @@ func _ready() -> void:
 	_camera.limit_bottom = 720
 	add_child(_camera)
 	_camera.make_current()
-	_follow_sideways()  # start centred on the fighters
+	_follow_sideways(false)  # start centred on the fighters
 	_box_view = Node2D.new()
 	_box_view.z_index = 50
 	_box_view.draw.connect(_draw_boxes)
@@ -245,16 +248,23 @@ func _physics_process(_delta: float) -> void:
 	_fx_view.queue_redraw()
 	_hud.queue_redraw()
 	if _trace and _frames % 4 == 0:
-		print("POS ", _frames, " sora=", snappedf(p[0].position.x, 0.1), " dummy=", snappedf(p[1].position.x, 0.1),
+		print("POS ", _frames, " cam=", snappedf(_camera.position.x, 0.1), ",", snappedf(_camera.position.y, 0.1),
+			" sora=", snappedf(p[0].position.x, 0.1), " dummy=", snappedf(p[1].position.x, 0.1),
 			",", snappedf(p[1].position.y, 0.1), " ", p[1].state, " freeze=", _freeze, " facing=", p[0].facing, ",",
 			p[1].facing)
 
 
 ## The camera follows the fighters' midpoint sideways (stopping at the stage's ends), and the walls move with it:
 ## WALL_MARGIN px inside the screen's edges, so the fighters can be at most a screen (minus the margins) apart.
-func _follow_sideways() -> void:
-	var mid := (p[0].position.x + p[1].position.x) * 0.5
-	_camera.position.x = clampf(mid, SCREEN_CENTER.x, STAGE_WIDTH - SCREEN_CENTER.x)
+## Kvon (November 17): the background snapped sideways on grabs - the held fighter is placed on the grabber, so the
+## midpoint jumped on the catch, release and escape, and the camera followed it instantly. Now, during a grab, the held
+## fighter counts where it was caught, and the camera eases sideways like it does up and down.
+func _follow_sideways(ease := true) -> void:
+	var xs := [p[0].position.x, p[1].position.x]
+	if not _grab.is_empty():
+		xs[1 - int(_grab["a"])] = float(_grab["x"])
+	var target := clampf((xs[0] + xs[1]) * 0.5, SCREEN_CENTER.x, STAGE_WIDTH - SCREEN_CENTER.x)
+	_camera.position.x = lerpf(_camera.position.x, target, CAMERA_EASE) if ease else target
 	Fighter.left_limit = _camera.position.x - SCREEN_CENTER.x + Fighter.WALL_MARGIN
 	Fighter.right_limit = _camera.position.x + SCREEN_CENTER.x - Fighter.WALL_MARGIN
 

@@ -34,7 +34,9 @@ const GLIDE_ENTRY_DRAWING := 1
 ## speed follow from these. Was 26 frames each way so a Jumping Heavy (24 game frames) pressed at the very top
 ## could finish; Kvon (November 6) found that too floaty: 22 each way (about 15% less air time) - a Jumping Heavy
 ## pressed at the very top is now cut short by the landing.
-const JUMP_HEIGHT := 200.0
+## Kvon (November 17): higher jumps so the stage moves upward more - 200 -> 270 px, same 22-frame rise (same air time,
+## a faster jump), so the second jump (x 0.8 speed) rises higher too. Launches / knockdowns keep their own gravity.
+const JUMP_HEIGHT := 270.0
 const JUMP_RISE_FRAMES := 22.0
 const JUMP_GRAVITY := 2.0 * JUMP_HEIGHT / (JUMP_RISE_FRAMES * JUMP_RISE_FRAMES)
 const JUMP_SPEED := JUMP_GRAVITY * JUMP_RISE_FRAMES
@@ -249,7 +251,7 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 ## It stays on the floor in the air, shrinking and fading out by SHADOW_FADE_HEIGHT px up. None while held in a grab.
 const SHADOW_LIGHT_X := 1280.0
 const SHADOW_SQUASH := 0.17
-const SHADOW_LEAN := 0.55
+const SHADOW_LEAN := 1.1
 const SHADOW_COLOR := Color(0.05, 0.02, 0.12, 0.6)
 const SHADOW_FADE_HEIGHT := 420.0
 
@@ -439,8 +441,11 @@ func _process(_delta: float) -> void:
 	_shadow.position = Vector2(0, h)  # on the floor under him
 	var k := 1.0 - h / SHADOW_FADE_HEIGHT
 	var size := 0.6 + 0.4 * k
-	_shadow.scale = Vector2(facing * size, -SHADOW_SQUASH * size)
-	_shadow.skew = clampf((position.x - SHADOW_LIGHT_X) / 1280.0, -1.0, 1.0) * SHADOW_LEAN
+	# Kvon (November 17): the angle follows where he stands - straight toward the camera under the light (the stage's
+	# middle), leaning further out the further he is from it (up to SHADOW_LEAN at the stage's ends), a little longer.
+	var side := clampf((position.x - SHADOW_LIGHT_X) / (SHADOW_LIGHT_X - WALL_MARGIN), -1.0, 1.0)
+	_shadow.scale = Vector2(facing * size, -(SHADOW_SQUASH + 0.07 * absf(side)) * size)
+	_shadow.skew = -side * SHADOW_LEAN  # the shadow is flipped (negative y scale): a negative skew leans its far end right
 	_shadow.modulate = Color(SHADOW_COLOR, SHADOW_COLOR.a * k)
 
 

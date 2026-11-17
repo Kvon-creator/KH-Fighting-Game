@@ -15,3 +15,5 @@
 
 **Juggles (Kvon, November 6):** "when juggling an opponent in the air, the only attack that should trigger a fast fall attack is a jump heavy." Rule now: the fast fall starts when a jumping attack touches an opponent on the ground, OR a juggled opponent (hurt_air) with the Jumping Heavy. A jumping opponent who is not being juggled: no fast fall. match.gd sets `fast_fall_hit` (replaces hit_grounded). Tested: after the launcher, jL / jM juggles fall normally (land T76) and jH fast-falls (T69); grounded jH is unchanged (T42).
 **Bug fixed with it:** on the frame a jumping attack started, the fast-fall check ran before the new attack cleared the previous attack's contact, so a grounded hit (e.g. the launcher) followed by a jump-in fast-fell at once. Contact flags are now cleared when the air attack starts.
+
+**Higher jump (Kvon, November 17, to give the stage more upward movement):** JUMP_HEIGHT 200 -> 270 px with the same 22-frame rise (same air time, faster). Air grab timings in tests had to change (both fighters jump higher); jump-in Jumping Heavy, chains unchanged.
