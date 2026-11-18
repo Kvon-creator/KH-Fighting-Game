@@ -2185,6 +2185,15 @@ if LOOP:
                         k_['hip_pivot'] = {'R': (tuple(axis_), hp_deg)}
                         lf_ = k_['feet']['L']
                         k_['feet']['L'] = (lf_[0] + .05, lf_[1], lf_[2] - .05, lf_[3])
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')) and jpart != 'qrun_spin':
+                    # v7 (Kvon: "Bring the front knee down some by rotating the entire leg"): the whole front (left) leg
+                    # swings down at the hip about his side-to-side axis (negative = thigh tipping down: knee lower, foot
+                    # back under him). Review option: output name ..._fp<deg>.
+                    import re as re_f
+                    m_f = re_f.search(r'_fp(-?\d+)$', OUT_NAME)
+                    fp_deg = float(m_f.group(1)) if m_f else -20.0
+                    for k_ in qr_loop:
+                        k_['hip_pivot'] = dict(k_.get('hip_pivot') or {}, L=(tuple(V_), fp_deg))
                 if jpart == 'qrun_spin':
                     # Kvon: "making contact with the opponent should result in a quick spin". The run pose turned about
                     # his vertical axis, toward the camera first (negative spin_deg), in 49 deg steps to 245 deg (his back
@@ -2227,6 +2236,8 @@ if LOOP:
                             launch_k['hip_pivot'] = {'R': (tuple(axis_), 35.0)}
                             lf_ = launch_k['feet']['L']
                             launch_k['feet']['L'] = (lf_[0] + .05, lf_[1], lf_[2] - .05, lf_[3])
+                        if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6')):
+                            launch_k['hip_pivot'] = dict(launch_k['hip_pivot'], L=(tuple(V_), -20.0))  # v7: front leg down
                     RUN_KEYS = [crouch_k, load_k, push_k, launch_k]
                 else:
                     skid_blade = (-U_*.60 + V_*.55 + Vector((0, 0, -.30))).normalized()
