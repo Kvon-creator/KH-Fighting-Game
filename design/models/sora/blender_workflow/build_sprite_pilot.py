@@ -2170,6 +2170,21 @@ if LOOP:
                     for k_, (bf_, bl_) in zip(qr_loop, ((-.40, .16), (-.41, .18), (-.40, .16), (-.39, .14))):
                         k_['feet']['R'] = (bf_, LAT['R'], bl_, 20.0)
                         k_['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')) and jpart != 'qrun_spin':
+                    # v6 (Kvon: "Rotate the hip of the leg to move the knee closer to the keyblade and lower the front knee
+                    # slightly"): the back leg turns at the hip about its own hip-to-foot line (hip_pivot), so the knee
+                    # swings round toward the Keyblade (toward the camera) while the foot stays where v5 put it; the front
+                    # foot sits lower and a little further forward, so that knee comes down. Review option: output name
+                    # ..._hp<deg> sets the pivot (default below).
+                    import re as re_q
+                    m_q = re_q.search(r'_hp(-?\d+)$', OUT_NAME)
+                    hp_deg = float(m_q.group(1)) if m_q else 35.0
+                    for k_ in qr_loop:
+                        bf_ = k_['feet']['R']
+                        axis_ = (U_*bf_[0] + V_*.09 + Vector((0, 0, bf_[2] - .78))).normalized()
+                        k_['hip_pivot'] = {'R': (tuple(axis_), hp_deg)}
+                        lf_ = k_['feet']['L']
+                        k_['feet']['L'] = (lf_[0] + .05, lf_[1], lf_[2] - .05, lf_[3])
                 if jpart == 'qrun_spin':
                     # Kvon: "making contact with the opponent should result in a quick spin". The run pose turned about
                     # his vertical axis, toward the camera first (negative spin_deg), in 49 deg steps to 245 deg (his back
@@ -2205,6 +2220,13 @@ if LOOP:
                         if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
                             launch_k['feet']['R'] = (-.38, LAT['R'], .10, 25.0)   # v5: into the lowered back leg
                             launch_k['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
+                        if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
+                            # v6: the launch gets the run's hip turn (knee toward the Key) and the lower front knee
+                            bf_ = launch_k['feet']['R']
+                            axis_ = (U_*bf_[0] + V_*.09 + Vector((0, 0, bf_[2] - .78))).normalized()
+                            launch_k['hip_pivot'] = {'R': (tuple(axis_), 35.0)}
+                            lf_ = launch_k['feet']['L']
+                            launch_k['feet']['L'] = (lf_[0] + .05, lf_[1], lf_[2] - .05, lf_[3])
                     RUN_KEYS = [crouch_k, load_k, push_k, launch_k]
                 else:
                     skid_blade = (-U_*.60 + V_*.55 + Vector((0, 0, -.30))).normalized()
