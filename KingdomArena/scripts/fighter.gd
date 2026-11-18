@@ -227,7 +227,9 @@ const ANIMATIONS := {
 	&"qrun_start": ["res://assets/sora/qrun_start_384/", "sora_qrun_start_", [2, 2, 2, 2], []],
 	&"qrun": ["res://assets/sora/qrun_384/", "sora_qrun_", [2, 2, 2, 2], []],
 	&"qrun_stop": ["res://assets/sora/qrun_stop_384/", "sora_qrun_stop_", [2, 2, 2, 3, 3], []],
-	&"qrun_spin": ["res://assets/sora/qrun_spin_384/", "sora_qrun_spin_", [2, 2, 2, 2, 2, 2, 2], []],
+	# Miss spin (Kvon: "a different pose for spinning. You can reuse the one for his double jump"): the double jump's
+	# drawings (the apex tuck turning a full circle in 30 deg steps), 2 frames each.
+	&"qrun_spin": ["res://assets/sora/jump_spin_384/", "sora_jump_spin_", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], []],
 	&"attack_qr_m": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 2, 2, 3, 3, 5, 5, 4], []],
 	&"attack_qr_h1": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [3, 3, 4, 3], []],
 	&"attack_qr_h2": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 1, 2, 1, 3, 2, 2, 2, 2], []],
@@ -345,12 +347,14 @@ const QR_DIST := 520.0
 const QR_MAX_RUN := 40     # frames (a safety stop)
 ## Kvon (November 18): "Slow down the spin and make it only play if the ability doesn't make contact with the
 ## opponent". Contact = he reached them during the run (within QR_CONTACT px). A run that never does (out of range, or
-## stopped by a wall first) ends in qrun_spin: one full turn toward the camera first (7 drawings, 2 frames each = 14),
-## sliding to a stop (QR_SPIN_SLIDE px per frame, slowing by QR_SPIN_SLOW), ending facing the way he ran; then the skid
-## or the follow-up. The spin is not strike-invulnerable (a missed Quick Run can be punished).
+## stopped by a wall first) ends in qrun_spin: one full turn (the double jump's spin drawings, 11 x 2 frames = 22),
+## ending facing the way he ran; then the skid or the follow-up. Kvon: "The spin should start earlier as he's moving
+## forward" - on a run out of range it starts QR_SPIN_START px before the run's end, at full speed, slowing by
+## QR_SPIN_SLOW each frame so he stops about where the run would have ended (a wall stop spins in place). The spin is
+## not strike-invulnerable (a missed Quick Run can be punished).
 const QR_CONTACT := 60.0
-const QR_SPIN_SLIDE := 12.0
-const QR_SPIN_SLOW := 0.8
+const QR_SPIN_SLOW := 0.85
+const QR_SPIN_START := QR_SPEED * QR_SPIN_SLOW / (1.0 - QR_SPIN_SLOW)  # the distance the slowing spin covers
 const QR_FOLLOW := {&"light": [], &"medium": [&"attack_qr_m"],
 	&"heavy": [&"attack_qr_h1", &"attack_qr_h2", &"attack_qr_h3"]}
 ## The follow-up hits (Kvon picked): Medium 900 with a big knockback, no knockdown; Heavy 300 / 300 / 600, the third
@@ -1543,18 +1547,22 @@ func _qr_step() -> void:
 			position.x = clampf(position.x + minf(QR_SPEED, maxf(left, 0.0)) * _qr_dir, left_limit, right_limit)
 			if _qr_homing and (foe.position.x - position.x) * _qr_dir <= QR_CONTACT:
 				_qr_contact = true
-			if left <= QR_SPEED or absf(position.x - x0) < 0.5 or _qr_tick >= QR_MAX_RUN:
+			if not _qr_homing and left <= QR_SPIN_START:
+				_qr_phase = &"spin"  # out of range: spin early, still moving forward, slowing to a stop
+				_qr_slide = QR_SPEED
+				show_anim(&"qrun_spin")
+			elif left <= QR_SPEED or absf(position.x - x0) < 0.5 or _qr_tick >= QR_MAX_RUN:
 				if _qr_contact:
 					_end_run()
 				else:
-					_qr_phase = &"spin"  # missed: the spin, sliding to a stop
-					_qr_slide = QR_SPIN_SLIDE
+					_qr_phase = &"spin"  # stopped short of them (a wall): spin in place
+					_qr_slide = 0.0
 					show_anim(&"qrun_spin")
 			elif next:
 				show_anim(&"qrun", (sprite.frame + 1) % holds.size())
 		&"spin":
-			position.x = clampf(position.x + _qr_slide * _qr_dir, left_limit, right_limit)
 			_qr_slide *= QR_SPIN_SLOW
+			position.x = clampf(position.x + _qr_slide * _qr_dir, left_limit, right_limit)
 			if next:
 				if sprite.frame + 1 < holds.size():
 					show_anim(anim, sprite.frame + 1)
