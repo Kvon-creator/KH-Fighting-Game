@@ -1,0 +1,10 @@
+# Smear Frames and Duplicate Limbs (guide Kvon shared)
+
+**Fact or rule:** On November 18 Kvon pasted a summary of Sir Wade Neistadt's video on animating high-speed motion and asked me to refine the animations with it. Its points:
+- **Duplicate limbs:** when something moves too fast to track between frames, show several of its poses within the same few frames. Ways: rig controls that toggle extra limbs; a referenced copy of the character with everything but the limb hidden, animated along the arc; extracted mesh copies (cheap, no rig); simple shapes or 2D image planes with a surface (unlit) shader.
+- **Smear frames:** short, distorted frames between extreme poses to sell speed without motion blur. Ways: stretch / scale / translate rig controls then return them; lattice or nonlinear (bend, flare, twist) deformers, lattices driven by keyed clusters; camera-view lattice scripts; simple 3D / 2D shapes with a surface shader standing in for the smeared form.
+- **Pro-tip:** don't start with these - block the motion first, add smears / duplicates last, only where readability needs them.
+
+**How it maps here (my note):** the game already uses the "simple shapes" smear method - the Keyblade smear layers (make_smears.py) and the grab effects (make_grab_fx.py). To find where more is needed, measure each animation: how much of the silhouette changes between drawings, divided by how many frames the drawing is shown (scratch script, November 18). Top result: the air grab's held opponent (85-94% change per 2-frame drawing through both spins and the throw). **Applied:** fighter.gd GHOST_* - a held fighter's last two drawings stay as fading (42% / 20%), cool-tinted afterimages where they were drawn (duplicate limbs; ground and air grab; in game, no re-render). Not applied (lower need): Standing Medium's swing (91% in 2 frames, but it already has a Keyblade smear), the jump takeoff (three 1-frame drawings - meant to read as instant).
+
+**Why:** Kvon shared the guide to refine the animations; no further reason given.
