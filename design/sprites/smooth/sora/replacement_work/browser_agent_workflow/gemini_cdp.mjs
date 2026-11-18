@@ -105,7 +105,7 @@ const referenceSets = {'grab-spin-idle-only': [
 ], 'grab-spin-fix': [
   // Round 56 (Kvon chose a spin-only correction in a fresh chat): idle + the round 55 sheet for continuity.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
-  'design/models/sora/gemini_walk_review/round_55/gemini_original.png'
+  'design/models/sora/research/gemini_walk_review/round_55/gemini_original.png'
 ], 'grab-concept': [
   // Round 55 (Kvon, November 10): Sora's ground grab - concept sheet of Sora AND the grabbed opponent (also Sora).
   // Sora's own battle idle render only (third-party footage likely tripped round 48).
@@ -141,7 +141,7 @@ const referenceSets = {'grab-spin-idle-only': [
 ], 'standing-light-bunt': [
   // Kvon: the Standing Light becomes a bunt-style guard bash instead of the round-41 thrust.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
-  'design/models/sora/gemini_walk_review/round_41/gemini_original_preview.jpg'
+  'design/models/sora/research/gemini_walk_review/round_41/gemini_original_preview.jpg'
 ], 'standing-light-concept': [
   // Kvon: attacks next, starting with the Standing Light thrust; Gemini concept art first.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
@@ -154,20 +154,20 @@ const referenceSets = {'grab-spin-idle-only': [
 ], 'hurt-review': [
   // Kvon: get Gemini's suggestions on the built hurt set, next to its round-37 concept.
   'design/models/sora/hurt_fall2d_v5/Hurt_All_Sprites.png',
-  'design/models/sora/gemini_walk_review/round_37/gemini_original_preview.jpg'
+  'design/models/sora/research/gemini_walk_review/round_37/gemini_original_preview.jpg'
 ], 'hurt-concept': [
   // Kvon: four hurt animations; Gemini concept art first, in the approved sprite style.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png'
 ], 'backdash-low': [
   'design/references/air_movement/air_movement_ref_04.png',
-  'design/models/sora/gemini_walk_review/round_31/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_31/gemini_original_preview.jpg',
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
 ], 'airdash-concept': [
   'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png',
   'design/models/sora/glide_loop2d_v34/frames_512/sora_idle3d_00.png'
 ], 'second-jump-spin': [
-  'design/models/sora/gemini_walk_review/round_32/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_32/gemini_original_preview.jpg',
   'design/models/sora/jump_land2d_v5/Jump_All_Sprites_Current.png'
 ], 'second-jump-concept': [
   // Kvon: second jump (KH2 Aerial Dodge reference); Gemini concept art first, from the approved first jump.
@@ -179,64 +179,64 @@ const referenceSets = {'grab-spin-idle-only': [
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/glide_loop2d_v34/frames_512/sora_idle3d_00.png'
 ], 'glide-v10-check': [
-  'design/models/sora/gemini_walk_review/round_25/Loop_Reference_vs_v10.png',
-  'design/models/sora/gemini_walk_review/round_25/PushOff_Reference_vs_v10.png',
-  'design/models/sora/gemini_walk_review/round_25/Landing_Reference_vs_v10.png'
+  'design/models/sora/research/gemini_walk_review/round_25/Loop_Reference_vs_v10.png',
+  'design/models/sora/research/gemini_walk_review/round_25/PushOff_Reference_vs_v10.png',
+  'design/models/sora/research/gemini_walk_review/round_25/Landing_Reference_vs_v10.png'
 ], 'glide-consensus-text': [
-  'design/models/sora/gemini_walk_review/round_19/gemini_original_preview.jpg'
+  'design/models/sora/research/gemini_walk_review/round_19/gemini_original_preview.jpg'
 ], 'glide-consensus-v9': [
   // Kvon: go back and forth with Gemini until we agree on consistent glide instructions.
-  'design/models/sora/gemini_walk_review/round_23/Loop_Reference_vs_v9.png',
-  'design/models/sora/gemini_walk_review/round_23/PushOff_Reference_vs_v9.png',
-  'design/models/sora/gemini_walk_review/round_23/Landing_Reference_vs_v9.png'
+  'design/models/sora/research/gemini_walk_review/round_23/Loop_Reference_vs_v9.png',
+  'design/models/sora/research/gemini_walk_review/round_23/PushOff_Reference_vs_v9.png',
+  'design/models/sora/research/gemini_walk_review/round_23/Landing_Reference_vs_v9.png'
 ], 'glide-v9-compare': [
-  'design/models/sora/gemini_walk_review/round_22/Relaxed_Reference_vs_Glide_Loop_v9.png',
-  'design/models/sora/gemini_walk_review/round_22/Concept_Sheet_vs_PushOff_and_Landing_v9.png',
+  'design/models/sora/research/gemini_walk_review/round_22/Relaxed_Reference_vs_Glide_Loop_v9.png',
+  'design/models/sora/research/gemini_walk_review/round_22/Concept_Sheet_vs_PushOff_and_Landing_v9.png',
   'design/models/sora/glide_loop2d_v9/Idle_Glide_Stop.gif'
 ], 'glide-v6-compare': [
   // Kvon: compare the current glide with Gemini's reference art and get suggestions to match it closer.
-  'design/models/sora/gemini_walk_review/round_21/Relaxed_Reference_vs_Glide_Loop_v6.png',
-  'design/models/sora/gemini_walk_review/round_21/Concept_Sheet_vs_PushOff_and_Landing_v6.png',
+  'design/models/sora/research/gemini_walk_review/round_21/Relaxed_Reference_vs_Glide_Loop_v6.png',
+  'design/models/sora/research/gemini_walk_review/round_21/Concept_Sheet_vs_PushOff_and_Landing_v6.png',
   'design/models/sora/glide_loop2d_v6/Idle_Glide_Stop.gif'
 ], 'glide-v4': [
-  'design/models/sora/gemini_walk_review/round_20/Relaxed_Glide_vs_v4.png',
+  'design/models/sora/research/gemini_walk_review/round_20/Relaxed_Glide_vs_v4.png',
   'design/models/sora/glide_loop2d_v4/glide_loop2d_v4_sheet_white_3x2.png'
 ], 'glide-relaxed': [
-  'design/models/sora/gemini_walk_review/round_18/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_18/gemini_original_preview.jpg',
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png'
 ], 'glide-concept': [
   // Kvon: replace the run with a low ground glide; Gemini concept art first.
   'design/models/sora/sprite2d_v3/frames_512/sora_idle3d_00.png',
   'design/models/sora/run_loop2d_v17/run_loop2d_v17_sheet_white_4x2.png'
 ], 'run-natural-v17': [
-  'design/models/sora/gemini_walk_review/round_17/Reference_vs_v17.png',
+  'design/models/sora/research/gemini_walk_review/round_17/Reference_vs_v17.png',
   'design/models/sora/run_loop2d_v17/Run_Moving.gif'
 ], 'run-natural-v15': [
-  'design/models/sora/gemini_walk_review/round_16/Reference_vs_v15.png',
+  'design/models/sora/research/gemini_walk_review/round_16/Reference_vs_v15.png',
   'design/models/sora/run_loop2d_v15/Run_Moving.gif'
 ], 'run-natural-v12': [
-  'design/models/sora/gemini_walk_review/round_15/Reference_vs_v12.png',
+  'design/models/sora/research/gemini_walk_review/round_15/Reference_vs_v12.png',
   'design/models/sora/run_loop2d_v12/Run_Moving.gif'
 ], 'run-natural-v8': [
   // Kvon: the run doesn't match Gemini's generated poses at all; ask what would make it natural.
-  'design/models/sora/gemini_walk_review/round_14/Reference_vs_v8.png',
+  'design/models/sora/research/gemini_walk_review/round_14/Reference_vs_v8.png',
   'design/models/sora/run_loop2d_v8/Run_Moving.gif'
 ], 'run-package-v8': [
-  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_09/gemini_original_preview.jpg',
   'design/models/sora/run_start2d_v9/run_start2d_v9_sheet_white_5x1.png',
   'design/models/sora/run_stop2d_v8/run_stop2d_v8_sheet_white_5x1.png',
   'design/models/sora/run_loop2d_v8/Idle_Run_Stop.gif'
 ], 'run-ref-vs-v8': [
-  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_09/gemini_original_preview.jpg',
   'design/models/sora/run_loop2d_v8/run_loop2d_v8_sheet_white_4x2.png',
   'design/models/sora/run_loop2d_v8/Run_Moving.gif'
 ], 'run-ref-vs-v7': [
-  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_09/gemini_original_preview.jpg',
   'design/models/sora/run_loop2d_v7/run_loop2d_v7_sheet_white_4x2.png',
   'design/models/sora/run_loop2d_v7/Run_Moving.gif'
 ], 'run-ref-vs-v5': [
   // Kvon: match the run to the running poses Gemini generated (round 09 download).
-  'design/models/sora/gemini_walk_review/round_09/gemini_original_preview.jpg',
+  'design/models/sora/research/gemini_walk_review/round_09/gemini_original_preview.jpg',
   'design/models/sora/run_loop2d_v5/run_loop2d_v5_sheet_white_4x2.png'
 ], 'run-package-v5': [
   // Kvon: send the finished run (start, loop, brake) to Gemini for suggestions.

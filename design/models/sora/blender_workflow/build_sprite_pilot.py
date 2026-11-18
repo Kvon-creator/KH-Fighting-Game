@@ -94,7 +94,8 @@ FIST_WRAP = LOOP and version not in {f'idle_loop_v{n}' for n in range(1, 15)}
 WRAP_GAIN, WRAP_MAX_DEG = (1.0, 250) if version == 'idle_loop_v15' else (1.7, 270)
 # v17+: bend each wrist so the fingers cross the handle; v16's palm-up right fingers lay along it.
 SQUARE_WRISTS = FIST_WRAP and version not in ('idle_loop_v15', 'idle_loop_v16')
-SORA = ROOT / 'design/models/sora'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sora_paths import SORA  # noqa: E402 - version folders sit in feature groups (sora_paths.py)
 # SORA_CHARACTER=limit_form (Kvon, October 29: player 2 / CPU / dummy in Limit Form): the same recipes with Kvon's
 # Limit Form model on the KH2 Sora skeleton (limit_form_model.py); outputs go to design/models/sora_limit_form/.
 import os

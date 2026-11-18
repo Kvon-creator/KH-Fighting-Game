@@ -15,7 +15,9 @@ assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (an
 source, version = sys.argv[sys.argv.index('--')+1:][:2]
 import os
 # SORA_CHARACTER=limit_form: player 2's Limit Form renders (build_sprite_pilot.py / limit_form_model.py).
-SORA = ROOT / ('design/models/sora_limit_form' if os.environ.get('SORA_CHARACTER') == 'limit_form' else 'design/models/sora')
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
+SORA = ROOT / 'design/models/sora_limit_form' if os.environ.get('SORA_CHARACTER') == 'limit_form' else sora_paths.SORA
 SRC = SORA / source / 'sora_idle_loop.blend'
 OUT = SORA / version
 if OUT.exists():

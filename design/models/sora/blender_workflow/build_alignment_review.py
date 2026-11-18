@@ -6,11 +6,14 @@ Run: python build_alignment_review.py
 """
 import json
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 import numpy as np
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
-S = ROOT / 'design/models/sora'
+S = sora_paths.SORA
 BONES = {  # from export_alignment_points.py, frame 1 of each sequence
     'walk_fwd_v18t': ([265.0, 200.4], [267.9, 320.2], [268.9, 324.1]),
     'walk_fwd_v18': ([265.7, 227.6], [269.0, 351.1], [269.8, 354.9]),

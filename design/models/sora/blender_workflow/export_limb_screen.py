@@ -7,13 +7,16 @@ Run: blender --background --python export_limb_screen.py -- walk_fwd_v12 R
 import json
 import sys
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 import bpy
 from bpy_extras.object_utils import world_to_camera_view
 
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
 version, side = sys.argv[sys.argv.index('--')+1:][:2]
-OUT = ROOT / 'design/models/sora' / version
+OUT = sora_paths.SORA / version
 bpy.ops.wm.open_mainfile(filepath=str(OUT / 'sora_idle_loop.blend'))
 scene = bpy.context.scene
 arm = next(o for o in scene.objects if o.type == 'ARMATURE')

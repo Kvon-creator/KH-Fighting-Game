@@ -15,7 +15,8 @@ import sys
 from pathlib import Path
 from PIL import Image, ImageDraw
 
-SORA = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sora_paths import SORA  # noqa: E402 - version folders sit in feature groups (sora_paths.py)
 sora, opp, sub, out_png = sys.argv[1:5]
 gif = sys.argv[sys.argv.index('--gif') + 1] if '--gif' in sys.argv else None
 hitstop = int(sys.argv[sys.argv.index('--hitstop') + 1]) if '--hitstop' in sys.argv else 0

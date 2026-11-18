@@ -23,7 +23,8 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[4]
 assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 src, dst = sys.argv[1:3]
-SORA = ROOT / 'design/models/sora'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sora_paths import SORA  # noqa: E402 - version folders sit in feature groups (sora_paths.py)
 rep = json.loads((SORA / src / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
 SS = 4
 W_, H_ = rep['canvas_size']

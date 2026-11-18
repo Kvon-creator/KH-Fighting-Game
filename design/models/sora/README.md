@@ -1,5 +1,7 @@
 # Sora 3D-to-sprite experiment
 
+**Folder layout (November 18):** version folders are grouped by feature / animation - `attacks/<standing|crouching|jumping>_<light|medium|heavy>/`, `grabs/ground_grab/`, `grabs/air_grab/`, `guard/`, `hurt/`, `movement/<walk_shuffle|crouch|glide|jump|double_jump|air_dash|back_dash>/`, `idle/`, `model/from_scratch_blockout/`, `combat/` (hitbox previews), `research/` (Gemini rounds, MoMask trial, pose edits); `attacks/saved_attacks/` keeps saved alternate moves. `blender_workflow/` and `downloads/` stay here. The scripts still name a version folder alone (e.g. `atk_cmed2d_v24`): [sora_paths.py](blender_workflow/sora_paths.py) finds its group, and new builds land in the right group. Older notes below use the old flat paths.
+
 Kvon chose3D animation rendered into2D sprites. Existing sprite assets and gameplay settings remain unchanged. Blender5.2.2 LTS was located and tested on this24GB-RAM computer; CPU modeling/export and transparent renders work without adding software. The VS Code Blender Development extension (jacqueslucke0.0.31) is installed; scripts run through the same Blender from the command line or with the extension's "Blender: Run Script".
 
 **Experiments folder deleted (October21):** At Kvon's request, `design/models/sora/experiments/` was deleted. Weapon pipeline v1-v3 and the Hunyuan pilot remain recoverable from Git history (last present in commit 7cdbb40). Weapon v4 and character blockouts v1-v5 were never committed; they can be regenerated with the scripts in `blender_workflow/`:

@@ -7,11 +7,14 @@ Run: python package_idle_loop.py idle_loop_v2
 import json
 import sys
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
-OUT = ROOT / 'design/models/sora' / sys.argv[1]
+OUT = sora_paths.SORA / sys.argv[1]
 APPROVED = ROOT / 'design/sprites/smooth/sora/replacement_work/ready/standing_idle'
 report = json.loads((OUT / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
 frames = [Image.open(OUT / 'frames_512' / f['filename']).convert('RGBA') for f in report['frames']]

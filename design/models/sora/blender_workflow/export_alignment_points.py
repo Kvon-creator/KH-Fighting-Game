@@ -8,6 +8,9 @@ Run: blender --background --python export_alignment_points.py -- walk_fwd_v18t
 import json
 import sys
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 import bpy
 from bpy_extras.object_utils import world_to_camera_view
 from mathutils import Vector
@@ -15,7 +18,7 @@ from mathutils import Vector
 ROOT = Path(__file__).resolve().parents[4]
 assert str(ROOT).lower() == r'D:\KH Fighting Game'.lower()
 version = sys.argv[sys.argv.index('--')+1]
-bpy.ops.wm.open_mainfile(filepath=str(ROOT / 'design/models/sora' / version / 'sora_idle_loop.blend'))
+bpy.ops.wm.open_mainfile(filepath=str(sora_paths.SORA / version / 'sora_idle_loop.blend'))
 scene = bpy.context.scene
 scene.frame_set(scene.frame_start)
 arm = next(o for o in scene.objects if o.type == 'ARMATURE')

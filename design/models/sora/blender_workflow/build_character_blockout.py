@@ -8,6 +8,9 @@ import json
 import math
 import sys
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 import bpy
 import numpy as np
 from mathutils import Matrix, Vector
@@ -20,7 +23,7 @@ assert version.startswith('character_blockout_v'), version
 V1 = version == 'character_blockout_v1'  # earlier versions stay reproducible
 VN = int(version.rsplit('_v', 1)[1])
 # v6+: experiments/ was deleted at Kvon's request; newer versions sit beside the other Sora work.
-OUT = ROOT / 'design/models/sora' / ('experiments' if VN < 6 else '') / version
+OUT = ROOT / 'design/models/sora/experiments' / version if VN < 6 else sora_paths.SORA / version
 if OUT.exists():
     raise RuntimeError('Preserve existing blockout; choose a new version')
 assert bpy.app.version[:2] == (5, 2), bpy.app.version_string

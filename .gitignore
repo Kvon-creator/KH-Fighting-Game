@@ -10,3 +10,6 @@
 # Raw browser UI diagnostics may include account labels.
 design/sprites/smooth/sora/replacement_work/ready/*/gemini_browser_trial/attempt_*/gemini_observation_*.json
 design/sprites/smooth/sora/replacement_work/ready/*/gemini_browser_trial/attempt_*/composer_text.txt
+
+# Python bytecode caches
+__pycache__/

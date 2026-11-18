@@ -7,6 +7,9 @@ Plain Python + Pillow; reads only the version's frames and report.
 import json
 import sys
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -14,7 +17,7 @@ assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (an
 version, out_name = sys.argv[1], sys.argv[2]
 travel = '--travel' in sys.argv
 cycles = int(sys.argv[sys.argv.index('--cycles') + 1]) if '--cycles' in sys.argv else 3
-OUT = ROOT / 'design/models/sora' / version
+OUT = sora_paths.SORA / version
 rep = json.loads((OUT / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
 holds = rep['game_frames_60fps']
 root = rep.get('root_motion_m') or [0]*len(holds)

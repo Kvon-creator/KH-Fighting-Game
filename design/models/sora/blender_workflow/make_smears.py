@@ -23,7 +23,9 @@ assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (an
 src, dst = sys.argv[1:3]
 import os
 # SORA_CHARACTER=limit_form: player 2's Limit Form renders (build_sprite_pilot.py / limit_form_model.py).
-SORA = ROOT / ('design/models/sora_limit_form' if os.environ.get('SORA_CHARACTER') == 'limit_form' else 'design/models/sora')
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
+SORA = ROOT / 'design/models/sora_limit_form' if os.environ.get('SORA_CHARACTER') == 'limit_form' else sora_paths.SORA
 rep = json.loads((SORA / src / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))
 track = rep['key_track']
 assert track, 'no key_track in the report (built before smear support?)'

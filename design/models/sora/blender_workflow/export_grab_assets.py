@@ -24,7 +24,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
 assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT
-SORA = ROOT / 'design/models/sora'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sora_paths import SORA  # noqa: E402 - version folders sit in feature groups (sora_paths.py)
 ASSETS = ROOT / 'KingdomArena/assets/sora'
 AIR = 'air' in sys.argv[1:]
 ATK, HURT = (SORA / 'atk_agrab2d_v12', SORA / 'hurt_agrab2d_v12') if AIR else (SORA / 'atk_grab2d_v7', SORA / 'hurt_grab2d_v7')

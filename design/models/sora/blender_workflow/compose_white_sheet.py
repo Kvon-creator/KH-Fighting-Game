@@ -7,12 +7,15 @@ Run: python compose_white_sheet.py walk_fwd2d_v12 4 3
 import json
 import sys
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+import sora_paths  # noqa: E402 - version folders sit in feature groups
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
 assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT  # project root (any clone)
 version, cols, rows = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
-OUT = ROOT / 'design/models/sora' / version
+OUT = sora_paths.SORA / version
 frames = [f['filename'] for f in json.loads((OUT / 'Idle_Loop_Report.json').read_text(encoding='utf-8'))['frames']]
 assert len(frames) <= cols*rows, (len(frames), cols, rows)
 sheet = Image.new('RGBA', (512*cols, 512*rows), (255, 255, 255, 255))

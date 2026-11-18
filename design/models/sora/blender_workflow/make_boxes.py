@@ -21,7 +21,9 @@ from PIL import Image, ImageDraw, ImageFilter
 ROOT = Path(__file__).resolve().parents[4]
 assert (ROOT / 'KingdomArena/project.godot').is_file(), ROOT
 ASSETS = ROOT / 'KingdomArena/assets/sora'
-SORA = ROOT / 'design/models/sora'
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sora_paths import SORA  # noqa: E402 - version folders sit in feature groups (sora_paths.py)
 OUT_GD = ROOT / 'KingdomArena/scripts/sora_boxes.gd'
 PREVIEW = SORA / 'boxes_preview'
 SCALE = 384 / 512          # 3D render pixels -> game frame pixels
