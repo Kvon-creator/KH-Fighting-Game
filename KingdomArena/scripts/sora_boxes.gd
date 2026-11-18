@@ -215,6 +215,8 @@ const HURT := {
 	"qrun_spin_384/sora_qrun_spin_02.png": [Rect2(122, 115, 96, 78), Rect2(136, 187, 132, 78), Rect2(142, 259, 118, 78)],
 	"qrun_spin_384/sora_qrun_spin_03.png": [Rect2(132, 115, 133, 78), Rect2(123, 187, 164, 78), Rect2(120, 259, 165, 78)],
 	"qrun_spin_384/sora_qrun_spin_04.png": [Rect2(143, 115, 124, 78), Rect2(127, 187, 144, 78), Rect2(137, 259, 115, 78)],
+	"qrun_spin_384/sora_qrun_spin_05.png": [Rect2(179, 115, 79, 78), Rect2(148, 187, 115, 78), Rect2(153, 259, 73, 78)],
+	"qrun_spin_384/sora_qrun_spin_06.png": [Rect2(147, 115, 139, 78), Rect2(103, 187, 151, 78), Rect2(109, 259, 149, 78)],
 	"qrun_start_384/sora_qrun_start_00.png": [Rect2(161, 126, 71, 80), Rect2(110, 200, 172, 81), Rect2(95, 275, 218, 81)],
 	"qrun_start_384/sora_qrun_start_01.png": [Rect2(160, 149, 126, 73), Rect2(131, 216, 155, 73), Rect2(89, 283, 230, 74)],
 	"qrun_start_384/sora_qrun_start_02.png": [Rect2(125, 147, 169, 74), Rect2(130, 215, 137, 74), Rect2(97, 283, 191, 74)],

@@ -220,14 +220,14 @@ const ANIMATIONS := {
 		[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4], []],
 	# Quick Run (Kvon, November 18; quarter circle forward + L / M / H; after his KH2 reference design/references/Quick
 	# Run.gif): crouch, load, lunge, launch (startup 8) / a compact frozen running stride gliding just off the floor,
-	# Keyblade back (loop, no root motion: _qr_step moves him) / the contact spin (see QR_SPIN_ORDER) / the turn-around
+	# Keyblade back (loop, no root motion: _qr_step moves him) / the miss spin (QR_SPIN_SLIDE) / the turn-around
 	# skid facing the opponent, rising into the idle (Light's end).
 	# The follow-ups are still STAND-INS (existing attacks; their hitboxes come with their drawings) - STAND_IN maps
 	# them to the source for shifts / smears.
 	&"qrun_start": ["res://assets/sora/qrun_start_384/", "sora_qrun_start_", [2, 2, 2, 2], []],
 	&"qrun": ["res://assets/sora/qrun_384/", "sora_qrun_", [2, 2, 2, 2], []],
 	&"qrun_stop": ["res://assets/sora/qrun_stop_384/", "sora_qrun_stop_", [2, 2, 2, 3, 3], []],
-	&"qrun_spin": ["res://assets/sora/qrun_spin_384/", "sora_qrun_spin_", [1, 1, 1, 1, 1], []],
+	&"qrun_spin": ["res://assets/sora/qrun_spin_384/", "sora_qrun_spin_", [2, 2, 2, 2, 2, 2, 2], []],
 	&"attack_qr_m": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 2, 2, 3, 3, 5, 5, 4], []],
 	&"attack_qr_h1": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [3, 3, 4, 3], []],
 	&"attack_qr_h2": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 1, 2, 1, 3, 2, 2, 2, 2], []],
@@ -343,13 +343,14 @@ const QR_BEHIND := 140.0
 const QR_RANGE := 860.0
 const QR_DIST := 520.0
 const QR_MAX_RUN := 40     # frames (a safety stop)
-## Kvon: "making contact with the opponent should result in a quick spin". Once he reaches them (within QR_CONTACT
-## px) the run shows qrun_spin: its drawings turn him toward the camera first, 49 deg each, to his back (drawing 4);
-## the sprite flips there (his back view is symmetric, so it doesn't show) and the drawings play back - one ~490 deg
-## spin that ends facing the opponent behind him. One game frame per step; he keeps sliding to his spot meanwhile.
+## Kvon (November 18): "Slow down the spin and make it only play if the ability doesn't make contact with the
+## opponent". Contact = he reached them during the run (within QR_CONTACT px). A run that never does (out of range, or
+## stopped by a wall first) ends in qrun_spin: one full turn toward the camera first (7 drawings, 2 frames each = 14),
+## sliding to a stop (QR_SPIN_SLIDE px per frame, slowing by QR_SPIN_SLOW), ending facing the way he ran; then the skid
+## or the follow-up. The spin is not strike-invulnerable (a missed Quick Run can be punished).
 const QR_CONTACT := 60.0
-const QR_SPIN_ORDER := [0, 1, 2, 3, 4, 3, 2, 1, 0]
-const QR_SPIN_FLIP := 5    # the step at which the sprite flips
+const QR_SPIN_SLIDE := 12.0
+const QR_SPIN_SLOW := 0.8
 const QR_FOLLOW := {&"light": [], &"medium": [&"attack_qr_m"],
 	&"heavy": [&"attack_qr_h1", &"attack_qr_h2", &"attack_qr_h3"]}
 ## The follow-up hits (Kvon picked): Medium 900 with a big knockback, no knockdown; Heavy 300 / 300 / 600, the third
@@ -468,7 +469,8 @@ var _qr_dir := 1.0
 var _qr_target := 0.0
 var _qr_homing := false
 var _qr_follow := 0
-var _qr_spin := -1  # step in QR_SPIN_ORDER, -1 = not spinning
+var _qr_contact := false
+var _qr_slide := 0.0
 var _bounce_vx := 0.0
 var _stun_len := 1
 var _hvx := 0.0
@@ -1499,7 +1501,7 @@ func _start_quick_run(strength: StringName) -> void:
 	_qr_phase = &"start"
 	_qr_strength = strength
 	_qr_follow = 0
-	_qr_spin = -1
+	_qr_contact = false
 	_dir_hist.clear()  # one motion, one Quick Run
 	_use(["light", "medium", "heavy"])
 	if trace_tag != "":
@@ -1539,22 +1541,25 @@ func _qr_step() -> void:
 			var left := (_qr_target - position.x) * _qr_dir
 			var x0 := position.x
 			position.x = clampf(position.x + minf(QR_SPEED, maxf(left, 0.0)) * _qr_dir, left_limit, right_limit)
-			if _qr_spin >= 0:
-				# The contact spin plays out (he slides on to his spot and waits there for it to finish).
-				_qr_spin += 1
-				if _qr_spin >= QR_SPIN_ORDER.size():
+			if _qr_homing and (foe.position.x - position.x) * _qr_dir <= QR_CONTACT:
+				_qr_contact = true
+			if left <= QR_SPEED or absf(position.x - x0) < 0.5 or _qr_tick >= QR_MAX_RUN:
+				if _qr_contact:
 					_end_run()
-					return
-				if _qr_spin == QR_SPIN_FLIP:
-					_turn(-facing)
-				show_anim(&"qrun_spin", QR_SPIN_ORDER[_qr_spin])
-			elif _qr_homing and (foe.position.x - position.x) * _qr_dir <= QR_CONTACT:
-				_qr_spin = 0
-				show_anim(&"qrun_spin", QR_SPIN_ORDER[0])
-			elif left <= QR_SPEED or absf(position.x - x0) < 0.5 or _qr_tick >= QR_MAX_RUN:
-				_end_run()
+				else:
+					_qr_phase = &"spin"  # missed: the spin, sliding to a stop
+					_qr_slide = QR_SPIN_SLIDE
+					show_anim(&"qrun_spin")
 			elif next:
 				show_anim(&"qrun", (sprite.frame + 1) % holds.size())
+		&"spin":
+			position.x = clampf(position.x + _qr_slide * _qr_dir, left_limit, right_limit)
+			_qr_slide *= QR_SPIN_SLOW
+			if next:
+				if sprite.frame + 1 < holds.size():
+					show_anim(anim, sprite.frame + 1)
+				else:
+					_end_run()
 		&"stop":
 			if next:
 				if sprite.frame + 1 < holds.size():

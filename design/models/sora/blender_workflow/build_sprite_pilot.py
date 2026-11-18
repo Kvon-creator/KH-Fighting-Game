@@ -699,7 +699,7 @@ if RUN:
                        # Quick Run (Kvon, November 18): startup 8, the run loop, the turn-around skid 12 (the game's
                        # qrun_start / qrun / qrun_stop holds).
                        'qrun_start': [2, 2, 2, 2], 'qrun_loop': [2, 2, 2, 2], 'qrun_stop': [2, 2, 2, 3, 3],
-                       'qrun_spin': [1, 1, 1, 1, 1]}[JUMP.rsplit('_v', 1)[0]]
+                       'qrun_spin': [1, 1, 1, 1, 1] if JUMP.endswith('_v1') else [2]*7}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -2169,7 +2169,10 @@ if LOOP:
                     # to the camera, facing the way he came). The game plays these forward, flips the sprite at the back
                     # view (a symmetric heading, so the flip doesn't show) and plays them backward: one seamless ~490 deg
                     # spin ending on the turned-around skid's facing. Key hung lower so it stays inside the frame side-on.
-                    for k_i in range(1, 6):
+                    # v2 (Kvon: "Slow down the spin and make it only play if the ability doesn't make contact with the
+                    # opponent"): a whiff has no opponent to turn him round, so a full turn that ends facing the way he
+                    # ran - 7 drawings, 49 deg apart (49..343), then back to the run pose; 2 game frames each.
+                    for k_i in range(1, 6 if JUMP.endswith('_v1') else 8):
                         k_ = qr_key((.14, .10, 30.0), (-.34, .36, 80.0), .02, 16.0, hunch_=8.0, neck_=-22.0)
                         k_['blade_dir'] = tuple((-U_*.45 + V_*.30 + Vector((0, 0, -.85))).normalized())
                         k_['hand'] = U_*-.26 + V_*.24 + Vector((0, 0, 1.00))
