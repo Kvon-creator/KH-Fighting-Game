@@ -2163,6 +2163,13 @@ if LOOP:
                                qr_key((.13, .12, 32.0), (-.35, .39, 82.0), .01, 21.0, hunch_=8.0, neck_=-22.0),
                                qr_key((.14, .10, 30.0), (-.34, .36, 80.0), .02, 20.0, hunch_=8.0, neck_=-22.0),
                                qr_key((.15, .08, 28.0), (-.33, .33, 78.0), .03, 19.0, hunch_=8.0, neck_=-22.0)]
+                if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')) and jpart != 'qrun_spin':
+                    # v5 (Kvon: "Lower the back leg and point the toe towards the player"): the back foot drops from
+                    # .36 to .16 m off the floor and a little further back, its toes turned toward the camera
+                    # (foot_dir_world, as the Crouching Medium's back foot) with less toe-down pitch so they face the viewer.
+                    for k_, (bf_, bl_) in zip(qr_loop, ((-.40, .16), (-.41, .18), (-.40, .16), (-.39, .14))):
+                        k_['feet']['R'] = (bf_, LAT['R'], bl_, 20.0)
+                        k_['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
                 if jpart == 'qrun_spin':
                     # Kvon: "making contact with the opponent should result in a quick spin". The run pose turned about
                     # his vertical axis, toward the camera first (negative spin_deg), in 49 deg steps to 245 deg (his back
@@ -2195,6 +2202,9 @@ if LOOP:
                         # v3: the lunge less stretched, the launch springs up into the compact running glide
                         push_k = qr_key((.22, 0.0, 0.0), (-.36, 0.0, 40.0), .18, 18.0, hunch_=10.0, neck_=-22.0, turn_=20.0)
                         launch_k = qr_key((.16, .06, 22.0), (-.36, .24, 70.0), .06, 20.0, hunch_=8.0, neck_=-22.0)
+                        if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
+                            launch_k['feet']['R'] = (-.38, LAT['R'], .10, 25.0)   # v5: into the lowered back leg
+                            launch_k['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
                     RUN_KEYS = [crouch_k, load_k, push_k, launch_k]
                 else:
                     skid_blade = (-U_*.60 + V_*.55 + Vector((0, 0, -.30))).normalized()
