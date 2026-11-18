@@ -255,14 +255,6 @@ const SHADOW_LEAN := 1.1
 const SHADOW_COLOR := Color(0.05, 0.02, 0.12, 0.6)
 const SHADOW_FADE_HEIGHT := 420.0
 
-## Afterimages while held (Kvon, November 18, after a guide on smear frames and duplicate limbs): a grabbed fighter is
-## swung so fast (85-94% of the silhouette changes between 2-frame drawings in the air grab) that the eye loses him, so
-## his last GHOST_ALPHA.size() drawings stay behind as fading, cool-tinted copies where they were drawn - the
-## "duplicate limbs" technique, only where speed hurts readability.
-const GHOST_ALPHA := [0.42, 0.2]
-const GHOST_TINT := Color(0.72, 0.84, 1.0)
-## Sora himself leaves the same afterimages through the air grab's two spins (drawings 3-18) - Kvon, November 18.
-const GHOST_SPIN_DRAWINGS := [3, 18]
 ## Squash and stretch on the fastest dash drawings (Kvon, November 18, from the smear guide): stretched along the motion
 ## and thinner, anchored at the feet - the air dash's burst (jump_dash drawing 0) and the back-dash's hop (back_dash
 ## drawing 1, 17 px a frame - its first drawing, the push, is slow).
@@ -379,9 +371,6 @@ var grab_air := false
 
 var _smear: Sprite2D
 var _shadow: Sprite2D
-var _ghosts: Array[Sprite2D] = []
-## Held drawings already shown: [texture, offset, global position, facing, z_index], newest last.
-var _trail: Array = []
 var _smear_frames := {}
 var _tick := 0
 var _hold := 0
@@ -431,13 +420,7 @@ func setup(frames: SpriteFrames, smear_frames: Dictionary, start_x: float, face:
 	_shadow = Sprite2D.new()  # added first: drawn under him
 	_shadow.centered = false
 	add_child(_shadow)
-	for i in GHOST_ALPHA.size():
-		var g := Sprite2D.new()
-		g.centered = false
-		g.top_level = true  # stays where that drawing was shown
-		g.visible = false
-		add_child(g)
-		_ghosts.append(g)
+
 	sprite = AnimatedSprite2D.new()
 	sprite.sprite_frames = frames
 	sprite.centered = false
@@ -451,11 +434,11 @@ func setup(frames: SpriteFrames, smear_frames: Dictionary, start_x: float, face:
 	reset(start_x, face)
 
 
-## The floor shadow follows his current drawing every frame (see SHADOW_*); afterimages while held (GHOST_*).
+## The floor shadow follows his current drawing every frame (see SHADOW_*); dash squash and stretch (DASH_STRETCH).
 func _process(_delta: float) -> void:
 	if _shadow == null:
 		return
-	_update_ghosts()
+	_update_stretch()
 	var h := FLOOR_Y - position.y
 	_shadow.visible = state != &"held" and h < SHADOW_FADE_HEIGHT
 	if not _shadow.visible:
@@ -473,32 +456,13 @@ func _process(_delta: float) -> void:
 	_shadow.modulate = Color(SHADOW_COLOR, SHADOW_COLOR.a * k)
 
 
-func _update_ghosts() -> void:
-	var spinning := grab_air and grab_t >= 0 and sprite.animation == &"agrab" 		and sprite.frame >= GHOST_SPIN_DRAWINGS[0] and sprite.frame <= GHOST_SPIN_DRAWINGS[1]
+## Afterimages on a grabbed fighter and on Sora's air-grab spins were tried and removed (Kvon, November 18: "the
+## afterimages aren't necessary").
+func _update_stretch() -> void:
 	var stretch := Vector2.ONE
 	if DASH_STRETCH.has(sprite.animation) and sprite.frame == DASH_STRETCH[sprite.animation][0]:
 		stretch = DASH_STRETCH[sprite.animation][1]
 	sprite.scale = Vector2(facing * stretch.x, stretch.y)
-	if state != &"held" and not spinning:
-		_trail.clear()
-	else:
-		var tex := sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
-		if _trail.is_empty() or _trail[-1][0] != tex:
-			_trail.append([tex, sprite.offset, global_position, facing, z_index])
-			if _trail.size() > GHOST_ALPHA.size() + 1:
-				_trail.pop_front()
-	for i in _ghosts.size():
-		var g := _ghosts[i]
-		var k := _trail.size() - 2 - i  # the current drawing is the last entry; ghosts are the ones before it
-		g.visible = k >= 0
-		if g.visible:
-			var t: Array = _trail[k]
-			g.texture = t[0]
-			g.offset = t[1]
-			g.global_position = t[2]
-			g.scale = Vector2(t[3], 1.0)
-			g.z_index = t[4]
-			g.modulate = Color(GHOST_TINT, GHOST_ALPHA[i])
 
 
 ## Back to standing at x, full health, facing face (round start / reset).

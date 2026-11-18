@@ -14,3 +14,5 @@
 - **Body squash and stretch:** fighter.gd DASH_STRETCH - the air dash's burst (jump_dash drawing 0: x1.22, y0.88) and the back-dash's hop (back_dash drawing 1, 17 px / frame: x1.18, y0.9; its first drawing, the push, is slow), anchored at the feet, visual only (hurtboxes unchanged).
 - **Sora's own afterimages** through the air grab's two spins (GHOST_SPIN_DRAWINGS 3-18), same trail as the held opponent. Busier, as expected - tune GHOST_ALPHA if it is too much.
 - Not used: the Alan Becker style (frame-by-frame redrawn shapes - would mean redrawing frames, not this pipeline).
+
+**Afterimages removed (Kvon, November 18, after testing: "the afterimages aren't necessary"):** both the grabbed fighter's and Sora's air-grab-spin afterimages are gone (fighter.gd GHOST_* deleted). The dash squash-and-stretch and the Keyblade multiples / crescents stay. Don't re-add afterimages to the grabs unless Kvon asks.
