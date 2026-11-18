@@ -261,6 +261,12 @@ const SHADOW_FADE_HEIGHT := 420.0
 ## "duplicate limbs" technique, only where speed hurts readability.
 const GHOST_ALPHA := [0.42, 0.2]
 const GHOST_TINT := Color(0.72, 0.84, 1.0)
+## Sora himself leaves the same afterimages through the air grab's two spins (drawings 3-18) - Kvon, November 18.
+const GHOST_SPIN_DRAWINGS := [3, 18]
+## Squash and stretch on the fastest dash drawings (Kvon, November 18, from the smear guide): stretched along the motion
+## and thinner, anchored at the feet - the air dash's burst (jump_dash drawing 0) and the back-dash's hop (back_dash
+## drawing 1, 17 px a frame - its first drawing, the push, is slow).
+const DASH_STRETCH := {&"jump_dash": [0, Vector2(1.22, 0.88)], &"back_dash": [1, Vector2(1.18, 0.9)]}
 
 ## Combat numbers (Kvon, October 29): 10000 health, damage / hit-freeze / hitstun / blockstun / pushback per strength.
 const MAX_HP := 10000
@@ -468,7 +474,12 @@ func _process(_delta: float) -> void:
 
 
 func _update_ghosts() -> void:
-	if state != &"held":
+	var spinning := grab_air and grab_t >= 0 and sprite.animation == &"agrab" 		and sprite.frame >= GHOST_SPIN_DRAWINGS[0] and sprite.frame <= GHOST_SPIN_DRAWINGS[1]
+	var stretch := Vector2.ONE
+	if DASH_STRETCH.has(sprite.animation) and sprite.frame == DASH_STRETCH[sprite.animation][0]:
+		stretch = DASH_STRETCH[sprite.animation][1]
+	sprite.scale = Vector2(facing * stretch.x, stretch.y)
+	if state != &"held" and not spinning:
 		_trail.clear()
 	else:
 		var tex := sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
