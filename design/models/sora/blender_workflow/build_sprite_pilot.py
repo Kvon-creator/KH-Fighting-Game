@@ -59,7 +59,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
                                       'atk_jheavy_v', 'atk_guard_v', 'atk_grab_v', 'hurt_grab_v',
                                       'atk_agrab_v', 'hurt_agrab_v',
-                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v')) else None
+                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v', 'qrun_spin_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -698,7 +698,8 @@ if RUN:
                        'hurt_agrab': [2, 3, 3, 3, 3, 3, 4, 3, 5, 6],
                        # Quick Run (Kvon, November 18): startup 8, the run loop, the turn-around skid 12 (the game's
                        # qrun_start / qrun / qrun_stop holds).
-                       'qrun_start': [2, 2, 2, 2], 'qrun_loop': [2, 2, 2, 2], 'qrun_stop': [2, 2, 2, 3, 3]}[JUMP.rsplit('_v', 1)[0]]
+                       'qrun_start': [2, 2, 2, 2], 'qrun_loop': [2, 2, 2, 2], 'qrun_stop': [2, 2, 2, 3, 3],
+                       'qrun_spin': [1, 1, 1, 1, 1]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -2113,7 +2114,7 @@ if LOOP:
                             k_['blade_dir'] = tuple(apex_b.lerp(down_b, e_).normalized())
                             k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80))
                     RUN_KEYS.append(k_)
-            elif jpart in ('qrun_start', 'qrun_loop', 'qrun_stop'):
+            elif jpart in ('qrun_start', 'qrun_loop', 'qrun_stop', 'qrun_spin'):
                 # Quick Run (Kvon, November 18: Wisdom Form's Quick Run from KH2, "use the actual ability from the original
                 # game as inspiration"). The KH Wiki describes it as an aerial dash performed at ground level, so the base is
                 # the approved forward air-dash pose (jump_dash v2: leaning hard forward, Keyblade held straight back in the
@@ -2145,7 +2146,36 @@ if LOOP:
                                qr_key((.25, .07, 18.0), (-.63, .26, 78.0), .08, 34.0, hunch_=18.0),
                                qr_key((.26, .05, 15.0), (-.62, .22, 75.0), .10, 32.0, hunch_=18.0),
                                qr_key((.27, .03, 12.0), (-.61, .19, 72.0), .12, 31.0, hunch_=18.0)]
-                if jpart == 'qrun_loop':
+                QR_V3 = not JUMP.endswith(('_v1', '_v2')) or jpart == 'qrun_spin'
+                if QR_V3:
+                    # v3 (Kvon: "Sora's body shouldn't be as stretched out as the current version", following his
+                    # reference design/references/Quick Run.gif - KH2 footage): the KH2 pose is a compact frozen running
+                    # stride gliding just off the floor - torso only moderately forward, front knee bent with the foot
+                    # under him, back leg kicked up behind (knee ~90 deg), the Keyblade held back behind him at chest
+                    # height with the blade angled back and down, the free hand reaching forward.
+                    qr_blade = (-U_*.80 + V_*.40 + Vector((0, 0, -.35))).normalized()
+                    qr_hand = U_*-.34 + V_*.24 + Vector((0, 0, 1.08))
+                    ARM_BACK = CHEST + U_*.30 + Vector((0, 0, .06))
+                    if not JUMP.endswith(('_v1', '_v2', '_v3')) and jpart != 'qrun_spin':
+                        # v4: v3's Key tip ran off the frame's left edge - angled toward the camera (shorter on screen)
+                        qr_blade = (-U_*.58 + V_*.66 + Vector((0, 0, -.40))).normalized()
+                    qr_loop = [qr_key((.14, .10, 30.0), (-.34, .36, 80.0), .02, 20.0, hunch_=8.0, neck_=-22.0),
+                               qr_key((.13, .12, 32.0), (-.35, .39, 82.0), .01, 21.0, hunch_=8.0, neck_=-22.0),
+                               qr_key((.14, .10, 30.0), (-.34, .36, 80.0), .02, 20.0, hunch_=8.0, neck_=-22.0),
+                               qr_key((.15, .08, 28.0), (-.33, .33, 78.0), .03, 19.0, hunch_=8.0, neck_=-22.0)]
+                if jpart == 'qrun_spin':
+                    # Kvon: "making contact with the opponent should result in a quick spin". The run pose turned about
+                    # his vertical axis, toward the camera first (negative spin_deg), in 49 deg steps to 245 deg (his back
+                    # to the camera, facing the way he came). The game plays these forward, flips the sprite at the back
+                    # view (a symmetric heading, so the flip doesn't show) and plays them backward: one seamless ~490 deg
+                    # spin ending on the turned-around skid's facing. Key hung lower so it stays inside the frame side-on.
+                    for k_i in range(1, 6):
+                        k_ = qr_key((.14, .10, 30.0), (-.34, .36, 80.0), .02, 16.0, hunch_=8.0, neck_=-22.0)
+                        k_['blade_dir'] = tuple((-U_*.45 + V_*.30 + Vector((0, 0, -.85))).normalized())
+                        k_['hand'] = U_*-.26 + V_*.24 + Vector((0, 0, 1.00))
+                        k_['spin_deg'] = -49.0*k_i
+                        RUN_KEYS.append(k_)
+                elif jpart == 'qrun_loop':
                     RUN_KEYS = qr_loop
                 elif jpart == 'qrun_start':
                     crouch_k = mix(IDLE_R, IDLE_R, 0.0)
@@ -2158,6 +2188,10 @@ if LOOP:
                     launch_k = qr_key((.20, .02, 8.0), (-.50, .03, 60.0), .17, 27.0)
                     if not JUMP.endswith('_v1'):
                         launch_k = qr_key((.24, .03, 12.0), (-.58, .10, 68.0), .13, 30.0, hunch_=18.0)  # into the v2 loop
+                    if QR_V3:
+                        # v3: the lunge less stretched, the launch springs up into the compact running glide
+                        push_k = qr_key((.22, 0.0, 0.0), (-.36, 0.0, 40.0), .18, 18.0, hunch_=10.0, neck_=-22.0, turn_=20.0)
+                        launch_k = qr_key((.16, .06, 22.0), (-.36, .24, 70.0), .06, 20.0, hunch_=8.0, neck_=-22.0)
                     RUN_KEYS = [crouch_k, load_k, push_k, launch_k]
                 else:
                     skid_blade = (-U_*.60 + V_*.55 + Vector((0, 0, -.30))).normalized()
