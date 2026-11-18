@@ -218,12 +218,14 @@ const ANIMATIONS := {
 	&"agrab_whiff": ["res://assets/sora/agrab_whiff_768/", "sora_agrab_whiff_", [1], []],
 	&"agrab_held": ["res://assets/sora/agrab_held_768/", "sora_agrab_held_",
 		[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4], []],
-	# Quick Run (Kvon, November 18; quarter circle forward + L / M / H) - STAND-IN drawings until its own are made:
-	# the glide's push-off, hover loop and skid for the run (no root motion: _qr_step moves him), and existing attacks
-	# for the follow-ups (their hitboxes come with their drawings). STAND_IN maps them to the source for shifts / smears.
-	&"qrun_start": ["res://assets/sora/glide_start_384/", "sora_glide_start_", [2, 2, 2, 2], []],
-	&"qrun": ["res://assets/sora/glide_loop_384/", "sora_glide_loop_", [2, 2, 2, 2, 2, 2], []],
-	&"qrun_stop": ["res://assets/sora/glide_stop_384/", "sora_glide_stop_", [2, 2, 2, 3, 3], []],
+	# Quick Run (Kvon, November 18; quarter circle forward + L / M / H; KH2 Wisdom Form's Quick Run = an air dash at
+	# ground level): crouch, load, lunge, launch (startup 8) / the low skimming dash, Keyblade straight back (loop, no
+	# root motion: _qr_step moves him) / the turn-around skid facing the opponent, rising into the idle (Light's end).
+	# The follow-ups are still STAND-INS (existing attacks; their hitboxes come with their drawings) - STAND_IN maps
+	# them to the source for shifts / smears.
+	&"qrun_start": ["res://assets/sora/qrun_start_384/", "sora_qrun_start_", [2, 2, 2, 2], []],
+	&"qrun": ["res://assets/sora/qrun_384/", "sora_qrun_", [2, 2, 2, 2], []],
+	&"qrun_stop": ["res://assets/sora/qrun_stop_384/", "sora_qrun_stop_", [2, 2, 2, 3, 3], []],
 	&"attack_qr_m": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 2, 2, 3, 3, 5, 5, 4], []],
 	&"attack_qr_h1": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [3, 3, 4, 3], []],
 	&"attack_qr_h2": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 1, 2, 1, 3, 2, 2, 2, 2], []],

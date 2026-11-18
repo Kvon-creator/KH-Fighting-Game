@@ -58,7 +58,8 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'hurt_getup_v', 'atk_slight_v', 'atk_smed_v', 'atk_sheavy_v',
                                       'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
                                       'atk_jheavy_v', 'atk_guard_v', 'atk_grab_v', 'hurt_grab_v',
-                                      'atk_agrab_v', 'hurt_agrab_v')) else None
+                                      'atk_agrab_v', 'hurt_agrab_v',
+                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -694,7 +695,10 @@ if RUN:
                        # Air grab: reach 2 + catch 3 (connects on frame 5), twist 4 x 3, haul 4, throw 3, follow 5,
                        # back to the jump tuck 6.
                        'atk_agrab': [2, 3, 3, 3, 3, 3, 4, 3, 5, 6],
-                       'hurt_agrab': [2, 3, 3, 3, 3, 3, 4, 3, 5, 6]}[JUMP.rsplit('_v', 1)[0]]
+                       'hurt_agrab': [2, 3, 3, 3, 3, 3, 4, 3, 5, 6],
+                       # Quick Run (Kvon, November 18): startup 8, the run loop, the turn-around skid 12 (the game's
+                       # qrun_start / qrun / qrun_stop holds).
+                       'qrun_start': [2, 2, 2, 2], 'qrun_loop': [2, 2, 2, 2], 'qrun_stop': [2, 2, 2, 3, 3]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -2109,6 +2113,78 @@ if LOOP:
                             k_['blade_dir'] = tuple(apex_b.lerp(down_b, e_).normalized())
                             k_['hand'] = U_*-.24 + V_*.23 + Vector((0, 0, .80))
                     RUN_KEYS.append(k_)
+            elif jpart in ('qrun_start', 'qrun_loop', 'qrun_stop'):
+                # Quick Run (Kvon, November 18: Wisdom Form's Quick Run from KH2, "use the actual ability from the original
+                # game as inspiration"). The KH Wiki describes it as an aerial dash performed at ground level, so the base is
+                # the approved forward air-dash pose (jump_dash v2: leaning hard forward, Keyblade held straight back in the
+                # right hand, left fist forward at the chest) brought down to skim the floor - hips low, the front foot
+                # gliding just over the floor under the knee, the back leg trailing long behind with its toes off the floor.
+                # Start: crouch, load, lunge off the back foot, launch. Stop: he has turned to face the opponent behind
+                # him and is still sliding away - a low, wide skid leaning into the brake, the free hand down by the floor,
+                # then he rises back into the battle idle with both hands on the Key.
+                qr_blade = (-U_*.55 + V_*.82 + Vector((0, 0, .08))).normalized()   # the air dash's Key direction
+                qr_hand = U_*-.40 + V_*.24 + Vector((0, 0, .98))
+
+                def qr_key(lf, rf, ce_, pitch_, hunch_=16.0, neck_=-34.0, turn_=25.0):
+                    k_ = jk({'L': (lf[0], LAT['L'], lf[1], lf[2]), 'R': (rf[0], LAT['R'], rf[1], rf[2])}, ce=ce_,
+                            hunch=hunch_, pitch=pitch_, neck=neck_, blade=qr_blade)
+                    k_['turn'] = turn_
+                    k_['hand'] = qr_hand
+                    return k_
+                ARM_BACK = CHEST + U_*.14   # left fist forward at the chest, as in the air dash
+                # The skim pose: (front foot along, lift, toe pitch), (back foot ...), hip drop, lean.
+                qr_loop = [qr_key((.18, .03, 10.0), (-.46, .07, 60.0), .16, 24.0),
+                           qr_key((.17, .04, 12.0), (-.47, .10, 62.0), .14, 26.0),
+                           qr_key((.18, .03, 10.0), (-.46, .07, 60.0), .16, 24.0),
+                           qr_key((.19, .02, 8.0), (-.45, .05, 58.0), .17, 23.0)]
+                if not JUMP.endswith('_v1'):
+                    # v2: v1 read as a crouching lunge (back knee folded toward the floor, front foot planted) - lean
+                    # further, hips a little higher, the back leg stretched long behind with the toes pointed, the
+                    # front foot gliding just off the floor; a slightly bigger bob through the loop.
+                    qr_loop = [qr_key((.26, .05, 15.0), (-.62, .22, 75.0), .10, 32.0, hunch_=18.0),
+                               qr_key((.25, .07, 18.0), (-.63, .26, 78.0), .08, 34.0, hunch_=18.0),
+                               qr_key((.26, .05, 15.0), (-.62, .22, 75.0), .10, 32.0, hunch_=18.0),
+                               qr_key((.27, .03, 12.0), (-.61, .19, 72.0), .12, 31.0, hunch_=18.0)]
+                if jpart == 'qrun_loop':
+                    RUN_KEYS = qr_loop
+                elif jpart == 'qrun_start':
+                    crouch_k = mix(IDLE_R, IDLE_R, 0.0)
+                    crouch_k.update(ce=.10, hunch=4.0, pitch=6.0, root=0.0, release=0.0)
+                    load_k = mix(IDLE_R, qr_loop[0], .35)
+                    load_k.update(ce=.22, hunch=8.0, pitch=12.0, neck=-14.0, release=1.0, root=0.0,
+                                  blade_dir=tuple(CR_BLADE0.lerp(qr_blade, .5).normalized()))
+                    load_k['feet'] = {'L': (L0[0], L0[1], 0.0, 0.0), 'R': (R0[0], R0[1], 0.0, 30.0)}
+                    push_k = qr_key((.26, 0.0, 0.0), (-.48, 0.0, 40.0), .24, 20.0, hunch_=14.0, turn_=18.0)
+                    launch_k = qr_key((.20, .02, 8.0), (-.50, .03, 60.0), .17, 27.0)
+                    if not JUMP.endswith('_v1'):
+                        launch_k = qr_key((.24, .03, 12.0), (-.58, .10, 68.0), .13, 30.0, hunch_=18.0)  # into the v2 loop
+                    RUN_KEYS = [crouch_k, load_k, push_k, launch_k]
+                else:
+                    skid_blade = (-U_*.60 + V_*.55 + Vector((0, 0, -.30))).normalized()
+                    QR_LEAN = 0.0
+                    if not JUMP.endswith(('_v1', '_v2')):
+                        # v3: v2's Key tip touched the frame's left edge - angled toward the camera (shorter on screen);
+                        # a little more lean into the brake.
+                        skid_blade = (-U_*.45 + V_*.75 + Vector((0, 0, -.35))).normalized()
+                        QR_LEAN = 4.0
+
+                    def qr_skid(lf, rf, ce_, pitch_, l_hand_):
+                        k_ = jk({'L': (lf[0], LAT['L'], lf[1], lf[2]), 'R': (rf[0], LAT['R'], rf[1], rf[2])}, ce=ce_,
+                                hunch=6.0, pitch=pitch_, neck=-12.0, blade=skid_blade)
+                        k_['turn'] = 5.0
+                        k_['hand'] = U_*-.30 + V_*.22 + Vector((0, 0, .82))
+                        k_['l_hand'] = tuple(l_hand_)
+                        return k_
+                    skid_k = qr_skid((.42, 0.0, 0.0), (-.40, 0.0, 15.0), .30, 12.0 + QR_LEAN, T_((.24, -.40, .30)))
+                    skid2_k = qr_skid((.40, 0.0, 0.0), (-.38, 0.0, 10.0), .26, 9.0 + QR_LEAN, T_((.24, -.36, .44)))
+                    RUN_KEYS = [skid_k, skid2_k]
+                    for w_, rel_ in ((.45, .6), (.75, .2), (.95, 0.0)):
+                        k_ = mix(skid2_k, IDLE_R, w_)
+                        k_.update(blade_dir=tuple(skid_blade.lerp(CR_BLADE0, w_).normalized()), release=rel_, root=0.0,
+                                  l_elbow_hint=(1, .4, -.3), l_shrug=0.0)
+                        if rel_ > 0:
+                            k_['l_hand'] = tuple(Vector(skid2_k['l_hand']).lerp(CHEST, w_))
+                        RUN_KEYS.append(k_)
             elif HURT:
                 # Hurt set (Kvon, October 26; Gemini round-37 sheet): ground hit, air hit, head-first fall with his back
                 # to the screen, landing flat on his back (face up). Each drawing is solved upright first, so the knees
