@@ -18,7 +18,7 @@ extends Node2D
 ## Automated checks (player 1, as in the old test scene): `--walk-demo-ticks=N`, `--back-demo-ticks=N`,
 ## `--crouch-demo-ticks=N` (from `--crouch-demo-from=M`), `--glide-demo-ticks=N`, `--jump-demo-at=N`
 ## (`--jump-hold-to=N`, `--jump2-demo-at=M`, `--dash-demo-at=M`), `--bdash-demo-at=N`, `--hit-demo-at=N`,
-## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`, `--grab-demo-at=N[,N...]` (Medium + Heavy), `--r1-demo-at=N[,N...]` (dash button held on those frames); the same with a `p2-` prefix for player 2
+## `--knock-demo-at=N`, `--light/medium/heavy-demo-at=N[,N...]`, `--grab-demo-at=N[,N...]` (Medium + Heavy), `--qcf-demo-at=N[,N...]` (a quarter circle forward ending on N), `--r1-demo-at=N[,N...]` (dash button held on those frames); the same with a `p2-` prefix for player 2
 ## (e.g. `--p2-walk-demo-ticks=N`); `--dummy-guard=0-3`, `--dummy-action=0-7`, `--dummy-counter=0-3`, `--show-boxes`, `--trace`, `--capture=<png>`.
 
 const BOXES := preload("res://scripts/sora_boxes.gd")
@@ -128,6 +128,8 @@ func _ready() -> void:
 		add_child(f)
 		f.setup(frames, smears, START_X[i], 1.0 if i == 0 else -1.0)
 		p.append(f)
+	p[0].foe = p[1]
+	p[1].foe = p[0]
 	_camera = Camera2D.new()
 	_camera.position = Vector2(SCREEN_CENTER.x, CAMERA_REST_Y)
 	_camera.limit_left = 0
@@ -180,7 +182,7 @@ func _ready() -> void:
 func _parse_demo(prefix: String) -> Dictionary:
 	var d := {"walk": -1, "back": -1, "crouch": -1, "crouch_from": 1, "glide": -1, "jump": -1, "jump_hold": -1,
 		"jump2": -1, "dash": -1, "bdash": -1, "hit": -1, "knock": -1, "light": [], "medium": [], "heavy": [], "r1": [],
-		"grab": []}
+		"grab": [], "qcf": []}
 	var names := {"walk-demo-ticks": "walk", "back-demo-ticks": "back", "crouch-demo-ticks": "crouch",
 		"crouch-demo-from": "crouch_from", "glide-demo-ticks": "glide", "jump-demo-at": "jump",
 		"jump-hold-to": "jump_hold", "jump2-demo-at": "jump2", "dash-demo-at": "dash", "bdash-demo-at": "bdash",
@@ -194,7 +196,7 @@ func _parse_demo(prefix: String) -> Dictionary:
 		for n: String in names:
 			if rest.begins_with(n + "="):
 				d[names[n]] = int(rest.trim_prefix(n + "="))
-		for k in ["light", "medium", "heavy", "r1", "grab"]:
+		for k in ["light", "medium", "heavy", "r1", "grab", "qcf"]:
 			if rest.begins_with(k + "-demo-at="):
 				for v in rest.trim_prefix(k + "-demo-at=").split(","):
 					d[k].append(int(v))
@@ -218,12 +220,12 @@ func _physics_process(_delta: float) -> void:
 		_training_tests()
 		for i in 2:
 			var dx := p[1 - i].position.x - p[i].position.x
-			if absf(dx) > 1.0:
+			if absf(dx) > 1.0 and not p[i].passing_through():
 				p[i].face_toward(signf(dx))
 		_grabs()
 		_pushback_step()
-		if _grab.is_empty():
-			_push_apart()  # the held fighter is drawn on the grabber: no pushing during a grab
+		if _grab.is_empty() and not p[0].passing_through() and not p[1].passing_through():
+			_push_apart()  # the Quick Run passes through  # the held fighter is drawn on the grabber: no pushing during a grab
 		_hits()
 	for e: Dictionary in _fx:
 		e["age"] += 1
@@ -314,6 +316,12 @@ func _input_for(i: int) -> Dictionary:
 	for k in ["light", "medium", "heavy"]:
 		if t in d[k]:
 			inp[k] = true
+	for q: int in d["qcf"]:  # a quarter circle forward ending on frame q (press the button with --light-demo-at=q etc.)
+		if t >= q - 6 and t <= q - 3:
+			inp["down"] = true
+		if t >= q - 4 and t <= q:
+			inp["forward"] = true
+			inp["back"] = false
 	if t in d["r1"]:
 		inp["dash"] = true  # the dash button (R1)
 	if t in d["grab"]:
@@ -397,18 +405,16 @@ func _hits() -> void:
 		var a: Fighter = h["a"]
 		var d: Fighter = h["d"]
 		var attack := String(a.sprite.animation)
-		var strength := &"heavy" if attack.ends_with("heavy") else (&"medium" if attack.ends_with("medium")
-			else &"light")
-		# Crouching attacks hit low, jumping attacks overhead, standing attacks mid (Kvon's guard rule).
-		var level := &"low" if attack.begins_with("attack_c") else (&"overhead" if attack.begins_with("attack_j")
-			else &"mid")
+		var info := a.hit_info()  # strength, level (low / mid / overhead), launch, Quick Run overrides
+		var strength: StringName = info["strength"]
+		var level: StringName = info["level"]
 		var away := 1.0 if d.position.x >= a.position.x else -1.0
 		a.attack_hit = true
 		# Fast fall (Kvon): a jumping attack makes him drop fast after touching an opponent on the ground; against a
 		# juggled opponent only the Jumping Heavy does. Checked before the hit, which may launch him.
 		a.fast_fall_hit = not d.is_airborne() or (d.state == &"hurt_air" and attack == "attack_jheavy")
 		_freeze = maxi(_freeze, Fighter.HIT_FREEZE[strength])
-		var guarded := d.take_hit(strength, level, a.sprite.animation == &"attack_cheavy", away)
+		var guarded := d.take_hit(strength, level, info["launch"], away, info)
 		a.attack_guarded = guarded  # a guarded ground attack can still chain, but not jump cancel
 		_add_fx(&"barrier" if guarded else &"spark", h["contact"], -away)
 		if not guarded:
@@ -521,7 +527,7 @@ func _grabs() -> void:
 
 ## Attacker a's hitbox overlapping defender d's hurtbox (a knocked-down fighter can't be hit).
 func _find_hit(a: Fighter, d: Fighter) -> Dictionary:
-	if a.attack_hit or a.state != &"control" or d.state == &"down":
+	if a.attack_hit or a.state != &"control" or d.state == &"down" or d.passing_through():
 		return {}
 	for hb: Rect2 in a.boxes(BOXES.HIT):
 		for b: Rect2 in d.boxes(BOXES.HURT):

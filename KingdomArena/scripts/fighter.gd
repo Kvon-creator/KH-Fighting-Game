@@ -218,7 +218,22 @@ const ANIMATIONS := {
 	&"agrab_whiff": ["res://assets/sora/agrab_whiff_768/", "sora_agrab_whiff_", [1], []],
 	&"agrab_held": ["res://assets/sora/agrab_held_768/", "sora_agrab_held_",
 		[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 2, 2, 3, 4], []],
+	# Quick Run (Kvon, November 18; quarter circle forward + L / M / H) - STAND-IN drawings until its own are made:
+	# the glide's push-off, hover loop and skid for the run (no root motion: _qr_step moves him), and existing attacks
+	# for the follow-ups (their hitboxes come with their drawings). STAND_IN maps them to the source for shifts / smears.
+	&"qrun_start": ["res://assets/sora/glide_start_384/", "sora_glide_start_", [2, 2, 2, 2], []],
+	&"qrun": ["res://assets/sora/glide_loop_384/", "sora_glide_loop_", [2, 2, 2, 2, 2, 2], []],
+	&"qrun_stop": ["res://assets/sora/glide_stop_384/", "sora_glide_stop_", [2, 2, 2, 3, 3], []],
+	&"attack_qr_m": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 2, 2, 3, 3, 5, 5, 4], []],
+	&"attack_qr_h1": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [3, 3, 4, 3], []],
+	&"attack_qr_h2": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 1, 2, 1, 3, 2, 2, 2, 2], []],
+	&"attack_qr_h3": ["res://assets/sora/attack_heavy_384/", "sora_attack_heavy_", [2, 3, 2, 3, 3, 4, 4, 4, 4],
+		[0.0, -3.61, 21.65, 21.65, 94.61, 3.61, -18.04, -2.2, -16.64]],
 }
+
+## Stand-in animations -> the animation whose drawings they borrow (for DRAW_SHIFT, TALL_FEET and the smears).
+const STAND_IN := {&"attack_qr_m": &"attack_medium", &"attack_qr_h1": &"attack_light",
+	&"attack_qr_h2": &"attack_medium", &"attack_qr_h3": &"attack_heavy"}
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
 ## the sprite is shifted back right by this many px so he stays in place.
@@ -312,6 +327,32 @@ const AGRAB_RELEASE_V := Vector2(4.0, 6.0)
 const AGRAB_HANG_HEIGHT := 300.0
 const AGRAB_LIFT := 12.0
 ## Input buffer (Kvon, November 11): a press of these buttons stays usable for this many game frames.
+## Quick Run (Kvon, November 18: Wisdom Form's Quick Run from KH2 - he runs past the opponent and appears behind
+## them). Input: quarter circle forward (down, down-forward, forward) + L / M / H, from any ground move he could
+## attack from. Startup (qrun_start), then the run: strikes pass through him (grabs still catch him) and the two don't
+## push each other; he stops QR_BEHIND px behind an opponent within QR_RANGE in front (following them if they move),
+## otherwise after QR_DIST px. Light: a short skid, nothing else. Medium / Heavy: he turns and the follow-up plays.
+const QCF_WINDOW := 15     # down -> down-forward -> forward within this many frames
+const QCF_PRESS := 8       # ... and the button within this many frames of reaching forward
+const QR_SPEED := 34.0     # px per frame while running
+const QR_BEHIND := 140.0
+const QR_RANGE := 860.0
+const QR_DIST := 520.0
+const QR_MAX_RUN := 40     # frames (a safety stop)
+const QR_FOLLOW := {&"light": [], &"medium": [&"attack_qr_m"],
+	&"heavy": [&"attack_qr_h1", &"attack_qr_h2", &"attack_qr_h3"]}
+## The follow-up hits (Kvon picked): Medium 900 with a big knockback, no knockdown; Heavy 300 / 300 / 600, the third
+## slams them into a ground bounce (high enough to juggle). All mid, all blockable. strength = hit-freeze / stun table;
+## "stun" / "push" override it (the Heavy's first two hits stun longer and barely push, so the three always combo and
+## the bounce stays close enough to follow up).
+const QR_HITS := {&"attack_qr_m": {"strength": &"heavy", "damage": 900, "push": 22.0},
+	&"attack_qr_h1": {"strength": &"light", "damage": 300, "stun": 30, "push": 1.5},
+	&"attack_qr_h2": {"strength": &"medium", "damage": 300, "stun": 30, "push": 1.5},
+	&"attack_qr_h3": {"strength": &"heavy", "damage": 600, "bounce": true}}
+const BOUNCE_FRAMES := 5   # slammed on the floor this long before bouncing up
+const BOUNCE_SPEED := 14.0  # upward speed of the bounce (LAUNCH_GRAVITY: ~165 px high)
+const BOUNCE_VX := 1.0
+
 const INPUT_BUFFER := 5
 ## Attack buttons (Light / Medium / Heavy) keep a press longer (Kvon, November 17: "I was struggling to cancel S.H into
 ## C.H. Increase the input buffering window"): a cancel pressed during the swing, before it connects, still comes out.
@@ -407,6 +448,16 @@ var _back_held := false
 var _down_held := false
 ## Hurt states: frames left, length (for stretching the hurt animation), air speeds (world), gravity, timers.
 var _stun := 0
+var foe: Fighter  # the other fighter (set by the match; the Quick Run runs to them)
+var _dir_hist: Array = []  # [tick, 2 / 3 / 6 / 0] = down / down-forward / forward / other, for the quarter circle
+var _qr_tick := -1
+var _qr_phase := &""  # start / run / stop / follow
+var _qr_strength := &""
+var _qr_dir := 1.0
+var _qr_target := 0.0
+var _qr_homing := false
+var _qr_follow := 0
+var _bounce_vx := 0.0
 var _stun_len := 1
 var _hvx := 0.0
 var _hvy := 0.0
@@ -480,6 +531,9 @@ func reset(start_x: float, face: float) -> void:
 	_spin_tick = -1
 	_air_atk_tick = -1
 	_bd_tick = -1
+	_qr_tick = -1
+	_qr_phase = &""
+	_dir_hist.clear()
 	_press_at.clear()
 	_pending.clear()
 	_glide = false
@@ -526,11 +580,16 @@ func set_facing(face: float) -> void:
 ## Turns him to face dir if he can turn now: in control and not in the middle of a move - an attack, air dash,
 ## back-dash, glide or jump start (Kvon, November 6: also in the air; mid-move he turns once it ends).
 func face_toward(dir: float) -> void:
-	if dir == facing or state != &"control" or _bd_tick >= 0 or _dash_tick >= 0 or _air_atk_tick >= 0 or grab_t >= 0:
+	if dir == facing or state != &"control" or _bd_tick >= 0 or _dash_tick >= 0 or _air_atk_tick >= 0 or grab_t >= 0 \
+			or _qr_tick >= 0:
 		return
 	var anim := String(sprite.animation)
 	if anim.begins_with("attack_") or sprite.animation in GLIDE_ANIMS or sprite.animation == &"jump_start":
 		return
+	_turn(dir)
+
+
+func _turn(dir: float) -> void:
 	set_facing(dir)
 	if _air:
 		_vx = -_vx  # _vx is relative to facing: keep moving the same way across the screen
@@ -548,7 +607,7 @@ func is_attacking() -> bool:
 
 
 func is_airborne() -> bool:
-	return _air or state == &"hurt_air"
+	return _air or state == &"hurt_air" or state == &"bounce"
 
 
 ## During a hit-freeze (no game frame for him): remembers new jump / attack / dash presses (input buffer).
@@ -595,6 +654,10 @@ func step(inp: Dictionary) -> void:
 	_back_held = inp.get("back", false)
 	_down_held = inp.get("down", false)
 	_jump_held = inp.get("up", false)
+	var fw: bool = inp.get("forward", false) and not inp.get("back", false)
+	_dir_hist.append([_tick, (3 if fw else 2) if _down_held else (6 if fw else 0)])
+	if _dir_hist.size() > QCF_WINDOW + QCF_PRESS + 2:
+		_dir_hist.pop_front()
 	if state == &"held":
 		# Escape (Kvon: by grabbing back): Medium + Heavy, the second of them pressed while the first is held.
 		var m_new: bool = inp.get("medium", false) and not _was.get("medium", false)
@@ -621,6 +684,9 @@ func step(inp: Dictionary) -> void:
 		pressed[k] = _buffered_press(k) or (attack_hit and _pending.get(k, false))
 	if grab_t >= 0 and not grab_air:
 		_grab_step()
+		return
+	if _qr_tick >= 0:
+		_qr_step()
 		return
 	# A new back press soon after the previous one is a back-dash (on the ground or in the air).
 	var back_tap := false
@@ -753,6 +819,10 @@ func step(inp: Dictionary) -> void:
 		grab_part = &"reach"
 		_use(["light", "medium", "heavy"])
 		show_anim(&"grab")
+		return
+	# Quick Run: quarter circle forward + an attack button (before the normal attack the button would start).
+	if pressed_strength != &"" and not back_dashing and anim in GROUND_CANCEL and _qcf_done():
+		_start_quick_run(pressed_strength)
 		return
 	# Ground attacks: from any ground move (not mid back-dash); they play to the end (only a hit interrupts),
 	# then he returns to whatever is held. Holding down gives the crouching version.
@@ -1150,13 +1220,14 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 		attack_hit = false  # a new attack: it may hit once
 		attack_guarded = false
 		fast_fall_hit = false
-	var shift: float = DRAW_SHIFT[anim][drawing] if DRAW_SHIFT.has(anim) else 0.0
-	var shift_y: float = DRAW_SHIFT_Y[anim][drawing] if DRAW_SHIFT_Y.has(anim) else 0.0
-	sprite.offset = -(TALL_FEET[anim] if TALL_FEET.has(anim) else FEET) + Vector2(shift, shift_y)
-	_smear.visible = _smear_frames.has(anim)
+	var src: StringName = STAND_IN.get(anim, anim)  # a stand-in uses its source's shifts and smears
+	var shift: float = DRAW_SHIFT[src][drawing] if DRAW_SHIFT.has(src) else 0.0
+	var shift_y: float = DRAW_SHIFT_Y[src][drawing] if DRAW_SHIFT_Y.has(src) else 0.0
+	sprite.offset = -(TALL_FEET[src] if TALL_FEET.has(src) else FEET) + Vector2(shift, shift_y)
+	_smear.visible = _smear_frames.has(src)
 	_smear.z_index = 2 if anim == &"grab" else 0  # the grab's smear / impact burst sits over the held opponent too
 	if _smear.visible:
-		_smear.texture = _smear_frames[anim][drawing]
+		_smear.texture = _smear_frames[src][drawing]
 		_smear.offset = sprite.offset
 	var motion: Array = ANIMATIONS[anim][3]
 	if drawing < motion.size():
@@ -1197,7 +1268,7 @@ func middle_box(table: Dictionary) -> Array[Rect2]:
 func guard_pose(level: StringName) -> StringName:
 	if state != &"control" and state != &"guard":
 		return &""
-	if is_attacking() or grab_t >= 0 or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 \
+	if is_attacking() or grab_t >= 0 or _air_atk_tick >= 0 or _dash_tick >= 0 or _bd_tick >= 0 or _qr_tick >= 0 \
 			or sprite.animation in GLIDE_ANIMS:
 		return &""
 	if _air and guard_mode in [&"stand", &"crouch", &"auto"]:
@@ -1222,7 +1293,8 @@ func guard_pose(level: StringName) -> StringName:
 
 ## An attack reaches him. strength light / medium / heavy, level low / mid / overhead, launch = the launcher,
 ## away = the direction he is knocked (world). Returns true if he guarded it.
-func take_hit(strength: StringName, level: StringName, launch: bool, away: float) -> bool:
+## info (optional, from hit_info): "damage" / "push" override the strength's, "bounce" = ground bounce.
+func take_hit(strength: StringName, level: StringName, launch: bool, away: float, info := {}) -> bool:
 	var guard := guard_pose(level)
 	push_v = PUSHBACK[strength]
 	push_dir = away
@@ -1235,7 +1307,8 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 	if combo_hits == 0:
 		combo_starter = strength
 	var scaling := 1.0 if combo_hits == 0 else maxf(DAMAGE_FLOOR, 1.0 - STARTER_SCALING[combo_starter] * combo_hits)
-	last_damage = roundi(DAMAGE[strength] * scaling)
+	last_damage = roundi(int(info.get("damage", DAMAGE[strength])) * scaling)
+	push_v = info.get("push", push_v)
 	hp = maxi(hp - last_damage, 0)
 	var decay := maxf(DECAY_FLOOR, 1.0 - DECAY_PER_HIT * combo_hits)
 	combo_hits += 1
@@ -1245,12 +1318,20 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 		# Knocked out: thrown down and stays down.
 		ko = true
 		_start_hurt_air(-KNOCK_SPEED * 0.8, KNOCK_VX * away, HURT_GRAVITY)
-	elif launch or state == &"hurt_air" or was_air:
+	elif info.get("bounce", false):
+		# Ground bounce (the Quick Run Heavy's last hit): slammed onto the floor, then bounced up for a juggle.
+		state = &"bounce"
+		push_v = 0.0
+		_htick = 0
+		_bounce_vx = BOUNCE_VX * away
+		position.y = FLOOR_Y
+		show_anim(&"hurt_down", 0)
+	elif launch or state == &"hurt_air" or state == &"bounce" or was_air:
 		# The launcher sends him flying; any hit while airborne pops him up again (a juggle) - less each hit.
 		_start_hurt_air(-(LAUNCH_SPEED if launch else JUGGLE_SPEED) * decay, LAUNCH_VX * away, LAUNCH_GRAVITY)
 	else:
 		state = &"stun"
-		_stun = maxi(1, roundi(HITSTUN[strength] * decay))
+		_stun = maxi(1, roundi(int(info.get("stun", HITSTUN[strength])) * decay))
 		_stun_len = _stun
 		show_anim(&"hurt_ground")
 	return false
@@ -1271,6 +1352,8 @@ func _end_moves() -> void:
 	_spin_tick = -1
 	_air_atk_tick = -1
 	_bd_tick = -1
+	_qr_tick = -1
+	_qr_phase = &""
 	_press_at.clear()
 	_pending.clear()
 	_after_dash = false
@@ -1293,6 +1376,10 @@ func _start_hurt_air(vy: float, vx: float, gravity: float) -> void:
 ## One game frame while not in control: reeling, guarding, flying, lying.
 func _hurt_step() -> void:
 	match state:
+		&"bounce":
+			_htick += 1
+			if _htick >= BOUNCE_FRAMES:
+				_start_hurt_air(-BOUNCE_SPEED, _bounce_vx, LAUNCH_GRAVITY)
 		&"guard":
 			_stun -= 1
 			if _air:
@@ -1370,3 +1457,129 @@ func _recover() -> void:
 	combo_hits = 0
 	_air = false
 	show_anim(&"crouch_hold" if _down_held or guard_mode == &"crouch" else &"idle")
+
+
+## The quarter circle forward was just finished: down, then down-forward, then forward (in that order, the whole
+## motion within QCF_WINDOW frames), forward reached at most QCF_PRESS frames ago.
+func _qcf_done() -> bool:
+	var stage := 6
+	var t_forward := -1000
+	for k in range(_dir_hist.size() - 1, -1, -1):
+		var t: int = _dir_hist[k][0]
+		var d: int = _dir_hist[k][1]
+		if stage == 6:
+			if d == 6:
+				t_forward = t
+				stage = 3
+			elif _tick - t > QCF_PRESS:
+				return false
+		elif stage == 3 and d == 3:
+			stage = 2
+		elif stage == 2 and d == 2:
+			return t_forward - t <= QCF_WINDOW
+	return false
+
+
+func _start_quick_run(strength: StringName) -> void:
+	position.y = FLOOR_Y
+	_glide = false
+	_qr_tick = 0
+	_qr_phase = &"start"
+	_qr_strength = strength
+	_qr_follow = 0
+	_dir_hist.clear()  # one motion, one Quick Run
+	_use(["light", "medium", "heavy"])
+	if trace_tag != "":
+		print(trace_tag, " QUICK_RUN ", _tick, " ", strength)
+	show_anim(&"qrun_start")
+
+
+## Strikes pass through him and the fighters don't push each other while he runs.
+func passing_through() -> bool:
+	return _qr_phase == &"run"
+
+
+## One game frame of the Quick Run: startup, run, then the skid (Light) or the follow-up attacks.
+func _qr_step() -> void:
+	_qr_tick += 1
+	_hold += 1
+	var anim := sprite.animation
+	var holds: Array = ANIMATIONS[anim][2]
+	var next: bool = _hold >= holds[sprite.frame]
+	match _qr_phase:
+		&"start":
+			if not next:
+				return
+			if sprite.frame + 1 < holds.size():
+				show_anim(anim, sprite.frame + 1)
+				return
+			_qr_dir = facing
+			var dx := foe.position.x - position.x if foe != null else 0.0
+			_qr_homing = foe != null and signf(dx) == _qr_dir and absf(dx) <= QR_RANGE
+			_qr_target = position.x + _qr_dir * QR_DIST
+			_qr_phase = &"run"
+			_qr_tick = 0
+			show_anim(&"qrun")
+		&"run":
+			if _qr_homing:
+				_qr_target = foe.position.x + _qr_dir * QR_BEHIND  # stays on them if they move
+			var left := (_qr_target - position.x) * _qr_dir
+			var x0 := position.x
+			position.x = clampf(position.x + minf(QR_SPEED, maxf(left, 0.0)) * _qr_dir, left_limit, right_limit)
+			if left <= QR_SPEED or absf(position.x - x0) < 0.5 or _qr_tick >= QR_MAX_RUN:
+				_end_run()
+			elif next:
+				show_anim(&"qrun", (sprite.frame + 1) % holds.size())
+		&"stop":
+			if next:
+				if sprite.frame + 1 < holds.size():
+					show_anim(anim, sprite.frame + 1)
+				else:
+					_end_quick_run()
+		&"follow":
+			if next:
+				if sprite.frame + 1 < holds.size():
+					show_anim(anim, sprite.frame + 1)
+					return
+				var list: Array = QR_FOLLOW[_qr_strength]
+				_qr_follow += 1
+				if _qr_follow < list.size():
+					show_anim(list[_qr_follow])
+				else:
+					_end_quick_run()
+
+
+## Arrived behind them (or ran out of road): turn to face them, then skid (Light) or start the follow-up.
+func _end_run() -> void:
+	if foe != null and absf(foe.position.x - position.x) > 1.0 and signf(foe.position.x - position.x) != facing:
+		_turn(signf(foe.position.x - position.x))
+	var list: Array = QR_FOLLOW[_qr_strength]
+	if list.is_empty():
+		_qr_phase = &"stop"
+		show_anim(&"qrun_stop")
+	else:
+		_qr_phase = &"follow"
+		_qr_follow = 0
+		show_anim(list[0])
+
+
+func _end_quick_run() -> void:
+	_qr_tick = -1
+	_qr_phase = &""
+	show_anim(&"crouch_hold" if _down_held else &"idle")
+
+
+## What his current attack drawing does on contact: strength (hit-freeze / stun), level (low / mid / overhead),
+## launch, and for the Quick Run follow-ups the damage / push / bounce overrides (QR_HITS).
+func hit_info() -> Dictionary:
+	var anim := sprite.animation
+	if QR_HITS.has(anim):
+		var h: Dictionary = QR_HITS[anim].duplicate()
+		h["level"] = &"mid"
+		h["launch"] = false
+		return h
+	var attack := String(anim)
+	# Crouching attacks hit low, jumping attacks overhead, standing attacks mid (Kvon's guard rule).
+	return {"strength": &"heavy" if attack.ends_with("heavy") else (&"medium" if attack.ends_with("medium") else &"light"),
+		"level": &"low" if attack.begins_with("attack_c") else (&"overhead" if attack.begins_with("attack_j") else &"mid"),
+		"launch": anim == &"attack_cheavy"}

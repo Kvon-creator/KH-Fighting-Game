@@ -78,3 +78,4 @@
 - [Training Mode](Training_Mode.md): Dummy commands - T action (stand / crouch / jump / L / M / H / grab / CPU), G guard, Y counter after guard / hit / get-up; DualSense Options / Create / R3.
 - [Input Buffer](Input_Buffer.md): attack presses during an attack are kept until it connects (cancels); 8-frame buffer for attack buttons, 5 for jump / dash, 8 for the grab; buffer for attack / jump / dash / grab presses in recovery, landing, blockstun, hitstun, wake-up and hit-freeze; used presses are cleared; directions not buffered.
 - [Sora Jump Feel](Sora_Jump_Feel.md): 270 px jump (was 200, Nov 17), 22-frame rise (less floaty), hold-length short/long jumps, fast fall after a jumping attack hits a grounded opponent (on juggles only the jH).
+- [Sora Quick Run](Sora_Quick_Run.md): QCF + L/M/H special (Nov 18) - strike-invulnerable run past the opponent; M = 900 knockback from behind, H = 300/300/600 ground bounce; mechanics first with stand-in drawings
