@@ -441,6 +441,22 @@ func _hits() -> void:
 ## GRAB_TECH_FRAMES of the catch escapes: both pushed apart, no damage. The strike deals the damage with a hit-freeze;
 ## when the strike drawing ends, the held fighter is knocked down from where he is drawn.
 func _grabs() -> void:
+	if _grab.is_empty() and p[0].grab_ready() and p[1].grab_ready() and p[0].grab_air == p[1].grab_air:
+		# Grab clash (Kvon: a grab countered with a grab): both check on the same frame within reach of each other - a
+		# tech: both let go and are pushed apart (GRAB_TECH_PUSH), like an escape.
+		var cdx := p[1].position.x - p[0].position.x
+		var reach: float = Fighter.AGRAB_RANGE if p[0].grab_air else Fighter.GRAB_RANGE
+		if absf(cdx) <= reach and (not p[0].grab_air or absf(p[1].position.y - p[0].position.y) <= Fighter.AGRAB_RANGE_Y):
+			var side := 1.0 if cdx >= 0.0 else -1.0
+			for i in 2:
+				var f := p[i]
+				f.end_grab(f.position.x, f.grab_air, f.position.y)
+				f.push_v = Fighter.GRAB_TECH_PUSH
+				f.push_dir = -side if i == 0 else side
+			_add_fx(&"barrier", (p[0].position + p[1].position) * 0.5 + Vector2(0, -150), side)
+			if _trace:
+				print("GRAB_CLASH ", p[0]._tick)
+			return
 	if _grab.is_empty():
 		for i in 2:
 			var a := p[i]
@@ -483,9 +499,9 @@ func _grabs() -> void:
 		h.end_grab(float(_grab["x"]), air, float(_grab["y"]) if air else Fighter.FLOOR_Y)
 		g.z_index = 0
 		g.end_grab(g.position.x, air, g.position.y)
-		h.push_v = Fighter.PUSHBACK[&"heavy"]
+		h.push_v = Fighter.GRAB_TECH_PUSH
 		h.push_dir = side
-		g.push_v = Fighter.PUSHBACK[&"heavy"]
+		g.push_v = Fighter.GRAB_TECH_PUSH
 		g.push_dir = -side
 		_add_fx(&"barrier", (g.position + h.position) * 0.5 + Vector2(0, -150), -side)
 		if _trace:

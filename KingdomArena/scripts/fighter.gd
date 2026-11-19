@@ -329,6 +329,10 @@ const GRAB_CHECK_FRAME := 7
 const GRAB_STRIKE := 14
 const GRAB_RANGE := 210.0
 const GRAB_TECH_FRAMES := 10
+## Grab tech (Kvon, November 19: "Every time a grab is countered with a grab, both players should be pushed back some"):
+## an escape, or both grabbing on the same frame (a clash), pushes each fighter back with this starting speed
+## (~90 px each with PUSH_SLOW; was the heavy pushback, 6 = ~33 px).
+const GRAB_TECH_PUSH := 16.0
 const GRAB_DAMAGE := 1200
 const GRAB_FREEZE := 10
 const GRAB_WHIFF_RECOVERY := 25
