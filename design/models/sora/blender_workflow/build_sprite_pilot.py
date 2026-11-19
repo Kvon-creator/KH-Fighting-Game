@@ -2167,7 +2167,12 @@ if LOOP:
                     # v5 (Kvon: "Lower the back leg and point the toe towards the player"): the back foot drops from
                     # .36 to .16 m off the floor and a little further back, its toes turned toward the camera
                     # (foot_dir_world, as the Crouching Medium's back foot) with less toe-down pitch so they face the viewer.
-                    for k_, (bf_, bl_) in zip(qr_loop, ((-.40, .16), (-.41, .18), (-.40, .16), (-.39, .14))):
+                    QR_BACK = ((-.40, .16), (-.41, .18), (-.40, .16), (-.39, .14))
+                    if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+                        # v8 (Kvon: "Straighten the back leg a bit more"): the back foot reaches 10 cm further behind
+                        # (2 cm higher to stay in line), so the knee opens up; the hip turn (v6) follows the new foot.
+                        QR_BACK = tuple((b_ - .10, l_ + .02) for b_, l_ in QR_BACK)
+                    for k_, (bf_, bl_) in zip(qr_loop, QR_BACK):
                         k_['feet']['R'] = (bf_, LAT['R'], bl_, 20.0)
                         k_['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
                 if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')) and jpart != 'qrun_spin':
@@ -2228,6 +2233,8 @@ if LOOP:
                         launch_k = qr_key((.16, .06, 22.0), (-.36, .24, 70.0), .06, 20.0, hunch_=8.0, neck_=-22.0)
                         if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
                             launch_k['feet']['R'] = (-.38, LAT['R'], .10, 25.0)   # v5: into the lowered back leg
+                            if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
+                                launch_k['feet']['R'] = (-.46, LAT['R'], .12, 25.0)   # v8: straighter back leg
                             launch_k['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
                         if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
                             # v6: the launch gets the run's hip turn (knee toward the Key) and the lower front knee
