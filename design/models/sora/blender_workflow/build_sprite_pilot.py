@@ -704,7 +704,8 @@ if RUN:
                        # follow-through and finishing turn 3 + 3 + 3, Key down 4, idle 5.
                        'atk_qrm': [3, 2, 1, 1, 4, 6, 6] if JUMP.endswith('_v1') else ([3, 2, 1, 1, 4, 4, 5, 6]
                                    if JUMP.endswith('_v2') else ([3, 2, 1, 1, 4, 3, 3, 4, 5] if JUMP.endswith('_v3')
-                                   else [3, 2, 1, 3, 3, 3, 3, 4, 5]))}[JUMP.rsplit('_v', 1)[0]]
+                                   else ([3, 2, 1, 3, 3, 3, 3, 4, 5] if JUMP.endswith('_v4')
+                                   else [3, 5, 2, 1, 3, 3, 3, 3, 4, 5])))}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -4381,6 +4382,15 @@ if LOOP:
                             # drawing's Key touched the left edge - toward the camera.
                             hit_k['offset_px'] = (-120, 0)
                             world_blade(follow3_k, -U_*.50 + V_*.80 + Vector((0, 0, -.10)))
+                        if not JUMP.endswith(('_v3', '_v4')):
+                            # v5 (Kvon: "I want a bigger wind-up before attacking"): a coil drawing after the wind-up,
+                            # held 5 frames - he over-turns ~35 deg further away from the opponent, sinks lower, leans back
+                            # a little and lifts the Key up behind him; the first sweep now starts from the coil.
+                            coil_k = qrm(-215.0, ce_=.18, pitch_=-4.0)
+                            coil_k['hunch'] = 6.0
+                            world_blade(coil_k, -U_*.35 + V_*.55 + Vector((0, 0, .75)))
+                            RUN_KEYS = [wind_k, coil_k, sw1_k, sw2_k, hit_k, follow_k, follow2_k, follow3_k, recover_k,
+                                        back_k]
                     print('QRM_PHI_HIT', round(phi_hit, 1))
                 elif jpart == 'hurt_getup':
                     # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
