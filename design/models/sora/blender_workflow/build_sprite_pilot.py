@@ -115,7 +115,9 @@ CANVAS_H = 768 if OUT_NAME.startswith(('atk_cheavy_v', 'atk_qrh')) else 512  # +
 GRAB_CANVAS = OUT_NAME.startswith(('atk_grab_v', 'hurt_grab_v', 'atk_agrab_v', 'hurt_agrab_v'))
 # Quick Run Heavy hit 3 v4+ (Lion's Claw: the Key held out at arm's length wheels round with the flip) - the same
 # square 1024 canvas as the grab.
-QRH3_BIG = OUT_NAME.startswith('atk_qrh3_v') and not OUT_NAME.startswith(('atk_qrh3_v1', 'atk_qrh3_v2', 'atk_qrh3_v3'))
+import re as _re_qrh3
+_m_qrh3 = _re_qrh3.match(r'atk_qrh3_v(\d+)', OUT_NAME)
+QRH3_BIG = bool(_m_qrh3) and int(_m_qrh3.group(1)) >= 4   # (by number: 'atk_qrh3_v10' starts with 'atk_qrh3_v1')
 if GRAB_CANVAS or QRH3_BIG:
     CANVAS_H = 1024
 CANVAS_W = 1024 if GRAB_CANVAS or QRH3_BIG else 512
@@ -4560,6 +4562,13 @@ if LOOP:
                                     rise_k.update(ground=True)
                                     back_k = ease(slam, IDLE_R, .8, 0.0)
                                     back_k.update(ground=True)
+                                if not JUMP.endswith(('_v7', '_v8', '_v9')):
+                                    # v10 (Kvon: "Some of the frames of the overhead slash has Sora's legs tucked too far
+                                    # into his body"): the flips' legs (knees folded into his shorts) now trail behind him
+                                    # with a soft bend, and the second in-between's knees come down.
+                                    for k_ in (w1, w2, w3):
+                                        k_['feet'] = {'L': (-.16, LAT['L'], .18, 45.0), 'R': (-.28, LAT['R'], .10, 50.0)}
+                                    ib2['feet'] = {'L': (.08, LAT['L'], .06, 30.0), 'R': (-.10, LAT['R'], .03, 35.0)}
                                 RUN_KEYS = [w1, w2, w3, wind, ib1, ib2, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)

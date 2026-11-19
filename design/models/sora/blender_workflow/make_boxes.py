@@ -40,7 +40,7 @@ ATTACKS = [
     ('attack_medium', 'atk_smed_v15', [5], 'key', 0.0),
     ('attack_qr_m', 'atk_qrm_v5', [4], 'key', 0.0),
     ('attack_qr_h2', 'atk_qrh2_v3', [1, 2], 'key', 0.0),  # Quick Run Heavy: rising slash (Key sweeping up, overhead)
-    ('attack_qr_h3', 'atk_qrh3_v9', [6], 'key', 0.0),  # Quick Run Heavy: two-handed slam on landing   # Quick Run Medium follow-up (spinning backhand)
+    ('attack_qr_h3', 'atk_qrh3_v10', [6], 'key', 0.0),  # Quick Run Heavy: two-handed slam on landing   # Quick Run Medium follow-up (spinning backhand)
     ('attack_heavy', 'atk_sheavy_v7', [4], 'key', 0.0),
     ('attack_clight', 'atk_clight_v31', [2], 'key', .10),
     ('attack_cmedium', 'atk_cmed_v24', [4], 'key', .10),

@@ -250,8 +250,10 @@ const ANIMATIONS := {
 		[0, 1, 2, 3, 4, 5]],
 	# Root motion: he travels forward through the rise and the flip so he finishes close enough to follow up the bounce.
 	&"attack_qr_h2": ["res://assets/sora/attack_qr_h2_384/", "sora_attack_qr_h2_", [3, 2, 3, 4], [0.0, 30.0, 30.0, 20.0]],
+	# Root motion: forward through the flips, and (Kvon: "move forward a little bit when pulling off the overhead slash")
+	# on through the wind-up, the swing and the slam.
 	&"attack_qr_h3": ["res://assets/sora/attack_qr_h3_384/", "sora_attack_qr_h3_", [2, 2, 2, 3, 2, 2, 4, 5, 6],
-		[20.0, 20.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
+		[20.0, 20.0, 20.0, 12.0, 12.0, 12.0, 12.0, 0.0, 0.0]],
 }
 
 ## Animations that borrow another's drawings -> that animation (for DRAW_SHIFT, TALL_FEET and the smears).
