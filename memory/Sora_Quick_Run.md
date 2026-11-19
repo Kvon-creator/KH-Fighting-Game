@@ -37,3 +37,5 @@ Decisions (Kvon picked the recommended options, November 18):
 **Front leg (Kvon, November 18): "Bring the front knee down some by rotating the entire leg."** Loop v7 / start v7 (launch): the whole front (left) leg swings down at the hip about his side-to-side axis (`hip_pivot` L = (V_, -20 deg); negative = thigh tipping down) - knee lower, shin more upright, foot back under him; on top of v6's small front-foot drop. -15 was too subtle; -20 chosen. Review option `_fp<deg>`. v6 deleted. Tested: L skid, H combo, strikes pass mid-run.
 
 **Back leg straighter (Kvon, November 19): "Straighten the back leg a bit more."** Loop v8 / start v8: the back foot 10 cm further behind (-.50) and 2 cm higher (QR_BACK), launch -.46 / .12; the v6 hip turn is computed from the new foot. v7 deleted. Tested: L skid, H combo, strikes pass mid-run.
+
+**Back foot straight (Kvon, November 19): "Straighten out the foot too."** Read as the back foot pointed in line with the shin. Loop v9 / start v9 (launch): `ankle_deg` {'R': 15} (0 = fully in line with the shin, 90 = right-angle ankle), still turned toward the player. v8 deleted. Tested: L skid, H combo, strikes pass mid-run.

@@ -2199,6 +2199,11 @@ if LOOP:
                     fp_deg = float(m_f.group(1)) if m_f else -20.0
                     for k_ in qr_loop:
                         k_['hip_pivot'] = dict(k_.get('hip_pivot') or {}, L=(tuple(V_), fp_deg))
+                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))) and jpart != 'qrun_spin':
+                    # v9 (Kvon: "Straighten out the foot too"): the back foot continues the shin's line (ankle_deg 15 =
+                    # nearly pointed; 90 would be a right-angle ankle), still turned toward the player.
+                    for k_ in qr_loop:
+                        k_['ankle_deg'] = {'R': 15.0}
                 if jpart == 'qrun_spin':
                     # Kvon: "making contact with the opponent should result in a quick spin". The run pose turned about
                     # his vertical axis, toward the camera first (negative spin_deg), in 49 deg steps to 245 deg (his back
@@ -2235,6 +2240,8 @@ if LOOP:
                             launch_k['feet']['R'] = (-.38, LAT['R'], .10, 25.0)   # v5: into the lowered back leg
                             if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5', '_v6', '_v7')):
                                 launch_k['feet']['R'] = (-.46, LAT['R'], .12, 25.0)   # v8: straighter back leg
+                            if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(1, 9))):
+                                launch_k['ankle_deg'] = {'R': 15.0}   # v9: pointed back foot
                             launch_k['foot_dir_world'] = {'R': tuple((V_*.85 - U_*.35).normalized())}
                         if not JUMP.endswith(('_v1', '_v2', '_v3', '_v4', '_v5')):
                             # v6: the launch gets the run's hip turn (knee toward the Key) and the lower front knee
