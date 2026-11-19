@@ -273,7 +273,7 @@ const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_jheavy": [0, 0, 0, 52.5, 0, 0, 0]}
 ## Drawings drawn shifted UP inside their frame (the Jumping Heavy's low chop): shifted back down by this many px.
 const DRAW_SHIFT_Y := {&"attack_jheavy": [0, 0, 0, 15, 15, 0, 0],
-	&"attack_qr_h3": [225, 225, 225, 0, 0, 0, 0, 0, 0]}  # the flips drawn 300 px (1024 canvas) higher
+	&"attack_qr_h3": [225, 225, 225, 60, 60, 0, 0, 0, 0]}  # flips / wind-up + first in-between drawn 300 / 80 px higher
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],

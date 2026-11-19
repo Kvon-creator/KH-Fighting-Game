@@ -4569,6 +4569,16 @@ if LOOP:
                                     for k_ in (w1, w2, w3):
                                         k_['feet'] = {'L': (-.16, LAT['L'], .18, 45.0), 'R': (-.28, LAT['R'], .10, 50.0)}
                                     ib2['feet'] = {'L': (.08, LAT['L'], .06, 30.0), 'R': (-.10, LAT['R'], .03, 35.0)}
+                                if not JUMP.endswith(('_v7', '_v8', '_v9', '_v10')):
+                                    # v11 (Kvon: "In poses 4 and 5 of the overhead slash, his legs are still tucked much
+                                    # too far into his body"): the wind-up and first in-between's feet came .24-.30 m up
+                                    # under him - now .03-.06, legs hanging nearly straight.
+                                    for k_ in (wind, ib1):
+                                        k_['feet'] = {'L': (.06, LAT['L'], .06, 25.0), 'R': (-.08, LAT['R'], .03, 30.0)}
+                                        if not JUMP.endswith('_v11'):
+                                            k_['leg_reach'] = .95  # v12: v11's knees bowed out into a squat - legs nearly straight
+                                            if not JUMP.endswith('_v12'):
+                                                k_['offset_px'] = (0, 80)  # v13: the straight legs ran off the frame bottom
                                 RUN_KEYS = [w1, w2, w3, wind, ib1, ib2, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)
