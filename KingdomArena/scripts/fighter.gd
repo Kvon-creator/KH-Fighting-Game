@@ -546,6 +546,8 @@ var _qr_follow := 0
 var _qr_contact := false
 var _qr_slide := 0.0
 var _qr_spin_t := 0
+var _glide_step := 0.0  # the ground dash's root motion per game frame for the current drawing
+var _glide_left := 0     # game frames of it still to move
 var _qr_air := false  # risen off the floor by the Heavy's hit 2
 var _qr_vy := 0.0
 var _bounce_vx := 0.0
@@ -1002,6 +1004,9 @@ func step(inp: Dictionary) -> void:
 	if anim == &"crouch_hold" and not crouch:
 		show_anim(&"crouch_up")
 		return
+	if _glide_left > 0 and anim in GLIDE_ANIMS:
+		_glide_left -= 1  # the dash's root motion, one slice per game frame (see show_anim)
+		position.x = clampf(position.x + _glide_step * facing, left_limit, right_limit)
 	# Advance one game frame; move to the next drawing when this one's hold is used up.
 	_hold += 1
 	var holds: Array = ANIMATIONS[anim][2]
@@ -1348,7 +1353,17 @@ func show_anim(anim: StringName, drawing: int = 0) -> void:
 		_smear.texture = _smear_frames[src][drawing]
 		_smear.offset = sprite.offset
 	var motion: Array = ANIMATIONS[anim][3]
-	if drawing < motion.size():
+	_glide_left = 0
+	if drawing < motion.size() and anim in GLIDE_ANIMS:
+		# Ground dash (Kvon, November 19: "refine the forward ground dash so that it doesn't look so buggy"): it moved
+		# its whole 45 px at once when each drawing started, then stood still for the rest of the drawing - a jerky
+		# stutter the camera copied. Its root motion is now spread evenly over the drawing's game frames (the rest in
+		# step(), _glide_left frames of _glide_step px). Walking keeps per-drawing steps (they keep its feet planted).
+		var h_g: int = ANIMATIONS[anim][2][drawing]
+		_glide_step = motion[drawing] / h_g
+		_glide_left = h_g - 1
+		position.x = clampf(position.x + _glide_step * facing, left_limit, right_limit)
+	elif drawing < motion.size():
 		position.x = clampf(position.x + motion[drawing] * facing, left_limit, right_limit)
 	if trace_tag != "":
 		print(trace_tag, " ", _tick, " ", anim, " ", drawing, " ", snappedf(position.x, 0.01), " ",
