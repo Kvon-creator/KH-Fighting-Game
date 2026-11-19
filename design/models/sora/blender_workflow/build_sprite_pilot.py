@@ -4609,6 +4609,28 @@ if LOOP:
                                         k_.update(release=0.0, hand=U_*-.12 + V_*.18 + Z_*1.62,
                                                   blade_dir=tuple((-U_*math.cos(r_) - Z_*math.sin(r_) + V_*.12).normalized()),
                                                   l_elbow_hint=tuple(V_*.75 + U_*.10 + Z_*-.65))
+                                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(7, 16))):
+                                    # v16 (Kvon: "For pose 7 in the overhead slash, the pose is very wonky. The arms are in
+                                    # an awkward position and the legs are all over the place. Use pose 6 as a base and bend
+                                    # the knees some more. Then, straighten out the arms downward while making sure some
+                                    # part of the keyblade is touching the ground"): the slam rebuilt from the second
+                                    # in-between - its body, its narrow legs, its two-handed grip - landed (ground) with the
+                                    # knees bent more, arms straight down-forward, Key angled down so its tip meets the
+                                    # floor in front. Review options: _cd<ce cm>, _hz<cm>, _gz<grip height cm>.
+                                    import re as re_v
+                                    m_c = re_v.search(r'_cd(\d+)', OUT_NAME)
+                                    m_h = re_v.search(r'_hz(-?\d+)', OUT_NAME)
+                                    m_g = re_v.search(r'_gz(\d+)', OUT_NAME)
+                                    slam = two({'L': (.12, LAT['L'], 0.0, 10.0), 'R': (-.12, LAT['R'], 0.0, 25.0)},
+                                               int(m_c.group(1))/100 if m_c else .18, 8.0, 12.0,
+                                               U_*.42 + V_*.14 + Z_*((int(m_g.group(1)) if m_g else 62)/100),
+                                               U_*.78 + V_*.20 - Z_*.58, ground_=True)
+                                    slam['hz'] = int(m_h.group(1))/100 if m_h else .12
+                                    slam['smear'] = 1
+                                    rise_k = ease(slam, IDLE_R, .45, 0.0)
+                                    rise_k.update(ground=True)
+                                    back_k = ease(slam, IDLE_R, .8, 0.0)
+                                    back_k.update(ground=True)
                                 RUN_KEYS = [w1, w2, w3, wind, ib1, ib2, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)

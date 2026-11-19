@@ -40,7 +40,7 @@ ATTACKS = [
     ('attack_medium', 'atk_smed_v15', [5], 'key', 0.0),
     ('attack_qr_m', 'atk_qrm_v5', [4], 'key', 0.0),
     ('attack_qr_h2', 'atk_qrh2_v6', [2], 'key', 0.0),  # Quick Run Heavy: rising slash - the two-handed level strike
-    ('attack_qr_h3', 'atk_qrh3_v15', [6], 'key', 0.0),  # Quick Run Heavy: two-handed slam on landing   # Quick Run Medium follow-up (spinning backhand)
+    ('attack_qr_h3', 'atk_qrh3_v16', [6], 'key', 0.0),  # Quick Run Heavy: two-handed slam on landing   # Quick Run Medium follow-up (spinning backhand)
     ('attack_heavy', 'atk_sheavy_v7', [4], 'key', 0.0),
     ('attack_clight', 'atk_clight_v31', [2], 'key', .10),
     ('attack_cmedium', 'atk_cmed_v24', [4], 'key', .10),
@@ -61,7 +61,7 @@ FORWARD_PX = {'attack_cmedium': 24}
 # Attacks whose hitbox also follows the Keyblade smear on the active drawing (Kvon, November 16: "Sora's jumping heavy
 # hitbox to match that of its smear frames when active"): the smear's pixels are split along its arc into SMEAR_BINS
 # pieces, each boxed, so the boxes follow the curve instead of filling the arc's empty middle.
-SMEAR_HIT = {'attack_jheavy'}
+SMEAR_HIT = {'attack_jheavy', 'attack_qr_h3'}  # + Quick Run slam: its smear sweeps down from overhead
 SMEAR_BINS = 8
 
 
