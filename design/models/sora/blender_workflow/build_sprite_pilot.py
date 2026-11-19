@@ -4598,6 +4598,17 @@ if LOOP:
                                         # v14 (Kvon: "Bend the knees in those same frames. Make the bend greater in 4 than
                                         # in 5"): leg_reach .82 on the wind-up, .90 on the first in-between (v13: .95).
                                         wind['leg_reach'], ib1['leg_reach'] = .82, .90
+                                if not JUMP.endswith(tuple(f'_v{n_}' for n_ in range(7, 15))):
+                                    # v15 (Kvon: "In poses 1, 2, and 3, the keyblade should be oriented in the same way as
+                                    # in pose 4, but with an even greater bend of the keyblade towards Sora's back ... 1
+                                    # should have the most and 3 should have the least"): the flips hold the Key like the
+                                    # wind-up (both hands behind his head, Key pointing back), tipped down his back 75 / 55 /
+                                    # 35 deg below level (the wind-up is level). Given upright; the roll turns it with him.
+                                    for k_, deg_ in ((w1, 75.0), (w2, 55.0), (w3, 35.0)):
+                                        r_ = math.radians(deg_)
+                                        k_.update(release=0.0, hand=U_*-.12 + V_*.18 + Z_*1.62,
+                                                  blade_dir=tuple((-U_*math.cos(r_) - Z_*math.sin(r_) + V_*.12).normalized()),
+                                                  l_elbow_hint=tuple(V_*.75 + U_*.10 + Z_*-.65))
                                 RUN_KEYS = [w1, w2, w3, wind, ib1, ib2, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)
