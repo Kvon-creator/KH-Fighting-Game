@@ -349,12 +349,15 @@ const QR_MAX_RUN := 40     # frames (a safety stop)
 ## opponent". Contact = he reached them during the run (within QR_CONTACT px). A run that never does (out of range, or
 ## stopped by a wall first) ends in qrun_spin: one full turn (the double jump's spin drawings, 11 x 2 frames = 22),
 ## ending facing the way he ran; then the skid or the follow-up. Kvon: "The spin should start earlier as he's moving
-## forward" - on a run out of range it starts QR_SPIN_START px before the run's end, at full speed, slowing by
-## QR_SPIN_SLOW each frame so he stops about where the run would have ended (a wall stop spins in place). The spin is
+## forward" - on a run out of range it starts early (see QR_SPIN_KEEP below), so he stops about where the run would
+## have ended (a wall stop spins in place). The spin is
 ## not strike-invulnerable (a missed Quick Run can be punished).
 const QR_CONTACT := 60.0
-const QR_SPIN_SLOW := 0.85
-const QR_SPIN_START := QR_SPEED * QR_SPIN_SLOW / (1.0 - QR_SPIN_SLOW)  # the distance the slowing spin covers
+## Kvon (November 19): "The spin needs to start earlier in the animation so that he keeps his momentum while spinning"
+## - the spin keeps full run speed for its first QR_SPIN_KEEP frames, then slows by QR_SPIN_SLOW each frame; it starts
+## qr_spin_distance() px before the run's end (= what it covers), i.e. ~4 frames into a missed run.
+const QR_SPIN_SLOW := 0.8
+const QR_SPIN_KEEP := 8
 const QR_FOLLOW := {&"light": [], &"medium": [&"attack_qr_m"],
 	&"heavy": [&"attack_qr_h1", &"attack_qr_h2", &"attack_qr_h3"]}
 ## The follow-up hits (Kvon picked): Medium 900 with a big knockback, no knockdown; Heavy 300 / 300 / 600, the third
@@ -504,6 +507,7 @@ var _qr_homing := false
 var _qr_follow := 0
 var _qr_contact := false
 var _qr_slide := 0.0
+var _qr_spin_t := 0
 var _bounce_vx := 0.0
 var _stun_len := 1
 var _hvx := 0.0
@@ -1603,9 +1607,10 @@ func _qr_step() -> void:
 			position.x = clampf(position.x + minf(QR_SPEED, maxf(left, 0.0)) * _qr_dir, left_limit, right_limit)
 			if _qr_homing and (foe.position.x - position.x) * _qr_dir <= QR_CONTACT:
 				_qr_contact = true
-			if not _qr_homing and left <= QR_SPIN_START:
-				_qr_phase = &"spin"  # out of range: spin early, still moving forward, slowing to a stop
+			if not _qr_homing and left <= qr_spin_distance():
+				_qr_phase = &"spin"  # out of range: spin early, keeping his speed, then slowing to a stop
 				_qr_slide = QR_SPEED
+				_qr_spin_t = 0
 				show_anim(&"qrun_spin")
 			elif left <= QR_SPEED or absf(position.x - x0) < 0.5 or _qr_tick >= QR_MAX_RUN:
 				if _qr_contact:
@@ -1613,11 +1618,14 @@ func _qr_step() -> void:
 				else:
 					_qr_phase = &"spin"  # stopped short of them (a wall): spin in place
 					_qr_slide = 0.0
+					_qr_spin_t = 0
 					show_anim(&"qrun_spin")
 			elif next:
 				show_anim(&"qrun", (sprite.frame + 1) % holds.size())
 		&"spin":
-			_qr_slide *= QR_SPIN_SLOW
+			_qr_spin_t += 1
+			if _qr_spin_t > QR_SPIN_KEEP:
+				_qr_slide *= QR_SPIN_SLOW
 			position.x = clampf(position.x + _qr_slide * _qr_dir, left_limit, right_limit)
 			if next:
 				if sprite.frame + 1 < holds.size():
@@ -1677,3 +1685,16 @@ func hit_info() -> Dictionary:
 	return {"strength": &"heavy" if attack.ends_with("heavy") else (&"medium" if attack.ends_with("medium") else &"light"),
 		"level": &"low" if attack.begins_with("attack_c") else (&"overhead" if attack.begins_with("attack_j") else &"mid"),
 		"launch": anim == &"attack_cheavy"}
+
+
+## How far the miss spin carries him: QR_SPIN_KEEP frames at run speed, then slowing by QR_SPIN_SLOW until it ends.
+func qr_spin_distance() -> float:
+	var frames := 0
+	for h: int in ANIMATIONS[&"qrun_spin"][2]:
+		frames += h
+	var d := QR_SPEED * QR_SPIN_KEEP
+	var v := QR_SPEED
+	for i in frames - QR_SPIN_KEEP:
+		v *= QR_SPIN_SLOW
+		d += v
+	return d
