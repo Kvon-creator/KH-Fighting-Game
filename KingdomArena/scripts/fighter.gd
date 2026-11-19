@@ -14,7 +14,7 @@ const FEET := Vector2(192, 354)
 ## Animations drawn on taller 384 x 576 frames (the Crouching Heavy's overhead thrust): the extra 192 px are
 ## added above him, so his feet sit 192 px lower in the frame.
 const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192),
-	&"attack_qr_h2": Vector2(192, 354 + 192), &"attack_qr_h3": Vector2(192, 354 + 192),
+	&"attack_qr_h2": Vector2(192, 354 + 192), &"attack_qr_h3": Vector2(384, 736.5),  # h3: 768 x 768 frames
 	# Ground grab (Kvon, November 11): Sora and the grabbed opponent share one 768 x 768 frame (the 1024 render canvas
 	# at the usual x 0.75), his feet in the middle of the bottom.
 	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738),
@@ -241,13 +241,15 @@ const ANIMATIONS := {
 	# slash that carries both players off the ground, leading into a frontflip overhead slash"):
 	# hit 1 = the Medium's spinning backhand up to its follow-through (its drawings 0-5, same holds);
 	# hit 2 = gather, rise, the rising slash (he leaves the floor on it, QR_RISE_*), an airborne tuck;
-	# hit 3 = front flip x 3, the overhead chop (slams them down into the ground bounce), the falling follow-through
-	# (held until he lands, QR_H3_LOW), landing, rise into the idle. Drawn on 384 x 576 frames (TALL_FEET).
+	# hit 3 (Kvon: "a good reference is the lion's claw ability from Elden Ring") = a forward somersault with the Key held
+	# out at arm's length, wheeling round with him (rolled 90 / 180 / 270 / 330 deg; the last, over the top, held while he
+	# drops - QR_H3_LOW), slammed into the floor in front as he lands (the hit: slams them into the ground bounce), rise,
+	# idle. Hit 2 on 384 x 576 frames, hit 3 on 768 x 768 (TALL_FEET) so the wheeling Key fits.
 	&"attack_qr_h1": ["res://assets/sora/attack_qr_m_384/", "sora_attack_qr_m_", [3, 5, 2, 1, 3, 3], [],
 		[0, 1, 2, 3, 4, 5]],
 	# Root motion: he travels forward through the rise and the flip so he finishes close enough to follow up the bounce.
 	&"attack_qr_h2": ["res://assets/sora/attack_qr_h2_384/", "sora_attack_qr_h2_", [3, 2, 3, 4], [0.0, 30.0, 30.0, 20.0]],
-	&"attack_qr_h3": ["res://assets/sora/attack_qr_h3_384/", "sora_attack_qr_h3_", [3, 3, 3, 3, 4, 4, 5],
+	&"attack_qr_h3": ["res://assets/sora/attack_qr_h3_384/", "sora_attack_qr_h3_", [2, 2, 2, 3, 4, 5, 6],
 		[20.0, 20.0, 20.0, 0.0, 0.0, 0.0, 0.0]],
 }
 
@@ -259,7 +261,6 @@ const STAND_IN := {&"attack_qr_h1": &"attack_qr_m"}
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_qr_m": [0, 0, 0, 0, 90, 60, 0, 0, 0, 0],  # hit / follow-through drawn 120 / 80 px (512 scale) left
 	&"attack_qr_h2": [45, 0, 0, 0],  # gather drawn 60 px (512) left
-	&"attack_qr_h3": [0, 0, 0, 45, 45, 45, 0],  # chop / falling / landing drawn 60 px (512) left
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
@@ -269,7 +270,7 @@ const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_jheavy": [0, 0, 0, 52.5, 0, 0, 0]}
 ## Drawings drawn shifted UP inside their frame (the Jumping Heavy's low chop): shifted back down by this many px.
 const DRAW_SHIFT_Y := {&"attack_jheavy": [0, 0, 0, 15, 15, 0, 0],
-	&"attack_qr_h3": [90, 90, 90, 0, 0, 0, 0]}  # the flips drawn 120 px (512) higher
+	&"attack_qr_h3": [225, 225, 225, 225, 0, 0, 0]}  # the flips drawn 300 px (1024 canvas) higher
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
@@ -390,15 +391,16 @@ const QR_HITS := {&"attack_qr_m": {"strength": &"heavy", "damage": 900, "push": 
 	&"attack_qr_h3": {"strength": &"heavy", "damage": 600, "bounce": true}}
 ## Hit 2 carries both off the ground: Sora leaves the floor as its rising drawing (QR_H2_TAKEOFF) starts, rising at
 ## QR_RISE_V px/frame under QR_RISE_G gravity; a hit opponent is launched with the same speed and gravity, so they rise
-## together (~185 px). Hit 3's chop slams them down (QR_SLAM_V px/frame) into the ground bounce; after the chop he
-## falls with QR_FALL_G and holds the falling drawing (QR_H3_LOW) until he lands.
+## together. From hit 3's over-the-top drawing (QR_H3_CHOP) he falls faster (QR_FALL_G) and holds it (QR_H3_LOW) until
+## he lands; the slam drawing comes on touching down - its hit catches the opponent (falling slower) just above the
+## floor and slams them down (QR_SLAM_V px/frame) into the ground bounce.
 const QR_H2_TAKEOFF := 1
-const QR_RISE_V := 15.0
+const QR_RISE_V := 11.5  # Kvon: "elevate Sora a little less" (~110 px; was 15 = ~185)
 const QR_RISE_G := 0.6
 const QR_FALL_G := 1.4
 const QR_SLAM_V := 22.0
 const QR_H3_CHOP := 3
-const QR_H3_LOW := 4
+const QR_H3_LOW := 3
 ## Quick Run blur (Kvon, November 19: "a subtle blur effect on Sora when he's dashing forward, similar to in KH2"):
 ## while he runs (and through the miss spin, fading as he slows), a copy of his current drawing blurred backward along
 ## the motion (BLUR_SHADER: 20 samples over BLUR_LENGTH px, nearer ones weighted more, fading out toward the frame's

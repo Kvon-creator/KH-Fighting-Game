@@ -113,9 +113,12 @@ CANVAS_H = 768 if OUT_NAME.startswith(('atk_cheavy_v', 'atk_qrh')) else 512  # +
 # Ground grab (Kvon, November 10): Sora and the grabbed opponent are rendered as two separate layers on one shared
 # 1024 x 1024 canvas (same px per metre, soles 42 px above the bottom edge) - the opponent is swung ~2 m out.
 GRAB_CANVAS = OUT_NAME.startswith(('atk_grab_v', 'hurt_grab_v', 'atk_agrab_v', 'hurt_agrab_v'))
-if GRAB_CANVAS:
+# Quick Run Heavy hit 3 v4+ (Lion's Claw: the Key held out at arm's length wheels round with the flip) - the same
+# square 1024 canvas as the grab.
+QRH3_BIG = OUT_NAME.startswith('atk_qrh3_v') and not OUT_NAME.startswith(('atk_qrh3_v1', 'atk_qrh3_v2', 'atk_qrh3_v3'))
+if GRAB_CANVAS or QRH3_BIG:
     CANVAS_H = 1024
-CANVAS_W = 1024 if GRAB_CANVAS else 512
+CANVAS_W = 1024 if GRAB_CANVAS or QRH3_BIG else 512
 GRAB_HAND, GRAB_FRONT = [], []
 # Kvon (October 29): the fist in the middle of the Key's handle (as on the Crouching Heavy's thrust) on every attack.
 # One-handed attack drawings get grip_slide .10 by default from these versions on; the last drawing of each (the
@@ -709,7 +712,9 @@ if RUN:
                        # Quick Run Heavy hits 2-3 (Kvon, November 19): rising slash = gather 3, rise 2, hit 3, air tuck 4;
                        # front flip 3 x 3, overhead chop (hit) 3, falling follow-through 4 (the game holds it until he
                        # lands), landing 4, rise 5.
-                       'atk_qrh2': [3, 2, 3, 4], 'atk_qrh3': [3, 3, 3, 3, 4, 4, 5]}[JUMP.rsplit('_v', 1)[0]]
+                       'atk_qrh2': [3, 2, 3, 4],
+                       'atk_qrh3': [3, 3, 3, 3, 4, 4, 5] if JUMP.endswith(('_v1', '_v2', '_v3')) else [2, 2, 2, 3, 4, 5, 6]
+                       }[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -4470,6 +4475,31 @@ if LOOP:
                         back_k = ease(land, IDLE_R, .55, 0.0)
                         back_k.update(ground=True)
                         RUN_KEYS = [f1, f2, f3, chop, low, land, back_k]
+                        if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                            # v4 (Kvon: "a good reference is the lion's claw ability from Elden Ring"): a forward
+                            # somersault with the weapon held out at arm's length - it wheels round with him - slammed
+                            # into the ground in front as he lands. The wheel pose (arm straight overhead, Key pointing
+                            # straight out from his body, legs bent back, back slightly arched) rolled forward 90 / 180 /
+                            # 270 / 330 deg (the last = over the top, held while he drops), then the slam on landing (the
+                            # hit: crouched lunge, arm out forward-down, Key tip to the floor in front), rise, idle.
+                            # 1024 x 1024 canvas (QRH3_BIG) so the wheeling Key fits.
+                            def wheel(r_):
+                                return hurt({'L': (-.10, LAT['L'], .45, 60.0), 'R': (-.20, LAT['R'], .35, 60.0)}, -.05, 2.0,
+                                            -6.0, -20.0, U_*.06 + V_*.20 + Z_*1.85, (U_*.10 + V_*.15 + Z_).normalized(),
+                                            T_((.40, .15, 1.30)), roll=r_)
+                            w1, w2, w3, w4 = wheel(-90.0), wheel(-180.0), wheel(-270.0), wheel(-330.0)
+                            slam = hurt({'L': (L0[0] + .30, L0[1], 0.0, 0.0), 'R': (R0[0] - .10, R0[1], 0.0, 35.0)}, .26,
+                                        12.0, 25.0, -12.0, U_*.55 + V_*.20 + Z_*.70, (U_*.85 + V_*.25 - Z_*.50).normalized(),
+                                        T_((.35, .05, .95)), ground=True)
+                            w2['smear'], w3['smear'], w4['smear'], slam['smear'] = 1, 1, 1, 1
+                            rise_k = ease(slam, IDLE_R, .45, 0.0)
+                            rise_k.update(ground=True)
+                            back_k = ease(slam, IDLE_R, .8, 0.0)
+                            back_k.update(ground=True)
+                            if not JUMP.endswith('_v4'):
+                                for k_ in (w1, w2, w3, w4):
+                                    k_['offset_px'] = (0, 150 if JUMP.endswith('_v5') else 300)  # v5 / v6: v4's upside-down Key left the frame bottom
+                            RUN_KEYS = [w1, w2, w3, w4, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)
                         k_['no_center'] = True
