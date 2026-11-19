@@ -59,7 +59,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
                                       'atk_jheavy_v', 'atk_guard_v', 'atk_grab_v', 'hurt_grab_v',
                                       'atk_agrab_v', 'hurt_agrab_v',
-                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v', 'qrun_spin_v')) else None
+                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v', 'qrun_spin_v', 'atk_qrm_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -699,7 +699,12 @@ if RUN:
                        # Quick Run (Kvon, November 18): startup 8, the run loop, the turn-around skid 12 (the game's
                        # qrun_start / qrun / qrun_stop holds).
                        'qrun_start': [2, 2, 2, 2], 'qrun_loop': [2, 2, 2, 2], 'qrun_stop': [2, 2, 2, 3, 3],
-                       'qrun_spin': [1, 1, 1, 1, 1] if JUMP.endswith('_v1') else [2]*7}[JUMP.rsplit('_v', 1)[0]]
+                       'qrun_spin': [1, 1, 1, 1, 1] if JUMP.endswith('_v1') else [2]*7,
+                       # Quick Run Medium follow-up (spinning backhand): wind-up 3, sweep 2 + 1, hit 3 (active 3, from v4),
+                       # follow-through and finishing turn 3 + 3 + 3, Key down 4, idle 5.
+                       'atk_qrm': [3, 2, 1, 1, 4, 6, 6] if JUMP.endswith('_v1') else ([3, 2, 1, 1, 4, 4, 5, 6]
+                                   if JUMP.endswith('_v2') else ([3, 2, 1, 1, 4, 3, 3, 4, 5] if JUMP.endswith('_v3')
+                                   else [3, 2, 1, 3, 3, 3, 3, 4, 5]))}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -4299,6 +4304,84 @@ if LOOP:
                         GAME_FRAMES = [2, 2, 3, 3, 2, 3, 2, 3, 4, 4]
                         DURATIONS_MS = [round(f_*1000/60, 3) for f_ in GAME_FRAMES]
                         n = len(DURATIONS_MS)
+                elif jpart == 'atk_qrm':
+                    # Quick Run Medium follow-up (Kvon, November 19: "Spinning backhand"): he comes out of the run behind
+                    # the opponent, already facing them, and carries the turn into one flat spinning slash. One base
+                    # pose - Key arm extended out to his right at shoulder height, the Key continuing the arm, free arm
+                    # out the other way, a slight crouch - turned as a whole (spin_deg: legs turn with him, no crossing)
+                    # so the Key sweeps round level: pointing away from the opponent (wind-up), round (smeared), striking
+                    # when it points at them, past them (follow-through); then the Key comes down in front into the idle.
+                    # Output-name option ..._ccw sweeps the other way round.
+                    base_hand = T_((-.50, -.14, 1.12))
+                    base_blade = T_((-1.0, -.25, .04)).normalized()
+                    bh_ = Vector((base_blade.x, base_blade.y, 0.0))
+                    phi_hit = math.degrees(math.atan2(U_.y, U_.x) - math.atan2(bh_.y, bh_.x))
+                    sweep = -1.0 if OUT_NAME.endswith('_ccw') else 1.0
+                    qstand = {'L': (L0[0]*.9, L0[1], 0.0, 0.0), 'R': (R0[0]*.9, R0[1], 0.0, 15.0)}
+
+                    def qrm(off_deg, ce_=.08, pitch_=4.0, smear_=0):
+                        k_ = hurt(qstand, ce_, 2.0, pitch_, -8.0, base_hand, base_blade, T_((.42, -.10, 1.02)),
+                                  spin=phi_hit + sweep*off_deg, ground=True)
+                        k_.update(no_center=True, release=1.0, look=8.0)
+                        if smear_:
+                            k_['smear'] = smear_
+                        return k_
+                    wind_k = qrm(-180.0, ce_=.12, pitch_=6.0)
+                    sw1_k = qrm(-120.0, smear_=1)
+                    sw2_k = qrm(-60.0, smear_=1)
+                    hit_k = qrm(0.0, ce_=.10, pitch_=8.0, smear_=2)
+                    follow_k = qrm(50.0, ce_=.08, smear_=1)
+                    recover_k = hurt(stand, .06, 0.0, 2.0, -6.0, U_*.30 + V_*.20 + Vector((0, 0, .90)),
+                                     (U_*.70 + V_*.40 + Vector((0, 0, -.35))).normalized(), T_((.30, -.10, .95)),
+                                     ground=True)
+                    recover_k.update(no_center=True, release=1.0)
+                    back_k = ease(recover_k, IDLE_R, .6, 0.0)
+                    back_k.update(ground=True, no_center=True)
+                    RUN_KEYS = [wind_k, sw1_k, sw2_k, hit_k, follow_k, recover_k, back_k]
+                    if not JUMP.endswith('_v1'):
+                        # v2: sweep the ccw way (v1 review: its first sweep drawing reads as a clean side view); the
+                        # wind-up Key angled toward the camera (v1's ran off the left edge); a second follow-through drawing
+                        # keeps turning (Key toward the camera) so he doesn't snap from his back to the front; the hit
+                        # and follow-through drawn 80 px left in the frame (the Key tip touched the right edge; Godot
+                        # shifts them back with DRAW_SHIFT).
+                        sweep = -1.0
+                        wind_k = qrm(-180.0, ce_=.12, pitch_=6.0)
+                        wind_k['blade_dir'] = tuple(Vector(wind_k['blade_dir']).lerp(Vector(to_cam), .55).normalized())
+                        sw1_k = qrm(-120.0, smear_=1)
+                        sw2_k = qrm(-60.0, smear_=1)
+                        hit_k = qrm(0.0, ce_=.10, pitch_=8.0, smear_=2)
+                        follow_k = qrm(50.0, ce_=.08, smear_=1)
+                        follow2_k = qrm(110.0, ce_=.07)
+                        for k_ in (hit_k, follow_k):
+                            k_['offset_px'] = (-80, 0)
+                        RUN_KEYS = [wind_k, sw1_k, sw2_k, hit_k, follow_k, follow2_k, recover_k, back_k]
+                    if not JUMP.endswith(('_v1', '_v2')):
+                        # v3: blade overrides given in world terms are turned back by the drawing's spin first (the spin
+                        # turns the blade with him). Wind-up Key toward the camera (v2's still left the frame); the hit's
+                        # Key tipped a little toward the camera and drawn 150 px left (v2's reached the right edge); the
+                        # spin finishes all the way round - +110, +165 (front again, Key trailing behind him) - then he
+                        # brings the Key round into the guard (no flipping the Key back and forth).
+                        def world_blade(k_, w_):
+                            r_ = Matrix.Rotation(math.radians(-k_['spin_deg']), 3, 'Z')
+                            k_['blade_dir'] = tuple((r_ @ Vector(w_).normalized()).normalized())
+                        world_blade(wind_k, -U_*.50 + V_*.80 + Vector((0, 0, -.15)))
+                        world_blade(hit_k, U_*.92 + V_*.32 + Vector((0, 0, .04)))
+                        hit_k['offset_px'] = (-150, 0)
+                        follow_k['offset_px'] = (-80, 0)
+                        follow3_k = qrm(165.0, ce_=.07)
+                        recover_k = hurt(stand, .06, 0.0, 2.0, -6.0, U_*-.20 + V_*.22 + Vector((0, 0, .80)),
+                                         (-U_*.60 + V_*.55 + Vector((0, 0, -.45))).normalized(), T_((.30, -.10, .95)),
+                                         ground=True)
+                        recover_k.update(no_center=True, release=1.0)
+                        back_k = ease(recover_k, IDLE_R, .5, 0.0)
+                        back_k.update(ground=True, no_center=True)
+                        RUN_KEYS = [wind_k, sw1_k, sw2_k, hit_k, follow_k, follow2_k, follow3_k, recover_k, back_k]
+                        if not JUMP.endswith('_v3'):
+                            # v4: v3's hit shift (150) put his free arm on the left edge - 120; the front-facing finish
+                            # drawing's Key touched the left edge - toward the camera.
+                            hit_k['offset_px'] = (-120, 0)
+                            world_blade(follow3_k, -U_*.50 + V_*.80 + Vector((0, 0, -.10)))
+                    print('QRM_PHI_HIT', round(phi_hit, 1))
                 elif jpart == 'hurt_getup':
                     # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
                     # Smash's floor getup / Street Fighter's quick rise): from lying face up, sit up leaning back with

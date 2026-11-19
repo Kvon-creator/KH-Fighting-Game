@@ -26,7 +26,7 @@ GROUPS = [
     (('atk_jheavy',), 'attacks/jumping_heavy'),
     (('saved_attacks',), 'attacks'),
     (('atk_guard',), 'guard'),
-    (('qrun_',), 'specials/quick_run'),
+    (('qrun_', 'atk_qrm', 'atk_qrh'), 'specials/quick_run'),
     (('hurt_',), 'hurt'),
     (('jump_bdash',), 'movement/back_dash'),
     (('jump_dash',), 'movement/air_dash'),

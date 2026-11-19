@@ -230,7 +230,11 @@ const ANIMATIONS := {
 	# Miss spin (Kvon: "a different pose for spinning. You can reuse the one for his double jump"): the double jump's
 	# drawings (the apex tuck turning a full circle in 30 deg steps), 2 frames each.
 	&"qrun_spin": ["res://assets/sora/jump_spin_384/", "sora_jump_spin_", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], []],
-	&"attack_qr_m": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 2, 2, 2, 3, 3, 5, 5, 4], []],
+	# Quick Run Medium follow-up (Kvon, November 19: "Spinning backhand"): out of the run he carries the turn into one flat
+	# spinning slash - wind-up (Key pointing away), two smeared sweep drawings, the hit (Key pointing at the opponent, his
+	# back to the camera), follow-through, the spin finishing round to the front with the Key trailing, Key down, idle.
+	# Startup 6 (the hit drawing from frame 7), active 3, recovery 18.
+	&"attack_qr_m": ["res://assets/sora/attack_qr_m_384/", "sora_attack_qr_m_", [3, 2, 1, 3, 3, 3, 3, 4, 5], []],
 	&"attack_qr_h1": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [3, 3, 4, 3], []],
 	&"attack_qr_h2": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 1, 2, 1, 3, 2, 2, 2, 2], []],
 	&"attack_qr_h3": ["res://assets/sora/attack_heavy_384/", "sora_attack_heavy_", [2, 3, 2, 3, 3, 4, 4, 4, 4],
@@ -238,12 +242,13 @@ const ANIMATIONS := {
 }
 
 ## Stand-in animations -> the animation whose drawings they borrow (for DRAW_SHIFT, TALL_FEET and the smears).
-const STAND_IN := {&"attack_qr_m": &"attack_medium", &"attack_qr_h1": &"attack_light",
+const STAND_IN := {&"attack_qr_h1": &"attack_light",
 	&"attack_qr_h2": &"attack_medium", &"attack_qr_h3": &"attack_heavy"}
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
 ## the sprite is shifted back right by this many px so he stays in place.
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
+	&"attack_qr_m": [0, 0, 0, 90, 60, 0, 0, 0, 0],  # hit / follow-through drawn 120 / 80 px (512 scale) left
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
@@ -263,6 +268,7 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 	&"attack_jlight": ["res://assets/sora/attack_jlight_smear_384/", "sora_attack_jlight_smear_"],
 	&"attack_jmedium": ["res://assets/sora/attack_jmedium_smear_384/", "sora_attack_jmedium_smear_"],
 	&"attack_jheavy": ["res://assets/sora/attack_jheavy_smear_384/", "sora_attack_jheavy_smear_"],
+	&"attack_qr_m": ["res://assets/sora/attack_qr_m_smear_384/", "sora_attack_qr_m_smear_"],
 	&"grab": ["res://assets/sora/grab_fx_768/", "sora_grab_fx_"]}  # the strike's smear + impact burst
 
 ## Floor shadow (Kvon, November 17: "shadowing by provide an invisible light source in the background"; chose shadows of
