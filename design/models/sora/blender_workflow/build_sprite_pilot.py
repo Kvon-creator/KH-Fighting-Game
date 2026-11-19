@@ -713,7 +713,8 @@ if RUN:
                        # front flip 3 x 3, overhead chop (hit) 3, falling follow-through 4 (the game holds it until he
                        # lands), landing 4, rise 5.
                        'atk_qrh2': [3, 2, 3, 4],
-                       'atk_qrh3': [3, 3, 3, 3, 4, 4, 5] if JUMP.endswith(('_v1', '_v2', '_v3')) else [2, 2, 2, 3, 4, 5, 6]
+                       'atk_qrh3': [3, 3, 3, 3, 4, 4, 5] if JUMP.endswith(('_v1', '_v2', '_v3')) else (
+                           [2, 2, 2, 3, 4, 5, 6] if JUMP.endswith(('_v4', '_v5', '_v6')) else [2, 2, 2, 3, 2, 2, 4, 5, 6])
                        }[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
@@ -4500,6 +4501,66 @@ if LOOP:
                                 for k_ in (w1, w2, w3, w4):
                                     k_['offset_px'] = (0, 150 if JUMP.endswith('_v5') else 300)  # v5 / v6: v4's upside-down Key left the frame bottom
                             RUN_KEYS = [w1, w2, w3, w4, slam, rise_k, back_k]
+                            if not JUMP.endswith(('_v4', '_v5', '_v6')):
+                                # v7 (Kvon): the wind-up (pose 4) with the Key pointing straight back, opposite to where
+                                # he faces - upright out of the flip, both hands on the Key raised behind his head; two
+                                # in-betweens to the slam (Key straight up overhead, then forward and high; smeared); the
+                                # slam two-handed, feet close together in a deep squat, the Key tip tipped up a little
+                                # (not into the floor). Two-handed = release 0 (left hand on the handle).
+                                air_legs = {'L': (.08, LAT['L'], .30, 40.0), 'R': (-.08, LAT['R'], .24, 45.0)}
+
+                                def two(feet_, ce_, hunch_, pitch_, hand_, blade_, ground_=False):
+                                    k_ = hurt(feet_, ce_, hunch_, pitch_, -14.0, hand_, Vector(blade_).normalized(),
+                                              T_((.30, -.10, 1.00)), ground=ground_)
+                                    k_.update(release=0.0, l_elbow_hint=tuple(V_*.75 + U_*.10 + Z_*-.65))
+                                    return k_
+                                wind = two(air_legs, -.06, -4.0, -10.0, U_*-.12 + V_*.18 + Z_*1.62, -U_)
+                                ib1 = two(air_legs, -.06, 0.0, -4.0, U_*.02 + V_*.18 + Z_*1.82, Z_ + U_*.05)
+                                ib2 = two({'L': (.10, LAT['L'], .18, 35.0), 'R': (-.06, LAT['R'], .12, 40.0)}, -.02, 8.0, 8.0,
+                                          U_*.30 + V_*.18 + Z_*1.50, U_*.80 + Z_*.60)
+                                squat = {'L': (L0[0]*.45, L0[1], 0.0, 0.0), 'R': (R0[0]*.45, R0[1], 0.0, 20.0)}
+                                slam = two(squat, .34, 14.0, 18.0, U_*.52 + V_*.18 + Z_*.80, U_*.95 + V_*.15 + Z_*.12,
+                                           ground_=True)
+                                ib1['smear'], ib2['smear'], slam['smear'] = 1, 1, 1
+                                rise_k = ease(slam, IDLE_R, .45, 0.0)
+                                rise_k.update(ground=True)
+                                back_k = ease(slam, IDLE_R, .8, 0.0)
+                                back_k.update(ground=True)
+                                if not JUMP.endswith('_v7'):
+                                    # v8: v7's left hand missed the handle on the first in-between (.21 m) and the slam
+                                    # (.33 m) - grips closer to his body, where both arms reach.
+                                    ib1['hand'] = U_*.0 + V_*.12 + Z_*1.70
+                                    slam['hand'] = U_*.36 + V_*.10 + Z_*.84
+                                    rise_k = ease(slam, IDLE_R, .45, 0.0)
+                                    rise_k.update(ground=True)
+                                    back_k = ease(slam, IDLE_R, .8, 0.0)
+                                    back_k.update(ground=True)
+                                if not JUMP.endswith(('_v7', '_v8')):
+                                    # v9: the slam's left hand still missed (.33 m): in the crouch his chest faced the
+                                    # camera with the grip out to his right, past where the left arm can cross. Turn him
+                                    # side-on toward the opponent (like the two-handed Standing Medium) so both arms reach.
+                                    import re as re_s
+                                    m_s = re_s.search(r'_st(-?\d+)', OUT_NAME)
+                                    slam['turn'] = float(m_s.group(1)) if m_s else 30.0
+                                    # The deep squat (ce .34) lowered the shoulders below the grip's reach; the hand target
+                                    # rides up with it (hands_extra_z .30, as the jump landing does) - left hand on the handle.
+                                    slam['hz'] = .30
+                                    slam.update(pitch=8.0, hunch=6.0)  # more upright: the Key out below his head, not at his face
+                                    m_b = re_s.search(r'_sb(\d+)_(\d+)_(\d+)', OUT_NAME)
+                                    if m_b:  # review: crouch (cm), pitch, hunch
+                                        slam.update(ce=int(m_b.group(1))/100, pitch=float(m_b.group(2)),
+                                                    hunch=float(m_b.group(3)))
+                                    m_h = re_s.search(r'_hz(-?\d+)', OUT_NAME)
+                                    if m_h:  # review: hands_extra_z (cm)
+                                        slam['hz'] = int(m_h.group(1))/100
+                                    m_z = re_s.search(r'_sz(\d+)', OUT_NAME)
+                                    if m_z:
+                                        slam['hand'] = U_*.40 + V_*.10 + Z_*(int(m_z.group(1))/100)  # review: grip height
+                                    rise_k = ease(slam, IDLE_R, .45, 0.0)
+                                    rise_k.update(ground=True)
+                                    back_k = ease(slam, IDLE_R, .8, 0.0)
+                                    back_k.update(ground=True)
+                                RUN_KEYS = [w1, w2, w3, wind, ib1, ib2, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)
                         k_['no_center'] = True
