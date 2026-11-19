@@ -365,6 +365,33 @@ const QR_HITS := {&"attack_qr_m": {"strength": &"heavy", "damage": 900, "push": 
 	&"attack_qr_h1": {"strength": &"light", "damage": 300, "stun": 30, "push": 1.5},
 	&"attack_qr_h2": {"strength": &"medium", "damage": 300, "stun": 30, "push": 1.5},
 	&"attack_qr_h3": {"strength": &"heavy", "damage": 600, "bounce": true}}
+## Quick Run blur (Kvon, November 19: "a subtle blur effect on Sora when he's dashing forward, similar to in KH2"):
+## while he runs (and through the miss spin, fading as he slows), a copy of his current drawing blurred backward along
+## the motion (BLUR_SHADER: 20 samples over BLUR_LENGTH px, nearer ones weighted more, fading out toward the frame's
+## trailing edge so the frame never shows as a line) is drawn behind him
+## at BLUR_ALPHA - KH2's smeared ghosting, kept subtle.
+const BLUR_LENGTH := 90.0
+const BLUR_ALPHA := 0.65
+const BLUR_SHADER := """shader_type canvas_item;
+uniform float length_px = 70.0;
+uniform float strength = 0.45;
+void fragment() {
+	vec4 acc = vec4(0.0);
+	float wsum = 0.0;
+	for (int i = 1; i <= 20; i++) {
+		float t = float(i) / 20.0;
+		float w = 1.0 - 0.75 * t;
+		// sample ahead (+x in the drawing, which faces right) so the picture smears out behind him
+		acc += texture(TEXTURE, UV + vec2(t * length_px * TEXTURE_PIXEL_SIZE.x, 0.0)) * w;
+		wsum += w;
+	}
+	vec4 c = acc / wsum;
+	// fade out toward the frame's trailing (left) edge: the smear can't draw past the frame, so no hard cut-off line
+	float edge = smoothstep(0.0, 0.22, UV.x);
+	COLOR = vec4(c.rgb, c.a * strength * edge);
+}
+"""
+
 const BOUNCE_FRAMES := 5   # slammed on the floor this long before bouncing up
 const BOUNCE_SPEED := 14.0  # upward speed of the bounce (LAUNCH_GRAVITY: ~165 px high)
 const BOUNCE_VX := 1.0
@@ -427,6 +454,8 @@ var tech_request := false
 var grab_air := false
 
 var _smear: Sprite2D
+var _blur: Sprite2D  # the Quick Run's motion blur (behind him)
+var _blur_mat: ShaderMaterial
 var _shadow: Sprite2D
 var _smear_frames := {}
 var _tick := 0
@@ -500,14 +529,26 @@ func setup(frames: SpriteFrames, smear_frames: Dictionary, start_x: float, face:
 	_smear.visible = false
 	sprite.add_child(_smear)
 	_smear_frames = smear_frames
+	_blur = Sprite2D.new()
+	_blur.centered = false
+	_blur.visible = false
+	_blur.show_behind_parent = true  # drawn behind his own drawing
+	var shader := Shader.new()
+	shader.code = BLUR_SHADER
+	_blur_mat = ShaderMaterial.new()
+	_blur_mat.shader = shader
+	_blur.material = _blur_mat
+	sprite.add_child(_blur)
 	reset(start_x, face)
 
 
-## The floor shadow follows his current drawing every frame (see SHADOW_*); dash squash and stretch (DASH_STRETCH).
+## The floor shadow follows his current drawing every frame (see SHADOW_*); dash squash and stretch (DASH_STRETCH);
+## the Quick Run's motion blur (BLUR_*).
 func _process(_delta: float) -> void:
 	if _shadow == null:
 		return
 	_update_stretch()
+	_update_blur()
 	var h := FLOOR_Y - position.y
 	_shadow.visible = state != &"held" and h < SHADOW_FADE_HEIGHT
 	if not _shadow.visible:
@@ -527,6 +568,21 @@ func _process(_delta: float) -> void:
 
 ## Afterimages on a grabbed fighter and on Sora's air-grab spins were tried and removed (Kvon, November 18: "the
 ## afterimages aren't necessary").
+func _update_blur() -> void:
+	var amount := 0.0
+	if _qr_phase == &"run":
+		amount = 1.0
+	elif _qr_phase == &"spin":
+		amount = clampf(_qr_slide / QR_SPEED, 0.0, 1.0)  # fades out as the spin slows him down
+	_blur.visible = amount > 0.05
+	if not _blur.visible:
+		return
+	_blur.texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	_blur.offset = sprite.offset
+	_blur_mat.set_shader_parameter(&"length_px", BLUR_LENGTH * amount)
+	_blur_mat.set_shader_parameter(&"strength", BLUR_ALPHA * amount)
+
+
 func _update_stretch() -> void:
 	var stretch := Vector2.ONE
 	if DASH_STRETCH.has(sprite.animation) and sprite.frame == DASH_STRETCH[sprite.animation][0]:
