@@ -263,7 +263,7 @@ const STAND_IN := {&"attack_qr_h1": &"attack_qr_m"}
 ## the sprite is shifted back right by this many px so he stays in place.
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_qr_m": [0, 0, 0, 0, 90, 60, 0, 0, 0, 0],  # hit / follow-through drawn 120 / 80 px (512 scale) left
-	&"attack_qr_h2": [45, 0, 0, 0],  # gather drawn 60 px (512) left
+	&"attack_qr_h2": [45, 0, 60, 0],  # gather / two-handed level strike drawn 60 / 80 px (512) left
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
@@ -402,8 +402,12 @@ const QR_HITS := {&"attack_qr_m": {"strength": &"heavy", "damage": 900, "push": 
 ## above the floor; the in-betweens follow and the last (QR_H3_LOW) holds until he lands; the slam drawing comes on
 ## touching down - its hit catches the opponent (falling slower) just above the floor and slams them down (QR_SLAM_V
 ## px/frame) into the ground bounce.
-const QR_H2_TAKEOFF := 1
-const QR_RISE_V := 11.5  # Kvon: "elevate Sora a little less" (~110 px; was 15 = ~185)
+const QR_H2_TAKEOFF := 2
+## Kvon: "elevate Sora a little less" (15 -> 11.5), then "let the second hit linger for slightly longer by lifting up both
+## players higher off the ground. Lift the opponent even higher than Sora on hit": Sora 14 (~165 px), the opponent
+## launched at QR_LIFT_V 16.5 (~225 px, above him), same gravity.
+const QR_RISE_V := 14.0
+const QR_LIFT_V := 16.5
 const QR_RISE_G := 0.6
 const QR_FALL_G := 1.4
 const QR_SLAM_V := 22.0
@@ -1456,8 +1460,9 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 		ko = true
 		_start_hurt_air(-KNOCK_SPEED * 0.8, KNOCK_VX * away, HURT_GRAVITY)
 	elif info.get("lift", false):
-		# The Quick Run Heavy's rising slash: carried up at Sora's own rise speed and gravity (they rise together).
-		_start_hurt_air(-QR_RISE_V, 0.0, QR_RISE_G)
+		# The Quick Run Heavy's rising slash: carried up with Sora (his gravity), launched a little faster so they float
+		# above him.
+		_start_hurt_air(-QR_LIFT_V, 0.0, QR_RISE_G)
 	elif info.get("bounce", false) and position.y < FLOOR_Y - 1.0:
 		# The overhead chop in the air: slammed straight down, then the ground bounce when he hits the floor.
 		state = &"slam"

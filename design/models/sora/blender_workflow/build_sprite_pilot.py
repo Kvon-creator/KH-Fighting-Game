@@ -4432,6 +4432,21 @@ if LOOP:
                             gather['blade_dir'] = tuple((U_*.70 + V_*.40 - Z_*.45).normalized())
                         if not JUMP.endswith(('_v1', '_v2')):
                             gather['offset_px'] = (-60, 0)   # v3: v2's flatter Key reached the right edge
+                        if not JUMP.endswith(('_v1', '_v2', '_v3')):
+                            # v4 (Kvon: "angle the blade of the keyblade almost parallel to the ground with both hands on
+                            # the handle on hit"): the strike two-handed (release 0), hands up in front at head height,
+                            # the blade out forward nearly level (a touch up).
+                            import re as re_h
+                            m_hz = re_h.search(r'_hz(-?\d+)', OUT_NAME)
+                            hit.update(release=0.0, hand=U_*.34 + V_*.16 + Z_*1.40,
+                                       blade_dir=tuple((U_*.95 + V_*.22 + Z_*.10).normalized()),
+                                       l_elbow_hint=tuple(V_*.75 + U_*.10 + Z_*-.65),
+                                       hz=int(m_hz.group(1))/100 if m_hz else 0.0)
+                            if not JUMP.endswith('_v4'):
+                                hit['offset_px'] = (-80, 0)  # v5: v4's level blade tip ran off the right edge
+                            if not JUMP.endswith(('_v4', '_v5')):
+                                # v6: v5's level blade at head height passed over a standing opponent - shoulder height.
+                                hit['hand'] = U_*.36 + V_*.16 + Z_*1.18
                         RUN_KEYS = [gather, rise, hit, tuck]
                     else:
                         # Front flip into the overhead chop: the tucked pose (knees up, Key held up behind his head)
