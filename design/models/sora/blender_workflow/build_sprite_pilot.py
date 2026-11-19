@@ -4579,6 +4579,10 @@ if LOOP:
                                             k_['leg_reach'] = .95  # v12: v11's knees bowed out into a squat - legs nearly straight
                                             if not JUMP.endswith('_v12'):
                                                 k_['offset_px'] = (0, 80)  # v13: the straight legs ran off the frame bottom
+                                    if not JUMP.endswith(('_v11', '_v12', '_v13')):
+                                        # v14 (Kvon: "Bend the knees in those same frames. Make the bend greater in 4 than
+                                        # in 5"): leg_reach .82 on the wind-up, .90 on the first in-between (v13: .95).
+                                        wind['leg_reach'], ib1['leg_reach'] = .82, .90
                                 RUN_KEYS = [w1, w2, w3, wind, ib1, ib2, slam, rise_k, back_k]
                     for k_ in RUN_KEYS:
                         k_.setdefault('release', 1.0)
