@@ -59,7 +59,7 @@ JUMP = version if version.startswith(('jump_start_v', 'jump_rise_v', 'jump_apex_
                                       'atk_clight_v', 'atk_cmed_v', 'atk_cheavy_v', 'atk_jlight_v', 'atk_jmed_v',
                                       'atk_jheavy_v', 'atk_guard_v', 'atk_grab_v', 'hurt_grab_v',
                                       'atk_agrab_v', 'hurt_agrab_v',
-                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v', 'qrun_spin_v', 'atk_qrm_v')) else None
+                                      'qrun_start_v', 'qrun_loop_v', 'qrun_stop_v', 'qrun_spin_v', 'atk_qrm_v', 'atk_qrh2_v', 'atk_qrh3_v')) else None
 # Hurt set and the attacks share the whole-body machinery (spin/roll/ground) of the hurt recipes.
 HURT = JUMP if JUMP and JUMP.startswith(('hurt_', 'atk_')) else None
 if JUMP:
@@ -109,7 +109,7 @@ IDLE = ROOT / 'design/sprites/smooth/sora/replacement_work/ready/standing_idle/s
 HEIGHT = 1.6          # meters, T-pose top of hair to sole
 # Crouching Heavy (an overhead Keyblade thrust, ~2.9 m tall): a taller 512 x 768 canvas at the same scale, with the
 # soles the same 42 px above the bottom edge; everything else keeps the 512 x 512 frame.
-CANVAS_H = 768 if OUT_NAME.startswith('atk_cheavy_v') else 512
+CANVAS_H = 768 if OUT_NAME.startswith(('atk_cheavy_v', 'atk_qrh')) else 512  # + Quick Run Heavy (high slashes)
 # Ground grab (Kvon, November 10): Sora and the grabbed opponent are rendered as two separate layers on one shared
 # 1024 x 1024 canvas (same px per metre, soles 42 px above the bottom edge) - the opponent is swung ~2 m out.
 GRAB_CANVAS = OUT_NAME.startswith(('atk_grab_v', 'hurt_grab_v', 'atk_agrab_v', 'hurt_agrab_v'))
@@ -705,7 +705,11 @@ if RUN:
                        'atk_qrm': [3, 2, 1, 1, 4, 6, 6] if JUMP.endswith('_v1') else ([3, 2, 1, 1, 4, 4, 5, 6]
                                    if JUMP.endswith('_v2') else ([3, 2, 1, 1, 4, 3, 3, 4, 5] if JUMP.endswith('_v3')
                                    else ([3, 2, 1, 3, 3, 3, 3, 4, 5] if JUMP.endswith('_v4')
-                                   else [3, 5, 2, 1, 3, 3, 3, 3, 4, 5])))}[JUMP.rsplit('_v', 1)[0]]
+                                   else [3, 5, 2, 1, 3, 3, 3, 3, 4, 5]))),
+                       # Quick Run Heavy hits 2-3 (Kvon, November 19): rising slash = gather 3, rise 2, hit 3, air tuck 4;
+                       # front flip 3 x 3, overhead chop (hit) 3, falling follow-through 4 (the game holds it until he
+                       # lands), landing 4, rise 5.
+                       'atk_qrh2': [3, 2, 3, 4], 'atk_qrh3': [3, 3, 3, 3, 4, 4, 5]}[JUMP.rsplit('_v', 1)[0]]
         if JUMP.startswith(('atk_agrab', 'hurt_agrab')) and not JUMP.endswith(('_v1', '_v2', '_v3', '_v4')):
             # Air grab v5: the spin speeds up (3, 3, 2, 2), whip and release 2 each (the action is the fastest part),
             # the follow-through is held 6. Catch still on frame 5; 31 frames in all (was 35).
@@ -4392,6 +4396,83 @@ if LOOP:
                             RUN_KEYS = [wind_k, coil_k, sw1_k, sw2_k, hit_k, follow_k, follow2_k, follow3_k, recover_k,
                                         back_k]
                     print('QRM_PHI_HIT', round(phi_hit, 1))
+                elif jpart in ('atk_qrh2', 'atk_qrh3'):
+                    # Quick Run Heavy (Kvon, November 19: "Copy the medium version for the first hit, then lead into a
+                    # rising upward slash that carries both players off the ground, leading into a frontflip overhead
+                    # slash"). Hit 1 reuses the Medium's drawings in the game. These drawings stay in place (512 x 768
+                    # canvas for the high Key); the game lifts him off the floor from hit 2's strike drawing.
+                    Z_ = Vector((0, 0, 1))
+                    if jpart == 'atk_qrh2':
+                        # Rising slash: gather low (Key low in front), rise onto his toes (Key coming up), the hit
+                        # (stretched tall leaving the floor, Key swept up overhead, slightly forward), an airborne tuck
+                        # with the Key going back over his head (into the flip).
+                        wide = {'L': (L0[0]*1.1, L0[1], 0.0, 0.0), 'R': (R0[0]*1.1, R0[1], 0.0, 20.0)}
+                        toes = {'L': (L0[0]*.7, L0[1], .02, 30.0), 'R': (R0[0]*.7, R0[1], .04, 45.0)}
+                        gather = hurt(wide, .26, 8.0, 10.0, -10.0, U_*.34 + V_*.22 + Z_*.42,
+                                      (U_*.55 + V_*.35 - Z_*.75).normalized(), T_((.30, -.25, .85)), ground=True)
+                        rise = hurt(toes, .02, 0.0, -2.0, -14.0, U_*.38 + V_*.20 + Z_*1.05,
+                                    (U_*.55 + V_*.30 + Z_*.78).normalized(), T_((.30, -.10, .95)), ground=True)
+                        hit = hurt({'L': (.06, LAT['L'], .10, 50.0), 'R': (-.08, LAT['R'], .02, 60.0)}, -.04, -4.0, -8.0,
+                                   -18.0, U_*.22 + V_*.20 + Z_*1.78, (U_*.25 + V_*.30 + Z_*.92).normalized(),
+                                   T_((.35, -.05, 1.00)))
+                        tuck = hurt({'L': (.14, LAT['L'], .36, 30.0), 'R': (-.02, LAT['R'], .26, 40.0)}, -.08, 4.0, 0.0,
+                                    -12.0, V_*.22 + Z_*1.55, (-U_*.40 + V_*.40 + Z_*.82).normalized(), T_((.30, -.15, 1.05)))
+                        rise['smear'], hit['smear'] = 1, 2
+                        if not JUMP.endswith('_v1'):
+                            # v2: v1's gather Key went through the floor - higher hand, flatter Key.
+                            gather['hand'] = U_*.36 + V_*.22 + Z_*.58
+                            gather['blade_dir'] = tuple((U_*.70 + V_*.40 - Z_*.45).normalized())
+                        if not JUMP.endswith(('_v1', '_v2')):
+                            gather['offset_px'] = (-60, 0)   # v3: v2's flatter Key reached the right edge
+                        RUN_KEYS = [gather, rise, hit, tuck]
+                    else:
+                        # Front flip into the overhead chop: the tucked pose (knees up, Key held up behind his head)
+                        # rolled forward 90 / 180 / 270 deg about his hips, the chop (upright, Key brought down in front -
+                        # the hit), the falling follow-through (Key low, legs reaching for the floor), landing, rise.
+                        def flip(r_):
+                            k_ = hurt({'L': (.12, LAT['L'], .40, 30.0), 'R': (0.0, LAT['R'], .32, 40.0)}, -.10, 14.0, 10.0,
+                                      -14.0, U_*.10 + V_*.22 + Z_*1.30, (-U_*.20 + V_*.45 + Z_*.85).normalized(),
+                                      T_((.25, -.25, 1.00)), roll=r_)
+                            return k_
+                        f1, f2, f3 = flip(-90.0), flip(-180.0), flip(-270.0)
+                        chop = hurt({'L': (.16, LAT['L'], .18, 30.0), 'R': (-.14, LAT['R'], .10, 45.0)}, -.06, 16.0, 18.0,
+                                    -20.0, U_*.40 + V_*.20 + Z_*.80, (U_*.80 + V_*.25 - Z_*.55).normalized(),
+                                    T_((.30, -.15, .85)))
+                        low = hurt({'L': (.14, LAT['L'], .06, 15.0), 'R': (-.12, LAT['R'], .04, 30.0)}, -.02, 12.0, 12.0,
+                                   -12.0, U_*.34 + V_*.22 + Z_*.55, (U_*.55 + V_*.30 - Z_*.78).normalized(),
+                                   T_((.30, -.15, .80)))
+                        land = hurt({'L': (L0[0]*1.1, L0[1], 0.0, 0.0), 'R': (R0[0]*1.1, R0[1], 0.0, 15.0)}, .24, 6.0, 8.0,
+                                    -8.0, U_*.36 + V_*.22 + Z_*.50, (U_*.60 + V_*.30 - Z_*.74).normalized(),
+                                    T_((.30, -.20, .80)), ground=True)
+                        chop['smear'] = 1
+                        if not JUMP.endswith('_v1'):
+                            # v2: v1's flip Key (held back behind his head) ran off the sides and the upside-down drawing
+                            # hit the bottom: Key tucked up along his spine, angled toward the camera, flips drawn 120 px
+                            # higher; chop drawn 60 px left (tip at the right edge); the falling and landing Keys flatter
+                            # (they went through the frame bottom / the floor). Godot shifts the drawings back.
+                            for k_ in (f1, f2, f3):
+                                r_ = k_['roll']
+                                k_['hand'] = U_*.04 + V_*.24 + Z_*1.25
+                                k_['blade_dir'] = tuple((V_*.80 + Z_*.55 - U_*.10).normalized())
+                                k_['offset_px'] = (0, 120)
+                            chop['offset_px'] = (-60, 0)
+                            low['blade_dir'] = tuple((U_*.72 + V_*.35 - Z_*.55).normalized())
+                            land['hand'] = U_*.38 + V_*.22 + Z_*.62
+                            land['blade_dir'] = tuple((U_*.72 + V_*.40 - Z_*.42).normalized())
+                        if not JUMP.endswith(('_v1', '_v2')):
+                            # v3: rolling the body only turns the Key's on-screen part, so the flip Key points almost
+                            # straight at the camera (short on screen at every roll); the falling / landing drawings
+                            # drawn 60 px left (their Keys reached the right edge).
+                            for k_ in (f1, f2, f3):
+                                k_['blade_dir'] = tuple((Vector(to_cam)*.95 + Z_*.30).normalized())
+                            low['offset_px'] = (-60, 0)
+                            land['offset_px'] = (-60, 0)
+                        back_k = ease(land, IDLE_R, .55, 0.0)
+                        back_k.update(ground=True)
+                        RUN_KEYS = [f1, f2, f3, chop, low, land, back_k]
+                    for k_ in RUN_KEYS:
+                        k_.setdefault('release', 1.0)
+                        k_['no_center'] = True
                 elif jpart == 'hurt_getup':
                     # Get-up (Kvon: build it from other fighting games' get-ups - the common neutral stand-up, e.g.
                     # Smash's floor getup / Street Fighter's quick rise): from lying face up, sit up leaning back with

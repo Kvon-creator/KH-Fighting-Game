@@ -1,0 +1,10 @@
+{
+  "source": "atk_qrh3_v3",
+  "smears": [
+    {
+      "drawing": 3,
+      "from_drawing": 2,
+      "sweep_deg": 90.1
+    }
+  ]
+}

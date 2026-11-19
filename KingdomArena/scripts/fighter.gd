@@ -14,6 +14,7 @@ const FEET := Vector2(192, 354)
 ## Animations drawn on taller 384 x 576 frames (the Crouching Heavy's overhead thrust): the extra 192 px are
 ## added above him, so his feet sit 192 px lower in the frame.
 const TALL_FEET := {&"attack_cheavy": Vector2(192, 354 + 192),
+	&"attack_qr_h2": Vector2(192, 354 + 192), &"attack_qr_h3": Vector2(192, 354 + 192),
 	# Ground grab (Kvon, November 11): Sora and the grabbed opponent share one 768 x 768 frame (the 1024 render canvas
 	# at the usual x 0.75), his feet in the middle of the bottom.
 	&"grab": Vector2(384, 738), &"grab_held": Vector2(384, 738),
@@ -236,20 +237,29 @@ const ANIMATIONS := {
 	# camera), follow-through, the spin finishing round to the front with the Key trailing, Key down, idle.
 	# Startup 11 (the hit drawing from frame 12), active 3, recovery 18.
 	&"attack_qr_m": ["res://assets/sora/attack_qr_m_384/", "sora_attack_qr_m_", [3, 5, 2, 1, 3, 3, 3, 3, 4, 5], []],
-	&"attack_qr_h1": ["res://assets/sora/attack_light_384/", "sora_attack_light_", [3, 3, 4, 3], []],
-	&"attack_qr_h2": ["res://assets/sora/attack_medium_384/", "sora_attack_medium_", [1, 1, 1, 2, 1, 3, 2, 2, 2, 2], []],
-	&"attack_qr_h3": ["res://assets/sora/attack_heavy_384/", "sora_attack_heavy_", [2, 3, 2, 3, 3, 4, 4, 4, 4],
-		[0.0, -3.61, 21.65, 21.65, 94.61, 3.61, -18.04, -2.2, -16.64]],
+	# Quick Run Heavy (Kvon, November 19: "Copy the medium version for the first hit, then lead into a rising upward
+	# slash that carries both players off the ground, leading into a frontflip overhead slash"):
+	# hit 1 = the Medium's spinning backhand up to its follow-through (its drawings 0-5, same holds);
+	# hit 2 = gather, rise, the rising slash (he leaves the floor on it, QR_RISE_*), an airborne tuck;
+	# hit 3 = front flip x 3, the overhead chop (slams them down into the ground bounce), the falling follow-through
+	# (held until he lands, QR_H3_LOW), landing, rise into the idle. Drawn on 384 x 576 frames (TALL_FEET).
+	&"attack_qr_h1": ["res://assets/sora/attack_qr_m_384/", "sora_attack_qr_m_", [3, 5, 2, 1, 3, 3], [],
+		[0, 1, 2, 3, 4, 5]],
+	# Root motion: he travels forward through the rise and the flip so he finishes close enough to follow up the bounce.
+	&"attack_qr_h2": ["res://assets/sora/attack_qr_h2_384/", "sora_attack_qr_h2_", [3, 2, 3, 4], [0.0, 30.0, 30.0, 20.0]],
+	&"attack_qr_h3": ["res://assets/sora/attack_qr_h3_384/", "sora_attack_qr_h3_", [3, 3, 3, 3, 4, 4, 5],
+		[20.0, 20.0, 20.0, 0.0, 0.0, 0.0, 0.0]],
 }
 
-## Stand-in animations -> the animation whose drawings they borrow (for DRAW_SHIFT, TALL_FEET and the smears).
-const STAND_IN := {&"attack_qr_h1": &"attack_light",
-	&"attack_qr_h2": &"attack_medium", &"attack_qr_h3": &"attack_heavy"}
+## Animations that borrow another's drawings -> that animation (for DRAW_SHIFT, TALL_FEET and the smears).
+const STAND_IN := {&"attack_qr_h1": &"attack_qr_m"}
 
 ## Drawings drawn shifted LEFT inside their frame so a long reach fits (the Standing Medium's full extension);
 ## the sprite is shifted back right by this many px so he stays in place.
 const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_qr_m": [0, 0, 0, 0, 90, 60, 0, 0, 0, 0],  # hit / follow-through drawn 120 / 80 px (512 scale) left
+	&"attack_qr_h2": [45, 0, 0, 0],  # gather drawn 60 px (512) left
+	&"attack_qr_h3": [0, 0, 0, 45, 45, 45, 0],  # chop / falling / landing drawn 60 px (512) left
 	&"attack_heavy": [0, 0, 0, 0, 72, 30, 0, 0, 0],
 	&"attack_clight": [0, 45, 82.5, 75, 0, 0],
 	&"attack_cmedium": [0, -22.5, -30, 82.5, -60, 0, 0],
@@ -258,7 +268,8 @@ const DRAW_SHIFT := {&"attack_medium": [0, 0, 0, 0, 0, 90, 30, 0, 0, 0],
 	&"attack_jmedium": [0, 0, 0, 90, 52.5, 82.5, 0],
 	&"attack_jheavy": [0, 0, 0, 52.5, 0, 0, 0]}
 ## Drawings drawn shifted UP inside their frame (the Jumping Heavy's low chop): shifted back down by this many px.
-const DRAW_SHIFT_Y := {&"attack_jheavy": [0, 0, 0, 15, 15, 0, 0]}
+const DRAW_SHIFT_Y := {&"attack_jheavy": [0, 0, 0, 15, 15, 0, 0],
+	&"attack_qr_h3": [90, 90, 90, 0, 0, 0, 0]}  # the flips drawn 120 px (512) higher
 ## Keyblade smear layers (separate from the body art, drawn on top of it), one texture per drawing.
 const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/", "sora_attack_medium_smear_"],
 	&"attack_light": ["res://assets/sora/attack_light_smear_384/", "sora_attack_light_smear_"],
@@ -270,6 +281,8 @@ const SMEARS := {&"attack_medium": ["res://assets/sora/attack_medium_smear_384/"
 	&"attack_jmedium": ["res://assets/sora/attack_jmedium_smear_384/", "sora_attack_jmedium_smear_"],
 	&"attack_jheavy": ["res://assets/sora/attack_jheavy_smear_384/", "sora_attack_jheavy_smear_"],
 	&"attack_qr_m": ["res://assets/sora/attack_qr_m_smear_384/", "sora_attack_qr_m_smear_"],
+	&"attack_qr_h2": ["res://assets/sora/attack_qr_h2_smear_384/", "sora_attack_qr_h2_smear_"],
+	&"attack_qr_h3": ["res://assets/sora/attack_qr_h3_smear_384/", "sora_attack_qr_h3_smear_"],
 	&"grab": ["res://assets/sora/grab_fx_768/", "sora_grab_fx_"]}  # the strike's smear + impact burst
 
 ## Floor shadow (Kvon, November 17: "shadowing by provide an invisible light source in the background"; chose shadows of
@@ -373,8 +386,19 @@ const QR_FOLLOW := {&"light": [], &"medium": [&"attack_qr_m"],
 ## the bounce stays close enough to follow up).
 const QR_HITS := {&"attack_qr_m": {"strength": &"heavy", "damage": 900, "push": 22.0},
 	&"attack_qr_h1": {"strength": &"light", "damage": 300, "stun": 30, "push": 1.5},
-	&"attack_qr_h2": {"strength": &"medium", "damage": 300, "stun": 30, "push": 1.5},
+	&"attack_qr_h2": {"strength": &"medium", "damage": 300, "lift": true},
 	&"attack_qr_h3": {"strength": &"heavy", "damage": 600, "bounce": true}}
+## Hit 2 carries both off the ground: Sora leaves the floor as its rising drawing (QR_H2_TAKEOFF) starts, rising at
+## QR_RISE_V px/frame under QR_RISE_G gravity; a hit opponent is launched with the same speed and gravity, so they rise
+## together (~185 px). Hit 3's chop slams them down (QR_SLAM_V px/frame) into the ground bounce; after the chop he
+## falls with QR_FALL_G and holds the falling drawing (QR_H3_LOW) until he lands.
+const QR_H2_TAKEOFF := 1
+const QR_RISE_V := 15.0
+const QR_RISE_G := 0.6
+const QR_FALL_G := 1.4
+const QR_SLAM_V := 22.0
+const QR_H3_CHOP := 3
+const QR_H3_LOW := 4
 ## Quick Run blur (Kvon, November 19: "a subtle blur effect on Sora when he's dashing forward, similar to in KH2"):
 ## while he runs (and through the miss spin, fading as he slows), a copy of his current drawing blurred backward along
 ## the motion (BLUR_SHADER: 20 samples over BLUR_LENGTH px, nearer ones weighted more, fading out toward the frame's
@@ -515,6 +539,8 @@ var _qr_follow := 0
 var _qr_contact := false
 var _qr_slide := 0.0
 var _qr_spin_t := 0
+var _qr_air := false  # risen off the floor by the Heavy's hit 2
+var _qr_vy := 0.0
 var _bounce_vx := 0.0
 var _stun_len := 1
 var _hvx := 0.0
@@ -692,7 +718,7 @@ func is_attacking() -> bool:
 
 
 func is_airborne() -> bool:
-	return _air or state == &"hurt_air" or state == &"bounce"
+	return _air or state == &"hurt_air" or state == &"bounce" or state == &"slam"
 
 
 ## During a hit-freeze (no game frame for him): remembers new jump / attack / dash presses (input buffer).
@@ -1403,6 +1429,16 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 		# Knocked out: thrown down and stays down.
 		ko = true
 		_start_hurt_air(-KNOCK_SPEED * 0.8, KNOCK_VX * away, HURT_GRAVITY)
+	elif info.get("lift", false):
+		# The Quick Run Heavy's rising slash: carried up at Sora's own rise speed and gravity (they rise together).
+		_start_hurt_air(-QR_RISE_V, 0.0, QR_RISE_G)
+	elif info.get("bounce", false) and position.y < FLOOR_Y - 1.0:
+		# The overhead chop in the air: slammed straight down, then the ground bounce when he hits the floor.
+		state = &"slam"
+		push_v = 0.0
+		_hvy = QR_SLAM_V
+		_bounce_vx = BOUNCE_VX * away
+		show_anim(&"hurt_fall", 1)
 	elif info.get("bounce", false):
 		# Ground bounce (the Quick Run Heavy's last hit): slammed onto the floor, then bounced up for a juggle.
 		state = &"bounce"
@@ -1411,7 +1447,7 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 		_bounce_vx = BOUNCE_VX * away
 		position.y = FLOOR_Y
 		show_anim(&"hurt_down", 0)
-	elif launch or state == &"hurt_air" or state == &"bounce" or was_air:
+	elif launch or state in [&"hurt_air", &"bounce", &"slam"] or was_air:
 		# The launcher sends him flying; any hit while airborne pops him up again (a juggle) - less each hit.
 		_start_hurt_air(-(LAUNCH_SPEED if launch else JUGGLE_SPEED) * decay, LAUNCH_VX * away, LAUNCH_GRAVITY)
 	else:
@@ -1439,6 +1475,7 @@ func _end_moves() -> void:
 	_bd_tick = -1
 	_qr_tick = -1
 	_qr_phase = &""
+	_qr_air = false
 	_press_at.clear()
 	_pending.clear()
 	_after_dash = false
@@ -1465,6 +1502,12 @@ func _hurt_step() -> void:
 			_htick += 1
 			if _htick >= BOUNCE_FRAMES:
 				_start_hurt_air(-BOUNCE_SPEED, _bounce_vx, LAUNCH_GRAVITY)
+		&"slam":
+			position.y = minf(position.y + _hvy, FLOOR_Y)
+			if position.y >= FLOOR_Y:
+				state = &"bounce"
+				_htick = 0
+				show_anim(&"hurt_down", 0)
 		&"guard":
 			_stun -= 1
 			if _air:
@@ -1646,9 +1689,27 @@ func _qr_step() -> void:
 				else:
 					_end_quick_run()
 		&"follow":
+			if _qr_air:
+				# Risen by hit 2: rise and fall; after the chop he falls faster; landing on the floor ends it.
+				position.y += _qr_vy
+				var past_chop: bool = anim == &"attack_qr_h3" and sprite.frame >= QR_H3_CHOP
+				_qr_vy += QR_FALL_G if past_chop else QR_RISE_G
+				if position.y >= FLOOR_Y and _qr_vy > 0.0:
+					position.y = FLOOR_Y
+					_qr_air = false
+					_air = false
+					if anim == &"attack_qr_h3" and sprite.frame <= QR_H3_LOW:
+						show_anim(anim, QR_H3_LOW + 1)  # touched down: the landing drawing
+						return
+			if anim == &"attack_qr_h3" and sprite.frame == QR_H3_LOW and _qr_air:
+				return  # the falling drawing holds until he lands
 			if next:
 				if sprite.frame + 1 < holds.size():
 					show_anim(anim, sprite.frame + 1)
+					if anim == &"attack_qr_h2" and sprite.frame == QR_H2_TAKEOFF:
+						_qr_air = true  # the rising slash leaves the floor
+						_air = true
+						_qr_vy = -QR_RISE_V
 					return
 				var list: Array = QR_FOLLOW[_qr_strength]
 				_qr_follow += 1
