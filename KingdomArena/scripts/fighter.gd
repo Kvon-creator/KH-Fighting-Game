@@ -393,9 +393,9 @@ const QR_FOLLOW := {&"light": [], &"medium": [&"attack_qr_m"],
 ## "stun" / "push" override it (the Heavy's first two hits stun longer and barely push, so the three always combo and
 ## the bounce stays close enough to follow up).
 const QR_HITS := {&"attack_qr_m": {"strength": &"heavy", "damage": 900, "push": 22.0},
-	&"attack_qr_h1": {"strength": &"light", "damage": 300, "stun": 30, "push": 1.5},
-	&"attack_qr_h2": {"strength": &"medium", "damage": 300, "lift": true},
-	&"attack_qr_h3": {"strength": &"heavy", "damage": 600, "bounce": true}}
+	&"attack_qr_h1": {"strength": &"light", "damage": 300, "stun": 30, "push": 1.5, "starter": &"quick_run_heavy"},
+	&"attack_qr_h2": {"strength": &"medium", "damage": 300, "lift": true, "starter": &"quick_run_heavy"},
+	&"attack_qr_h3": {"strength": &"heavy", "damage": 600, "bounce": true, "starter": &"quick_run_heavy"}}
 ## Hit 2 carries both off the ground: Sora leaves the floor as its rising drawing (QR_H2_TAKEOFF) starts, rising at
 ## QR_RISE_V px/frame under QR_RISE_G gravity; a hit opponent is launched with the same speed and gravity, so they rise
 ## together. From hit 3's wind-up (QR_H3_CHOP) he falls faster (QR_FALL_G), holding it until he is QR_H3_SWING_H px
@@ -460,7 +460,9 @@ const DECAY_FLOOR := 0.4
 ## Damage scaling by combo starter (Kvon, November 16): a combo's first hit deals full damage; each later hit loses this
 ## share per hit already landed, set by the strength of the combo's FIRST hit (light starters scale the most), never
 ## below DAMAGE_FLOOR. E.g. sL > sM > cH = 300 + 500 x .8 + 800 x .6 = 1180. The grab's 1200 is not scaled.
-const STARTER_SCALING := {&"light": 0.2, &"medium": 0.15, &"heavy": 0.1}
+## Kvon (November 20): "Heavy Quick Run will have damage scaling, but less than a heavy starter" - its own starter
+## (QR_HITS "starter"), 5% per hit (a Heavy starter's is 10%).
+const STARTER_SCALING := {&"light": 0.2, &"medium": 0.15, &"heavy": 0.1, &"quick_run_heavy": 0.05}
 const DAMAGE_FLOOR := 0.3
 
 ## Which way he faces: 1 = right, -1 = left. "Forward" / "back" in his input are relative to it.
@@ -1446,7 +1448,7 @@ func take_hit(strength: StringName, level: StringName, launch: bool, away: float
 		show_anim(guard)
 		return true
 	if combo_hits == 0:
-		combo_starter = strength
+		combo_starter = info.get("starter", strength)
 	var scaling := 1.0 if combo_hits == 0 else maxf(DAMAGE_FLOOR, 1.0 - STARTER_SCALING[combo_starter] * combo_hits)
 	last_damage = roundi(int(info.get("damage", DAMAGE[strength])) * scaling)
 	push_v = info.get("push", push_v)
